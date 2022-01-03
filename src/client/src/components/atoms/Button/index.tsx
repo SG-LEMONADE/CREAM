@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from "react";
 import styled from "@emotion/styled";
-import { Color } from "@emotion/react";
+import { Color, css } from "@emotion/react";
 import colors from "../../../colors/color";
 
 type ButtonTypes = keyof Color["buttonTextColors"];
@@ -70,4 +70,15 @@ const StyledButton = styled.button<{
 		background: ${({ category }) => colors.buttonBgColors[category].active};
 		border-color: ${({ category }) => colors.borderColors[category].active};
 	}
+	${({ disabled, fullWidth }) =>
+		fullWidth &&
+		css`
+			width: 100%;
+			background: ${disabled ? "#ebebeb" : "rgba(34, 34, 34)"};
+			color: white;
+			border-color: ${disabled ? "#ebebeb" : "rgba(34, 34, 34)"};
+			&:hover:enabled {
+				transition: 0.5s;
+			}
+		`}
 `;

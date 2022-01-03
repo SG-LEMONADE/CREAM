@@ -25,6 +25,21 @@ PrimaryDisabled.args = {
 	disabled: true,
 };
 
+export const PrimaryFull = Template.bind({});
+PrimaryFull.args = {
+	category: "primary",
+	children: "구매 계속",
+	fullWidth: true,
+};
+
+export const PrimaryFullDisabled = Template.bind({});
+PrimaryFullDisabled.args = {
+	category: "primary",
+	children: "구매 계속",
+	fullWidth: true,
+	disabled: true,
+};
+
 export const secondary_buy = Template.bind({});
 secondary_buy.args = {
 	category: "secondary_buy",
