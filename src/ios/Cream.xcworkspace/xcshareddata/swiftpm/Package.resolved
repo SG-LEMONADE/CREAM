@@ -1,0 +1,79 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "Alamofire",
+        "repositoryURL": "https://github.com/Alamofire/Alamofire.git",
+        "state": {
+          "branch": "master",
+          "revision": "e7e39079d7469e81966d2787431bf8979a2b0cc4",
+          "version": null
+        }
+      },
+      {
+        "package": "BetterSegmentedControl",
+        "repositoryURL": "https://github.com/gmarm/BetterSegmentedControl.git",
+        "state": {
+          "branch": null,
+          "revision": "a2b2116761f71320cee7e69b4249863f0f372c71",
+          "version": "2.0.1"
+        }
+      },
+      {
+        "package": "BSImagePicker",
+        "repositoryURL": "https://github.com/mikaoj/BSImagePicker.git",
+        "state": {
+          "branch": "master",
+          "revision": "7afbaa1daf882b9f90e8e4a42f7b102f9d589245",
+          "version": null
+        }
+      },
+      {
+        "package": "Charts",
+        "repositoryURL": "https://github.com/danielgindi/Charts.git",
+        "state": {
+          "branch": null,
+          "revision": "8d134a78bb2cb9e7a0f05ecbd5880bb05cd02863",
+          "version": "4.0.1"
+        }
+      },
+      {
+        "package": "Kingfisher",
+        "repositoryURL": "https://github.com/onevcat/Kingfisher.git",
+        "state": {
+          "branch": null,
+          "revision": "0c02c46cfdc0656ce74fd0963a75e5000a0b7f23",
+          "version": "7.1.2"
+        }
+      },
+      {
+        "package": "swift-algorithms",
+        "repositoryURL": "https://github.com/apple/swift-algorithms",
+        "state": {
+          "branch": null,
+          "revision": "2327673b0e9c7e90e6b1826376526ec3627210e4",
+          "version": "0.2.1"
+        }
+      },
+      {
+        "package": "swift-numerics",
+        "repositoryURL": "https://github.com/apple/swift-numerics",
+        "state": {
+          "branch": null,
+          "revision": "6583ac70c326c3ee080c1d42d9ca3361dca816cd",
+          "version": "0.1.0"
+        }
+      },
+      {
+        "package": "SwipeCellKit",
+        "repositoryURL": "https://github.com/idiel/SwipeCellKit.git",
+        "state": {
+          "branch": null,
+          "revision": "7219cad3098637176ace311510d11467dbfb9bb0",
+          "version": "2.7.1"
+        }
+      }
+    ]
+  },
+  "version": 1
+}
