@@ -48,7 +48,7 @@ class JwtAuthFilter: AbstractGatewayFilterFactory<JwtAuthFilter.Config> {
 
             val token: String = request.headers["Authorization"]?.get(0)?.substring(7) ?: ""
 
-            if ((path != "/users/login") && (path != "/users/signup") && (path != "/users/refresh"))
+            if ((path != "/users/login") && (path != "/users/signup") && (path != "/users/refresh") && (path != "/users/verify"))
             {
                 if (token == "")
                 {

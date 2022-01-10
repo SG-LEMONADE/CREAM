@@ -74,19 +74,19 @@ class UserController {
                 {
                     // 이메일 인증 안됐을때
                     responseDTO = ResponseDTO(-1, null)
-                    ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseDTO)
+                    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseDTO)
                 }
                 (user.status == 1) ->
                 {
                     // 비밀번호를 반드시 바꾸어야 할 때
                     responseDTO = ResponseDTO(-2, null)
-                    ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseDTO)
+                    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseDTO)
                 }
                 (user.status == 3) ->
                 {
                     // 삭제된 유저 일때
                     responseDTO = ResponseDTO(-3, null)
-                    ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseDTO)
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseDTO)
                 }
             }
 
@@ -152,7 +152,7 @@ class UserController {
     }
 
     @GetMapping("/verify")
-    fun verifyEmail(@RequestParam ("email", required = true) email: String, @RequestParam("hash", required = true) hash: String): ResponseEntity<Any>{
+    fun verifyEmail(@RequestParam ("email", required = true) email: String, @RequestParam("key", required = true) hash: String): ResponseEntity<Any>{
         var responseDTO: ResponseDTO<Any>
         return try{
             val stringValueOperation = redisTemplate.opsForValue()
@@ -162,6 +162,7 @@ class UserController {
             }
 
             userService.updateUserState(email, 2)
+            redisTemplate.delete(email)
 
             responseDTO = ResponseDTO(0, null)
             ResponseEntity.ok().body(responseDTO)
@@ -187,17 +188,17 @@ class UserController {
         if (type == 0)
         {
             htmlString +=
-                "안녕하세요 ${name}님 인증을 위해 아래의 주소를 눌러주세요. " +
-                        "<a href='http://localhost:8000/users/verify?email=${email}+key=${hash}'> 회원 가입 이메일 인증하기 </a>"
+                "안녕하세요 ${name}님 인증을 위해 아래의 링크를 눌러주세요. \n" +
+                        "<a href='http://localhost:8000/users/verify?email=${email}&key=${hash}'> 회원 가입 이메일 인증하기 </a>"
         }
         else if (type == 1)
         {
             htmlString +=
-                "안녕하세요 ${name}님 비밀번호 변경을 위해 아래의 주소를 눌러주세요. " +
-                        "<a href='http://localhost:8000/users/verify/password?email=${email}+key=${hash}'> 비밀번호 변경하기 </a>"
+                "안녕하세요 ${name}님 비밀번호 변경을 위해 아래의 링크를 눌러주세요. \n" +
+                        "<a href='http://localhost:8000/users/verify/password?email=${email}&key=${hash}'> 비밀번호 변경하기 </a>"
         }
 
-        message.setText(htmlString)
+        message.setText(htmlString, "UTF-8", "html")
         javaMailSender.send(message)
     }
 

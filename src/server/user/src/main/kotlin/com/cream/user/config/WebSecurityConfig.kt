@@ -32,7 +32,7 @@ class WebSecurityConfig: WebSecurityConfigurerAdapter() {
             .and()
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()
-            .authorizeRequests().antMatchers("/users/login", "/users/signup").permitAll()
+            .authorizeRequests().antMatchers("/users/login", "/users/signup", "/users/verify", "/users/refresh").permitAll()
             .anyRequest().authenticated()
 
 
