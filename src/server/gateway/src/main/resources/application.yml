@@ -1,0 +1,18 @@
+server:
+  port: 8000
+
+
+spring:
+  application:
+    name: apigateway-service
+  cloud:
+    gateway:
+      routes:
+        - id: user-api
+          uri: http://localhost:8080/
+          predicates:
+            - Path=/users/**
+          filters:
+            - JwtAuthFilter
+
+secret-key: 
