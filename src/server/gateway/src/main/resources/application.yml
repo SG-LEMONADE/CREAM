@@ -16,3 +16,4 @@ spring:
             - JwtAuthFilter
 
 secret-key: 
+auth-excluded-path: /users/login, /users/signup, /users/refresh, /users/verify, /users/validate
