@@ -151,6 +151,16 @@ class UserController {
         }
     }
 
+    @PostMapping("/validate")
+    fun validate(): ResponseEntity<Any> {
+        return try{
+
+            ResponseEntity.ok().body(null)
+        } catch (e: Exception){
+            ResponseEntity.badRequest().body(null)
+        }
+    }
+
     @GetMapping("/verify")
     fun verifyEmail(@RequestParam ("email", required = true) email: String, @RequestParam("key", required = true) hash: String): ResponseEntity<Any>{
         var responseDTO: ResponseDTO<Any>
@@ -168,6 +178,20 @@ class UserController {
             ResponseEntity.ok().body(responseDTO)
         } catch (e: Exception){
             responseDTO = ResponseDTO(err = -10, data = null)
+            ResponseEntity.badRequest().body(responseDTO)
+        }
+    }
+
+    @GetMapping("/me")
+    fun me(@RequestHeader("Authorization") token: String): ResponseEntity<Any> {
+        var responseDTO: ResponseDTO<Any>
+        return try {
+
+            responseDTO = ResponseDTO(0, null)
+            ResponseEntity.ok().body(responseDTO)
+        } catch (e: Exception) {
+
+            responseDTO = ResponseDTO(-100, e.message)
             ResponseEntity.badRequest().body(responseDTO)
         }
     }

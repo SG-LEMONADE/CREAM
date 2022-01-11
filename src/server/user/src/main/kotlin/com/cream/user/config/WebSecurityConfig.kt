@@ -4,6 +4,7 @@ import com.cream.user.security.JwtAccessDeniedHandler
 import com.cream.user.security.JwtAuthenticationEntryPoint
 import com.cream.user.security.JwtAuthenticationFilter
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
@@ -23,6 +24,9 @@ class WebSecurityConfig: WebSecurityConfigurerAdapter() {
     @Autowired
     lateinit var jwtAuthenticationEntryPoint: JwtAuthenticationEntryPoint
 
+    @Value("\${auth-excluded-path}")
+    lateinit var authExcludedPaths: Array<String>
+
     override fun configure(http: HttpSecurity){
         http.cors()
             .and()
@@ -32,7 +36,7 @@ class WebSecurityConfig: WebSecurityConfigurerAdapter() {
             .and()
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()
-            .authorizeRequests().antMatchers("/users/login", "/users/signup", "/users/verify", "/users/refresh").permitAll()
+            .authorizeRequests().antMatchers(*authExcludedPaths).permitAll()
             .anyRequest().authenticated()
 
 
