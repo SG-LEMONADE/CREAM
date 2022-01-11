@@ -16,7 +16,7 @@ import java.time.temporal.ChronoUnit
 @Service
 class TokenProvider {
 
-    @Value("secret-key")
+    @Value("\${secret-key}")
     lateinit var SECRET_KEY: String
 
     fun create(userEntity: UserEntity, isRefresh: Boolean=false): String{

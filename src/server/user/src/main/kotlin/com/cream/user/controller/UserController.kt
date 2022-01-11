@@ -172,6 +172,22 @@ class UserController {
         }
     }
 
+    @PostMapping("/logout")
+    fun logout(@RequestHeader("Authorization") token: String): ResponseEntity<Any> {
+        var responseDTO: ResponseDTO<Any>
+        return try{
+
+            val userId = tokenProvider.validateAndGetUserId(token.substring(7))
+            redisTemplate.delete("refresh-${userId}")
+
+            responseDTO = ResponseDTO(0, null)
+            ResponseEntity.ok().body(responseDTO)
+        } catch (e: Exception) {
+
+            responseDTO = ResponseDTO(-100, e.message)
+            ResponseEntity.badRequest().body(responseDTO)
+        }
+    }
 
     @Async
     fun sendEmail(email: String, name: String, type: Int) {
