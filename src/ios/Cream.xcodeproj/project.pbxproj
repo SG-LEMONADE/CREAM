@@ -8,22 +8,31 @@
 
 /* Begin PBXBuildFile section */
 		3AA6865D5E6AC36E76D7F9E1 /* Pods_Cream.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A30B26FB25B22F519249FD4 /* Pods_Cream.framework */; };
+		7B234917278C0315009AAF32 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B234916278C0315009AAF32 /* User.swift */; };
 		7B36DB0E2789202800D8ACB0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B36DB0D2789202800D8ACB0 /* AppDelegate.swift */; };
 		7B36DB102789202800D8ACB0 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B36DB0F2789202800D8ACB0 /* SceneDelegate.swift */; };
 		7B36DB122789202800D8ACB0 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B36DB112789202800D8ACB0 /* ViewController.swift */; };
 		7B36DB172789202A00D8ACB0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7B36DB162789202A00D8ACB0 /* Assets.xcassets */; };
 		7B36DB1A2789202A00D8ACB0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7B36DB182789202A00D8ACB0 /* LaunchScreen.storyboard */; };
+		7BB0110B278AE227005E5C9E /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BB0110A278AE227005E5C9E /* MainTabBarController.swift */; };
+		7BB0110F278BBBAC005E5C9E /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 7BB0110E278BBBAC005E5C9E /* SnapKit */; };
+		7BB01111278BC3EE005E5C9E /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BB01110278BC3EE005E5C9E /* LoginViewController.swift */; };
+		7BB01113278BC44E005E5C9E /* ViewConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BB01112278BC44E005E5C9E /* ViewConfiguration.swift */; };
+		7BB01115278BC6D1005E5C9E /* BindingTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BB01114278BC6D1005E5C9E /* BindingTextField.swift */; };
+		7BB01117278BCA54005E5C9E /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BB01116278BCA54005E5C9E /* Observable.swift */; };
+		7BB01119278BCAC0005E5C9E /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BB01118278BCAC0005E5C9E /* LoginViewModel.swift */; };
+		7BB0111F278BD32E005E5C9E /* String+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BB0111E278BD32E005E5C9E /* String+.swift */; };
+		7BB01121278BD66C005E5C9E /* UIView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BB01120278BD66C005E5C9E /* UIView+.swift */; };
 		7BDA400D278978500093E75F /* BetterSegmentedControl in Frameworks */ = {isa = PBXBuildFile; productRef = 7BDA400C278978500093E75F /* BetterSegmentedControl */; };
 		7BDA40132789793B0093E75F /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 7BDA40122789793B0093E75F /* Alamofire */; };
 		7BDA4016278979AB0093E75F /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 7BDA4015278979AB0093E75F /* Kingfisher */; };
 		7BDA4019278A9BF70093E75F /* BSImagePicker in Frameworks */ = {isa = PBXBuildFile; productRef = 7BDA4018278A9BF70093E75F /* BSImagePicker */; };
-		7BDA401C278A9D0F0093E75F /* Charts in Frameworks */ = {isa = PBXBuildFile; productRef = 7BDA401B278A9D0F0093E75F /* Charts */; };
-		7BDA401E278A9D0F0093E75F /* ChartsDynamic in Frameworks */ = {isa = PBXBuildFile; productRef = 7BDA401D278A9D0F0093E75F /* ChartsDynamic */; };
 		7BDA4021278A9D540093E75F /* SwipeCellKit in Frameworks */ = {isa = PBXBuildFile; productRef = 7BDA4020278A9D540093E75F /* SwipeCellKit */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		6A30B26FB25B22F519249FD4 /* Pods_Cream.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Cream.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7B234916278C0315009AAF32 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		7B36DB0A2789202800D8ACB0 /* Cream.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Cream.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7B36DB0D2789202800D8ACB0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7B36DB0F2789202800D8ACB0 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -31,6 +40,14 @@
 		7B36DB162789202A00D8ACB0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		7B36DB192789202A00D8ACB0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		7B36DB1B2789202A00D8ACB0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		7BB0110A278AE227005E5C9E /* MainTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
+		7BB01110278BC3EE005E5C9E /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		7BB01112278BC44E005E5C9E /* ViewConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewConfiguration.swift; sourceTree = "<group>"; };
+		7BB01114278BC6D1005E5C9E /* BindingTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BindingTextField.swift; sourceTree = "<group>"; };
+		7BB01116278BCA54005E5C9E /* Observable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Observable.swift; sourceTree = "<group>"; };
+		7BB01118278BCAC0005E5C9E /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
+		7BB0111E278BD32E005E5C9E /* String+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+.swift"; sourceTree = "<group>"; };
+		7BB01120278BD66C005E5C9E /* UIView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+.swift"; sourceTree = "<group>"; };
 		ACB4ED80299F0DBFDC69F091 /* Pods-Cream.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Cream.debug.xcconfig"; path = "Target Support Files/Pods-Cream/Pods-Cream.debug.xcconfig"; sourceTree = "<group>"; };
 		C13476F4A6CBAC0C05953691 /* Pods-Cream.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Cream.release.xcconfig"; path = "Target Support Files/Pods-Cream/Pods-Cream.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -40,12 +57,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7BDA401C278A9D0F0093E75F /* Charts in Frameworks */,
 				7BDA4016278979AB0093E75F /* Kingfisher in Frameworks */,
 				7BDA400D278978500093E75F /* BetterSegmentedControl in Frameworks */,
-				7BDA401E278A9D0F0093E75F /* ChartsDynamic in Frameworks */,
 				7BDA40132789793B0093E75F /* Alamofire in Frameworks */,
 				7BDA4019278A9BF70093E75F /* BSImagePicker in Frameworks */,
+				7BB0110F278BBBAC005E5C9E /* SnapKit in Frameworks */,
 				7BDA4021278A9D540093E75F /* SwipeCellKit in Frameworks */,
 				3AA6865D5E6AC36E76D7F9E1 /* Pods_Cream.framework in Frameworks */,
 			);
@@ -60,6 +76,14 @@
 				6A30B26FB25B22F519249FD4 /* Pods_Cream.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		7B234915278C0307009AAF32 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				7B234916278C0315009AAF32 /* User.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 		7B36DB012789202800D8ACB0 = {
@@ -83,14 +107,63 @@
 		7B36DB0C2789202800D8ACB0 /* Cream */ = {
 			isa = PBXGroup;
 			children = (
-				7B36DB0D2789202800D8ACB0 /* AppDelegate.swift */,
-				7B36DB0F2789202800D8ACB0 /* SceneDelegate.swift */,
+				7B234915278C0307009AAF32 /* Model */,
+				7BB0110C278AF1C3005E5C9E /* Application */,
+				7BB0111D278BD321005E5C9E /* Extension */,
+				7BB0111C278BCEE9005E5C9E /* Presentation */,
 				7B36DB112789202800D8ACB0 /* ViewController.swift */,
 				7B36DB162789202A00D8ACB0 /* Assets.xcassets */,
 				7B36DB182789202A00D8ACB0 /* LaunchScreen.storyboard */,
 				7B36DB1B2789202A00D8ACB0 /* Info.plist */,
+				7BB01116278BCA54005E5C9E /* Observable.swift */,
+				7BB01114278BC6D1005E5C9E /* BindingTextField.swift */,
 			);
 			path = Cream;
+			sourceTree = "<group>";
+		};
+		7BB0110C278AF1C3005E5C9E /* Application */ = {
+			isa = PBXGroup;
+			children = (
+				7B36DB0D2789202800D8ACB0 /* AppDelegate.swift */,
+				7B36DB0F2789202800D8ACB0 /* SceneDelegate.swift */,
+			);
+			path = Application;
+			sourceTree = "<group>";
+		};
+		7BB0111A278BCEB7005E5C9E /* LoginScene */ = {
+			isa = PBXGroup;
+			children = (
+				7BB01110278BC3EE005E5C9E /* LoginViewController.swift */,
+				7BB01118278BCAC0005E5C9E /* LoginViewModel.swift */,
+			);
+			path = LoginScene;
+			sourceTree = "<group>";
+		};
+		7BB0111B278BCED4005E5C9E /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				7BB01112278BC44E005E5C9E /* ViewConfiguration.swift */,
+			);
+			path = Base;
+			sourceTree = "<group>";
+		};
+		7BB0111C278BCEE9005E5C9E /* Presentation */ = {
+			isa = PBXGroup;
+			children = (
+				7BB0111B278BCED4005E5C9E /* Base */,
+				7BB0110A278AE227005E5C9E /* MainTabBarController.swift */,
+				7BB0111A278BCEB7005E5C9E /* LoginScene */,
+			);
+			path = Presentation;
+			sourceTree = "<group>";
+		};
+		7BB0111D278BD321005E5C9E /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				7BB0111E278BD32E005E5C9E /* String+.swift */,
+				7BB01120278BD66C005E5C9E /* UIView+.swift */,
+			);
+			path = Extension;
 			sourceTree = "<group>";
 		};
 		8054DFD6B3DB5002DFAF10ED /* Pods */ = {
@@ -99,7 +172,6 @@
 				ACB4ED80299F0DBFDC69F091 /* Pods-Cream.debug.xcconfig */,
 				C13476F4A6CBAC0C05953691 /* Pods-Cream.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -126,9 +198,8 @@
 				7BDA40122789793B0093E75F /* Alamofire */,
 				7BDA4015278979AB0093E75F /* Kingfisher */,
 				7BDA4018278A9BF70093E75F /* BSImagePicker */,
-				7BDA401B278A9D0F0093E75F /* Charts */,
-				7BDA401D278A9D0F0093E75F /* ChartsDynamic */,
 				7BDA4020278A9D540093E75F /* SwipeCellKit */,
+				7BB0110E278BBBAC005E5C9E /* SnapKit */,
 			);
 			productName = Cream;
 			productReference = 7B36DB0A2789202800D8ACB0 /* Cream.app */;
@@ -159,12 +230,12 @@
 			);
 			mainGroup = 7B36DB012789202800D8ACB0;
 			packageReferences = (
-				7BDA400B278978500093E75F /* XCRemoteSwiftPackageReference "BetterSegmentedControl.git" */,
-				7BDA40112789793B0093E75F /* XCRemoteSwiftPackageReference "Alamofire.git" */,
-				7BDA4014278979AB0093E75F /* XCRemoteSwiftPackageReference "Kingfisher.git" */,
-				7BDA4017278A9BF70093E75F /* XCRemoteSwiftPackageReference "BSImagePicker.git" */,
-				7BDA401A278A9D0F0093E75F /* XCRemoteSwiftPackageReference "Charts.git" */,
-				7BDA401F278A9D540093E75F /* XCRemoteSwiftPackageReference "SwipeCellKit.git" */,
+				7BDA400B278978500093E75F /* XCRemoteSwiftPackageReference "BetterSegmentedControl" */,
+				7BDA40112789793B0093E75F /* XCRemoteSwiftPackageReference "Alamofire" */,
+				7BDA4014278979AB0093E75F /* XCRemoteSwiftPackageReference "Kingfisher" */,
+				7BDA4017278A9BF70093E75F /* XCRemoteSwiftPackageReference "BSImagePicker" */,
+				7BDA401F278A9D540093E75F /* XCRemoteSwiftPackageReference "SwipeCellKit" */,
+				7BB0110D278BBBAB005E5C9E /* XCRemoteSwiftPackageReference "SnapKit" */,
 			);
 			productRefGroup = 7B36DB0B2789202800D8ACB0 /* Products */;
 			projectDirPath = "";
@@ -236,7 +307,16 @@
 			files = (
 				7B36DB122789202800D8ACB0 /* ViewController.swift in Sources */,
 				7B36DB0E2789202800D8ACB0 /* AppDelegate.swift in Sources */,
+				7BB0111F278BD32E005E5C9E /* String+.swift in Sources */,
+				7BB0110B278AE227005E5C9E /* MainTabBarController.swift in Sources */,
+				7BB01113278BC44E005E5C9E /* ViewConfiguration.swift in Sources */,
+				7BB01111278BC3EE005E5C9E /* LoginViewController.swift in Sources */,
+				7BB01117278BCA54005E5C9E /* Observable.swift in Sources */,
+				7BB01115278BC6D1005E5C9E /* BindingTextField.swift in Sources */,
+				7B234917278C0315009AAF32 /* User.swift in Sources */,
+				7BB01121278BD66C005E5C9E /* UIView+.swift in Sources */,
 				7B36DB102789202800D8ACB0 /* SceneDelegate.swift in Sources */,
+				7BB01119278BCAC0005E5C9E /* LoginViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -450,7 +530,15 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		7BDA400B278978500093E75F /* XCRemoteSwiftPackageReference "BetterSegmentedControl.git" */ = {
+		7BB0110D278BBBAB005E5C9E /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
+		7BDA400B278978500093E75F /* XCRemoteSwiftPackageReference "BetterSegmentedControl" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/gmarm/BetterSegmentedControl.git";
 			requirement = {
@@ -458,7 +546,7 @@
 				minimumVersion = 2.0.0;
 			};
 		};
-		7BDA40112789793B0093E75F /* XCRemoteSwiftPackageReference "Alamofire.git" */ = {
+		7BDA40112789793B0093E75F /* XCRemoteSwiftPackageReference "Alamofire" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
 			requirement = {
@@ -466,7 +554,7 @@
 				kind = branch;
 			};
 		};
-		7BDA4014278979AB0093E75F /* XCRemoteSwiftPackageReference "Kingfisher.git" */ = {
+		7BDA4014278979AB0093E75F /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/onevcat/Kingfisher.git";
 			requirement = {
@@ -474,7 +562,7 @@
 				minimumVersion = 7.0.0;
 			};
 		};
-		7BDA4017278A9BF70093E75F /* XCRemoteSwiftPackageReference "BSImagePicker.git" */ = {
+		7BDA4017278A9BF70093E75F /* XCRemoteSwiftPackageReference "BSImagePicker" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/mikaoj/BSImagePicker.git";
 			requirement = {
@@ -482,15 +570,7 @@
 				kind = branch;
 			};
 		};
-		7BDA401A278A9D0F0093E75F /* XCRemoteSwiftPackageReference "Charts.git" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/danielgindi/Charts.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 4.0.0;
-			};
-		};
-		7BDA401F278A9D540093E75F /* XCRemoteSwiftPackageReference "SwipeCellKit.git" */ = {
+		7BDA401F278A9D540093E75F /* XCRemoteSwiftPackageReference "SwipeCellKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/idiel/SwipeCellKit.git";
 			requirement = {
@@ -501,39 +581,34 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		7BB0110E278BBBAC005E5C9E /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7BB0110D278BBBAB005E5C9E /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
+		};
 		7BDA400C278978500093E75F /* BetterSegmentedControl */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 7BDA400B278978500093E75F /* XCRemoteSwiftPackageReference "BetterSegmentedControl.git" */;
+			package = 7BDA400B278978500093E75F /* XCRemoteSwiftPackageReference "BetterSegmentedControl" */;
 			productName = BetterSegmentedControl;
 		};
 		7BDA40122789793B0093E75F /* Alamofire */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 7BDA40112789793B0093E75F /* XCRemoteSwiftPackageReference "Alamofire.git" */;
+			package = 7BDA40112789793B0093E75F /* XCRemoteSwiftPackageReference "Alamofire" */;
 			productName = Alamofire;
 		};
 		7BDA4015278979AB0093E75F /* Kingfisher */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 7BDA4014278979AB0093E75F /* XCRemoteSwiftPackageReference "Kingfisher.git" */;
+			package = 7BDA4014278979AB0093E75F /* XCRemoteSwiftPackageReference "Kingfisher" */;
 			productName = Kingfisher;
 		};
 		7BDA4018278A9BF70093E75F /* BSImagePicker */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 7BDA4017278A9BF70093E75F /* XCRemoteSwiftPackageReference "BSImagePicker.git" */;
+			package = 7BDA4017278A9BF70093E75F /* XCRemoteSwiftPackageReference "BSImagePicker" */;
 			productName = BSImagePicker;
-		};
-		7BDA401B278A9D0F0093E75F /* Charts */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 7BDA401A278A9D0F0093E75F /* XCRemoteSwiftPackageReference "Charts.git" */;
-			productName = Charts;
-		};
-		7BDA401D278A9D0F0093E75F /* ChartsDynamic */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 7BDA401A278A9D0F0093E75F /* XCRemoteSwiftPackageReference "Charts.git" */;
-			productName = ChartsDynamic;
 		};
 		7BDA4020278A9D540093E75F /* SwipeCellKit */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 7BDA401F278A9D540093E75F /* XCRemoteSwiftPackageReference "SwipeCellKit.git" */;
+			package = 7BDA401F278A9D540093E75F /* XCRemoteSwiftPackageReference "SwipeCellKit" */;
 			productName = SwipeCellKit;
 		};
 /* End XCSwiftPackageProductDependency section */
