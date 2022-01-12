@@ -4,6 +4,8 @@ const colors: Color = {
 	colors: {
 		default: "#222222",
 		error: "#f15746",
+		plain: "#000",
+		tag: "rgba(34,34,34,.5)",
 	},
 	buttonTextColors: {
 		primary: {

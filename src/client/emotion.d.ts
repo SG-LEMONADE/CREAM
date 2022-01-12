@@ -5,6 +5,8 @@ declare module "@emotion/react" {
 		colors: {
 			default: string;
 			error: string;
+			plain: string;
+			tag: string;
 		};
 		buttonTextColors: {
 			primary: {
