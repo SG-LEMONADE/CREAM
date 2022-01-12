@@ -186,11 +186,9 @@ class UserController {
     fun me(@RequestHeader("Authorization") token: String): ResponseEntity<Any> {
         var responseDTO: ResponseDTO<Any>
         return try {
-
-            responseDTO = ResponseDTO(0, null)
+            responseDTO = ResponseDTO(0, userService.getById(tokenProvider.validateAndGetUserId(token).toLong()))
             ResponseEntity.ok().body(responseDTO)
         } catch (e: Exception) {
-
             responseDTO = ResponseDTO(-100, e.message)
             ResponseEntity.badRequest().body(responseDTO)
         }

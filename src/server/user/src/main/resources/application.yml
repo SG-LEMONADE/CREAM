@@ -22,7 +22,7 @@ spring:
     port: 6379
 
   mail:
-    host: smtp.gamil.com
+    host: smtp.gmail.com
     port: 587
     username: 
     password: 
