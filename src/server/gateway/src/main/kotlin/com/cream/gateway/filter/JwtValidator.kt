@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service
 class JwtValidator {
     private val log = LoggerFactory.getLogger(javaClass)
 
-    @Value("secret-key")
+    @Value("\${secret-key}")
     lateinit var SECRET_KEY: String
 
     fun checkValidation(token: String): Int  {

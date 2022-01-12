@@ -10,7 +10,7 @@ data class ResponseUserDTO(
     val gender: Boolean,
     val age: Int,
     val shoeSize: Int,
-    val marriageInfo: String?,
+    val marriageInfo: String,
     val profileImageUrl: String,
     val status: Int,
     val passwordChangedDateTime: LocalDateTime,

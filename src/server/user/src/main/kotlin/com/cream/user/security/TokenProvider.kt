@@ -34,7 +34,7 @@ class TokenProvider {
     }
 
     fun validateAndGetUserId(token: String): String{
-        val filteredToken = token.substring(7)
+        val filteredToken = token.substring(7) // without Bearer
         var claims: Claims = Jwts.parser()
             .setSigningKey(SECRET_KEY)
             .parseClaimsJws(filteredToken)

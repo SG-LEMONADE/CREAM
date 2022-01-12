@@ -16,8 +16,6 @@ import org.springframework.security.crypto.password.PasswordEncoder
 import java.util.concurrent.TimeUnit
 
 import org.springframework.scheduling.annotation.Async
-import org.springframework.security.core.context.SecurityContextHolder
-import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler
 import org.springframework.web.bind.annotation.*
 import java.math.BigInteger
 import java.security.MessageDigest
@@ -25,7 +23,6 @@ import java.security.NoSuchAlgorithmException
 import javax.mail.Message
 import javax.mail.internet.InternetAddress
 import javax.mail.internet.MimeMessage
-import kotlin.random.Random
 
 
 @Slf4j
@@ -215,7 +212,7 @@ class UserController {
         }
     }
 
-    @PatchMapping("/{id}")
+    @PutMapping("/{id}")
     fun update(@PathVariable id: Long,  @RequestBody updatedUser: UpdateUserDTO):  ResponseEntity<Any> {
         var responseDTO: ResponseDTO<Any>
         return try {
