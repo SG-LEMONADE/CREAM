@@ -33,7 +33,7 @@ class JwtAuthenticationFilter: OncePerRequestFilter() {
         filterChain: FilterChain
     ) {
         try {
-            val token: String? = parseBearerToken(request)
+            val token: String? = request.getHeader("Authorization")
             if (token != null && !token.equals("null", ignoreCase = true)){
                 val userId: String = tokenProvider.validateAndGetUserId(token)
                 var authentication: AbstractAuthenticationToken = UsernamePasswordAuthenticationToken(
@@ -49,13 +49,5 @@ class JwtAuthenticationFilter: OncePerRequestFilter() {
             log.warn(e.message)
         }
         filterChain.doFilter(request, response)
-    }
-
-    fun parseBearerToken(request: HttpServletRequest): String? {
-        val bearerToken: String = request.getHeader("Authorization")
-        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
-            return bearerToken.substring(7)
-        }
-        return null
     }
 }

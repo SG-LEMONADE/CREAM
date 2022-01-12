@@ -12,7 +12,7 @@ data class RegisterUserDTO(
     val gender: Boolean,
     val age: Int,
     val shoeSize: Int,
-    val marriageInfo: String?,
+    val marriageInfo: String,
     val createdAt: LocalDateTime = LocalDateTime.now()
 ) {
     fun toEntity(encoder: PasswordEncoder): UserEntity{

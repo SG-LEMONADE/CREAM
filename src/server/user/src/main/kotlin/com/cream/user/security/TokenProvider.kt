@@ -16,7 +16,7 @@ import java.time.temporal.ChronoUnit
 @Service
 class TokenProvider {
 
-    @Value("secret-key")
+    @Value("\${secret-key}")
     lateinit var SECRET_KEY: String
 
     fun create(userEntity: UserEntity, isRefresh: Boolean=false): String{
@@ -34,9 +34,10 @@ class TokenProvider {
     }
 
     fun validateAndGetUserId(token: String): String{
+        val filteredToken = token.substring(7) // without Bearer
         var claims: Claims = Jwts.parser()
             .setSigningKey(SECRET_KEY)
-            .parseClaimsJws(token)
+            .parseClaimsJws(filteredToken)
             .body
         return claims.subject
     }

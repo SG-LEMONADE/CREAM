@@ -23,7 +23,6 @@ import java.security.NoSuchAlgorithmException
 import javax.mail.Message
 import javax.mail.internet.InternetAddress
 import javax.mail.internet.MimeMessage
-import kotlin.random.Random
 
 
 @Slf4j
@@ -45,7 +44,7 @@ class UserController {
     var passwordEncoder: PasswordEncoder = BCryptPasswordEncoder()
 
     @PostMapping("/signup")
-    fun registerUser(@RequestBody registerUserDTO: RegisterUserDTO): ResponseEntity<Any>{
+    fun signup(@RequestBody registerUserDTO: RegisterUserDTO): ResponseEntity<Any>{
         var responseDTO: ResponseDTO<Any>
         return try{
             val user = registerUserDTO.toEntity(passwordEncoder)
@@ -63,7 +62,7 @@ class UserController {
     }
 
     @PostMapping("/login")
-    fun authenticate(@RequestBody userDTO: LoginDTO): ResponseEntity<Any>{
+    fun login(@RequestBody userDTO: LoginDTO): ResponseEntity<Any>{
         var responseDTO: ResponseDTO<Any>
 
         return try {
@@ -74,19 +73,19 @@ class UserController {
                 {
                     // 이메일 인증 안됐을때
                     responseDTO = ResponseDTO(-1, null)
-                    ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseDTO)
+                    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseDTO)
                 }
                 (user.status == 1) ->
                 {
                     // 비밀번호를 반드시 바꾸어야 할 때
                     responseDTO = ResponseDTO(-2, null)
-                    ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseDTO)
+                    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseDTO)
                 }
                 (user.status == 3) ->
                 {
                     // 삭제된 유저 일때
                     responseDTO = ResponseDTO(-3, null)
-                    ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseDTO)
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseDTO)
                 }
             }
 
@@ -107,15 +106,15 @@ class UserController {
         }
     }
 
-    @PostMapping("/checker")
-    fun check(): HashMap<String, String> {
+    @PostMapping("/test")
+    fun test(): HashMap<String, String> {
         val test: HashMap<String, String> = HashMap()
         test["test"] = "this is test"
         return test
     }
 
     @PostMapping("/refresh")
-    fun generateNewToken(@RequestBody tokenDTO: RefreshDTO): ResponseEntity<Any>{
+    fun refresh(@RequestBody tokenDTO: RefreshDTO): ResponseEntity<Any>{
         var responseDTO: ResponseDTO<Any>
         return try{
 
@@ -151,8 +150,20 @@ class UserController {
         }
     }
 
+    @PostMapping("/validate")
+    fun validate(@RequestHeader("Authorization") token: String): ResponseEntity<Any> {
+        var responseDTO: ResponseDTO<Any>
+        return try{
+            responseDTO = ResponseDTO(0, tokenProvider.validateAndGetUserId(token))
+            ResponseEntity.ok().body(responseDTO)
+        } catch (e: Exception){
+            responseDTO = ResponseDTO(-100, null)
+            ResponseEntity.badRequest().body(responseDTO)
+        }
+    }
+
     @GetMapping("/verify")
-    fun verifyEmail(@RequestParam ("email", required = true) email: String, @RequestParam("hash", required = true) hash: String): ResponseEntity<Any>{
+    fun verify(@RequestParam ("email", required = true) email: String, @RequestParam("key", required = true) hash: String): ResponseEntity<Any>{
         var responseDTO: ResponseDTO<Any>
         return try{
             val stringValueOperation = redisTemplate.opsForValue()
@@ -162,6 +173,7 @@ class UserController {
             }
 
             userService.updateUserState(email, 2)
+            redisTemplate.delete(email)
 
             responseDTO = ResponseDTO(0, null)
             ResponseEntity.ok().body(responseDTO)
@@ -171,6 +183,48 @@ class UserController {
         }
     }
 
+    @GetMapping("/me")
+    fun me(@RequestHeader("Authorization") token: String): ResponseEntity<Any> {
+        var responseDTO: ResponseDTO<Any>
+        return try {
+            responseDTO = ResponseDTO(0, userService.getById(tokenProvider.validateAndGetUserId(token).toLong()))
+            ResponseEntity.ok().body(responseDTO)
+        } catch (e: Exception) {
+            responseDTO = ResponseDTO(-100, e.message)
+            ResponseEntity.badRequest().body(responseDTO)
+        }
+    }
+
+    @PostMapping("/logout")
+    fun logout(@RequestHeader("Authorization") token: String): ResponseEntity<Any> {
+        var responseDTO: ResponseDTO<Any>
+        return try{
+
+            val userId = tokenProvider.validateAndGetUserId(token)
+            redisTemplate.delete("refresh-${userId}")
+
+            responseDTO = ResponseDTO(0, null)
+            ResponseEntity.ok().body(responseDTO)
+        } catch (e: Exception) {
+
+            responseDTO = ResponseDTO(-100, e.message)
+            ResponseEntity.badRequest().body(responseDTO)
+        }
+    }
+
+    @PutMapping("/{id}")
+    fun update(@PathVariable id: Long,  @RequestBody updatedUser: UpdateUserDTO):  ResponseEntity<Any> {
+        var responseDTO: ResponseDTO<Any>
+        return try {
+            val user = userService.update(userService.getById(id), updatedUser, passwordEncoder)
+            val userDTO = ResponseUserDTO(user, "")
+            responseDTO = ResponseDTO(0, userDTO)
+            ResponseEntity.ok().body(responseDTO)
+        } catch(e: Exception) {
+            responseDTO = ResponseDTO(-100, e.message)
+            ResponseEntity.badRequest().body(responseDTO)
+        }
+    }
 
     @Async
     fun sendEmail(email: String, name: String, type: Int) {
@@ -187,17 +241,17 @@ class UserController {
         if (type == 0)
         {
             htmlString +=
-                "안녕하세요 ${name}님 인증을 위해 아래의 주소를 눌러주세요. " +
-                        "<a href='http://localhost:8000/users/verify?email=${email}+key=${hash}'> 회원 가입 이메일 인증하기 </a>"
+                "안녕하세요 ${name}님 인증을 위해 아래의 링크를 눌러주세요. \n" +
+                        "<a href='http://localhost:8000/users/verify?email=${email}&key=${hash}'> 회원 가입 이메일 인증하기 </a>"
         }
         else if (type == 1)
         {
             htmlString +=
-                "안녕하세요 ${name}님 비밀번호 변경을 위해 아래의 주소를 눌러주세요. " +
-                        "<a href='http://localhost:8000/users/verify/password?email=${email}+key=${hash}'> 비밀번호 변경하기 </a>"
+                "안녕하세요 ${name}님 비밀번호 변경을 위해 아래의 링크를 눌러주세요. \n" +
+                        "<a href='http://localhost:8000/users/verify/password?email=${email}&key=${hash}'> 비밀번호 변경하기 </a>"
         }
 
-        message.setText(htmlString)
+        message.setText(htmlString, "UTF-8", "html")
         javaMailSender.send(message)
     }
 

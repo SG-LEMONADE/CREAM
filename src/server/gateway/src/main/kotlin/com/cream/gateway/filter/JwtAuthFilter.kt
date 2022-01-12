@@ -2,18 +2,16 @@ package com.cream.gateway.filter
 
 import com.cream.gateway.dto.ResponseDTO
 import com.fasterxml.jackson.databind.ObjectMapper
-import io.jsonwebtoken.Claims
-import io.jsonwebtoken.Jwts
 import lombok.extern.slf4j.Slf4j
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.cloud.gateway.filter.GatewayFilter
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory
 import org.springframework.http.HttpStatus
 import org.springframework.http.server.reactive.ServerHttpRequest
 import org.springframework.http.server.reactive.ServerHttpResponse
 import org.springframework.stereotype.Component
-import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 
 @Component
@@ -23,6 +21,12 @@ class JwtAuthFilter: AbstractGatewayFilterFactory<JwtAuthFilter.Config> {
 
     @Autowired
     lateinit var jwtValidator: JwtValidator
+
+    @Value("\${auth-excluded-path}")
+    lateinit var authExcludedPaths: List<String>
+
+    @Value("\${secret-key}")
+    lateinit var secretKey: String
 
     class Config {}
 
@@ -48,7 +52,7 @@ class JwtAuthFilter: AbstractGatewayFilterFactory<JwtAuthFilter.Config> {
 
             val token: String = request.headers["Authorization"]?.get(0)?.substring(7) ?: ""
 
-            if ((path != "/users/login") && (path != "/users/signup") && (path != "/users/refresh"))
+            if (path !in authExcludedPaths)
             {
                 if (token == "")
                 {
@@ -61,8 +65,10 @@ class JwtAuthFilter: AbstractGatewayFilterFactory<JwtAuthFilter.Config> {
                 }
             }
 
-            // TODO 토큰 가지고 로그인 페이, 회원가입 페이지 들어갈 때 redirection 해줘야함 302 status code 넣어주기
             return@GatewayFilter chain.filter(exchange).then(Mono.fromRunnable {
+                if (path !in authExcludedPaths && token != "" && path != "/users/logout"){
+                    exchange.response.headers.add("Authorization", request.headers["Authorization"]?.get(0)?: "")
+                }
             })
         }
     }
