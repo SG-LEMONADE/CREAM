@@ -34,9 +34,10 @@ class TokenProvider {
     }
 
     fun validateAndGetUserId(token: String): String{
+        val filteredToken = token.substring(7)
         var claims: Claims = Jwts.parser()
             .setSigningKey(SECRET_KEY)
-            .parseClaimsJws(token)
+            .parseClaimsJws(filteredToken)
             .body
         return claims.subject
     }

@@ -65,9 +65,8 @@ class JwtAuthFilter: AbstractGatewayFilterFactory<JwtAuthFilter.Config> {
                 }
             }
 
-            // TODO 토큰 가지고 로그인 페이, 회원가입 페이지 들어갈 때 redirection 해줘야함 302 status code 넣어주기 - validation 넣기
             return@GatewayFilter chain.filter(exchange).then(Mono.fromRunnable {
-                if (path !in authExcludedPaths && token != ""){
+                if (path !in authExcludedPaths && token != "" && path != "/users/logout"){
                     exchange.response.headers.add("Authorization", request.headers["Authorization"]?.get(0)?: "")
                 }
             })

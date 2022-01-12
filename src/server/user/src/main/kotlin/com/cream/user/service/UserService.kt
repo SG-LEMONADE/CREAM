@@ -1,5 +1,6 @@
 package com.cream.user.service
 
+import com.cream.user.dto.UpdateUserDTO
 import com.cream.user.persistence.UserRepository
 import com.cream.user.model.UserEntity
 
@@ -33,6 +34,17 @@ class UserService {
     fun updateUserLastLoginTime(userEntity: UserEntity){
         userEntity.lastLoginDateTime = LocalDateTime.now()
         userRepository.save(userEntity)
+    }
+
+    fun update(userEntity: UserEntity, user: UpdateUserDTO, encoder: PasswordEncoder): UserEntity{
+        userEntity.email = user.email
+        userEntity.password = encoder.encode(user.password)
+        userEntity.name = user.name
+        userEntity.address = user.address
+        userEntity.shoeSize = user.shoeSize
+        userEntity.marriageInfo = user.marriageInfo
+        userEntity.updateAt = LocalDateTime.now()
+        return userRepository.save(userEntity)
     }
 
     fun getByCredentials(email: String, password: String, encoder: PasswordEncoder): UserEntity {

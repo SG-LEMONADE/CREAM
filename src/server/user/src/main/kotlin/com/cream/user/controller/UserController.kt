@@ -16,6 +16,8 @@ import org.springframework.security.crypto.password.PasswordEncoder
 import java.util.concurrent.TimeUnit
 
 import org.springframework.scheduling.annotation.Async
+import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler
 import org.springframework.web.bind.annotation.*
 import java.math.BigInteger
 import java.security.MessageDigest
@@ -45,7 +47,7 @@ class UserController {
     var passwordEncoder: PasswordEncoder = BCryptPasswordEncoder()
 
     @PostMapping("/signup")
-    fun registerUser(@RequestBody registerUserDTO: RegisterUserDTO): ResponseEntity<Any>{
+    fun signup(@RequestBody registerUserDTO: RegisterUserDTO): ResponseEntity<Any>{
         var responseDTO: ResponseDTO<Any>
         return try{
             val user = registerUserDTO.toEntity(passwordEncoder)
@@ -63,7 +65,7 @@ class UserController {
     }
 
     @PostMapping("/login")
-    fun authenticate(@RequestBody userDTO: LoginDTO): ResponseEntity<Any>{
+    fun login(@RequestBody userDTO: LoginDTO): ResponseEntity<Any>{
         var responseDTO: ResponseDTO<Any>
 
         return try {
@@ -107,15 +109,15 @@ class UserController {
         }
     }
 
-    @PostMapping("/checker")
-    fun check(): HashMap<String, String> {
+    @PostMapping("/test")
+    fun test(): HashMap<String, String> {
         val test: HashMap<String, String> = HashMap()
         test["test"] = "this is test"
         return test
     }
 
     @PostMapping("/refresh")
-    fun generateNewToken(@RequestBody tokenDTO: RefreshDTO): ResponseEntity<Any>{
+    fun refresh(@RequestBody tokenDTO: RefreshDTO): ResponseEntity<Any>{
         var responseDTO: ResponseDTO<Any>
         return try{
 
@@ -152,17 +154,19 @@ class UserController {
     }
 
     @PostMapping("/validate")
-    fun validate(): ResponseEntity<Any> {
+    fun validate(@RequestHeader("Authorization") token: String): ResponseEntity<Any> {
+        var responseDTO: ResponseDTO<Any>
         return try{
-
-            ResponseEntity.ok().body(null)
+            responseDTO = ResponseDTO(0, tokenProvider.validateAndGetUserId(token))
+            ResponseEntity.ok().body(responseDTO)
         } catch (e: Exception){
-            ResponseEntity.badRequest().body(null)
+            responseDTO = ResponseDTO(-100, null)
+            ResponseEntity.badRequest().body(responseDTO)
         }
     }
 
     @GetMapping("/verify")
-    fun verifyEmail(@RequestParam ("email", required = true) email: String, @RequestParam("key", required = true) hash: String): ResponseEntity<Any>{
+    fun verify(@RequestParam ("email", required = true) email: String, @RequestParam("key", required = true) hash: String): ResponseEntity<Any>{
         var responseDTO: ResponseDTO<Any>
         return try{
             val stringValueOperation = redisTemplate.opsForValue()
@@ -199,13 +203,27 @@ class UserController {
         var responseDTO: ResponseDTO<Any>
         return try{
 
-            val userId = tokenProvider.validateAndGetUserId(token.substring(7))
+            val userId = tokenProvider.validateAndGetUserId(token)
             redisTemplate.delete("refresh-${userId}")
 
             responseDTO = ResponseDTO(0, null)
             ResponseEntity.ok().body(responseDTO)
         } catch (e: Exception) {
 
+            responseDTO = ResponseDTO(-100, e.message)
+            ResponseEntity.badRequest().body(responseDTO)
+        }
+    }
+
+    @PatchMapping("/{id}")
+    fun update(@PathVariable id: Long,  @RequestBody updatedUser: UpdateUserDTO):  ResponseEntity<Any> {
+        var responseDTO: ResponseDTO<Any>
+        return try {
+            val user = userService.update(userService.getById(id), updatedUser, passwordEncoder)
+            val userDTO = ResponseUserDTO(user, "")
+            responseDTO = ResponseDTO(0, userDTO)
+            ResponseEntity.ok().body(responseDTO)
+        } catch(e: Exception) {
             responseDTO = ResponseDTO(-100, e.message)
             ResponseEntity.badRequest().body(responseDTO)
         }
