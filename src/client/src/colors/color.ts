@@ -3,6 +3,7 @@ import { Color } from "@emotion/react";
 const colors: Color = {
 	colors: {
 		default: "#222222",
+		error: "#f15746",
 	},
 	buttonTextColors: {
 		primary: {

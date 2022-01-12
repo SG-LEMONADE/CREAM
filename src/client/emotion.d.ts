@@ -4,6 +4,7 @@ declare module "@emotion/react" {
 	export interface Color {
 		colors: {
 			default: string;
+			error: string;
 		};
 		buttonTextColors: {
 			primary: {
