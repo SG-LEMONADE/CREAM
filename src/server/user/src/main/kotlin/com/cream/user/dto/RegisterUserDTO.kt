@@ -12,7 +12,6 @@ data class RegisterUserDTO(
     val gender: Boolean,
     val age: Int,
     val shoeSize: Int,
-    val marriageInfo: String,
     val createdAt: LocalDateTime = LocalDateTime.now()
 ) {
     fun toEntity(encoder: PasswordEncoder): UserEntity{
@@ -24,7 +23,6 @@ data class RegisterUserDTO(
             gender = this.gender,
             age = this.age,
             shoeSize = this.shoeSize,
-            marriageInfo = this.marriageInfo,
             profileImageUrl = "",
             status = 0,
             passwordChangedDateTime = this.createdAt,

@@ -5,6 +5,5 @@ data class UpdateUserDTO (
         val password: String,
         val name: String,
         val address: String,
-        val shoeSize: Int,
-        val marriageInfo: String,
+        val shoeSize: Int
         )

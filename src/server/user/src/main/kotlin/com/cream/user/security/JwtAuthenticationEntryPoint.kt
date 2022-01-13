@@ -1,7 +1,9 @@
 package com.cream.user.security
 
-import com.cream.user.dto.ResponseDTO
+import com.cream.user.error.ErrorCode
+import com.cream.user.error.ErrorResponse
 import com.fasterxml.jackson.databind.ObjectMapper
+import org.slf4j.LoggerFactory
 import org.springframework.security.core.AuthenticationException
 import org.springframework.security.web.AuthenticationEntryPoint
 import org.springframework.stereotype.Component
@@ -16,12 +18,11 @@ class JwtAuthenticationEntryPoint: AuthenticationEntryPoint {
         response: HttpServletResponse?,
         authException: AuthenticationException?
     ) {
-        val responseDTO = ResponseDTO<Any>(-1, null)
-        val mapper = ObjectMapper()
+        val errorResponse = ErrorResponse(ErrorCode.USER_ACCESS_DENIED)
         if (response != null) {
             response.contentType = "application/json"
             response.status = HttpServletResponse.SC_UNAUTHORIZED
-            response.writer.write(mapper.writeValueAsString(responseDTO))
+            response.writer.write(ObjectMapper().writeValueAsString(errorResponse))
         }
     }
 }

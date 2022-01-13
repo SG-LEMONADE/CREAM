@@ -8,6 +8,9 @@ import io.jsonwebtoken.SignatureAlgorithm
 import org.springframework.beans.factory.annotation.Value
 
 import org.springframework.stereotype.Service
+import java.math.BigInteger
+import java.security.MessageDigest
+import java.security.NoSuchAlgorithmException
 import java.util.Date
 import java.time.Instant
 import java.time.temporal.ChronoUnit
@@ -41,4 +44,20 @@ class TokenProvider {
             .body
         return claims.subject
     }
+
+    fun getSHA512Token(value: String): String {
+        return try {
+            val md = MessageDigest.getInstance("SHA-512")
+            val messageDigest = md.digest(value.toByteArray())
+            val no = BigInteger(1, messageDigest)
+            var hashText = no.toString()
+            while (hashText.length < 32) {
+                hashText = "0$hashText"
+            }
+            hashText
+        } catch (e: NoSuchAlgorithmException){
+            throw RuntimeException(e)
+        }
+    }
+
 }
