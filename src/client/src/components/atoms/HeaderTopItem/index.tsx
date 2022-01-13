@@ -1,7 +1,7 @@
-import styled from "@emotion/styled";
 import React, { FunctionComponent } from "react";
 
-import colors from "../../../colors/color";
+import styled from "@emotion/styled";
+import colors from "colors/color";
 
 type HeaderTopItemProps = {
 	children: React.ReactNode;

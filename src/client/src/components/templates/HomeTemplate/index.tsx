@@ -1,17 +1,20 @@
 import React, { FunctionComponent } from "react";
+
 import styled from "@emotion/styled";
 
 type HomeTemplateProps = {
-	header: React.ReactNode;
+	headerTop: React.ReactNode;
+	headerMain: React.ReactNode;
 	children: React.ReactNode;
 	footer?: React.ReactNode;
 };
 
 const HomeTemplate: FunctionComponent<HomeTemplateProps> = (props) => {
-	const { header, children, footer } = props;
+	const { headerTop, headerMain, children, footer } = props;
 	return (
 		<StyledHomeWrapper>
-			{header && <>{header}</>}
+			{headerTop && <>{headerTop}</>}
+			{headerMain && <>{headerMain}</>}
 			<StyledContent>{children}</StyledContent>
 			{footer && <>{footer}</>}
 		</StyledHomeWrapper>

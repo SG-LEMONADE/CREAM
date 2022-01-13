@@ -3,6 +3,7 @@ import { ComponentMeta, ComponentStory } from "@storybook/react";
 
 import HomeTemplate from ".";
 import HeaderTop from "components/organisms/HeaderTop";
+import HeaderMain from "components/organisms/HeaderMain";
 
 export default {
 	title: "templates/HomeTemplate",
@@ -15,6 +16,7 @@ const Template: ComponentStory<typeof HomeTemplate> = (args) => (
 
 export const Default = Template.bind({});
 Default.args = {
-	header: <HeaderTop />,
+	headerTop: <HeaderTop />,
+	headerMain: <HeaderMain />,
 	children: <h1>Home screen</h1>,
 };

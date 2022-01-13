@@ -4,13 +4,14 @@ import React, {
 	useEffect,
 	useState,
 } from "react";
-import styled from "@emotion/styled";
-
-import HeaderTopItem from "components/atoms/HeaderTopItem";
-import colors from "colors/color";
 import Link from "next/link";
-import { validateUser } from "utils/user";
 import { useRouter } from "next/router";
+
+import { validateUser } from "utils/user";
+import HeaderTopItem from "components/atoms/HeaderTopItem";
+
+import colors from "colors/color";
+import styled from "@emotion/styled";
 
 const HeaderTop: FunctionComponent = () => {
 	const router = useRouter();
@@ -40,9 +41,9 @@ const HeaderTop: FunctionComponent = () => {
 
 	return (
 		<HeaderTopWrapper>
-			<Link href={"https://github.com/SG-LEMONADE/CREAM"}>
+			<Link href={"https://hackmd.io/team/sglemonade?nav=overview"}>
 				<a>
-					<HeaderTopItem>About CREAM</HeaderTopItem>
+					<HeaderTopItem>우리들 이야기</HeaderTopItem>
 				</a>
 			</Link>
 			{!islogin ? (

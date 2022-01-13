@@ -1,4 +1,5 @@
 import React, { CSSProperties, FunctionComponent } from "react";
+
 import * as svg from "./svg";
 
 type LogoProps = {
