@@ -1,7 +1,14 @@
 import React, { FunctionComponent } from "react";
 
-const Home: FunctionComponent = () => {
-	return <h1>Next JS 테스팅</h1>;
+import Home from "components/templates/Home";
+import HeaderTop from "components/organisms/HeaderTop";
+
+const home: FunctionComponent = () => {
+	return (
+		<Home header={<HeaderTop />}>
+			<h1>Next JS 테스팅</h1>
+		</Home>
+	);
 };
 
-export default Home;
+export default home;
