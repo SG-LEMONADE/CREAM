@@ -6,6 +6,7 @@ import com.cream.user.error.ErrorCode
 import com.cream.user.model.UserEntity
 import com.cream.user.security.TokenProvider
 import com.cream.user.service.UserService
+import io.swagger.annotations.ApiOperation
 import lombok.extern.slf4j.Slf4j
 import org.slf4j.LoggerFactory
 
