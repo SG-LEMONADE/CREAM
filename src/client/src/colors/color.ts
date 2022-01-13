@@ -6,6 +6,7 @@ const colors: Color = {
 		error: "#f15746",
 		plain: "#000",
 		tag: "rgba(34,34,34,.5)",
+		border: "#e5e5e5",
 	},
 	buttonTextColors: {
 		primary: {
