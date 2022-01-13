@@ -5,7 +5,7 @@ import HomeTemplate from ".";
 import HeaderTop from "components/organisms/HeaderTop";
 
 export default {
-	title: "templates/Home",
+	title: "templates/HomeTemplate",
 	component: HomeTemplate,
 } as ComponentMeta<typeof HomeTemplate>;
 
