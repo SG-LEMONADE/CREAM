@@ -1,5 +1,6 @@
 import React, { CSSProperties, FunctionComponent } from "react";
 import Image from "next/image";
+
 import styled from "@emotion/styled";
 
 type ProductImageProps = {

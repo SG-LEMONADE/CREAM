@@ -1,4 +1,5 @@
 import React, { FunctionComponent } from "react";
+
 import styled from "@emotion/styled";
 
 type ProductNameKorProps = {

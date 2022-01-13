@@ -1,10 +1,11 @@
-import styled from "@emotion/styled";
 import React, { FunctionComponent } from "react";
+import { ProductInfoRes } from "types";
 
 import Brand from "components/atoms/Brand";
 import ProductName from "components/atoms/ProductName";
 import ProductNameKor from "components/atoms/ProductNameKor";
-import { ProductInfoRes } from "types";
+
+import styled from "@emotion/styled";
 
 type ProductInfoProps = {
 	category: string;

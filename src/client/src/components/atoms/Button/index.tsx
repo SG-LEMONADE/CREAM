@@ -1,7 +1,8 @@
 import React, { FunctionComponent } from "react";
+
 import styled from "@emotion/styled";
 import { Color, css } from "@emotion/react";
-import colors from "../../../colors/color";
+import colors from "colors/color";
 
 type ButtonTypes = keyof Color["buttonTextColors"];
 
