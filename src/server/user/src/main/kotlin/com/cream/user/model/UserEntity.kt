@@ -15,7 +15,6 @@ data class UserEntity(
     @Column(name="gender") var gender: Boolean,
     @Column(name="age") var age: Int,
     @Column(name="shoe_size") var shoeSize: Int,
-    @Column(name="marriage_info", columnDefinition = "json") var marriageInfo: String,
     @Column(name="profile_image_url") var profileImageUrl: String,
     @Column(name="status") var status: Int,
     @Column(name="password_changed_datetime") var passwordChangedDateTime: LocalDateTime,

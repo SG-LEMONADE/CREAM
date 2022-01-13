@@ -1,14 +1,16 @@
 package com.cream.user.controller
 
 import com.cream.user.dto.*
+import com.cream.user.error.UserCustomException
+import com.cream.user.error.ErrorCode
 import com.cream.user.model.UserEntity
 import com.cream.user.security.TokenProvider
 import com.cream.user.service.UserService
 import lombok.extern.slf4j.Slf4j
+import org.slf4j.LoggerFactory
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.redis.core.StringRedisTemplate
-import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.mail.javamail.JavaMailSender
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
@@ -45,69 +47,48 @@ class UserController {
 
     @PostMapping("/signup")
     fun signup(@RequestBody registerUserDTO: RegisterUserDTO): ResponseEntity<Any>{
-        var responseDTO: ResponseDTO<Any>
-        return try{
-            val user = registerUserDTO.toEntity(passwordEncoder)
+        val user = registerUserDTO.toEntity(passwordEncoder)
 
-            sendEmail(user.email, user.name, 0)
+        sendEmail(user.email, user.name, 0)
 
-            val registeredUser: UserEntity = userService.create(user)
-            val responseUserDTO = ResponseUserDTO(registeredUser, "")
-            responseDTO = ResponseDTO(err = 0, data = responseUserDTO)
-            ResponseEntity.ok().body(responseDTO)
-        } catch (e: Exception){
-            responseDTO = ResponseDTO(err = -10, data = e.message)
-            ResponseEntity.badRequest().body(responseDTO)
-        }
+        return ResponseEntity.ok()
+            .body(ResponseUserDTO(userService.create(user), ""))
     }
 
     @PostMapping("/login")
     fun login(@RequestBody userDTO: LoginDTO): ResponseEntity<Any>{
-        var responseDTO: ResponseDTO<Any>
+        val user: UserEntity = userService.getByCredentials(userDTO.email, userDTO.password, passwordEncoder)
 
-        return try {
-            val user: UserEntity = userService.getByCredentials(userDTO.email, userDTO.password, passwordEncoder)
-
-            when {
-                (user.status == 0) ->
-                {
-                    // 이메일 인증 안됐을때
-                    responseDTO = ResponseDTO(-1, null)
-                    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseDTO)
-                }
-                (user.status == 1) ->
-                {
-                    // 비밀번호를 반드시 바꾸어야 할 때
-                    responseDTO = ResponseDTO(-2, null)
-                    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseDTO)
-                }
-                (user.status == 3) ->
-                {
-                    // 삭제된 유저 일때
-                    responseDTO = ResponseDTO(-3, null)
-                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseDTO)
-                }
+        when {
+            (user.status == 0) -> {
+                // 이메일 인증 안됐을때
+                throw UserCustomException(ErrorCode.USER_EMAIL_NOT_VERIFIED)
             }
-
-            val token: String = tokenProvider.create(user)
-            val refreshToken: String = tokenProvider.create(user, isRefresh = true)
-
-            val stringValueOperation = redisTemplate.opsForValue()
-            stringValueOperation.set("refresh-${user.id}", refreshToken, 7, TimeUnit.DAYS)
-
-            userService.updateUserLastLoginTime(user)
-
-            val responseUserDTO = ResponseUserDTO(user, refreshToken)
-            responseDTO = ResponseDTO(0, responseUserDTO)
-            ResponseEntity.ok().header("Authorization", "Bearer $token").body(responseDTO)
-        } catch (e: Exception) {
-            responseDTO = ResponseDTO(err = -10, data = e.message)
-            ResponseEntity.badRequest().body(responseDTO)
+            (user.status == 1) -> {
+                // 비밀번호를 반드시 바꾸어야 할 때
+                throw UserCustomException(ErrorCode.USER_NEED_TO_CHANGE_PASSWORD)
+            }
+            (user.status == 3) -> {
+                // 삭제된 유저 일때
+                throw UserCustomException(ErrorCode.USER_NOT_FOUND)
+            }
         }
+
+        val token: String = tokenProvider.create(user)
+        val refreshToken: String = tokenProvider.create(user, isRefresh = true)
+        val stringValueOperation = redisTemplate.opsForValue()
+        stringValueOperation.set("refresh-${user.id}", refreshToken, 7, TimeUnit.DAYS)
+        userService.updateUserLastLoginTime(user)
+
+        return ResponseEntity.ok()
+            .header("Authorization", "Bearer $token")
+            .body(ResponseUserDTO(user, refreshToken))
     }
 
     @PostMapping("/test")
     fun test(): HashMap<String, String> {
+        val log = LoggerFactory.getLogger(javaClass)
+        log.info("this is called")
         val test: HashMap<String, String> = HashMap()
         test["test"] = "this is test"
         return test
@@ -115,115 +96,66 @@ class UserController {
 
     @PostMapping("/refresh")
     fun refresh(@RequestBody tokenDTO: RefreshDTO): ResponseEntity<Any>{
-        var responseDTO: ResponseDTO<Any>
-        return try{
+        val accessToken: String = tokenDTO.accessToken
+        val refreshToken: String = tokenDTO.refreshToken
 
-            val accessToken: String = tokenDTO.accessToken
-            val refreshToken: String = tokenDTO.refreshToken
-
-            val userId = tokenProvider.validateAndGetUserId(refreshToken)
-            if (tokenProvider.validateAndGetUserId(accessToken) != userId){
-                // 엑세스 토큰과 리프레시 토큰이 다른 사람일때
-                responseDTO = ResponseDTO(err = -1, null)
-                ResponseEntity.badRequest().body(responseDTO)
-            }
-
-            val stringValueOperation = redisTemplate.opsForValue()
-            val storedToken: String? = stringValueOperation.get("refresh-${userId}")
-            if (storedToken == null || storedToken != refreshToken){
-                responseDTO = ResponseDTO(err = -2, null)
-                ResponseEntity.badRequest().body(responseDTO)
-            }
-
-            val user = userService.getById(userId.toLong())
-            val newAccessToken = tokenProvider.create(user)
-            val newRefreshToken = tokenProvider.create(user, isRefresh = true)
-
-            stringValueOperation.set("refresh-${userId}", newRefreshToken, 7, TimeUnit.DAYS)
-            val responseTokenDTO = RefreshDTO(newAccessToken,newRefreshToken)
-
-            responseDTO = ResponseDTO(err = 0, responseTokenDTO)
-            ResponseEntity.ok().header("Authorization", "Bearer $newAccessToken").body(responseDTO)
-        } catch (e: Exception) {
-            responseDTO = ResponseDTO(err = -10, data = e.message)
-            ResponseEntity.badRequest().body(responseDTO)
+        val userId = tokenProvider.validateAndGetUserId(refreshToken)
+        if (tokenProvider.validateAndGetUserId(accessToken) != userId){
+            // 엑세스 토큰과 리프레시 토큰이 다른 사람일때
+            throw UserCustomException(ErrorCode.REFRESH_TOKEN_NOT_VALID)
         }
+
+        val stringValueOperation = redisTemplate.opsForValue()
+        val storedToken: String? = stringValueOperation.get("refresh-${userId}")
+        if (storedToken == null || storedToken != refreshToken){
+            throw UserCustomException(ErrorCode.REFRESH_TOKEN_EXPIRED)
+        }
+
+        val user = userService.getById(userId.toLong())
+        val newAccessToken = tokenProvider.create(user)
+        val newRefreshToken = tokenProvider.create(user, isRefresh = true)
+
+        stringValueOperation.set("refresh-${userId}", newRefreshToken, 7, TimeUnit.DAYS)
+
+        return ResponseEntity.ok()
+            .header("Authorization", "Bearer $newAccessToken")
+            .body(RefreshDTO(newAccessToken,newRefreshToken))
     }
 
     @PostMapping("/validate")
     fun validate(@RequestHeader("Authorization") token: String): ResponseEntity<Any> {
-        var responseDTO: ResponseDTO<Any>
-        return try{
-            responseDTO = ResponseDTO(0, tokenProvider.validateAndGetUserId(token))
-            ResponseEntity.ok().body(responseDTO)
-        } catch (e: Exception){
-            responseDTO = ResponseDTO(-100, null)
-            ResponseEntity.badRequest().body(responseDTO)
-        }
+        return ResponseEntity.ok().body(null)
     }
 
     @GetMapping("/verify")
     fun verify(@RequestParam ("email", required = true) email: String, @RequestParam("key", required = true) hash: String): ResponseEntity<Any>{
-        var responseDTO: ResponseDTO<Any>
-        return try{
-            val stringValueOperation = redisTemplate.opsForValue()
-            val storedHash: String? = stringValueOperation.get(email)
-            if (storedHash == null || storedHash != hash) {
-                throw Exception("hash value is not match")
-            }
-
-            userService.updateUserState(email, 2)
-            redisTemplate.delete(email)
-
-            responseDTO = ResponseDTO(0, null)
-            ResponseEntity.ok().body(responseDTO)
-        } catch (e: Exception){
-            responseDTO = ResponseDTO(err = -10, data = null)
-            ResponseEntity.badRequest().body(responseDTO)
+        val stringValueOperation = redisTemplate.opsForValue()
+        val storedHash: String? = stringValueOperation.get(email)
+        if (storedHash == null || storedHash != hash) {
+            throw UserCustomException(ErrorCode.EMAIL_HASH_NOT_VALID)
         }
+        userService.updateUserState(email, 2)
+        redisTemplate.delete(email)
+        return ResponseEntity.ok().body(null)
     }
 
     @GetMapping("/me")
     fun me(@RequestHeader("Authorization") token: String): ResponseEntity<Any> {
-        var responseDTO: ResponseDTO<Any>
-        return try {
-            responseDTO = ResponseDTO(0, userService.getById(tokenProvider.validateAndGetUserId(token).toLong()))
-            ResponseEntity.ok().body(responseDTO)
-        } catch (e: Exception) {
-            responseDTO = ResponseDTO(-100, e.message)
-            ResponseEntity.badRequest().body(responseDTO)
-        }
+        return ResponseEntity.ok()
+            .body(ResponseUserDTO(userService.getById(tokenProvider.validateAndGetUserId(token).toLong()), ""))
     }
 
     @PostMapping("/logout")
     fun logout(@RequestHeader("Authorization") token: String): ResponseEntity<Any> {
-        var responseDTO: ResponseDTO<Any>
-        return try{
-
             val userId = tokenProvider.validateAndGetUserId(token)
             redisTemplate.delete("refresh-${userId}")
-
-            responseDTO = ResponseDTO(0, null)
-            ResponseEntity.ok().body(responseDTO)
-        } catch (e: Exception) {
-
-            responseDTO = ResponseDTO(-100, e.message)
-            ResponseEntity.badRequest().body(responseDTO)
-        }
+            return ResponseEntity.ok().body(null)
     }
 
     @PutMapping("/{id}")
-    fun update(@PathVariable id: Long,  @RequestBody updatedUser: UpdateUserDTO):  ResponseEntity<Any> {
-        var responseDTO: ResponseDTO<Any>
-        return try {
-            val user = userService.update(userService.getById(id), updatedUser, passwordEncoder)
-            val userDTO = ResponseUserDTO(user, "")
-            responseDTO = ResponseDTO(0, userDTO)
-            ResponseEntity.ok().body(responseDTO)
-        } catch(e: Exception) {
-            responseDTO = ResponseDTO(-100, e.message)
-            ResponseEntity.badRequest().body(responseDTO)
-        }
+    fun update(@PathVariable id: Long,  @RequestBody updatedUser: UpdateUserDTO): ResponseEntity<Any> {
+        val user = userService.update(userService.getById(id), updatedUser, passwordEncoder)
+        return ResponseEntity.ok().body(ResponseUserDTO(user, ""))
     }
 
     @Async
@@ -234,7 +166,7 @@ class UserController {
 
         val randNum = (0..1000000).random()
         val formatted = String.format("%06d", randNum)
-        val hash = getSHA512Token(formatted + name)
+        val hash = tokenProvider.getSHA512Token(formatted + name)
         val stringValueOperation = redisTemplate.opsForValue()
         var htmlString = ""
         stringValueOperation.set(email, hash, 1, TimeUnit.DAYS)
@@ -253,20 +185,5 @@ class UserController {
 
         message.setText(htmlString, "UTF-8", "html")
         javaMailSender.send(message)
-    }
-
-    fun getSHA512Token(value: String): String {
-        return try {
-            val md = MessageDigest.getInstance("SHA-512")
-            val messageDigest = md.digest(value.toByteArray())
-            val no = BigInteger(1, messageDigest)
-            var hashText = no.toString()
-            while (hashText.length < 32) {
-                hashText = "0$hashText"
-            }
-            hashText
-        } catch (e: NoSuchAlgorithmException){
-            throw RuntimeException(e)
-        }
     }
 }
