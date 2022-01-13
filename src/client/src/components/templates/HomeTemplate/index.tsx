@@ -1,13 +1,13 @@
 import React, { FunctionComponent } from "react";
 import styled from "@emotion/styled";
 
-type HomeProps = {
+type HomeTemplateProps = {
 	header: React.ReactNode;
 	children: React.ReactNode;
 	footer?: React.ReactNode;
 };
 
-const Home: FunctionComponent<HomeProps> = (props) => {
+const HomeTemplate: FunctionComponent<HomeTemplateProps> = (props) => {
 	const { header, children, footer } = props;
 	return (
 		<StyledHomeWrapper>
@@ -18,7 +18,7 @@ const Home: FunctionComponent<HomeProps> = (props) => {
 	);
 };
 
-export default Home;
+export default HomeTemplate;
 
 const StyledHomeWrapper = styled.div``;
 
