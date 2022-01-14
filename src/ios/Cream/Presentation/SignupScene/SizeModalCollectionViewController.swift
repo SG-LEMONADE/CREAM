@@ -142,3 +142,39 @@ final class SizeModalCollectionViewController: UIViewController {
         }
     }
 }
+
+// MARK: CollectionView Layout & CollectionView Cell Configuration
+extension SizeModalCollectionViewController: UICollectionViewDelegateFlowLayout {
+    
+    private enum Constraint {
+        private enum Inset {
+            static let left: CGFloat = 5
+            static let right: CGFloat = 5
+            static let top: CGFloat = 5
+            static let down: CGFloat = 5
+        }
+        static let itemSpace: CGFloat = 5
+        static let lineSpace: CGFloat = 5
+        
+        static let GridWidthSpacing: CGFloat = itemSpace + Inset.left + Inset.right
+        static let GridHeightSpacing: CGFloat = lineSpace + Inset.top + Inset.down
+    }
+    
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let cellLayout = CGSize(width: (collectionView.bounds.size.width - 2 * Constraint.GridWidthSpacing) / 3, height: ((collectionView.bounds.size.width - Constraint.GridHeightSpacing) / 3) * 1.618)
+        return cellLayout
+    }
+}
+
+extension SizeModalCollectionViewController: UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SizeCollectionViewCell.self, for: indexPath) else {
+            return UICollectionViewCell()
+        }
+    }
+
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return items.count
+    }
+}
