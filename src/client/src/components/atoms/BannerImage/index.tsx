@@ -1,9 +1,9 @@
 import React, { FunctionComponent } from "react";
+import { useRouter } from "next/router";
 import Image from "next/image";
 
 import styled from "@emotion/styled";
 import { css } from "@emotion/react";
-import { useRouter } from "next/router";
 
 type BannerProps = {
 	links?: string;
