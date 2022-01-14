@@ -15,9 +15,10 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2
 class SwaggerConfig {
 
     @Bean
-    public fun docket(): Docket{
+    fun docket(): Docket{
         val groupName: String = "CreamServer"
         return Docket(DocumentationType.SWAGGER_2)
+            .useDefaultResponseMessages(false)
             .select()
             .apis(RequestHandlerSelectors.basePackage("com.cream.user.controller"))
             .paths(PathSelectors.any())

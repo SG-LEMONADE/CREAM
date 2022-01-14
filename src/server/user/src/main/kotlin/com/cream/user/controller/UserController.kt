@@ -6,6 +6,8 @@ import com.cream.user.error.ErrorCode
 import com.cream.user.model.UserEntity
 import com.cream.user.security.TokenProvider
 import com.cream.user.service.UserService
+import io.swagger.annotations.ApiResponse
+import io.swagger.annotations.ApiResponses
 import lombok.extern.slf4j.Slf4j
 import org.slf4j.LoggerFactory
 
@@ -43,7 +45,7 @@ class UserController {
     var passwordEncoder: PasswordEncoder = BCryptPasswordEncoder()
 
     @PostMapping("/signup")
-    fun signup(@RequestBody registerUserDTO: RegisterUserDTO): ResponseEntity<Any>{
+    fun signup(@RequestBody registerUserDTO: RegisterUserDTO): ResponseEntity<ResponseUserDTO>{
         val user = registerUserDTO.toEntity(passwordEncoder)
 
         sendEmail(user.email, user.name, 0)
@@ -53,7 +55,7 @@ class UserController {
     }
 
     @PostMapping("/login")
-    fun login(@RequestBody userDTO: LoginDTO): ResponseEntity<Any>{
+    fun login(@RequestBody userDTO: LoginDTO): ResponseEntity<ResponseUserDTO>{
         val user: UserEntity = userService.getByCredentials(userDTO.email, userDTO.password, passwordEncoder)
 
         when {
@@ -83,16 +85,17 @@ class UserController {
     }
 
     @PostMapping("/test")
-    fun test(): HashMap<String, String> {
+    fun test(): ResponseEntity<ResponseUserDTO> {
         val log = LoggerFactory.getLogger(javaClass)
         log.info("this is called")
         val test: HashMap<String, String> = HashMap()
         test["test"] = "this is test"
-        return test
+        val user = userService.getById(1)
+        return ResponseEntity.ok().body(ResponseUserDTO(user, ""))
     }
 
     @PostMapping("/refresh")
-    fun refresh(@RequestBody tokenDTO: RefreshDTO): ResponseEntity<Any>{
+    fun refresh(@RequestBody tokenDTO: RefreshDTO): ResponseEntity<RefreshDTO>{
         val accessToken: String = tokenDTO.accessToken
         val refreshToken: String = tokenDTO.refreshToken
 
@@ -137,7 +140,7 @@ class UserController {
     }
 
     @GetMapping("/me")
-    fun me(@RequestHeader("Authorization") token: String): ResponseEntity<Any> {
+    fun me(@RequestHeader("Authorization") token: String): ResponseEntity<ResponseUserDTO> {
         return ResponseEntity.ok()
             .body(ResponseUserDTO(userService.getById(tokenProvider.validateAndGetUserId(token).toLong()), ""))
     }
@@ -150,7 +153,7 @@ class UserController {
     }
 
     @PutMapping("/{id}")
-    fun update(@PathVariable id: Long,  @RequestBody updatedUser: UpdateUserDTO): ResponseEntity<Any> {
+    fun update(@PathVariable id: Long,  @RequestBody updatedUser: UpdateUserDTO): ResponseEntity<ResponseUserDTO> {
         val user = userService.update(userService.getById(id), updatedUser, passwordEncoder)
         return ResponseEntity.ok().body(ResponseUserDTO(user, ""))
     }

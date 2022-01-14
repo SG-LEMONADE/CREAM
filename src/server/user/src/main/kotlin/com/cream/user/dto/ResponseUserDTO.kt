@@ -4,6 +4,7 @@ import com.cream.user.model.UserEntity
 import java.time.LocalDateTime
 
 data class ResponseUserDTO(
+    val id: Long?,
     val email: String,
     val name: String,
     val address: String,
@@ -20,6 +21,7 @@ data class ResponseUserDTO(
 ) {
     constructor(userEntity: UserEntity, token: String) :
             this(
+                userEntity.id,
                 userEntity.email,
                 userEntity.name,
                 userEntity.address,
