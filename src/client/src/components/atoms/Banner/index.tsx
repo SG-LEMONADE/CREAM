@@ -32,7 +32,7 @@ const StyledBannerWrapper = styled.div<{ category: string; bgColor: string }>`
 	overflow: hidden;
 	vertical-align: top;
 	cursor: pointer;
-	height: ${({ category }) => (category === "big" ? `480px;` : `100px`)};
+	max-height: ${({ category }) => (category === "big" ? `480px;` : `100px`)};
 	text-align: center;
 	background-color: ${({ bgColor }) => bgColor};
 	${({ category }) =>
@@ -45,7 +45,6 @@ const StyledBannerWrapper = styled.div<{ category: string; bgColor: string }>`
 const StyledImage = styled(Image)<{ category: string }>`
 	top: 0;
 	width: auto;
-	height: 100%;
 	max-height: ${({ category }) => (category === "big" ? `480px;` : `100px`)};
 	max-width: 100%;
 `;
