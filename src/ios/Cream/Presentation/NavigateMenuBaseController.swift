@@ -1,5 +1,5 @@
 //
-//  MainTabBarController.swift
+//  NavigateMenuBaseController.swift
 //  Cream
 //
 //  Created by wankikim-MN on 2022/01/09.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class MainTabBarController: UITabBarController {
+final class NavigateMenuBaseController: UITabBarController {
 
     internal enum TabBarItem: String, CustomStringConvertible, CaseIterable {
         case home, style, shop, watch, my
