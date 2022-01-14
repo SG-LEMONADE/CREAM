@@ -11,7 +11,11 @@ import styled from "@emotion/styled";
 const HeaderMain: FunctionComponent = () => {
 	return (
 		<HeaderMainWrapper>
-			<Logo category={"Logo"} />
+			<Link href={"/"}>
+				<a>
+					<Logo category={"Logo"} />
+				</a>
+			</Link>
 			<StyledGNBArea>
 				<HeaderMainItem
 					onClick={() => alert("Coming soon...")}
@@ -42,7 +46,10 @@ const HeaderMainWrapper = styled.header`
 	min-width: 320px;
 	align-items: center;
 	border-bottom: 1px solid ${colors.colors.border};
-	> svg:first-of-type {
+	svg:first-child {
+		padding-top: 15px;
+	}
+	first-of-type {
 		padding-top: 15px;
 	}
 `;
