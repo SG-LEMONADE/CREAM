@@ -2,6 +2,7 @@ import React, { CSSProperties, FunctionComponent } from "react";
 import Image from "next/image";
 
 import styled from "@emotion/styled";
+import { css } from "@emotion/react";
 
 type ProductImageProps = {
 	backgroundColor: string;
@@ -34,6 +35,14 @@ const ImageWrapper = styled.div<{ category: string; backgroundColor: string }>`
 	width: ${({ category }) => (category === "products" ? `560px` : `25%`)};
 	padding-top: ${({ category }) => (category === "products" ? `560px` : `25%`)};
 	overflow: hidden;
+	${({ category }) =>
+		category !== "products" &&
+		css`
+			max-width: ${category === "home" ? `282px` : `230px`};
+			padding-top: ${category === "home"
+				? `min(282px, 25%)`
+				: `min(230px, 20%)`};
+		`}
 `;
 
 const StyledImage = styled(Image)<{ category: string }>`
