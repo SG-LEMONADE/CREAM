@@ -14,6 +14,14 @@
 		7B36DB122789202800D8ACB0 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B36DB112789202800D8ACB0 /* ViewController.swift */; };
 		7B36DB172789202A00D8ACB0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7B36DB162789202A00D8ACB0 /* Assets.xcassets */; };
 		7B36DB1A2789202A00D8ACB0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7B36DB182789202A00D8ACB0 /* LaunchScreen.storyboard */; };
+		7B54D6F9278EF2B000214664 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B54D6F8278EF2B000214664 /* NetworkService.swift */; };
+		7B54D6FC278EF92C00214664 /* SignupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B54D6FB278EF92C00214664 /* SignupViewController.swift */; };
+		7B54D6FE278EF93700214664 /* SignupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B54D6FD278EF93700214664 /* SignupViewModel.swift */; };
+		7B54D700278FF16900214664 /* SizeModalCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B54D6FF278FF16900214664 /* SizeModalCollectionViewController.swift */; };
+		7B54D7022790159B00214664 /* SizeModalCollectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B54D7012790159B00214664 /* SizeModalCollectionViewModel.swift */; };
+		7B54D7042790351400214664 /* SizeCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B54D7032790351400214664 /* SizeCollectionViewCell.swift */; };
+		7B54D706279035CA00214664 /* SizeCollectionViewAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B54D705279035CA00214664 /* SizeCollectionViewAdapter.swift */; };
+		7B54D708279045F400214664 /* CustomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B54D707279045F400214664 /* CustomButton.swift */; };
 		7BB0110B278AE227005E5C9E /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BB0110A278AE227005E5C9E /* MainTabBarController.swift */; };
 		7BB0110F278BBBAC005E5C9E /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 7BB0110E278BBBAC005E5C9E /* SnapKit */; };
 		7BB01111278BC3EE005E5C9E /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BB01110278BC3EE005E5C9E /* LoginViewController.swift */; };
@@ -40,6 +48,14 @@
 		7B36DB162789202A00D8ACB0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		7B36DB192789202A00D8ACB0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		7B36DB1B2789202A00D8ACB0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		7B54D6F8278EF2B000214664 /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
+		7B54D6FB278EF92C00214664 /* SignupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupViewController.swift; sourceTree = "<group>"; };
+		7B54D6FD278EF93700214664 /* SignupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupViewModel.swift; sourceTree = "<group>"; };
+		7B54D6FF278FF16900214664 /* SizeModalCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SizeModalCollectionViewController.swift; sourceTree = "<group>"; };
+		7B54D7012790159B00214664 /* SizeModalCollectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SizeModalCollectionViewModel.swift; sourceTree = "<group>"; };
+		7B54D7032790351400214664 /* SizeCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SizeCollectionViewCell.swift; sourceTree = "<group>"; };
+		7B54D705279035CA00214664 /* SizeCollectionViewAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SizeCollectionViewAdapter.swift; sourceTree = "<group>"; };
+		7B54D707279045F400214664 /* CustomButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomButton.swift; sourceTree = "<group>"; };
 		7BB0110A278AE227005E5C9E /* MainTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
 		7BB01110278BC3EE005E5C9E /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		7BB01112278BC44E005E5C9E /* ViewConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewConfiguration.swift; sourceTree = "<group>"; };
@@ -117,8 +133,23 @@
 				7B36DB1B2789202A00D8ACB0 /* Info.plist */,
 				7BB01116278BCA54005E5C9E /* Observable.swift */,
 				7BB01114278BC6D1005E5C9E /* BindingTextField.swift */,
+				7B54D707279045F400214664 /* CustomButton.swift */,
+				7B54D6F8278EF2B000214664 /* NetworkService.swift */,
 			);
 			path = Cream;
+			sourceTree = "<group>";
+		};
+		7B54D6FA278EF2D900214664 /* SignupScene */ = {
+			isa = PBXGroup;
+			children = (
+				7B54D6FB278EF92C00214664 /* SignupViewController.swift */,
+				7B54D6FD278EF93700214664 /* SignupViewModel.swift */,
+				7B54D6FF278FF16900214664 /* SizeModalCollectionViewController.swift */,
+				7B54D7012790159B00214664 /* SizeModalCollectionViewModel.swift */,
+				7B54D7032790351400214664 /* SizeCollectionViewCell.swift */,
+				7B54D705279035CA00214664 /* SizeCollectionViewAdapter.swift */,
+			);
+			path = SignupScene;
 			sourceTree = "<group>";
 		};
 		7BB0110C278AF1C3005E5C9E /* Application */ = {
@@ -153,6 +184,7 @@
 				7BB0111B278BCED4005E5C9E /* Base */,
 				7BB0110A278AE227005E5C9E /* MainTabBarController.swift */,
 				7BB0111A278BCEB7005E5C9E /* LoginScene */,
+				7B54D6FA278EF2D900214664 /* SignupScene */,
 			);
 			path = Presentation;
 			sourceTree = "<group>";
@@ -305,17 +337,25 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7B54D7022790159B00214664 /* SizeModalCollectionViewModel.swift in Sources */,
 				7B36DB122789202800D8ACB0 /* ViewController.swift in Sources */,
+				7B54D700278FF16900214664 /* SizeModalCollectionViewController.swift in Sources */,
 				7B36DB0E2789202800D8ACB0 /* AppDelegate.swift in Sources */,
 				7BB0111F278BD32E005E5C9E /* String+.swift in Sources */,
+				7B54D708279045F400214664 /* CustomButton.swift in Sources */,
 				7BB0110B278AE227005E5C9E /* MainTabBarController.swift in Sources */,
 				7BB01113278BC44E005E5C9E /* ViewConfiguration.swift in Sources */,
 				7BB01111278BC3EE005E5C9E /* LoginViewController.swift in Sources */,
+				7B54D6FE278EF93700214664 /* SignupViewModel.swift in Sources */,
 				7BB01117278BCA54005E5C9E /* Observable.swift in Sources */,
 				7BB01115278BC6D1005E5C9E /* BindingTextField.swift in Sources */,
+				7B54D706279035CA00214664 /* SizeCollectionViewAdapter.swift in Sources */,
+				7B54D6FC278EF92C00214664 /* SignupViewController.swift in Sources */,
 				7B234917278C0315009AAF32 /* User.swift in Sources */,
 				7BB01121278BD66C005E5C9E /* UIView+.swift in Sources */,
 				7B36DB102789202800D8ACB0 /* SceneDelegate.swift in Sources */,
+				7B54D7042790351400214664 /* SizeCollectionViewCell.swift in Sources */,
+				7B54D6F9278EF2B000214664 /* NetworkService.swift in Sources */,
 				7BB01119278BCAC0005E5C9E /* LoginViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -470,7 +510,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = sgs.devCamp.Cream;
+				PRODUCT_BUNDLE_IDENTIFIER = "lemondate.dev-camp.stove.smilegate";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -498,7 +538,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = sgs.devCamp.Cream;
+				PRODUCT_BUNDLE_IDENTIFIER = "lemondate.dev-camp.stove.smilegate";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
