@@ -7,7 +7,7 @@
 
 import UIKit
 
-struct LoginViewModel {
+final class LoginViewModel {
     var email: Observable<String> = Observable("")
     var password: Observable<String> = Observable("")
     
@@ -27,11 +27,16 @@ struct LoginViewModel {
         return predicate.evaluate(with: password)
     }
     
-    mutating func validateLoginAvailable() {
+    func validateLoginAvailable() {
         self.isLoginAvailable.value = validate(email: email.value) && validate(password: password.value)
     }
     
-    func login(completion: @escaping () -> Void) {
-        
+    
+    var error: Observable<String?> = Observable(nil)
+    
+    func login(email: String, password: String) {
+        NetworkService.shared.login(email: email, password: password) { [weak self] success in
+            self?.error.value = success ? nil : "Invalid Credential!!!"
+        }
     }
 }

@@ -10,6 +10,8 @@ import SnapKit
 
 final class LoginViewController: UIViewController {
     
+    private var items: [Int] = Array(0 ... 16).map{ $0 * 5 + 220 }
+    
     private enum ViewMessage: String, CustomStringConvertible {
         case emailLabel = "이메일 주소"
         case emailPlaceholder = "예) kream@kream.co.kr"
@@ -108,7 +110,7 @@ final class LoginViewController: UIViewController {
         button.setTitleColor(.white, for: .normal)
         button.titleLabel?.font = UIFont(name: "GillSans-Italic", size: 20)
         button.backgroundColor = .systemGray5
-        
+        button.addTarget(self, action: #selector(login), for: .touchUpInside)
         return button
     }()
     
@@ -149,6 +151,12 @@ final class LoginViewController: UIViewController {
         super.viewDidLoad()
         applyViewSettings()
         bindViewModel()
+        
+        emailTextField.delegate = self
+        passwordTextField.delegate = self
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     private func bindViewModel() {
@@ -158,7 +166,7 @@ final class LoginViewController: UIViewController {
         viewModel.password.bind { [weak self] value in
             self?.viewModel.validateLoginAvailable()
         }
-
+        
         viewModel.isLoginAvailable.bind { [weak self] value in
             if value == true {
                 self?.loginButton.isEnabled = true
@@ -168,12 +176,40 @@ final class LoginViewController: UIViewController {
                 self?.loginButton.backgroundColor = .systemGray5
             }
         }
+        viewModel.error.bind { [weak self] error in
+            if let error = error {
+                print(error)
+            } else {
+                self?.goToSignupView()
+            }
+        }
+    }
+    
+    private func goToSignupView() {
+        let nextViewController = SignupViewController()
+        nextViewController.modalPresentationStyle = .fullScreen
+        self.navigationController?.pushViewController(nextViewController, animated: true)
     }
 }
+
 extension LoginViewController {
     @objc
     private func login() {
-        self.viewModel.login
+        guard let email = emailTextField.text,
+              let password = passwordTextField.text else {
+                  return
+              }
+        self.viewModel.login(email: email, password: password)
+    }
+    
+    @objc
+    func keyboardWillShow(_ sender: Notification) {
+        self.view.frame.origin.y = -150
+    }
+    
+    @objc
+    func keyboardWillHide(_ sender: Notification) {
+        self.view.frame.origin.y = 0
     }
 }
 
@@ -265,3 +301,44 @@ extension LoginViewController: ViewConfiguration {
         }
     }
 }
+
+
+extension LoginViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+}
+
+extension LoginViewController: UICollectionViewDelegateFlowLayout {
+    
+    private enum Constraint {
+        private enum Inset {
+            static let left: CGFloat = 5
+            static let right: CGFloat = 5
+            static let top: CGFloat = 5
+            static let down: CGFloat = 5
+        }
+        static let itemSpace: CGFloat = 5
+        static let lineSpace: CGFloat = 5
+        
+        static let GridWidthSpacing: CGFloat = itemSpace + Inset.left + Inset.right
+        static let GridHeightSpacing: CGFloat = lineSpace + Inset.top + Inset.down
+    }
+    
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let cellLayout = CGSize(width: (collectionView.bounds.size.width - 2 * Constraint.GridWidthSpacing) / 3, height: ((collectionView.bounds.size.width - Constraint.GridHeightSpacing) / 3) * 1.618)
+        return cellLayout
+    }
+}
+//
+//extension SizeModalViewController: UICollectionViewDataSource {
+//    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+//        <#code#>
+//    }
+//    
+//    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+//        return items.count
+//    }
+//}
