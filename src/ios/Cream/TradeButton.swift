@@ -42,8 +42,7 @@ final class TradeButton: UIButton {
     }
     
     required init?(coder: NSCoder) {
-        applyViewSettings()
-        super.init(coder: coder)
+        fatalError("init(coder:) has not been implemented")
     }
     
     private lazy var typeLabel: UILabel = {
@@ -80,16 +79,16 @@ extension TradeButton: ViewConfiguration {
     
     func setupConstraints() {
         typeLabel.snp.makeConstraints {
-            $0.top.equalTo(self.view.snp.top).offset(10)
-            $0.leading.equalTo(self.view.snp.leading).offset(10)
+            $0.top.equalTo(self.snp.top).offset(10)
+            $0.leading.equalTo(self.snp.leading).offset(10)
             $0.trailing.equalTo(self.infoStackView.snp.leading).offset(10)
-            $0.bottom.equalTo(self.view.snp.bottom).offset(-10)
+            $0.bottom.equalTo(self.snp.bottom).offset(-10)
         }
         
         infoStackView.snp.makeConstraints {
             $0.top.equalTo(typeLabel.snp.top)
             $0.bottom.equalTo(typeLabel.snp.bottom)
-            $0.trailing.equalTo(self.view.snp.trailing).offset(-10)
+            $0.trailing.equalTo(self.snp.trailing).offset(-10)
         }
     }
 }

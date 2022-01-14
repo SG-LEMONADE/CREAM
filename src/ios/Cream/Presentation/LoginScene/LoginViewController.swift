@@ -10,8 +10,6 @@ import SnapKit
 
 final class LoginViewController: UIViewController {
     
-    private var items: [Int] = Array(0 ... 16).map{ $0 * 5 + 220 }
-    
     private enum ViewMessage: String, CustomStringConvertible {
         case emailLabel = "이메일 주소"
         case emailPlaceholder = "예) kream@kream.co.kr"

@@ -23,6 +23,8 @@ final class SignupViewController: UIViewController {
         }
     }
     
+    private var viewModel: SignupViewModel = SignupViewModel()
+    
     private lazy var emailLabel: UILabel = {
         let label = UILabel()
         label.text = ViewMessage.emailLabel.description
@@ -49,7 +51,7 @@ final class SignupViewController: UIViewController {
         emailField.font?.withSize(15)
         
         emailField.bind { [weak self] email in
-            
+            self?.viewModel.email.value = email
         }
         return emailField
     }()
@@ -57,7 +59,9 @@ final class SignupViewController: UIViewController {
     private lazy var passwordTextField: BindingTextField = {
         let passwordField = BindingTextField()
         passwordField.font?.withSize(15)
-        
+        passwordField.bind { [weak self] password in
+            self?.viewModel.password.value = password
+        }
         return passwordField
     }()
     
@@ -115,10 +119,16 @@ final class SignupViewController: UIViewController {
     }
 }
 
-extension SignupViewController {
+extension SignupViewController: SizeCatchable {
+    func configureShoesSize(_ size: Int) {
+        self.viewModel.shoeSize = size
+        self.sneakersSizeField.text = "\(size)"
+    }
+    
     @objc
     func selectSneakersSize() {
-        let sizeSelectViewController = SizeModalCollectionViewController()
+        let sizeSelectViewController = SizeListViewController()
+        sizeSelectViewController.delegate = self
         sizeSelectViewController.modalPresentationStyle = .overCurrentContext
         self.present(sizeSelectViewController, animated: false)
     }

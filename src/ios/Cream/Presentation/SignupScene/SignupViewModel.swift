@@ -7,6 +7,6 @@
 
 import Foundation
 
-class SignupViewModel {
-    
+class SignupViewModel: UserViewModel {
+    var shoeSize: Int = 0
 }

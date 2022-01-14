@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		3AA6865D5E6AC36E76D7F9E1 /* Pods_Cream.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A30B26FB25B22F519249FD4 /* Pods_Cream.framework */; };
 		7B234917278C0315009AAF32 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B234916278C0315009AAF32 /* User.swift */; };
+		7B35667C27914EF200C45A68 /* SizeListCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B35667B27914EF200C45A68 /* SizeListCellViewModel.swift */; };
 		7B36DB0E2789202800D8ACB0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B36DB0D2789202800D8ACB0 /* AppDelegate.swift */; };
 		7B36DB102789202800D8ACB0 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B36DB0F2789202800D8ACB0 /* SceneDelegate.swift */; };
 		7B36DB122789202800D8ACB0 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B36DB112789202800D8ACB0 /* ViewController.swift */; };
@@ -17,12 +18,12 @@
 		7B54D6F9278EF2B000214664 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B54D6F8278EF2B000214664 /* NetworkService.swift */; };
 		7B54D6FC278EF92C00214664 /* SignupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B54D6FB278EF92C00214664 /* SignupViewController.swift */; };
 		7B54D6FE278EF93700214664 /* SignupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B54D6FD278EF93700214664 /* SignupViewModel.swift */; };
-		7B54D700278FF16900214664 /* SizeModalCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B54D6FF278FF16900214664 /* SizeModalCollectionViewController.swift */; };
-		7B54D7022790159B00214664 /* SizeModalCollectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B54D7012790159B00214664 /* SizeModalCollectionViewModel.swift */; };
-		7B54D7042790351400214664 /* SizeCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B54D7032790351400214664 /* SizeCollectionViewCell.swift */; };
-		7B54D706279035CA00214664 /* SizeCollectionViewAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B54D705279035CA00214664 /* SizeCollectionViewAdapter.swift */; };
+		7B54D700278FF16900214664 /* SizeListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B54D6FF278FF16900214664 /* SizeListViewController.swift */; };
+		7B54D7022790159B00214664 /* SizeListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B54D7012790159B00214664 /* SizeListViewModel.swift */; };
+		7B54D7042790351400214664 /* SizeListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B54D7032790351400214664 /* SizeListCell.swift */; };
+		7B54D706279035CA00214664 /* SizeListAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B54D705279035CA00214664 /* SizeListAdapter.swift */; };
 		7B54D708279045F400214664 /* TradeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B54D707279045F400214664 /* TradeButton.swift */; };
-		7BB0110B278AE227005E5C9E /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BB0110A278AE227005E5C9E /* MainTabBarController.swift */; };
+		7BB0110B278AE227005E5C9E /* NavigateMenuBaseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BB0110A278AE227005E5C9E /* NavigateMenuBaseController.swift */; };
 		7BB0110F278BBBAC005E5C9E /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 7BB0110E278BBBAC005E5C9E /* SnapKit */; };
 		7BB01111278BC3EE005E5C9E /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BB01110278BC3EE005E5C9E /* LoginViewController.swift */; };
 		7BB01113278BC44E005E5C9E /* ViewConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BB01112278BC44E005E5C9E /* ViewConfiguration.swift */; };
@@ -41,6 +42,7 @@
 /* Begin PBXFileReference section */
 		6A30B26FB25B22F519249FD4 /* Pods_Cream.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Cream.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7B234916278C0315009AAF32 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		7B35667B27914EF200C45A68 /* SizeListCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SizeListCellViewModel.swift; sourceTree = "<group>"; };
 		7B36DB0A2789202800D8ACB0 /* Cream.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Cream.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7B36DB0D2789202800D8ACB0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7B36DB0F2789202800D8ACB0 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -51,12 +53,12 @@
 		7B54D6F8278EF2B000214664 /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
 		7B54D6FB278EF92C00214664 /* SignupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupViewController.swift; sourceTree = "<group>"; };
 		7B54D6FD278EF93700214664 /* SignupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupViewModel.swift; sourceTree = "<group>"; };
-		7B54D6FF278FF16900214664 /* SizeModalCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SizeModalCollectionViewController.swift; sourceTree = "<group>"; };
-		7B54D7012790159B00214664 /* SizeModalCollectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SizeModalCollectionViewModel.swift; sourceTree = "<group>"; };
-		7B54D7032790351400214664 /* SizeCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SizeCollectionViewCell.swift; sourceTree = "<group>"; };
-		7B54D705279035CA00214664 /* SizeCollectionViewAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SizeCollectionViewAdapter.swift; sourceTree = "<group>"; };
+		7B54D6FF278FF16900214664 /* SizeListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SizeListViewController.swift; sourceTree = "<group>"; };
+		7B54D7012790159B00214664 /* SizeListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SizeListViewModel.swift; sourceTree = "<group>"; };
+		7B54D7032790351400214664 /* SizeListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SizeListCell.swift; sourceTree = "<group>"; };
+		7B54D705279035CA00214664 /* SizeListAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SizeListAdapter.swift; sourceTree = "<group>"; };
 		7B54D707279045F400214664 /* TradeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradeButton.swift; sourceTree = "<group>"; };
-		7BB0110A278AE227005E5C9E /* MainTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
+		7BB0110A278AE227005E5C9E /* NavigateMenuBaseController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigateMenuBaseController.swift; sourceTree = "<group>"; };
 		7BB01110278BC3EE005E5C9E /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		7BB01112278BC44E005E5C9E /* ViewConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewConfiguration.swift; sourceTree = "<group>"; };
 		7BB01114278BC6D1005E5C9E /* BindingTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BindingTextField.swift; sourceTree = "<group>"; };
@@ -102,6 +104,20 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
+		7B35667D2791B28D00C45A68 /* ShopScene */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ShopScene;
+			sourceTree = "<group>";
+		};
+		7B35667E2791B29500C45A68 /* HomeScene */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = HomeScene;
+			sourceTree = "<group>";
+		};
 		7B36DB012789202800D8ACB0 = {
 			isa = PBXGroup;
 			children = (
@@ -144,10 +160,11 @@
 			children = (
 				7B54D6FB278EF92C00214664 /* SignupViewController.swift */,
 				7B54D6FD278EF93700214664 /* SignupViewModel.swift */,
-				7B54D6FF278FF16900214664 /* SizeModalCollectionViewController.swift */,
-				7B54D7012790159B00214664 /* SizeModalCollectionViewModel.swift */,
-				7B54D7032790351400214664 /* SizeCollectionViewCell.swift */,
-				7B54D705279035CA00214664 /* SizeCollectionViewAdapter.swift */,
+				7B54D6FF278FF16900214664 /* SizeListViewController.swift */,
+				7B54D7012790159B00214664 /* SizeListViewModel.swift */,
+				7B35667B27914EF200C45A68 /* SizeListCellViewModel.swift */,
+				7B54D7032790351400214664 /* SizeListCell.swift */,
+				7B54D705279035CA00214664 /* SizeListAdapter.swift */,
 			);
 			path = SignupScene;
 			sourceTree = "<group>";
@@ -181,8 +198,10 @@
 		7BB0111C278BCEE9005E5C9E /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
+				7B35667E2791B29500C45A68 /* HomeScene */,
+				7B35667D2791B28D00C45A68 /* ShopScene */,
 				7BB0111B278BCED4005E5C9E /* Base */,
-				7BB0110A278AE227005E5C9E /* MainTabBarController.swift */,
+				7BB0110A278AE227005E5C9E /* NavigateMenuBaseController.swift */,
 				7BB0111A278BCEB7005E5C9E /* LoginScene */,
 				7B54D6FA278EF2D900214664 /* SignupScene */,
 			);
@@ -337,24 +356,25 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7B54D7022790159B00214664 /* SizeModalCollectionViewModel.swift in Sources */,
+				7B54D7022790159B00214664 /* SizeListViewModel.swift in Sources */,
 				7B36DB122789202800D8ACB0 /* ViewController.swift in Sources */,
-				7B54D700278FF16900214664 /* SizeModalCollectionViewController.swift in Sources */,
+				7B54D700278FF16900214664 /* SizeListViewController.swift in Sources */,
 				7B36DB0E2789202800D8ACB0 /* AppDelegate.swift in Sources */,
 				7BB0111F278BD32E005E5C9E /* String+.swift in Sources */,
 				7B54D708279045F400214664 /* TradeButton.swift in Sources */,
-				7BB0110B278AE227005E5C9E /* MainTabBarController.swift in Sources */,
+				7BB0110B278AE227005E5C9E /* NavigateMenuBaseController.swift in Sources */,
 				7BB01113278BC44E005E5C9E /* ViewConfiguration.swift in Sources */,
 				7BB01111278BC3EE005E5C9E /* LoginViewController.swift in Sources */,
 				7B54D6FE278EF93700214664 /* SignupViewModel.swift in Sources */,
 				7BB01117278BCA54005E5C9E /* Observable.swift in Sources */,
 				7BB01115278BC6D1005E5C9E /* BindingTextField.swift in Sources */,
-				7B54D706279035CA00214664 /* SizeCollectionViewAdapter.swift in Sources */,
+				7B54D706279035CA00214664 /* SizeListAdapter.swift in Sources */,
 				7B54D6FC278EF92C00214664 /* SignupViewController.swift in Sources */,
 				7B234917278C0315009AAF32 /* User.swift in Sources */,
 				7BB01121278BD66C005E5C9E /* UIView+.swift in Sources */,
 				7B36DB102789202800D8ACB0 /* SceneDelegate.swift in Sources */,
-				7B54D7042790351400214664 /* SizeCollectionViewCell.swift in Sources */,
+				7B54D7042790351400214664 /* SizeListCell.swift in Sources */,
+				7B35667C27914EF200C45A68 /* SizeListCellViewModel.swift in Sources */,
 				7B54D6F9278EF2B000214664 /* NetworkService.swift in Sources */,
 				7BB01119278BCAC0005E5C9E /* LoginViewModel.swift in Sources */,
 			);

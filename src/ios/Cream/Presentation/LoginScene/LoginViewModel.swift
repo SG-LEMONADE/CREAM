@@ -7,11 +7,11 @@
 
 import UIKit
 
-final class LoginViewModel {
+class UserViewModel {
     var email: Observable<String> = Observable("")
     var password: Observable<String> = Observable("")
-    
     var isLoginAvailable: Observable<Bool> = Observable(false)
+    var error: Observable<String?> = Observable(nil)
     
     func validate(email: String) -> Bool {
         let emailRegEx = "^.+@([A-Za-z0-9-]+\\.)+[A-Za-z]{2}[A-Za-z]*$"
@@ -31,8 +31,10 @@ final class LoginViewModel {
         self.isLoginAvailable.value = validate(email: email.value) && validate(password: password.value)
     }
     
-    
-    var error: Observable<String?> = Observable(nil)
+
+}
+
+final class LoginViewModel: UserViewModel {
     
     func login(email: String, password: String) {
         NetworkService.shared.login(email: email, password: password) { [weak self] success in

@@ -22,8 +22,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window = UIWindow(windowScene: windowScene)
         window?.overrideUserInterfaceStyle = .light
         window?.backgroundColor = .white
-        //        let navigationController = UINavigationController(rootViewController: SignupViewController())
-        let navigationController = UINavigationController(rootViewController: LoginViewController())
+                let navigationController = UINavigationController(rootViewController: SignupViewController())
+//        let navigationController = UINavigationController(rootViewController: LoginViewController())
         navigationController.navigationBar.prefersLargeTitles = true
         //        navigationController.navigationItem.title = "회원가입"
         window?.rootViewController = navigationController
