@@ -6,7 +6,6 @@ import com.cream.user.error.ErrorCode
 import com.cream.user.model.UserEntity
 import com.cream.user.security.TokenProvider
 import com.cream.user.service.UserService
-import io.swagger.annotations.ApiOperation
 import lombok.extern.slf4j.Slf4j
 import org.slf4j.LoggerFactory
 
@@ -20,9 +19,6 @@ import java.util.concurrent.TimeUnit
 
 import org.springframework.scheduling.annotation.Async
 import org.springframework.web.bind.annotation.*
-import java.math.BigInteger
-import java.security.MessageDigest
-import java.security.NoSuchAlgorithmException
 import javax.mail.Message
 import javax.mail.internet.InternetAddress
 import javax.mail.internet.MimeMessage

@@ -2,7 +2,6 @@ package com.cream.gateway.filter
 
 import io.jsonwebtoken.*
 import lombok.extern.slf4j.Slf4j
-import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.cloud.gateway.filter.GatewayFilter
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory
@@ -10,7 +9,6 @@ import org.springframework.http.server.reactive.ServerHttpRequest
 import org.springframework.http.server.reactive.ServerHttpResponse
 import org.springframework.stereotype.Component
 import reactor.core.publisher.Mono
-import javax.crypto.SecretKey
 
 @Component
 @Slf4j

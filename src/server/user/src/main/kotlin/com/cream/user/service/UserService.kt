@@ -17,7 +17,7 @@ class UserService {
     lateinit var userRepository: UserRepository
 
     fun create(userEntity: UserEntity): UserEntity{
-        if (userEntity.email == null || userEntity.email == ""){
+        if (userEntity.email == ""){
             throw UserCustomException(ErrorCode.INVALID_INPUT_VALUE)
         }
         val email: String = userEntity.email
@@ -28,7 +28,7 @@ class UserService {
     }
 
     fun updateUserState(email: String, stateCode: Int){
-        var user: UserEntity = (userRepository.findOneByEmail(email) ?: throw UserCustomException(ErrorCode.ENTITY_NOT_FOUND))
+        val user: UserEntity = (userRepository.findOneByEmail(email) ?: throw UserCustomException(ErrorCode.ENTITY_NOT_FOUND))
         user.status = stateCode
         userRepository.save(user)
     }

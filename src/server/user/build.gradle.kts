@@ -31,13 +31,16 @@ dependencies {
     //security
     implementation("org.springframework.boot:spring-boot-starter-security")
 
+    //kotlin, lombok
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-    implementation("org.springframework.boot:spring-boot-starter-data-redis:2.6.2")
     compileOnly("org.projectlombok:lombok")
     annotationProcessor("org.projectlombok:lombok")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+
+    //db
     implementation("mysql:mysql-connector-java:8.0.27")
+    implementation("org.springframework.boot:spring-boot-starter-data-redis:2.6.2")
 
     //swagger
     implementation("io.springfox:springfox-swagger2:3.0.0")
@@ -47,9 +50,10 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-mail:2.6.2")
     implementation("org.springframework:spring-context-support:5.3.14")
 
-
+    // jwt
     implementation("io.jsonwebtoken:jjwt:0.9.1")
 
+    // devtool,  test
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
