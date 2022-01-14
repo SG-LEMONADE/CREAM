@@ -24,6 +24,7 @@
 			"lib/*": ["lib/*"]
 		}
 	},
+	"typeRoots": ["./types", "./node_modules/@types"],
 	"include": ["./src", "next-env.d.ts", "**/*.ts", "**/*.tsx"],
 	"exclude": ["node_modules"]
 }
