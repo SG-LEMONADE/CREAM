@@ -1,13 +1,12 @@
 package com.cream.user.model
 
-import org.hibernate.annotations.Type
 import java.time.LocalDateTime
 import javax.persistence.*
 
 @Entity
 @Table(name="user")
-data class UserEntity(
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) @Column(name="id") var id: Long? = null,
+class UserEntity(
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) @Column(name="id") var id: Long = 0,
     @Column(name="email") var email: String,
     @Column(name="password") var password: String,
     @Column(name="name") var name: String,
