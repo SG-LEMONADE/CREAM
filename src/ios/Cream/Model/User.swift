@@ -8,9 +8,6 @@
 import Foundation
 
 struct User {
-//    private var email: Observable<String> = Observable("")
-//    private var password: Observable<String> = Observable("")
-    
     var firstName: String
     var lastName: String
     var email: String
