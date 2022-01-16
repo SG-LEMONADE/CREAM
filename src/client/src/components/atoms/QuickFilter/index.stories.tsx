@@ -16,6 +16,13 @@ const Template: ComponentStory<typeof QuickFilter> = (args) => (
 export const PlainText = Template.bind({});
 PlainText.args = {
 	content: "스니커즈",
+	activate: false,
+};
+
+export const PlainTextActivate = Template.bind({});
+PlainTextActivate.args = {
+	content: "스니커즈",
+	activate: true,
 };
 
 export const FilterIcon = Template.bind({});
