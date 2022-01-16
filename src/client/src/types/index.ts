@@ -18,6 +18,7 @@ export interface ProductInfoRes {
 
 export interface ShortcutItemRes {
 	link: string;
-	image: string;
+	bigImg: string;
+	smallImg: string;
 	title: string;
 }

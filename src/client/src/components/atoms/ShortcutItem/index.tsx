@@ -5,17 +5,18 @@ import Image from "next/image";
 import Link from "next/link";
 
 type ShortcutItemProps = {
-	src: string;
+	bigImgSrc: string;
+	smallImgSrc: string;
 	link: string;
 	title: string;
 };
 
 const ShortcutItem: FunctionComponent<ShortcutItemProps> = (props) => {
-	const { src, link, title } = props;
+	const { bigImgSrc, smallImgSrc, link, title } = props;
 	return (
 		<StyledWrapper>
 			<Link href={`/${link}`}>
-				<StyledImage src={src} alt={src} />
+				<StyledImage src={bigImgSrc} smallSrc={smallImgSrc} alt={bigImgSrc} />
 			</Link>
 			<StyledTitle>{title}</StyledTitle>
 		</StyledWrapper>
@@ -32,9 +33,14 @@ const StyledWrapper = styled.div`
 	cursor: pointer;
 `;
 
-const StyledImage = styled(Image)`
+const StyledImage = styled(Image)<{ smallSrc: string }>`
 	border-radius: 10px;
 	height: 100px;
+	@media screen and (max-width: 1000px) {
+		border-radius: 50%;
+		transition: 0.5s;
+		content: url(${({ smallSrc }) => smallSrc});
+	}
 `;
 
 const StyledTitle = styled.p`
