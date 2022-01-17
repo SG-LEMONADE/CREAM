@@ -20,6 +20,9 @@ class JwtExceptionHandler: ErrorWebExceptionHandler {
     private val log = LoggerFactory.getLogger(javaClass)
     private val mapper =  ObjectMapper()
     override fun handle(exchange: ServerWebExchange, ex: Throwable): Mono<Void> {
+
+        ex.printStackTrace()
+
         var errCode = ErrorResponse(ErrorCode.INTERNAL_SERVER_ERROR)
         when (ex.javaClass) {
             NullPointerException::class.java -> {
