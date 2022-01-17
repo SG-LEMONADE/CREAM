@@ -29,7 +29,9 @@ const Button: FunctionComponent<ButtonProps> = (props) => {
 			disabled={disabled}
 			fullWidth={fullWidth}
 		>
-			{children}
+			{typeof children === "number"
+				? `${children.toLocaleString()}원`
+				: children}
 		</StyledButton>
 	);
 };
@@ -49,6 +51,7 @@ const StyledButton = styled.button<{
 	font-size: 14px;
 	cursor: pointer;
 	border-style: solid;
+	font-weight: 800;
 	color: ${({ category, disabled }) =>
 		disabled
 			? colors.buttonTextColors[category].disabled
@@ -71,13 +74,17 @@ const StyledButton = styled.button<{
 		background: ${({ category }) => colors.buttonBgColors[category].active};
 		border-color: ${({ category }) => colors.borderColors[category].active};
 	}
-	${({ disabled, fullWidth }) =>
+	${({ category, disabled, fullWidth }) =>
 		fullWidth &&
 		css`
 			width: 100%;
 			background: ${disabled ? "#ebebeb" : "rgba(34, 34, 34)"};
+			background: ${category !== "primary" &&
+			(category === "buy" ? "#ef6153" : "#41b979")};
 			color: white;
 			border-color: ${disabled ? "#ebebeb" : "rgba(34, 34, 34)"};
+			border-color: ${category !== "primary" &&
+			(category === "buy" ? "#ef6153" : "#41b979")};
 			&:hover:enabled {
 				transition: 0.5s;
 			}

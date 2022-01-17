@@ -40,14 +40,16 @@ PrimaryFullDisabled.args = {
 	disabled: true,
 };
 
-export const secondary_buy = Template.bind({});
-secondary_buy.args = {
-	category: "secondary_buy",
-	children: "판매",
+export const BuyButton = Template.bind({});
+BuyButton.args = {
+	category: "buy",
+	children: 249000,
+	fullWidth: true,
 };
 
-export const secondary_sell = Template.bind({});
-secondary_sell.args = {
-	category: "secondary_sell",
-	children: "구매",
+export const SellButton = Template.bind({});
+SellButton.args = {
+	category: "sell",
+	children: 3290000,
+	fullWidth: true,
 };
