@@ -15,13 +15,13 @@ const colors: Color = {
 			hover: "#636363",
 			disabled: "#ffffff",
 		},
-		secondary_buy: {
+		buy: {
 			default: "#ffffff",
 			active: "#ffffff",
 			hover: "#ffffff",
 			disabled: "#ffffff",
 		},
-		secondary_sell: {
+		sell: {
 			default: "#ffffff",
 			active: "#ffffff",
 			hover: "#ffffff",
@@ -35,13 +35,13 @@ const colors: Color = {
 			hover: "#eaeaea",
 			disabled: "#ebebeb",
 		},
-		secondary_buy: {
+		buy: {
 			default: "#ef6153",
 			active: "#ef6153",
 			hover: "#ef6153",
 			disabled: "#ef6153",
 		},
-		secondary_sell: {
+		sell: {
 			default: "#41b979",
 			active: "#41b979",
 			hover: "#41b979",
@@ -55,13 +55,13 @@ const colors: Color = {
 			hover: "#d3d3d3",
 			disabled: "#ebebeb",
 		},
-		secondary_buy: {
+		buy: {
 			default: "#ef6153",
 			active: "#ef6153",
 			hover: "#ef6153",
 			disabled: "#ef6153",
 		},
-		secondary_sell: {
+		sell: {
 			default: "#41b979",
 			active: "#41b979",
 			hover: "#41b979",

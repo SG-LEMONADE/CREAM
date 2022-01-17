@@ -16,13 +16,13 @@ declare module "@emotion/react" {
 				hover: string;
 				disabled: string;
 			};
-			secondary_buy: {
+			buy: {
 				default: string;
 				active: string;
 				hover: string;
 				disabled: string;
 			};
-			secondary_sell: {
+			sell: {
 				default: string;
 				active: string;
 				hover: string;
@@ -36,13 +36,13 @@ declare module "@emotion/react" {
 				hover: string;
 				disabled: string;
 			};
-			secondary_buy: {
+			buy: {
 				default: string;
 				active: string;
 				hover: string;
 				disabled: string;
 			};
-			secondary_sell: {
+			sell: {
 				default: string;
 				active: string;
 				hover: string;
@@ -56,13 +56,13 @@ declare module "@emotion/react" {
 				hover: string;
 				disabled: string;
 			};
-			secondary_buy: {
+			buy: {
 				default: string;
 				active: string;
 				hover: string;
 				disabled: string;
 			};
-			secondary_sell: {
+			sell: {
 				default: string;
 				active: string;
 				hover: string;
