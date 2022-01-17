@@ -12,10 +12,15 @@ spring:
   jpa:
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     open-in-view: false
-    show-sql: true
-    hibernate:
-      format_sql: true
-      ddl-auto: none
+    properties:
+      hibernate:
+        format_sql: true
+        ddl-auto: none
+
+  # swagger with spring boot 2.6.2 issue
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
 
 logging:
   level:

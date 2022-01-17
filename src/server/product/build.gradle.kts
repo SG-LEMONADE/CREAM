@@ -6,6 +6,10 @@ plugins {
     kotlin("jvm") version "1.6.10"
     kotlin("plugin.spring") version "1.6.10"
     kotlin("plugin.jpa") version "1.6.10"
+    kotlin("plugin.allopen") version "1.6.10"
+    kotlin("plugin.noarg") version "1.6.10"
+
+    kotlin("kapt") version "1.4.10" // JVM가동시 Kotlin 어노테이션 포함시키는 플러그인
 }
 
 noArg {
@@ -43,8 +47,6 @@ dependencies {
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-    compileOnly("org.projectlombok:lombok")
-    annotationProcessor("org.projectlombok:lombok")
 
     //db
     implementation("mysql:mysql-connector-java:8.0.27")
@@ -60,6 +62,14 @@ dependencies {
     // serialize lazy loaded entity to null
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-hibernate5:2.9.8")
 
+    //querydsl
+    implementation("com.querydsl:querydsl-jpa") // 1)
+    kapt(group = "com.querydsl", name = "querydsl-apt", classifier = "jpa") // 2)
+    sourceSets.main {
+        withConvention(org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet::class) {
+            kotlin.srcDir("$buildDir/generated/source/kapt/main")
+        }
+    }
 }
 
 tasks.withType<KotlinCompile> {
