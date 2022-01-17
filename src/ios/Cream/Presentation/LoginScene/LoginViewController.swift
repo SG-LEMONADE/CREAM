@@ -108,7 +108,7 @@ final class LoginViewController: UIViewController {
         button.setTitleColor(.white, for: .normal)
         button.titleLabel?.font = UIFont(name: "GillSans-Italic", size: 20)
         button.backgroundColor = .systemGray5
-        
+        button.addTarget(self, action: #selector(login), for: .touchUpInside)
         return button
     }()
     
@@ -149,6 +149,12 @@ final class LoginViewController: UIViewController {
         super.viewDidLoad()
         applyViewSettings()
         bindViewModel()
+        
+        emailTextField.delegate = self
+        passwordTextField.delegate = self
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     private func bindViewModel() {
@@ -158,7 +164,7 @@ final class LoginViewController: UIViewController {
         viewModel.password.bind { [weak self] value in
             self?.viewModel.validateLoginAvailable()
         }
-
+        
         viewModel.isLoginAvailable.bind { [weak self] value in
             if value == true {
                 self?.loginButton.isEnabled = true
@@ -168,12 +174,40 @@ final class LoginViewController: UIViewController {
                 self?.loginButton.backgroundColor = .systemGray5
             }
         }
+        viewModel.error.bind { [weak self] error in
+            if let error = error {
+                print(error)
+            } else {
+                self?.goToSignupView()
+            }
+        }
+    }
+    
+    private func goToSignupView() {
+        let nextViewController = SignupViewController()
+        nextViewController.modalPresentationStyle = .fullScreen
+        self.navigationController?.pushViewController(nextViewController, animated: true)
     }
 }
+
 extension LoginViewController {
     @objc
     private func login() {
-        self.viewModel.login
+        guard let email = emailTextField.text,
+              let password = passwordTextField.text else {
+                  return
+              }
+        self.viewModel.login(email: email, password: password)
+    }
+    
+    @objc
+    func keyboardWillShow(_ sender: Notification) {
+        self.view.frame.origin.y = -150
+    }
+    
+    @objc
+    func keyboardWillHide(_ sender: Notification) {
+        self.view.frame.origin.y = 0
     }
 }
 
@@ -263,5 +297,13 @@ extension LoginViewController: ViewConfiguration {
             $0.width.equalTo(findIDButton.snp.width)
             $0.width.equalTo(findPasswordButton.snp.width)
         }
+    }
+}
+
+
+extension LoginViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
     }
 }
