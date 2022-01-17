@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		3AA6865D5E6AC36E76D7F9E1 /* Pods_Cream.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A30B26FB25B22F519249FD4 /* Pods_Cream.framework */; };
+		7B193C8127944B0900B934A3 /* ElementKind.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B193C8027944B0900B934A3 /* ElementKind.swift */; };
+		7B193C832794D3D300B934A3 /* HomeViewItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B193C822794D3D300B934A3 /* HomeViewItemCell.swift */; };
 		7B234917278C0315009AAF32 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B234916278C0315009AAF32 /* User.swift */; };
 		7B35667C27914EF200C45A68 /* SizeListCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B35667B27914EF200C45A68 /* SizeListCellViewModel.swift */; };
 		7B3566802791E53000C45A68 /* ShopViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B35667F2791E52F00C45A68 /* ShopViewController.swift */; };
@@ -45,6 +47,8 @@
 
 /* Begin PBXFileReference section */
 		6A30B26FB25B22F519249FD4 /* Pods_Cream.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Cream.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7B193C8027944B0900B934A3 /* ElementKind.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ElementKind.swift; sourceTree = "<group>"; };
+		7B193C822794D3D300B934A3 /* HomeViewItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewItemCell.swift; sourceTree = "<group>"; };
 		7B234916278C0315009AAF32 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		7B35667B27914EF200C45A68 /* SizeListCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SizeListCellViewModel.swift; sourceTree = "<group>"; };
 		7B35667F2791E52F00C45A68 /* ShopViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopViewController.swift; sourceTree = "<group>"; };
@@ -104,6 +108,14 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		7B193C7F27944AF000B934A3 /* SupportFile */ = {
+			isa = PBXGroup;
+			children = (
+				7B193C8027944B0900B934A3 /* ElementKind.swift */,
+			);
+			path = SupportFile;
+			sourceTree = "<group>";
+		};
 		7B234915278C0307009AAF32 /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -124,6 +136,7 @@
 			isa = PBXGroup;
 			children = (
 				7B3566812791E53C00C45A68 /* HomeViewController.swift */,
+				7B193C822794D3D300B934A3 /* HomeViewItemCell.swift */,
 			);
 			path = HomeScene;
 			sourceTree = "<group>";
@@ -157,6 +170,7 @@
 		7B36DB0C2789202800D8ACB0 /* Cream */ = {
 			isa = PBXGroup;
 			children = (
+				7B193C7F27944AF000B934A3 /* SupportFile */,
 				7B234915278C0307009AAF32 /* Model */,
 				7BB0110C278AF1C3005E5C9E /* Application */,
 				7BB0111D278BD321005E5C9E /* Extension */,
@@ -220,10 +234,10 @@
 			children = (
 				7BB0111A278BCEB7005E5C9E /* LoginScene */,
 				7BB0111B278BCED4005E5C9E /* Base */,
-				7B356685279241F100C45A68 /* MyPageScene */,
 				7B54D6FA278EF2D900214664 /* SignupScene */,
 				7B35667E2791B29500C45A68 /* HomeScene */,
 				7B35667D2791B28D00C45A68 /* ShopScene */,
+				7B356685279241F100C45A68 /* MyPageScene */,
 			);
 			path = Presentation;
 			sourceTree = "<group>";
@@ -376,12 +390,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7B193C8127944B0900B934A3 /* ElementKind.swift in Sources */,
 				7B3566872792420300C45A68 /* MyPageViewController.swift in Sources */,
 				7B54D7022790159B00214664 /* SizeListViewModel.swift in Sources */,
 				7B36DB122789202800D8ACB0 /* ViewController.swift in Sources */,
 				7B3566802791E53000C45A68 /* ShopViewController.swift in Sources */,
 				7B54D700278FF16900214664 /* SizeListViewController.swift in Sources */,
 				7B36DB0E2789202800D8ACB0 /* AppDelegate.swift in Sources */,
+				7B193C832794D3D300B934A3 /* HomeViewItemCell.swift in Sources */,
 				7BB0111F278BD32E005E5C9E /* String+.swift in Sources */,
 				7B3566822791E53C00C45A68 /* HomeViewController.swift in Sources */,
 				7B54D708279045F400214664 /* TradeButton.swift in Sources */,
