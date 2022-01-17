@@ -1,0 +1,51 @@
+import React, { FunctionComponent } from "react";
+
+import styled from "@emotion/styled";
+import Image from "next/image";
+import Link from "next/link";
+
+type ShortcutItemProps = {
+	bigImgSrc: string;
+	smallImgSrc: string;
+	link: string;
+	title: string;
+};
+
+const ShortcutItem: FunctionComponent<ShortcutItemProps> = (props) => {
+	const { bigImgSrc, smallImgSrc, link, title } = props;
+	return (
+		<StyledWrapper>
+			<Link href={`/${link}`}>
+				<StyledImage src={bigImgSrc} smallSrc={smallImgSrc} alt={bigImgSrc} />
+			</Link>
+			<StyledTitle>{title}</StyledTitle>
+		</StyledWrapper>
+	);
+};
+
+export default ShortcutItem;
+
+const StyledWrapper = styled.div`
+	text-align: center;
+	width: calc(20% - 15px);
+	display: inline-block;
+	margin: 0 7.5px;
+	cursor: pointer;
+`;
+
+const StyledImage = styled(Image)<{ smallSrc: string }>`
+	border-radius: 10px;
+	height: 100px;
+	@media screen and (max-width: 1000px) {
+		border-radius: 50%;
+		transition: 0.5s;
+		content: url(${({ smallSrc }) => smallSrc});
+	}
+`;
+
+const StyledTitle = styled.p`
+	font-size: 15px;
+	letter-spacing: -0.15px;
+	color: #333;
+	margin-top: 8px;
+`;

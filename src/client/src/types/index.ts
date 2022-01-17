@@ -15,3 +15,10 @@ export interface ProductInfoRes {
 	brandName: string;
 	imageUrls: string;
 }
+
+export interface ShortcutItemRes {
+	link: string;
+	bigImg: string;
+	smallImg: string;
+	title: string;
+}
