@@ -2,6 +2,7 @@ package com.cream.user.error
 
 import io.jsonwebtoken.ExpiredJwtException
 import io.jsonwebtoken.JwtException
+import io.jsonwebtoken.MalformedJwtException
 import io.jsonwebtoken.SignatureException
 import lombok.extern.slf4j.Slf4j
 import org.slf4j.LoggerFactory
@@ -64,11 +65,19 @@ class GlobalExceptionHandler {
         return ResponseEntity(response, HttpStatus.valueOf(response.status))
     }
 
+    @ExceptionHandler(MalformedJwtException::class)
+    fun handleMalformedJwtException(ex: MalformedJwtException): ResponseEntity<ErrorResponse>{
+        log.error("HttpMessageNotReadableException", ex)
+        val response = ErrorResponse(ErrorCode.USER_TOKEN_NOT_VALID)
+        return ResponseEntity(response, HttpStatus.valueOf(response.status))
+    }
+
     @ExceptionHandler(Exception::class)
     fun handleException(ex: Exception): ResponseEntity<ErrorResponse> {
         log.error("Exception ", ex)
         val response = ErrorResponse(ErrorCode.INTERNAL_SERVER_ERROR)
         return ResponseEntity(response, HttpStatus.INTERNAL_SERVER_ERROR)
     }
+
 
 }

@@ -26,7 +26,6 @@ import javax.mail.internet.InternetAddress
 import javax.mail.internet.MimeMessage
 
 
-@Slf4j
 @RestController
 @RequestMapping("/users")
 class UserController {
@@ -96,6 +95,7 @@ class UserController {
 
     @PostMapping("/refresh")
     fun refresh(@RequestBody tokenDTO: RefreshDTO): ResponseEntity<RefreshDTO>{
+        // 둘다 Bearer 앞에 와야합니다.
         val accessToken: String = tokenDTO.accessToken
         val refreshToken: String = tokenDTO.refreshToken
 
@@ -107,7 +107,7 @@ class UserController {
 
         val stringValueOperation = redisTemplate.opsForValue()
         val storedToken: String? = stringValueOperation.get("refresh-${userId}")
-        if (storedToken == null || storedToken != refreshToken){
+        if (storedToken == null || storedToken != refreshToken.substring(7)){
             throw UserCustomException(ErrorCode.REFRESH_TOKEN_EXPIRED)
         }
 
