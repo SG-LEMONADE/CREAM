@@ -10,19 +10,23 @@ import javax.transaction.Transactional
 @Service
 class WishService {
     @Autowired
-    lateinit var productRepository: ProductRepository
-
-    @Autowired
     lateinit var wishRepository: WishRepository
 
-    @Transactional
-    fun toggleWish(userId: Long, productId: Long, size: String) {
-        val wish = wishRepository.findOneByProductIdAndUserIdAndSize(userId, productId, size)
-        val product = productRepository.getById(productId)
-        if (wish == null) {
-            wishRepository.save(WishEntity(product = product, userId = userId, size = size))
-        } else {
+    fun toggleWish(userId: Long, productId: Long, size: String): String{
+        val wish = wishRepository.existsWish(userId, productId, size)
+        return if (wish != null) {
             wishRepository.delete(wish)
+            "deleted"
+        } else {
+            wishRepository.createWish(userId, productId, size)
+            "created"
         }
+    }
+
+    @Transactional
+    fun findById(id: Long):WishEntity {
+        val a = wishRepository.getById(id)
+        println(a.product.name)
+        return a
     }
 }

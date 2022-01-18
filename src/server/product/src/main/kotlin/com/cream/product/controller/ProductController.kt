@@ -3,6 +3,8 @@ package com.cream.product.controller
 import com.cream.product.dto.PageDTO
 import com.cream.product.dto.ProductDetailDTO
 import com.cream.product.dto.ProductListDTO
+import com.cream.product.model.ProductEntity
+import com.cream.product.model.WishEntity
 import com.cream.product.service.ProductService
 import com.cream.product.service.WishService
 import org.springframework.beans.factory.annotation.Autowired
@@ -39,9 +41,13 @@ class ProductController {
         return ResponseEntity.ok(productService.findProductByIdAndSize(id, size))
     }
 
-    @PostMapping("/{id}/{size}/wish")
-    fun createWish(@PathVariable id:Long, @PathVariable size: String, @RequestHeader("userId") userId: Long): ResponseEntity<Any>{
-        wishService.toggleWish(userId, id, size)
-        return ResponseEntity.ok().body(null)
+    @PostMapping("/{productId}/{size}/wish")
+    fun toggleWish(@PathVariable productId:Long, @PathVariable size: String ,@RequestHeader("userId") userId: Long): ResponseEntity<String>{
+        return ResponseEntity.ok(wishService.toggleWish(userId, productId, size))
+    }
+
+    @GetMapping("/wish/{id}")
+    fun findWish(@PathVariable id: Long): ResponseEntity<WishEntity>{
+        return ResponseEntity.ok(wishService.findById(id))
     }
 }
