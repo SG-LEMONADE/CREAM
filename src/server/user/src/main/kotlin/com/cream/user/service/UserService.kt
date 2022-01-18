@@ -45,6 +45,7 @@ class UserService {
         userEntity.name = user.name
         userEntity.address = user.address
         userEntity.shoeSize = user.shoeSize
+        userEntity.profileImageUrl = user.profileImageUrl
         userEntity.updateAt = LocalDateTime.now()
         if (originalPassword != userEntity.password){
             userEntity.passwordChangedDateTime = LocalDateTime.now()

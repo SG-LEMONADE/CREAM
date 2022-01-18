@@ -6,9 +6,6 @@ import com.cream.user.error.ErrorCode
 import com.cream.user.model.UserEntity
 import com.cream.user.security.TokenProvider
 import com.cream.user.service.UserService
-import io.swagger.annotations.ApiResponse
-import io.swagger.annotations.ApiResponses
-import lombok.extern.slf4j.Slf4j
 import org.slf4j.LoggerFactory
 
 import org.springframework.beans.factory.annotation.Autowired
@@ -47,14 +44,14 @@ class UserController {
     fun signup(@RequestBody registerUserDTO: RegisterUserDTO): ResponseEntity<ResponseUserDTO>{
         val user = registerUserDTO.toEntity(passwordEncoder)
 
-        sendEmail(user.email, user.name, 0)
+        sendEmail(user.email, 0)
 
         return ResponseEntity.ok()
-            .body(ResponseUserDTO(userService.create(user), ""))
+            .body(ResponseUserDTO(userService.create(user)))
     }
 
     @PostMapping("/login")
-    fun login(@RequestBody userDTO: LoginDTO): ResponseEntity<ResponseUserDTO>{
+    fun login(@RequestBody userDTO: LoginDTO): ResponseEntity<TokenDTO>{
         val user: UserEntity = userService.getByCredentials(userDTO.email, userDTO.password, passwordEncoder)
 
         when {
@@ -79,8 +76,7 @@ class UserController {
         userService.updateUserLastLoginTime(user)
 
         return ResponseEntity.ok()
-            .header("Authorization", "Bearer $token")
-            .body(ResponseUserDTO(user, refreshToken))
+            .body(TokenDTO(user.id, token, refreshToken))
     }
 
     @PostMapping("/test")
@@ -90,11 +86,11 @@ class UserController {
         val test: HashMap<String, String> = HashMap()
         test["test"] = "this is test"
         val user = userService.getById(1)
-        return ResponseEntity.ok().body(ResponseUserDTO(user, ""))
+        return ResponseEntity.ok().body(ResponseUserDTO(user))
     }
 
     @PostMapping("/refresh")
-    fun refresh(@RequestBody tokenDTO: RefreshDTO): ResponseEntity<RefreshDTO>{
+    fun refresh(@RequestBody tokenDTO: TokenDTO): ResponseEntity<TokenDTO>{
         // 둘다 Bearer 앞에 와야합니다.
         val accessToken: String = tokenDTO.accessToken
         val refreshToken: String = tokenDTO.refreshToken
@@ -118,8 +114,7 @@ class UserController {
         stringValueOperation.set("refresh-${userId}", newRefreshToken, 7, TimeUnit.DAYS)
 
         return ResponseEntity.ok()
-            .header("Authorization", "Bearer $newAccessToken")
-            .body(RefreshDTO(newAccessToken,newRefreshToken))
+            .body(TokenDTO(userId.toLong(), newAccessToken, newRefreshToken))
     }
 
     @PostMapping("/validate")
@@ -142,7 +137,7 @@ class UserController {
     @GetMapping("/me")
     fun me(@RequestHeader("Authorization") token: String): ResponseEntity<ResponseUserDTO> {
         return ResponseEntity.ok()
-            .body(ResponseUserDTO(userService.getById(tokenProvider.validateAndGetUserId(token).toLong()), ""))
+            .body(ResponseUserDTO(userService.getById(tokenProvider.validateAndGetUserId(token).toLong())))
     }
 
     @PostMapping("/logout")
@@ -155,31 +150,31 @@ class UserController {
     @PutMapping("/{id}")
     fun update(@PathVariable id: Long,  @RequestBody updatedUser: UpdateUserDTO): ResponseEntity<ResponseUserDTO> {
         val user = userService.update(userService.getById(id), updatedUser, passwordEncoder)
-        return ResponseEntity.ok().body(ResponseUserDTO(user, ""))
+        return ResponseEntity.ok().body(ResponseUserDTO(user))
     }
 
     @Async
-    fun sendEmail(email: String, name: String, type: Int) {
+    fun sendEmail(email: String, type: Int) {
         val message: MimeMessage = javaMailSender.createMimeMessage()
         message.addRecipient(Message.RecipientType.TO, InternetAddress(email))
         message.subject = "[본인인증] Cream 이메일 인증"
 
         val randNum = (0..1000000).random()
         val formatted = String.format("%06d", randNum)
-        val hash = tokenProvider.getSHA512Token(formatted + name)
+        val hash = tokenProvider.getSHA512Token(formatted + email)
         val stringValueOperation = redisTemplate.opsForValue()
         var htmlString = ""
         stringValueOperation.set(email, hash, 1, TimeUnit.DAYS)
         if (type == 0)
         {
             htmlString +=
-                "안녕하세요 ${name}님 인증을 위해 아래의 링크를 눌러주세요. \n" +
+                "안녕하세요 인증을 위해 아래의 링크를 눌러주세요. \n" +
                         "<a href='http://localhost:8000/users/verify?email=${email}&key=${hash}'> 회원 가입 이메일 인증하기 </a>"
         }
         else if (type == 1)
         {
             htmlString +=
-                "안녕하세요 ${name}님 비밀번호 변경을 위해 아래의 링크를 눌러주세요. \n" +
+                "안녕하세요 비밀번호 변경을 위해 아래의 링크를 눌러주세요. \n" +
                         "<a href='http://localhost:8000/users/verify/password?email=${email}&key=${hash}'> 비밀번호 변경하기 </a>"
         }
 
