@@ -10,10 +10,19 @@ import SnapKit
 import BetterSegmentedControl
 
 class HomeViewController: UIViewController {
-
+    
+    private let banners: [String] = ["homebanner1",
+                                     "homebanner2",
+                                     "homebanner3",
+                                     "homebanner4",
+                                     "homebanner5",
+                                     "homebanner6",
+                                     "homebanner7"]
+    
     private lazy var homeCollectionView: UICollectionView = {
-        let collectionView = UICollectionView.init(frame: .zero, collectionViewLayout: createCompositionalLayout())
-        return collectionView
+        let cv = UICollectionView(frame: .zero,
+                                  collectionViewLayout: createCompositionalLayout())
+        return cv
     }()
     
     private func createCompositionalLayout() -> UICollectionViewCompositionalLayout {
@@ -21,16 +30,16 @@ class HomeViewController: UIViewController {
             let info = sectionNumber % 2
             switch info {
             case 0:
-                return self.firstLayoutSection()
+                return self.createBannerSection()
             case 1:
-                return self.secondLayoutSection()
+                return self.createItemListSection()
             default:
                 return self.thirdLayoutSection()
             }
         }
     }
     
-    private func firstLayoutSection() -> NSCollectionLayoutSection {
+    private func createBannerSection() -> NSCollectionLayoutSection {
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
                                               heightDimension: .fractionalWidth(1))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
@@ -49,7 +58,7 @@ class HomeViewController: UIViewController {
         return section
     }
     
-    private func secondLayoutSection() -> NSCollectionLayoutSection {
+    private func createItemListSection() -> NSCollectionLayoutSection {
         
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5),
                                               heightDimension: .fractionalHeight(0.58))
@@ -62,11 +71,10 @@ class HomeViewController: UIViewController {
         section.orthogonalScrollingBehavior = .groupPaging
         
         section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 5, bottom: 20, trailing: 0)
-        
         section.boundarySupplementaryItems = [
             NSCollectionLayoutBoundarySupplementaryItem(layoutSize: .init(widthDimension: .fractionalWidth(1),
                                                                           heightDimension: .estimated(50)),
-                                                        elementKind: ElementKind.sectionHeader,
+                                                        elementKind: UICollectionView.elementKindSectionHeader,
                                                         alignment: .topLeading)
         ]
         return section
@@ -97,7 +105,7 @@ class HomeViewController: UIViewController {
         let navigationSegmentedControl = BetterSegmentedControl(
             frame: CGRect(x: 0, y: 0, width: 200.0, height: 30.0),
             segments: LabelSegment.segments(withTitles: ["투데이", "발매정보"],
-                                             normalTextColor: .systemGray4,
+                                            normalTextColor: .systemGray4,
                                             selectedTextColor: .black),
             options:[.backgroundColor(.white),
                      .indicatorViewBackgroundColor(UIColor(red: 0.36, green: 0.38, blue: 0.87, alpha: 1.00)),
@@ -133,15 +141,19 @@ class HomeViewController: UIViewController {
         self.navigationController?.navigationBar.backgroundColor = .white
         self.homeCollectionView.delegate = self
         self.homeCollectionView.dataSource = self
+        applyViewSettings()
+    }
+    
+    func configureCollectionView() {
+        homeCollectionView.register(ShopBannerCell.self,
+                                    forCellWithReuseIdentifier: ShopBannerCell.reuseIdentifier)
         homeCollectionView.register(SizeListCell.self,
                                     forCellWithReuseIdentifier: SizeListCell.reuseIdentifier)
         homeCollectionView.register(HomeViewItemCell.self,
                                     forCellWithReuseIdentifier: HomeViewItemCell.reuseIdentifier)
-        homeCollectionView.register(CategoryHeaderView.self,
-                                    forSupplementaryViewOfKind: ElementKind.sectionHeader,
-                                    withReuseIdentifier: CategoryHeaderView.reuseIdentifier)
-        applyViewSettings()
-        configureSegmentedControl()
+        homeCollectionView.register(HomeViewCategoryHeaderView.self,
+                                    forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
+                                    withReuseIdentifier: HomeViewCategoryHeaderView.reuseIdentifier)
     }
 }
 
@@ -152,11 +164,12 @@ extension HomeViewController: ViewConfiguration {
     
     func setupConstraints() {
         homeCollectionView.snp.makeConstraints {
-            $0.top.equalTo(self.view)
-            $0.bottom.equalTo(self.view)
-            $0.leading.equalTo(self.view)
-            $0.trailing.equalTo(self.view)
+            $0.edges.equalToSuperview()
         }
+    }
+    func viewConfigure() {
+        configureSegmentedControl()
+        configureCollectionView()
     }
 }
 
@@ -177,11 +190,10 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if indexPath.section % 2 == 0 {
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SizeListCell.reuseIdentifier,
-                                                                for: indexPath) as? SizeListCell else
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ShopBannerCell.reuseIdentifier,
+                                                                for: indexPath) as? ShopBannerCell else
                                                                 { return UICollectionViewCell() }
-            cell.configure(with: SizeListCellViewModel(sizeText: "100"))
-            cell.backgroundColor = .green
+            cell.configure(banners[indexPath.item])
             return cell
         }
         
@@ -195,69 +207,11 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind,
-                                                                           withReuseIdentifier: CategoryHeaderView.reuseIdentifier,
-                                                                           for: indexPath) as? CategoryHeaderView else
+                                                                           withReuseIdentifier: HomeViewCategoryHeaderView.reuseIdentifier,
+                                                                           for: indexPath) as? HomeViewCategoryHeaderView else
                                                                            { return UICollectionReusableView() }
         header.configure("\(Int.random(in: 0...100))")
         return header
     }
 }
 
-
-
-class CategoryHeaderView: UICollectionReusableView {
-    static let reuseIdentifier = "\(CategoryHeaderView.self)"
-    
-    private lazy var titleLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 20, weight: .bold)
-        label.textColor = .black
-        return label
-    }()
-    
-    private lazy var detailLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 20)
-        label.textColor = .systemGray3
-        return label
-    }()
-    
-    private lazy var labelStackView: UIStackView = {
-        let stackView = UIStackView.init(frame: .zero)
-        stackView.alignment = .leading
-        stackView.distribution = .equalSpacing
-        stackView.axis = .vertical
-        stackView.addArrangedSubviews(titleLabel, detailLabel)
-        return stackView
-    }()
-    
-
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        applyViewSettings()
-        
-    }
-
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        applyViewSettings()
-    }
-}
-
-extension CategoryHeaderView {
-    func configure(_ headerInfo: String) {
-        self.titleLabel.text = "header \(headerInfo)"
-        self.detailLabel.text = "detail \(headerInfo)"
-    }
-}
-
-// MARK: - ViewConfiguration
-extension CategoryHeaderView: ViewConfiguration {
-    func setupConstraints() {
-        labelStackView.frame = bounds
-    }
-    
-    func buildHierarchy() {
-        addSubviews(labelStackView)
-    }
-}

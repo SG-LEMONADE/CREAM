@@ -220,13 +220,13 @@
 			path = Application;
 			sourceTree = "<group>";
 		};
-		7BB0111A278BCEB7005E5C9E /* LoginScene */ = {
+		7BB0111A278BCEB7005E5C9E /* SigninScene */ = {
 			isa = PBXGroup;
 			children = (
 				7BB01110278BC3EE005E5C9E /* LoginViewController.swift */,
 				7BB01118278BCAC0005E5C9E /* LoginViewModel.swift */,
 			);
-			path = LoginScene;
+			path = SigninScene;
 			sourceTree = "<group>";
 		};
 		7BB0111B278BCED4005E5C9E /* Base */ = {
@@ -241,7 +241,7 @@
 		7BB0111C278BCEE9005E5C9E /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
-				7BB0111A278BCEB7005E5C9E /* LoginScene */,
+				7BB0111A278BCEB7005E5C9E /* SigninScene */,
 				7BB0111B278BCED4005E5C9E /* Base */,
 				7B54D6FA278EF2D900214664 /* SignupScene */,
 				7B35667E2791B29500C45A68 /* HomeScene */,

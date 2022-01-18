@@ -30,8 +30,6 @@ class UserViewModel {
     func validateLoginAvailable() {
         self.isLoginAvailable.value = validate(email: email.value) && validate(password: password.value)
     }
-    
-
 }
 
 final class LoginViewModel: UserViewModel {
