@@ -22,11 +22,4 @@ class WishService {
             "created"
         }
     }
-
-    @Transactional
-    fun findById(id: Long):WishEntity {
-        val a = wishRepository.getById(id)
-        println(a.product.name)
-        return a
-    }
 }

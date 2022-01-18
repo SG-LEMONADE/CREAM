@@ -1,12 +1,13 @@
 package com.cream.product.model
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import javax.persistence.*
 
 @Entity
 @Table(name="market")
 class MarketEntity (
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) @Column(name="id") var id: Long? = null,
-    @ManyToOne(cascade = [CascadeType.ALL], fetch = FetchType.LAZY) @JoinColumn(name="product_id") var product: ProductEntity,
+    @JsonIgnore @ManyToOne(cascade = [CascadeType.ALL], fetch = FetchType.LAZY) @JoinColumn(name="product_id") var product: ProductEntity,
     @Column(name="size") var size: String,
     @Column(name="change_percentage") var changePercentage: Float,
     @Column(name="change_value") var changeValue: Int,

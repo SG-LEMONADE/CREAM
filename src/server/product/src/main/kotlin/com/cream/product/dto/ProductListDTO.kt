@@ -1,38 +1,68 @@
 package com.cream.product.dto
 
+import com.cream.product.model.BrandEntity
+import com.cream.product.model.CollectionEntity
 import com.cream.product.model.ProductEntity
 import java.time.LocalDate
 
-data class ProductListDTO (
+class ProductListDTO (
         val id: Long?,
-        val name: String,
+        val originalName: String,
         val translatedName: String,
         val originalPrice: Int,
         val gender: Boolean,
         val category: String,
+        val color: String,
         val styleCode: String,
         val wishCnt: Int,
+        val brandId: Long?,
+        val collectionId: Long?,
         val brandName: String,
         val backgroundColor: String,
         val imageUrls: String,
-        val releaseDate: LocalDate?,
+        val sizes: String,
+        val releasedDate: LocalDate?,
         val highestBid: Int,
-        val totalSales: Int
+        val totalSale: Int,
 ) {
         constructor(productEntity: ProductEntity) : this(
                 productEntity.id,
-                productEntity.name,
+                productEntity.originalName,
                 productEntity.translatedName,
                 productEntity.originalPrice,
                 productEntity.gender,
                 productEntity.category,
+                productEntity.color,
                 productEntity.styleCode,
                 productEntity.wishCnt,
+                null,
+                null,
                 productEntity.brandName,
                 productEntity.backgroundColor,
                 productEntity.imageUrls,
-                productEntity.releaseDate,
+                productEntity.sizes,
+                productEntity.releasedDate,
                 productEntity.highestBid,
-                productEntity.totalSales
+                productEntity.totalSale,
+        )
+        constructor(productEntity: ProductWithWishDTO) : this(
+                productEntity.id,
+                productEntity.originalName,
+                productEntity.translatedName,
+                productEntity.originalPrice,
+                productEntity.gender,
+                productEntity.category,
+                productEntity.color,
+                productEntity.styleCode,
+                productEntity.wishCnt,
+                null,
+                null,
+                productEntity.brandName,
+                productEntity.backgroundColor,
+                productEntity.imageUrls,
+                productEntity.sizes,
+                productEntity.releasedDate,
+                productEntity.highestBid,
+                productEntity.totalSale,
         )
 }
