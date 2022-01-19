@@ -34,7 +34,7 @@ final class TradeButton: UIButton {
     private var tradeType: TradeType
     private var price: Int?
     
-    init(tradeType: TradeType, price: Int?) {
+    init(tradeType: TradeType, price: Int? = nil) {
         self.tradeType = tradeType
         self.price = price
         super.init(frame: .zero)
@@ -42,7 +42,8 @@ final class TradeButton: UIButton {
     }
     
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        super.init(coder: coder)
+        applyViewSettings()
     }
     
     private lazy var typeLabel: UILabel = {
