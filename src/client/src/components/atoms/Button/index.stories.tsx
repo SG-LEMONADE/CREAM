@@ -39,17 +39,3 @@ PrimaryFullDisabled.args = {
 	fullWidth: true,
 	disabled: true,
 };
-
-export const BuyButton = Template.bind({});
-BuyButton.args = {
-	category: "buy",
-	children: 249000,
-	fullWidth: true,
-};
-
-export const SellButton = Template.bind({});
-SellButton.args = {
-	category: "sell",
-	children: 3290000,
-	fullWidth: true,
-};
