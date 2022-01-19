@@ -37,10 +37,10 @@ class FilterImageCell: UICollectionViewCell {
         print(image.size)
         
         self.resize(image: image, scale: 0.02) { [weak self] result in
-            print(result?.size)
-            self?.imageView.image = result
+            DispatchQueue.main.async {
+                self?.imageView.image = result
+            }
         }
-//        self.imageView.image = UIImage(named: image)
     }
     
     func resize(image: UIImage, scale: CGFloat, completionHandler: ((UIImage?) -> Void))
