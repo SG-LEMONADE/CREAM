@@ -55,7 +55,7 @@ interface ProductRepository: JpaRepository<ProductEntity, Long> {
             "FROM product AS p " +
             "LEFT JOIN wish AS w " +
             "ON p.id=w.product_id AND w.user_id=:userId " +
-            "AND p.id=:productId " +
+            "WHERE p.id=:productId " +
             "GROUP BY p.id" , nativeQuery = true)
     fun findOneWithWish(userId: Long, productId: Long): ProductWithWishDTO
 }
