@@ -7,7 +7,9 @@ const ProductDeliveryInfo: FunctionComponent = () => {
 	return (
 		<>
 			<ProductDeliveryInfoWrapper>
-				<ProductDeliveryTitle>배송 정보</ProductDeliveryTitle>
+				<ProductDeliveryTitle>
+					<strong>CREAM</strong> 배송은 이러합니다! 😤
+				</ProductDeliveryTitle>
 				<ProductDeliveryWay>
 					<WayInfo>
 						<WayImg>
@@ -25,7 +27,7 @@ const ProductDeliveryInfo: FunctionComponent = () => {
 							<WayLast>
 								지금 결제시&nbsp;
 								<em style={{ color: "#297dcb", fontStyle: "normal" }}>
-									내일 도착
+									내일 모레 새벽 도착 🥳
 								</em>
 							</WayLast>
 						</WayDesc>
@@ -44,10 +46,10 @@ const ProductDeliveryInfo: FunctionComponent = () => {
 						</WayImg>
 						<WayDesc>
 							<WaySubtitle>
-								<BadgeTitle>일반 배송 | </BadgeTitle>
-								<span>1,500원 🚚</span>
+								<BadgeTitle>안전한 배송 | </BadgeTitle>
+								<span> 🚚</span>
 							</WaySubtitle>
-							<WayLast>검수 후 배송: 5 ~ 7일 내 도착 예정</WayLast>
+							<WayLast>정확 신속한 검수 후 배송드려요! 😉</WayLast>
 						</WayDesc>
 					</WayInfo>
 				</ProductDeliveryWay>
