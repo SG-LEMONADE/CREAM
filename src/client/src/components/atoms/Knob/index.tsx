@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from "react";
+import React, { CSSProperties, FunctionComponent } from "react";
 
 import styled from "@emotion/styled";
 
@@ -6,16 +6,18 @@ type KnobProps = {
 	category: "buy" | "sell";
 	productId: string;
 	price: number;
+	style?: CSSProperties;
 };
 
 const Knob: FunctionComponent<KnobProps> = (props) => {
-	const { category, price, productId } = props;
+	const { category, price, productId, style } = props;
 	return (
 		<StyledKnobWrapper
 			href={`/${category}/select/${productId}?size=`}
 			category={category}
+			style={style}
 		>
-			<Test />
+			<Divider />
 			<StyledCategory>{category === "buy" ? `구매` : `판매`}</StyledCategory>
 			<StyledPriceWrapper>
 				<StyledSpan>
@@ -45,7 +47,7 @@ const StyledKnobWrapper = styled.a<{ category: string }>`
 	min-width: 150px;
 `;
 
-const Test = styled.div`
+const Divider = styled.div`
 	content: "";
 	position: absolute;
 	top: 0;
