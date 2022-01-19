@@ -36,7 +36,7 @@ const LoginForm: FunctionComponent = () => {
 			});
 			const data = await res.data;
 			console.log(data);
-			setToken("acessToken", data.accessToken);
+			setToken("accessToken", data.accessToken);
 			setToken("refreshToken", data.refreshToken);
 			router.push("/");
 		} catch (err) {

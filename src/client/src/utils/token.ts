@@ -1,18 +1,18 @@
-export const getToken = (type: "acessToken" | "refreshToken") => {
+export const getToken = (type: "accessToken" | "refreshToken") => {
 	if (typeof window !== "undefined") {
-		return type === "acessToken"
-			? window.localStorage.getItem("creamAcessToken")
+		return type === "accessToken"
+			? window.localStorage.getItem("creamAccessToken")
 			: window.localStorage.getItem("creamRefreshToken");
 	}
 };
 
 export const setToken = (
-	type: "acessToken" | "refreshToken",
+	type: "accessToken" | "refreshToken",
 	token: string,
 ) => {
 	if (typeof window !== "undefined") {
-		type === "acessToken" &&
-			window.localStorage.setItem("creamAcessToken", token);
+		type === "accessToken" &&
+			window.localStorage.setItem("creamAccessToken", token);
 		type === "refreshToken" &&
 			window.localStorage.setItem("creamRefreshToken", token);
 	}
