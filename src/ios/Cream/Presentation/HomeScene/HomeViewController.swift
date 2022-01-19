@@ -8,17 +8,26 @@
 import UIKit
 import SnapKit
 import BetterSegmentedControl
+import Kingfisher
 
 class HomeViewController: UIViewController {
+    enum Section {
+        case banner
+    }
     
+//    typealias DataSource = UICollectionViewDiffableDataSource<Section, Video>
+    
+    private let viewModel = HomeViewModel.init("test")
     private let banners: [String] = ["homebanner1",
                                      "homebanner2",
                                      "homebanner3",
                                      "homebanner4",
                                      "homebanner5",
                                      "homebanner6",
-                                     "homebanner7"]
+                                     "homebanner7",
+                                     "homebanner1"]
     
+    private var currentIndex: Int = 0
     private lazy var homeCollectionView: UICollectionView = {
         let cv = UICollectionView(frame: .zero,
                                   collectionViewLayout: createCompositionalLayout())
@@ -26,8 +35,8 @@ class HomeViewController: UIViewController {
     }()
     
     private func createCompositionalLayout() -> UICollectionViewCompositionalLayout {
-        return UICollectionViewCompositionalLayout { (sectionNumber, env) -> NSCollectionLayoutSection? in
-            let info = sectionNumber % 2
+        return UICollectionViewCompositionalLayout { (section, env) -> NSCollectionLayoutSection? in
+            let info = section % 2
             switch info {
             case 0:
                 return self.createBannerSection()
@@ -121,6 +130,18 @@ class HomeViewController: UIViewController {
         navigationItem.titleView = navigationSegmentedControl
     }
     
+    private func configureNavigation() {
+        let alertBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "house"), style: .plain, target: self, action: #selector(alertBarButtonItemTapped))
+        navigationItem.setRightBarButton(alertBarButtonItem, animated: false)
+    }
+    
+    @objc
+    private func alertBarButtonItemTapped() {
+        DispatchQueue.global().asyncAfter(deadline: .now() + 2) {
+            
+        }
+    }
+    
     // MARK: - Action handlers
     @objc func navigationSegmentedControlValueChanged(_ sender: BetterSegmentedControl) {
         if sender.index == 0 {
@@ -157,6 +178,30 @@ class HomeViewController: UIViewController {
     }
 }
 
+extension HomeViewController {
+    func bannerTimer() {
+        let _: Timer = Timer.scheduledTimer(withTimeInterval: 2, repeats: true) { (Timer) in
+            self.bannerMove()
+        }
+    }
+
+    func bannerMove() {
+        currentIndex += 1
+        homeCollectionView.scrollToItem(at: NSIndexPath(item: currentIndex, section: 0) as IndexPath, at: .bottom, animated: true)
+        
+        if self.currentIndex == self.banners.count-1 {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.28) {
+                self.scrollTofirstIndex()
+            }
+        }
+    }
+
+    func scrollTofirstIndex() {
+        homeCollectionView.scrollToItem(at: NSIndexPath(item: 0, section: 0) as IndexPath, at: .top, animated: false)
+        currentIndex = 0
+    }
+}
+
 extension HomeViewController: ViewConfiguration {
     func buildHierarchy() {
         view.addSubviews(homeCollectionView)
@@ -179,7 +224,7 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
     }
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if section == 0 {
-            return 7
+            return banners.count
         }
         if section % 2 == 1 {
             return 40

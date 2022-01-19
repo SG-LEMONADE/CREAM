@@ -10,7 +10,9 @@ import SnapKit
 
 class ShopViewController: UIViewController {
     private let categories: [String] = ["럭셔리", "스니커즈", "의류", "패션 잡화", "라이프", "테크"]
-    private let banners: [String] = ["banner1", "banner2", "banner3", "banner4", "banner5", "banner6"]
+    private let banners: [String] = ["banner1", "banner2", "banner3", "banner4", "banner5", "banner6", "banner1"]
+    
+    private var currentBanner: Int = 0
     
     private lazy var shopCollectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: createCompositionalLayout())
@@ -86,10 +88,9 @@ class ShopViewController: UIViewController {
         section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 0, bottom: 20, trailing: 0)
         
         let sectionSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
-                                                 heightDimension: .absolute(75))
+                                                 heightDimension: .absolute(60))
         
         let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: sectionSize,
-//                                                                 elementKind: NSCollectionLayoutSupplementaryItem.ElementKind.sectionHeader,
                                                                  elementKind: UICollectionView.elementKindSectionHeader,
                                                                  alignment: .top)
         header.pinToVisibleBounds = true
@@ -117,7 +118,30 @@ class ShopViewController: UIViewController {
         
         return section
     }
-    
+}
+
+extension ShopViewController {
+    func bannerTimer() {
+        let _: Timer = Timer.scheduledTimer(withTimeInterval: 2, repeats: true) { (Timer) in
+            self.bannerMove()
+        }
+    }
+
+    func bannerMove() {
+        currentBanner += 1
+        shopCollectionView.scrollToItem(at: NSIndexPath(item: currentBanner, section: 0) as IndexPath, at: .bottom, animated: true)
+        
+        if self.currentBanner == self.banners.count-1 {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.28) {
+                self.scrollTofirstIndex()
+            }
+        }
+    }
+
+    func scrollTofirstIndex() {
+        shopCollectionView.scrollToItem(at: NSIndexPath(item: 0, section: 0) as IndexPath, at: .top, animated: false)
+        currentBanner = 0
+    }
 }
 
 extension ShopViewController: ViewConfiguration {
@@ -142,7 +166,7 @@ extension ShopViewController: UICollectionViewDelegate, UICollectionViewDataSour
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         switch section {
         case 0:
-            return 6
+            return banners.count
         default:
             return 50
         }

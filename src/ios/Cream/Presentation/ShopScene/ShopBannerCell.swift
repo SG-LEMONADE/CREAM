@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class ShopBannerCell: UICollectionViewCell {
+class ShopBannerCell: UICollectionViewCell {
     static let reuseIdentifier = "\(ShopBannerCell.self)"
     
     private lazy var imageView: UIImageView = {
