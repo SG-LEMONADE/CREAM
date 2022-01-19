@@ -9,10 +9,14 @@ import UIKit
 import SnapKit
 
 class ShopViewController: UIViewController {
-    private let categories: [String] = ["럭셔리", "스니커즈", "의류", "패션 잡화", "라이프", "테크"]
     private let banners: [String] = ["banner1", "banner2", "banner3", "banner4", "banner5", "banner6", "banner1"]
-    
+    private let categories = ["  ","럭셔리", " ", "스니커즈", "의류", "패션 잡화", "라이프", "테크"]
     private var currentBanner: Int = 0
+    
+    enum Constraint {
+        static let verticalInset: CGFloat = 20
+        static let horizontalInset: CGFloat = 20
+    }
     
     private lazy var shopCollectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: createCompositionalLayout())
@@ -126,7 +130,7 @@ extension ShopViewController {
             self.bannerMove()
         }
     }
-
+    
     func bannerMove() {
         currentBanner += 1
         shopCollectionView.scrollToItem(at: NSIndexPath(item: currentBanner, section: 0) as IndexPath, at: .bottom, animated: true)
@@ -137,7 +141,7 @@ extension ShopViewController {
             }
         }
     }
-
+    
     func scrollTofirstIndex() {
         shopCollectionView.scrollToItem(at: NSIndexPath(item: 0, section: 0) as IndexPath, at: .top, animated: false)
         currentBanner = 0
@@ -148,7 +152,7 @@ extension ShopViewController: ViewConfiguration {
     func buildHierarchy() {
         view.addSubviews(shopCollectionView)
     }
-
+    
     func setupConstraints() {
         shopCollectionView.snp.makeConstraints {
             $0.top.equalTo(view)
@@ -194,7 +198,60 @@ extension ShopViewController: UICollectionViewDelegate, UICollectionViewDataSour
                                                                            withReuseIdentifier: ShopViewFilterHeaderView.reuseIdentifier,
                                                                            for: indexPath) as? ShopViewFilterHeaderView else
                                                                            { return UICollectionReusableView() }
+        header.delegate = self
+        header.dataSource = self
         return header
     }
 }
 
+
+extension ShopViewController: ShopViewFilterHeaderViewDelegate {
+    func setupSizeForItemAt(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FilterCell.reuseIdentifer,
+                                                                  for: indexPath) as? FilterCell else
+                                                                  { return .zero }
+        
+        cell.configure(categories[indexPath.item])
+        cell.titleLabel.sizeToFit()
+        
+        var cellWidth = cell.sizeThatFits(cell.titleLabel.frame.size).width + Constraint.horizontalInset
+        let cellHeight = cell.sizeThatFits(cell.titleLabel.frame.size).height + Constraint.verticalInset
+        
+        if indexPath.item == 2 {
+            cellWidth = 2
+        }
+        
+        return CGSize(width: cellWidth, height: cellHeight)
+    }
+    
+    func didSelectItemAt(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print(categories[indexPath.item])
+    }
+}
+
+extension ShopViewController: ShopViewFilterHeaderViewDataSource {
+    func setupNumberOfItemsInSection(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return categories.count
+    }
+    
+    func setupCellForItemAt(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        if indexPath.item == 0 {
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FilterImageCell.reuseIdentifier, for: indexPath) as? FilterImageCell
+            else { return UICollectionViewCell() }
+            cell.configure("slider")
+            
+            return cell
+        }
+        
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FilterCell.reuseIdentifer, for: indexPath) as? FilterCell
+        else { return UICollectionViewCell() }
+        
+        cell.configure(categories[indexPath.item])
+        cell.titleLabel.sizeToFit()
+        
+        if indexPath.item == 2 {
+            cell.isUserInteractionEnabled = false
+        }
+        return cell
+    }
+}

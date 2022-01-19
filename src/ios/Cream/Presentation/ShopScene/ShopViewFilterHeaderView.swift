@@ -8,19 +8,23 @@
 import UIKit
 import SnapKit
 
+protocol ShopViewFilterHeaderViewDelegate: AnyObject {
+    func setupSizeForItemAt(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize
+    func didSelectItemAt(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath)
+}
+
+protocol ShopViewFilterHeaderViewDataSource: AnyObject {
+    func setupNumberOfItemsInSection(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int
+    func setupCellForItemAt(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell
+}
+
 final class ShopViewFilterHeaderView: UICollectionReusableView {
     static let reuseIdentifier = "\(ShopViewFilterHeaderView.self)"
     
-    var numberOfCell = 10
+    weak var delegate: ShopViewFilterHeaderViewDelegate?
+    weak var dataSource: ShopViewFilterHeaderViewDataSource?
     
-    enum Constraint {
-        static let verticalInset: CGFloat = 20
-        static let horizontalInset: CGFloat = 20
-    }
-    
-    let dataSource = ["  ", "럭셔리", " ", "스니커즈", "의류", "패션 잡화", "라이프", "테크"]
-    
-    lazy var filterCollectionView: UICollectionView = {
+    private lazy var filterCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         layout.minimumLineSpacing = 5
@@ -48,68 +52,25 @@ final class ShopViewFilterHeaderView: UICollectionReusableView {
         super.init(coder: coder)
         applyViewSettings()
     }
-    
-    func setupDelegate() {
-        filterCollectionView.delegate = self
-        filterCollectionView.dataSource = self
-    }
 }
 
-
-extension ShopViewFilterHeaderView: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
-    
+extension ShopViewFilterHeaderView: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        
-        return dataSource.count
+        return dataSource?.setupNumberOfItemsInSection(collectionView, numberOfItemsInSection: section) ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        print(#function)
-        if indexPath.item == 0 {
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FilterImageCell.reuseIdentifier, for: indexPath) as? FilterImageCell
-            else { return UICollectionViewCell() }
-            
-            cell.configure("slider")
-            return cell
-        }
-        
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FilterCell.reuseIdentifer, for: indexPath) as? FilterCell
-        else {
-            return UICollectionViewCell()
-        }
-        print(dataSource[indexPath.item])
-
-        cell.configure(dataSource[indexPath.item])
-        cell.titleLabel.sizeToFit()
-        
-        
-        
-        if indexPath.item == 1 {
-            cell.isUserInteractionEnabled = false
-        }
-        return cell
+        return dataSource?.setupCellForItemAt(collectionView, cellForItemAt: indexPath) ?? UICollectionViewCell()
     }
-    
+}
+
+extension ShopViewFilterHeaderView: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        print(#function)
-        guard let cell = filterCollectionView.dequeueReusableCell(withReuseIdentifier: FilterCell.reuseIdentifer,
-                                                                  for: indexPath) as? FilterCell
-        else { return .zero }
-        
-        cell.configure(dataSource[indexPath.item])
-        cell.titleLabel.sizeToFit()
-        
-        var cellWidth = cell.sizeThatFits(cell.titleLabel.frame.size).width + Constraint.horizontalInset
-        let cellHeight = cell.sizeThatFits(cell.titleLabel.frame.size).height + Constraint.verticalInset
-        
-        if indexPath.item == 2 {
-            cellWidth = 2
-        }
-        return CGSize(width: cellWidth, height: cellHeight)
+        return delegate?.setupSizeForItemAt(collectionView, layout: collectionViewLayout, sizeForItemAt: indexPath) ?? .zero
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print(dataSource[indexPath.item])
+        delegate?.didSelectItemAt(collectionView, didSelectItemAt: indexPath)
     }
 }
 
@@ -118,7 +79,7 @@ extension ShopViewFilterHeaderView: ViewConfiguration {
     func setupConstraints() {
         filterCollectionView.frame = bounds
     }
-    
+
     func buildHierarchy() {
         addSubviews(filterCollectionView)
     }
