@@ -6,5 +6,7 @@ data class UpdateUserDTO (
         val name: String,
         val address: String,
         val shoeSize: Int,
-        val profileImageUrl: String
+        val profileImageUrl: String,
+        val gender: Boolean,
+        val age: Int
         )

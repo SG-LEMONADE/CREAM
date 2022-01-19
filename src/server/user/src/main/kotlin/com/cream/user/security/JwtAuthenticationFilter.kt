@@ -14,9 +14,6 @@ import javax.servlet.FilterChain
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
-import lombok.extern.slf4j.Slf4j
-
-@Slf4j
 @Component
 class JwtAuthenticationFilter: OncePerRequestFilter() {
 

@@ -39,17 +39,18 @@ class UserService {
     }
 
     fun update(userEntity: UserEntity, user: UpdateUserDTO, encoder: PasswordEncoder): UserEntity{
-        val originalPassword = userEntity.password
+        if (!encoder.matches(user.password, userEntity.password)){
+            userEntity.passwordChangedDateTime = LocalDateTime.now()
+        }
         userEntity.email = user.email
         userEntity.password = encoder.encode(user.password)
         userEntity.name = user.name
         userEntity.address = user.address
         userEntity.shoeSize = user.shoeSize
+        userEntity.age = user.age
+        userEntity.gender = user.gender
         userEntity.profileImageUrl = user.profileImageUrl
         userEntity.updateAt = LocalDateTime.now()
-        if (originalPassword != userEntity.password){
-            userEntity.passwordChangedDateTime = LocalDateTime.now()
-        }
         return userRepository.save(userEntity)
     }
 

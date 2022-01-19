@@ -13,7 +13,7 @@ data class ResponseUserDTO(
     val shoeSize: Int,
     val profileImageUrl: String?,
     val status: Int,
-    val passwordChangedDateTime: LocalDateTime,
+    val passwordChangedDateTime: LocalDateTime?,
     val lastLoginDateTime: LocalDateTime?,
     val createdAt: LocalDateTime,
     val updatedAt: LocalDateTime?,
