@@ -12,14 +12,28 @@ import HeaderTopItem from "components/atoms/HeaderTopItem";
 
 import colors from "colors/color";
 import styled from "@emotion/styled";
+import { customAxios } from "lib/customAxios";
 
 const HeaderTop: FunctionComponent = () => {
 	const router = useRouter();
 
 	const [islogin, setIsLogin] = useState<boolean>(false);
 
-	const onLogout = () => {
-		window.localStorage.removeItem("creamToken");
+	const onLogout = async () => {
+		try {
+			const res = await customAxios.post("/users/logout");
+			if (res.data === "") {
+				// user logout OK.
+				console.log("userLogged out.");
+				window.localStorage.removeItem("creamAcessToken");
+				window.localStorage.removeItem("creamRefreshToken");
+				alert("로그아웃 되셨습니다!");
+				router.reload();
+			}
+		} catch (e) {
+			console.log("sth wrong when logout.");
+			console.log(e.response);
+		}
 		router.push("/");
 	};
 
@@ -27,15 +41,22 @@ const HeaderTop: FunctionComponent = () => {
 		try {
 			const res = await validateUser();
 			if (res) {
+				console.log("will be changed!");
 				setIsLogin(true);
+			} else {
+				console.log("검증 안됨");
+				setIsLogin(false);
 			}
 			// will add userContext
 		} catch (e) {
+			console.log("api 요청에 문제..");
+			console.log(e.response);
 			setIsLogin(false);
 		}
 	}, []);
 
 	useEffect(() => {
+		console.log("get Current User...");
 		getCurrentUser();
 	}, [getCurrentUser]);
 
@@ -79,7 +100,9 @@ const HeaderTop: FunctionComponent = () => {
 					</a>
 				</Link>
 			) : (
-				<HeaderTopItem onClick={onLogout}>로그아웃</HeaderTopItem>
+				<HeaderTopItem style={{ marginLeft: "24px" }} onClick={onLogout}>
+					로그아웃
+				</HeaderTopItem>
 			)}
 		</HeaderTopWrapper>
 	);

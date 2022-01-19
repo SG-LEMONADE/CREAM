@@ -12,7 +12,7 @@ type ButtonProps = {
 	onClick?: React.MouseEventHandler<HTMLButtonElement>;
 	disabled?: boolean;
 	fullWidth?: boolean;
-	style: CSSProperties;
+	style?: CSSProperties;
 };
 
 const Button: FunctionComponent<ButtonProps> = (props) => {

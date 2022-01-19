@@ -1,14 +1,18 @@
 import React, { FunctionComponent, useState } from "react";
+import Router, { useRouter } from "next/router";
 import Link from "next/link";
 import axios from "axios";
 
 import Logo from "components/atoms/Logo";
 import Input from "components/atoms/Input";
 import Button from "components/atoms/Button";
+import { setToken } from "utils/token";
 
 import styled from "@emotion/styled";
 
 const LoginForm: FunctionComponent = () => {
+	const router = useRouter();
+
 	const [email, setEmail] = useState<string>("");
 	const [password, setPassword] = useState<string>("");
 	const [isErrorEmail, setIsErrorEmail] = useState<boolean>(false);
@@ -23,16 +27,22 @@ const LoginForm: FunctionComponent = () => {
 		}
 	};
 
-	const onHandleLogin = async () => {
+	const onHandleLogin = async (e: React.MouseEvent<HTMLButtonElement>) => {
+		e.preventDefault();
 		try {
-			const res = await axios.post(`${process.env.END_POINT}/users/login`, {
+			const res = await axios.post(`${process.env.END_POINT}users/login`, {
 				email: email,
 				password: password,
 			});
-			console.log(res);
-		} catch (e) {
-			console.log(e);
-			alert("Nerwork Error. Please try it again.");
+			const data = await res.data;
+			console.log(data);
+			setToken("acessToken", data.accessToken);
+			setToken("refreshToken", data.refreshToken);
+			router.push("/");
+		} catch (err) {
+			const errResponse = err.response.data;
+			errResponse.code &&
+				alert(process.env.ERROR_code[parseInt(errResponse.code)]);
 		}
 	};
 
@@ -41,12 +51,12 @@ const LoginForm: FunctionComponent = () => {
 			<LoginContents>
 				<LoginArea>
 					<Logo category="LogowithTag" />
+					{isErrorEmail ? (
+						<Input onChange={onCheckEmailFormat} category="email" error />
+					) : (
+						<Input onChange={onCheckEmailFormat} category="email" />
+					)}
 					<form>
-						{isErrorEmail ? (
-							<Input onChange={onCheckEmailFormat} category="email" error />
-						) : (
-							<Input onChange={onCheckEmailFormat} category="email" />
-						)}
 						<Input
 							onChange={(e) => setPassword(e.target.value)}
 							category="password"
