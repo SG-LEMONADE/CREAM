@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from "react";
+import React, { CSSProperties, FunctionComponent } from "react";
 
 import styled from "@emotion/styled";
 import { Color, css } from "@emotion/react";
@@ -12,6 +12,7 @@ type ButtonProps = {
 	onClick?: React.MouseEventHandler<HTMLButtonElement>;
 	disabled?: boolean;
 	fullWidth?: boolean;
+	style: CSSProperties;
 };
 
 const Button: FunctionComponent<ButtonProps> = (props) => {
@@ -21,6 +22,7 @@ const Button: FunctionComponent<ButtonProps> = (props) => {
 		onClick,
 		disabled = false,
 		fullWidth = false,
+		style,
 	} = props;
 	return (
 		<StyledButton
@@ -28,6 +30,7 @@ const Button: FunctionComponent<ButtonProps> = (props) => {
 			onClick={onClick}
 			disabled={disabled}
 			fullWidth={fullWidth}
+			style={style}
 		>
 			{typeof children === "number"
 				? `${children.toLocaleString()}원`
