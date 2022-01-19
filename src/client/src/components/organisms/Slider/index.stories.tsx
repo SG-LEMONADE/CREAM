@@ -3,6 +3,7 @@ import { ComponentMeta, ComponentStory } from "@storybook/react";
 
 import Slider from "./";
 import BannerImage from "components/atoms/BannerImage";
+import ProductImage from "components/atoms/ProductImage";
 
 const bigList = [
 	<BannerImage
@@ -40,6 +41,24 @@ const smallList = [
 	/>,
 ];
 
+const productSlider = [
+	<ProductImage
+		src="https://kream-phinf.pstatic.net/MjAyMTA3MjhfMjIg/MDAxNjI3NDQxMDA1NjE5.HOgIYywGZaaBJDqUzx2OnX9HAxoOWPvuWHqUn_LZGcgg.VYIuOfA5_GgjBGRowv6dmQuAOPtUvmAxbGpOyUCOCtYg.PNG/p_9d8ed1a74d2540ab9842e63363607bf4.png?type=l"
+		category="products"
+		backgroundColor="rgb(235, 240, 245)"
+	/>,
+	<ProductImage
+		src="https://kream-phinf.pstatic.net/MjAyMTA3MjhfMTk2/MDAxNjI3NDQxMDEwNTc1.OVWeJtFIWhzmfjmKBH7islcWu25BA5kRgCum0NefxiEg.3-WlGTrUGQIqwMLUquLu-qbwAm4MAazH2vAwDr9DB8sg.PNG/p_21b22bba768a49378b071d15fe3671c7.png?type=l"
+		category="products"
+		backgroundColor="rgb(235, 240, 245)"
+	/>,
+	<ProductImage
+		src="https://kream-phinf.pstatic.net/MjAyMTA3MjhfMjQx/MDAxNjI3NDQxMDEyMjA2.DcysBFreA7tuLaKgU7UyPWct_NH87Ad9ktvGmEmaXjUg.VFp5d9BX5YPB-h6fGruYOUDXGrz_UPXrJWnPANfhhJAg.PNG/p_8d86fe659c3542b2aaafa40a7a0048c1.png?type=l"
+		category="products"
+		backgroundColor="rgb(235, 240, 245)"
+	/>,
+];
+
 export default {
 	title: "organisms/Slider",
 	component: Slider,
@@ -58,4 +77,10 @@ export const SmallSlider = Template.bind({});
 SmallSlider.args = {
 	small: true,
 	images: smallList,
+};
+
+export const ProductSlider = Template.bind({});
+ProductSlider.args = {
+	productSlider: true,
+	images: productSlider,
 };
