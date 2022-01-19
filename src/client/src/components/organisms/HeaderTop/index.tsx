@@ -25,7 +25,7 @@ const HeaderTop: FunctionComponent = () => {
 			if (res.data === "") {
 				// user logout OK.
 				console.log("userLogged out.");
-				window.localStorage.removeItem("creamAcessToken");
+				window.localStorage.removeItem("creamAccessToken");
 				window.localStorage.removeItem("creamRefreshToken");
 				alert("로그아웃 되셨습니다!");
 				router.reload();
