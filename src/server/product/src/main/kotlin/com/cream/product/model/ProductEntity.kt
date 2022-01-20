@@ -1,5 +1,6 @@
 package com.cream.product.model
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import java.time.LocalDate
 import javax.persistence.*
 
@@ -15,8 +16,8 @@ class ProductEntity (
     @Column(name="color") var color: String,
     @Column(name="style_code") var styleCode: String,
     @Column(name="wish_cnt") var wishCnt: Int,
-    @ManyToOne(cascade = [CascadeType.ALL], fetch = FetchType.LAZY) @JoinColumn(name="collection_id") var collection: CollectionEntity?,
-    @ManyToOne(cascade = [CascadeType.ALL], fetch = FetchType.LAZY) @JoinColumn(name="brand_id") var brand: BrandEntity?,
+    @JsonIgnore @ManyToOne(cascade = [CascadeType.DETACH], fetch = FetchType.LAZY) @JoinColumn(name="collection_id") var collection: CollectionEntity?,
+    @JsonIgnore @ManyToOne(cascade = [CascadeType.DETACH], fetch = FetchType.LAZY) @JoinColumn(name="brand_id") var brand: BrandEntity?,
     @Column(name="brand_name") var brandName: String,
     @Column(name="background_color") var backgroundColor: String,
     @Column(name="image_urls") var imageUrls: String,

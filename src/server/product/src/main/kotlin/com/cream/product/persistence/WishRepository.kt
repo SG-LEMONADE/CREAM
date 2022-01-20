@@ -15,7 +15,6 @@ interface WishRepositoryCustom{
 interface WishRepository: JpaRepository<WishEntity, Long>, WishRepositoryCustom {
     @Query("INSERT INTO wish (user_id, product_id, size) VALUE (:userId, :productId, :size)", nativeQuery = true)
     @Modifying
-    @Transactional
     fun createWish(userId: Long, productId: Long, size: String)
 }
 

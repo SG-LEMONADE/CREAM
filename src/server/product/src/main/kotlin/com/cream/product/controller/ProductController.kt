@@ -43,6 +43,7 @@ class ProductController {
         @PathVariable size: String,
         @RequestHeader("userId") userId: Long
     ): ResponseEntity<String>{
-        return ResponseEntity.ok(wishService.toggleWish(userId, productId, size))
+        wishService.toggleWish(userId, productId, size)
+        return ResponseEntity.ok(null)
     }
 }
