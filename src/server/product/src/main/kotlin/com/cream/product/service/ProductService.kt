@@ -1,11 +1,12 @@
 package com.cream.product.service
 
-import com.cream.product.dto.PageDTO
-import com.cream.product.dto.ProductDetailDTO
-import com.cream.product.dto.ProductListDTO
-import com.cream.product.dto.ProductWithWishDTO
+import com.cream.product.dto.*
+import com.cream.product.filter.ProductFilter
+import com.cream.product.model.ProductEntity
+import com.cream.product.model.WishEntity
 import com.cream.product.persistence.MarketRepository
 import com.cream.product.persistence.ProductRepository
+import com.querydsl.core.Tuple
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
@@ -20,28 +21,25 @@ class ProductService {
     @Autowired
     lateinit var marketRepository: MarketRepository
 
-    fun findProductsByPageWithWish(page: PageDTO, userId: Long?): List<ProductListDTO> {
+    fun findProductsByPageWithWish(page: PageDTO, userId: Long?, filter: ProductFilter): List<ProductWishDTO>? {
         return if (userId == null){
-            val foundProductsByPage = productRepository.findAll(PageRequest.of(page.cursor, page.perPage, Sort.by(page.sort))).content
-            foundProductsByPage.stream()
-                .map { ProductListDTO(it) }
-                .toList()
+            productRepository.getProducts(page.offset(), page.limit(), page.sort, filter)
+                ?.stream()?.map {
+                    ProductWishDTO(it, null)
+                }?.toList()
         } else {
-            val foundProductsByPage = productRepository.findAllWithWish(userId, page.offset(), page.limit(), page.sort)
-            foundProductsByPage.stream()
-                .map{ ProductListDTO(it) }
-                .toList()
+            productRepository.getProductsWithWish(userId, page.offset(), page.limit(), page.sort, filter)
         }
     }
 
     fun findProductById(id: Long, userId: Long?): ProductDetailDTO{
         val markets = marketRepository.findAllByProductId(id)
-        return if (userId == null){
+        return if (userId == null) {
             val product = productRepository.findById(id).orElseThrow()
             ProductDetailDTO(product, markets)
         } else {
-            val product = productRepository.findOneWithWish(userId, id)
-            ProductDetailDTO(product, markets)
+            val product = productRepository.getProductWithWish(userId, id)
+            ProductDetailDTO(product!!, markets)
         }
     }
 }

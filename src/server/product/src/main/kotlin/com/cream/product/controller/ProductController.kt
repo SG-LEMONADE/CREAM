@@ -1,11 +1,12 @@
 package com.cream.product.controller
 
-import com.cream.product.dto.PageDTO
-import com.cream.product.dto.ProductDetailDTO
-import com.cream.product.dto.ProductListDTO
-import com.cream.product.dto.ProductWithWishDTO
+import com.cream.product.dto.*
+import com.cream.product.filter.ProductFilter
+import com.cream.product.model.ProductEntity
+import com.cream.product.model.WishEntity
 import com.cream.product.service.ProductService
 import com.cream.product.service.WishService
+import com.querydsl.core.Tuple
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -20,17 +21,28 @@ class ProductController {
     lateinit var wishService: WishService
 
     @GetMapping
-    fun findProductsByPage(page: PageDTO, @RequestHeader("userId") userId: Long?): ResponseEntity<List<ProductListDTO>> {
-        return ResponseEntity.ok(productService.findProductsByPageWithWish(page, userId))
+    fun findProductsByPage(
+        page: PageDTO,
+        filter: ProductFilter,
+        @RequestHeader("userId", required = false) userId: Long?
+    ): ResponseEntity<List<ProductWishDTO?>> {
+        return ResponseEntity.ok(productService.findProductsByPageWithWish(page, userId, filter))
     }
 
     @GetMapping("/{id}")
-    fun findProductById(@PathVariable id: Long, @RequestHeader("userId") userId: Long?): ResponseEntity<ProductDetailDTO> {
+    fun findProductById(
+        @PathVariable id: Long,
+        @RequestHeader("userId", required = false) userId: Long?
+    ): ResponseEntity<ProductDetailDTO?> {
         return ResponseEntity.ok(productService.findProductById(id, userId))
     }
 
     @PostMapping("/{productId}/wish/{size}")
-    fun toggleWish(@PathVariable productId:Long, @PathVariable size: String ,@RequestHeader("userId") userId: Long): ResponseEntity<String>{
+    fun toggleWish(
+        @PathVariable productId: Long,
+        @PathVariable size: String,
+        @RequestHeader("userId") userId: Long
+    ): ResponseEntity<String>{
         return ResponseEntity.ok(wishService.toggleWish(userId, productId, size))
     }
 }

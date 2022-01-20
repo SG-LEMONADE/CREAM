@@ -14,8 +14,8 @@ data class ProductDetailDTO (
         markets,
         null
     )
-    constructor(product: ProductWithWishDTO, markets: List<MarketEntity>): this(
-        ProductEntity(product),
+    constructor(product: ProductWishDTO, markets: List<MarketEntity>): this(
+        product.product,
         markets,
         product.wishList
     )

@@ -1,6 +1,5 @@
 package com.cream.product.model
 
-import com.cream.product.dto.ProductWithWishDTO
 import java.time.LocalDate
 import javax.persistence.*
 
@@ -26,25 +25,3 @@ class ProductEntity (
     @Column(name="highest_bid") var highestBid: Int,
     @Column(name="total_sale") var totalSale: Int
         )
-{
-    constructor(p: ProductWithWishDTO): this(
-        p.id,
-        p.originalName,
-        p.translatedName,
-        p.originalPrice,
-        p.gender,
-        p.category,
-        p.color,
-        p.styleCode,
-        p.wishCnt,
-        null,
-        null,
-        p.brandName,
-        p.backgroundColor,
-        p.imageUrls,
-        p.sizes,
-        p.releasedDate,
-        p.highestBid,
-        p.totalSale
-    )
-}
