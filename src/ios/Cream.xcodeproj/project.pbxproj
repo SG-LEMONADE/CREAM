@@ -154,6 +154,7 @@
 				7B3566812791E53C00C45A68 /* HomeViewController.swift */,
 				7B193C822794D3D300B934A3 /* HomeViewItemCell.swift */,
 				7B193C8827965E5A00B934A3 /* HomeViewCategoryHeaderView.swift */,
+				7B193C942797900E00B934A3 /* HomeViewModel.swift */,
 			);
 			path = HomeScene;
 			sourceTree = "<group>";
@@ -438,6 +439,7 @@
 				7B193C8927965E5A00B934A3 /* HomeViewCategoryHeaderView.swift in Sources */,
 				7B3566842791E66400C45A68 /* HTTPMethod.swift in Sources */,
 				7B35667C27914EF200C45A68 /* SizeListCellViewModel.swift in Sources */,
+				7B193C9D2797F85D00B934A3 /* ItemView.swift in Sources */,
 				7B54D6F9278EF2B000214664 /* NetworkService.swift in Sources */,
 				7BB01119278BCAC0005E5C9E /* SigninViewModel.swift in Sources */,
 			);

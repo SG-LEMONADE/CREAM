@@ -42,8 +42,7 @@ final class TradeButton: UIButton {
     }
     
     required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        applyViewSettings()
+        fatalError()
     }
     
     private lazy var typeLabel: UILabel = {
