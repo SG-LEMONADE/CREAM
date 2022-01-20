@@ -3,10 +3,13 @@ import React, { FunctionComponent } from "react";
 import styled from "@emotion/styled";
 import Icon from "components/atoms/Icon";
 
-type SizeSelectProps = {};
+type SizeSelectProps = {
+	children: React.ReactNode;
+	onClick?: React.MouseEventHandler<SVGSVGElement>;
+};
 
 const SizeSelect: FunctionComponent<SizeSelectProps> = (props) => {
-	const {} = props;
+	const { onClick, children } = props;
 
 	return (
 		<SizeSelectWrapper>
@@ -15,8 +18,12 @@ const SizeSelect: FunctionComponent<SizeSelectProps> = (props) => {
 			</StyledTitle>
 			<StyledSize>
 				<StyledModalBtn>
-					<StyledSizeSpan>290</StyledSizeSpan>
-					<Icon name="ChevronDown" style={{ width: "20px", height: "20px" }} />
+					<StyledSizeSpan>{children}</StyledSizeSpan>
+					<Icon
+						onClick={onClick}
+						name="ChevronDown"
+						style={{ width: "20px", height: "20px" }}
+					/>
 				</StyledModalBtn>
 			</StyledSize>
 		</SizeSelectWrapper>
@@ -44,11 +51,11 @@ const StyledSpan = styled.span`
 	color: rgba(34, 34, 34, 0.8);
 `;
 
-const StyledSize = styled.div`
-    margin 
-`;
+const StyledSize = styled.div``;
 
-const StyledModalBtn = styled.div``;
+const StyledModalBtn = styled.div`
+	cursor: pointer;
+`;
 
 const StyledSizeSpan = styled.span`
 	vertical-align: top;
