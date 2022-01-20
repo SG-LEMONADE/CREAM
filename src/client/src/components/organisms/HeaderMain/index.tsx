@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, useState } from "react";
 import Link from "next/link";
 
 import Logo from "components/atoms/Logo";
@@ -31,7 +31,7 @@ const HeaderMain: FunctionComponent = () => {
 						<HeaderMainItem children="ABOUT" />
 					</a>
 				</Link>
-				<Icon name="Magnifier" />
+				<Icon name="Magnifier" style={{ cursor: "pointer" }} />
 			</StyledGNBArea>
 		</HeaderMainWrapper>
 	);
