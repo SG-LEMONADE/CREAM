@@ -24,14 +24,13 @@ const HeaderTop: FunctionComponent = () => {
 			const res = await customAxios.post("/users/logout");
 			if (res.data === "") {
 				// user logout OK.
-				console.log("userLogged out.");
 				window.localStorage.removeItem("creamAccessToken");
 				window.localStorage.removeItem("creamRefreshToken");
 				alert("로그아웃 되셨습니다!");
 				router.reload();
 			}
 		} catch (e) {
-			console.log("sth wrong when logout.");
+			console.error("STH wrong when user logout.");
 			console.log(e.response);
 		}
 		router.push("/");
@@ -41,22 +40,18 @@ const HeaderTop: FunctionComponent = () => {
 		try {
 			const res = await validateUser();
 			if (res) {
-				console.log("will be changed!");
+				// Got current user well.
 				setIsLogin(true);
 			} else {
-				console.log("검증 안됨");
 				setIsLogin(false);
 			}
 			// will add userContext
 		} catch (e) {
-			console.log("api 요청에 문제..");
-			console.log(e.response);
 			setIsLogin(false);
 		}
 	}, []);
 
 	useEffect(() => {
-		console.log("get Current User...");
 		getCurrentUser();
 	}, [getCurrentUser]);
 

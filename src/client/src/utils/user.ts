@@ -1,18 +1,15 @@
 import axios from "axios";
-import { customAxios } from "lib/customAxios";
 import { getToken } from "./token";
 
 export const validateUser = async (): Promise<number> => {
 	const token = getToken("accessToken");
 	if (!token) {
-		console.log("No token");
+		console.warn("TOKEN DOESN'T EXISTS. There is No token.");
 		return;
 	}
 	try {
-		console.log(token);
-		// const res = await customAxios.post("/users/validate");
 		const res = await axios.post(
-			`${process.env.END_POINT}users/validate`,
+			`${process.env.END_POINT}/users/validate`,
 			{},
 			{
 				headers: {
@@ -22,14 +19,13 @@ export const validateUser = async (): Promise<number> => {
 		);
 		if (res.data === "") {
 			// user validation OK.
-			console.log("user 검증 완료!");
 			return 1;
 		} else {
-			console.log("user 검증 실패!");
+			console.error("TOKEN is not valid!");
 			return;
 		}
 	} catch (e) {
-		console.log(e);
+		console.error("ERROR in `users/validate/");
 		console.log(e.response);
 		return;
 	}
