@@ -4,7 +4,7 @@ import styled from "@emotion/styled";
 
 const Footer: FunctionComponent = () => {
 	return (
-		<StyledFooterWrapper>
+		<StyledFooterWrapper style={{ position: "fixed", bottom: 0 }}>
 			<StyledServiceArea>
 				<ServiceArea>
 					<ServiceTitle>Team Lemonade 🍋</ServiceTitle>
@@ -60,6 +60,7 @@ export default Footer;
 const StyledFooterWrapper = styled.footer`
 	padding: 50px 40px;
 	border-top: 1px solid #ebebeb;
+	width: 100%;
 `;
 
 const StyledServiceArea = styled.div`

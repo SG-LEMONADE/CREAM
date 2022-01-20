@@ -4,6 +4,7 @@ import { ComponentMeta, ComponentStory } from "@storybook/react";
 import HomeTemplate from ".";
 import HeaderTop from "components/organisms/HeaderTop";
 import HeaderMain from "components/organisms/HeaderMain";
+import Footer from "components/organisms/Footer";
 
 export default {
 	title: "templates/HomeTemplate",
@@ -19,4 +20,5 @@ Default.args = {
 	headerTop: <HeaderTop />,
 	headerMain: <HeaderMain />,
 	children: <h1>Home screen</h1>,
+	footer: <Footer />,
 };

@@ -12,14 +12,27 @@ import HeaderTopItem from "components/atoms/HeaderTopItem";
 
 import colors from "colors/color";
 import styled from "@emotion/styled";
+import { customAxios } from "lib/customAxios";
 
 const HeaderTop: FunctionComponent = () => {
 	const router = useRouter();
 
 	const [islogin, setIsLogin] = useState<boolean>(false);
 
-	const onLogout = () => {
-		window.localStorage.removeItem("creamToken");
+	const onLogout = async () => {
+		try {
+			const res = await customAxios.post("/users/logout");
+			if (res.data === "") {
+				// user logout OK.
+				window.localStorage.removeItem("creamAccessToken");
+				window.localStorage.removeItem("creamRefreshToken");
+				alert("로그아웃 되셨습니다!");
+				router.reload();
+			}
+		} catch (e) {
+			console.error("STH wrong when user logout.");
+			console.log(e.response);
+		}
 		router.push("/");
 	};
 
@@ -27,7 +40,10 @@ const HeaderTop: FunctionComponent = () => {
 		try {
 			const res = await validateUser();
 			if (res) {
+				// Got current user well.
 				setIsLogin(true);
+			} else {
+				setIsLogin(false);
 			}
 			// will add userContext
 		} catch (e) {
@@ -79,7 +95,9 @@ const HeaderTop: FunctionComponent = () => {
 					</a>
 				</Link>
 			) : (
-				<HeaderTopItem onClick={onLogout}>로그아웃</HeaderTopItem>
+				<HeaderTopItem style={{ marginLeft: "24px" }} onClick={onLogout}>
+					로그아웃
+				</HeaderTopItem>
 			)}
 		</HeaderTopWrapper>
 	);

@@ -7,6 +7,8 @@ import { css } from "@emotion/react";
 type InputProps = {
 	category: string;
 	error?: boolean;
+	onChange: React.ChangeEventHandler<HTMLInputElement>;
+	onBlur?: React.ChangeEventHandler<HTMLInputElement>;
 };
 
 const placeholders = {
@@ -22,14 +24,23 @@ const fieldTitle = {
 };
 
 const Input: FunctionComponent<InputProps> = (props) => {
-	const { category, error = false } = props;
+	const { category, error = false, onChange, onBlur } = props;
 	const placeholder = placeholders[category];
 	return (
 		<>
 			<StyledInputTitle error={error}>{fieldTitle[category]}</StyledInputTitle>
-			<StyledInput type={category} error={error} placeholder={placeholder} />
+			<StyledInput
+				onChange={onChange}
+				onBlur={onBlur}
+				type={category}
+				error={error}
+				placeholder={placeholder}
+			/>
 			{error && (
-				<ErrorMsg>🤔 {fieldTitle[category]} 형식을 확인해주세요!</ErrorMsg>
+				<>
+					<ErrorMsg>🤔 {fieldTitle[category]} 형식을 확인해주세요!</ErrorMsg>
+					<div style={{ paddingBottom: "30px" }}></div>
+				</>
 			)}
 		</>
 	);
