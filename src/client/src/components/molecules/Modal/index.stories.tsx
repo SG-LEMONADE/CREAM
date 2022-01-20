@@ -1,7 +1,8 @@
 import React from "react";
 import { ComponentMeta, ComponentStory } from "@storybook/react";
-import Modal from ".";
 import { action } from "@storybook/addon-actions";
+
+import Modal from ".";
 
 export default {
 	title: "molecules/Modal",
