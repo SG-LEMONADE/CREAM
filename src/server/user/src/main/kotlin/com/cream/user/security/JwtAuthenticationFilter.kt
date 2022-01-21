@@ -28,11 +28,11 @@ class JwtAuthenticationFilter: OncePerRequestFilter() {
         val token: String? = request.getHeader("Authorization")
         if (token != null && !token.equals("null", ignoreCase = true)){
             val userId: String = tokenProvider.validateAndGetUserId(token)
-            var authentication: AbstractAuthenticationToken = UsernamePasswordAuthenticationToken(
+            val authentication: AbstractAuthenticationToken = UsernamePasswordAuthenticationToken(
                 userId, null, AuthorityUtils.NO_AUTHORITIES
             )
             authentication.details = WebAuthenticationDetailsSource().buildDetails(request)
-            var securityContext: SecurityContext = SecurityContextHolder.createEmptyContext()
+            val securityContext: SecurityContext = SecurityContextHolder.createEmptyContext()
             securityContext.authentication = authentication
             SecurityContextHolder.setContext(securityContext)
         }

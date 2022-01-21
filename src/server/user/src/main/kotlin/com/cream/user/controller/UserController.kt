@@ -118,7 +118,7 @@ class UserController {
     }
 
     @PostMapping("/validate")
-    fun validate(@RequestHeader("Authorization") token: String): ResponseEntity<Any> {
+    fun validate(@RequestHeader("Authorization") token: String): ResponseEntity<Unit> {
         return ResponseEntity.ok().body(null)
     }
 
@@ -141,7 +141,7 @@ class UserController {
     }
 
     @PostMapping("/logout")
-    fun logout(@RequestHeader("Authorization") token: String): ResponseEntity<Any> {
+    fun logout(@RequestHeader("Authorization") token: String): ResponseEntity<Unit> {
             val userId = tokenProvider.validateAndGetUserId(token)
             redisTemplate.delete("refresh-${userId}")
             return ResponseEntity.ok().body(null)

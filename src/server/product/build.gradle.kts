@@ -9,7 +9,12 @@ plugins {
     kotlin("plugin.allopen") version "1.6.10"
     kotlin("plugin.noarg") version "1.6.10"
 
-    kotlin("kapt") version "1.4.10" // JVM가동시 Kotlin 어노테이션 포함시키는 플러그인
+    // JVM가동시 Kotlin 어노테이션 포함시키는 플러그인
+    kotlin("kapt") version "1.4.10"
+
+    //ktlint
+    id("org.jlleitschuh.gradle.ktlint") version "10.0.0"
+    id("org.jlleitschuh.gradle.ktlint-idea") version "10.0.0"
 }
 
 noArg {

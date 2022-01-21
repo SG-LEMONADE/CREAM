@@ -1,7 +1,7 @@
 package com.cream.product.persistence
 
 import com.cream.product.dto.ProductWishDTO
-import com.cream.product.filter.ProductFilter
+import com.cream.product.dto.FilterRequestDTO
 import com.cream.product.model.ProductEntity
 import com.cream.product.model.QProductEntity
 import com.cream.product.model.QWishEntity
@@ -11,22 +11,20 @@ import com.querydsl.core.types.Projections
 import com.querydsl.core.types.dsl.BooleanExpression
 import com.querydsl.core.types.dsl.Expressions
 import com.querydsl.jpa.impl.JPAQueryFactory
-import org.hibernate.criterion.NullExpression
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport
 
-
-interface ProductRepositoryCustom{
-    fun getProducts(offset: Long, limit: Long, sort: String, filter: ProductFilter): List<ProductEntity>?
-    fun getProductsWithWish(userId: Long?, offset: Long, limit: Long, sort: String, filter: ProductFilter): List<ProductWishDTO>?
+interface ProductRepositoryCustom {
+    fun getProducts(offset: Long, limit: Long, sort: String, filter: FilterRequestDTO): List<ProductEntity>?
+    fun getProductsWithWish(userId: Long?, offset: Long, limit: Long, sort: String, filter: FilterRequestDTO): List<ProductWishDTO>?
     fun getProductWithWish(userId: Long?, productId: Long): ProductWishDTO?
 }
 
-interface ProductRepository: JpaRepository<ProductEntity, Long>, ProductRepositoryCustom {}
+interface ProductRepository : JpaRepository<ProductEntity, Long>, ProductRepositoryCustom
 
 class ProductRepositoryImpl :
-        QuerydslRepositorySupport(ProductEntity::class.java), ProductRepositoryCustom {
+    QuerydslRepositorySupport(ProductEntity::class.java), ProductRepositoryCustom {
     @Autowired
     private lateinit var jpaQueryFactory: JPAQueryFactory
 
@@ -40,8 +38,7 @@ class ProductRepositoryImpl :
         return jpaQueryFactory.select(
             Projections.constructor(
                 ProductWishDTO::class.java,
-                productEntity
-                ,Expressions.stringTemplate("group_concat({0})", wishEntity.size)
+                productEntity, Expressions.stringTemplate("group_concat({0})", wishEntity.size)
             )
         ).from(productEntity)
             .leftJoin(wishEntity).on(wishEntity.product.id.eq(productEntity.id), wishEntity.userId.eq(userId))
@@ -54,7 +51,7 @@ class ProductRepositoryImpl :
         offset: Long,
         limit: Long,
         sort: String,
-        filter: ProductFilter
+        filter: FilterRequestDTO
     ): MutableList<ProductEntity>? {
         return from(productEntity)
             .where(
@@ -77,31 +74,31 @@ class ProductRepositoryImpl :
         offset: Long,
         limit: Long,
         sort: String,
-        filter: ProductFilter
+        filter: FilterRequestDTO
     ): MutableList<ProductWishDTO>? {
-                return jpaQueryFactory.select(
-                    Projections.constructor(
-                        ProductWishDTO::class.java,
-                        productEntity,
-                        Expressions.stringTemplate("group_concat({0})", wishEntity.size)
-                    )
-                ).from(productEntity)
-                    .leftJoin(wishEntity).on(wishEntity.product.id.eq(productEntity.id), wishEntity.userId.eq(userId))
-                    .where(
-                        eqCategory(filter.category),
-                        inBrandId(filter.brandId),
-                        inCollectionId(filter.collectionId),
-                        geoPrice(filter.priceFrom),
-                        loePrice(filter.priceTo),
-                        likeKeyword(filter.keyWord),
-                        eqGender(filter.gender)
-                    )
-                    .groupBy(productEntity.id)
-                    .offset(offset)
-                    .limit(limit)
-                    .orderBy(getOrder(sort))
-                    .fetch()
-        }
+        return jpaQueryFactory.select(
+            Projections.constructor(
+                ProductWishDTO::class.java,
+                productEntity,
+                Expressions.stringTemplate("group_concat({0})", wishEntity.size)
+            )
+        ).from(productEntity)
+            .leftJoin(wishEntity).on(wishEntity.product.id.eq(productEntity.id), wishEntity.userId.eq(userId))
+            .where(
+                eqCategory(filter.category),
+                inBrandId(filter.brandId),
+                inCollectionId(filter.collectionId),
+                geoPrice(filter.priceFrom),
+                loePrice(filter.priceTo),
+                likeKeyword(filter.keyWord),
+                eqGender(filter.gender)
+            )
+            .groupBy(productEntity.id)
+            .offset(offset)
+            .limit(limit)
+            .orderBy(getOrder(sort))
+            .fetch()
+    }
 
     private fun eqCategory(category: String?): BooleanExpression? {
         return if (category.isNullOrBlank()) null else productEntity.category.eq(category)
@@ -127,7 +124,7 @@ class ProductRepositoryImpl :
         return if (priceTo == null) null else productEntity.highestBid.loe(priceTo)
     }
 
-    private fun likeKeyword(keyWord: String?): BooleanExpression?{
+    private fun likeKeyword(keyWord: String?): BooleanExpression? {
         return if (keyWord.isNullOrBlank()) null else productEntity.translatedName.like(keyWord)
     }
 
@@ -135,7 +132,7 @@ class ProductRepositoryImpl :
         return if (gender == null) null else productEntity.gender.eq(gender)
     }
 
-    private fun getOrder(sort: String?): OrderSpecifier<*>{
+    private fun getOrder(sort: String?): OrderSpecifier<*> {
         val defaultOrder = OrderSpecifier(Order.DESC, productEntity.totalSale)
         when {
             (sort == "highest_bid") -> {

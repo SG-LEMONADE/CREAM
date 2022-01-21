@@ -15,7 +15,7 @@ class WishService {
     lateinit var wishRepository: WishRepository
 
     @Transactional
-    fun toggleWish(userId: Long, productId: Long, size: String){
+    fun toggleWish(userId: Long, productId: Long, size: String) {
         val wish = wishRepository.existsWish(userId, productId, size)
         val product = productRepository.findById(productId).orElseThrow()
         if (wish != null) {
