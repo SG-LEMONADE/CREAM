@@ -152,8 +152,10 @@ extension HomeViewItemCell: ViewConfiguration {
 
 extension HomeViewItemCell {
     func configureTest() {
+        
         self.productImageView.image = UIImage(systemName: "bookmark")?
             .withAlignmentRectInsets(UIEdgeInsets(top: -10, left: -10, bottom: -10, right: -10))
+        self.productImageView.sizeToFit()
         self.titleLabel.text = "Nike"
         self.detailLabel.text = "Nike Big Swoosh Full Zip \nJacket Black Sail"
         self.priceLabel.text = "269,000원"

@@ -1,5 +1,5 @@
 //
-//  LoginViewController.swift
+//  SigninViewController.swift
 //  Cream
 //
 //  Created by wankikim-MN on 2022/01/10.
@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-final class LoginViewController: UIViewController {
+final class SigninViewController: UIViewController {
     
     private enum ViewMessage: String, CustomStringConvertible {
         case emailLabel = "이메일 주소"
@@ -23,7 +23,7 @@ final class LoginViewController: UIViewController {
         }
     }
     
-    private var viewModel = LoginViewModel()
+    private var viewModel = SigninViewModel()
     
     private lazy var loginImageView: UIImageView = {
         let imageView = UIImageView(image: UIImage(named: "loginTitle"))
@@ -190,7 +190,7 @@ final class LoginViewController: UIViewController {
     }
 }
 
-extension LoginViewController {
+extension SigninViewController {
     @objc
     private func login() {
         guard let email = emailTextField.text,
@@ -212,7 +212,7 @@ extension LoginViewController {
 }
 
 // MARK: - ViewConfiguration
-extension LoginViewController: ViewConfiguration {
+extension SigninViewController: ViewConfiguration {
     func buildHierarchy() {
         view.addSubviews(loginImageView,
                          emailLabel,
@@ -301,7 +301,7 @@ extension LoginViewController: ViewConfiguration {
 }
 
 
-extension LoginViewController: UITextFieldDelegate {
+extension SigninViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true

@@ -1,5 +1,5 @@
 //
-//  LoginViewModel.swift
+//  SigninViewModel.swift
 //  Cream
 //
 //  Created by wankikim-MN on 2022/01/10.
@@ -30,11 +30,9 @@ class UserViewModel {
     func validateLoginAvailable() {
         self.isLoginAvailable.value = validate(email: email.value) && validate(password: password.value)
     }
-    
-
 }
 
-final class LoginViewModel: UserViewModel {
+final class SigninViewModel: UserViewModel {
     
     func login(email: String, password: String) {
         NetworkService.shared.login(email: email, password: password) { [weak self] success in
