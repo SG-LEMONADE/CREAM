@@ -1,6 +1,7 @@
 package com.cream.product.model
 
 import com.fasterxml.jackson.annotation.JsonIgnore
+import com.fasterxml.jackson.annotation.JsonValue
 import java.time.LocalDate
 import javax.persistence.*
 
@@ -11,7 +12,7 @@ class ProductEntity(
     @Column(name = "original_name") var originalName: String,
     @Column(name = "translated_name") var translatedName: String,
     @Column(name = "original_price") var originalPrice: Int,
-    @Column(name = "gender") var gender: Boolean,
+    @Column(name = "gender") var gender: String,
     @Column(name = "category") var category: String,
     @Column(name = "color") var color: String,
     @Column(name = "style_code") var styleCode: String,

@@ -128,7 +128,7 @@ class ProductRepositoryImpl :
         return if (keyWord.isNullOrBlank()) null else productEntity.translatedName.like(keyWord)
     }
 
-    private fun eqGender(gender: Boolean?): BooleanExpression? {
+    private fun eqGender(gender: String?): BooleanExpression? {
         return if (gender == null) null else productEntity.gender.eq(gender)
     }
 
