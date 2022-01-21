@@ -15,7 +15,7 @@ class HomeViewController: UIViewController {
         case banner
     }
     
-//    typealias DataSource = UICollectionViewDiffableDataSource<Section, Video>
+    //    typealias DataSource = UICollectionViewDiffableDataSource<Section, Video>
     
     private let viewModel = HomeViewModel.init("test")
     private let banners: [String] = ["homebanner1",
@@ -26,6 +26,14 @@ class HomeViewController: UIViewController {
                                      "homebanner6",
                                      "homebanner7",
                                      "homebanner1"]
+    
+    weak var delegate: FooterScrollDelegate?
+    
+    private var item: Int = 0 {
+        didSet {
+            self.delegate?.didScrollTo(item)
+        }
+    }
     
     private var currentIndex: Int = 0
     private lazy var homeCollectionView: UICollectionView = {
@@ -52,7 +60,7 @@ class HomeViewController: UIViewController {
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
                                               heightDimension: .fractionalWidth(1))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        item.contentInsets.bottom = 15
+        item.contentInsets.bottom = -20
         
         let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
                                                heightDimension: .fractionalWidth(1))
@@ -63,6 +71,19 @@ class HomeViewController: UIViewController {
         
         let section = NSCollectionLayoutSection(group: group)
         section.orthogonalScrollingBehavior = .groupPaging
+        section.boundarySupplementaryItems = [
+            NSCollectionLayoutBoundarySupplementaryItem(layoutSize: .init(widthDimension: .fractionalWidth(0.9),
+                                                                          heightDimension: .absolute(10)),
+                                                        elementKind: UICollectionView.elementKindSectionFooter,
+                                                        alignment: .bottom)
+        ]
+        
+        section.visibleItemsInvalidationHandler = { items, contentOffset, environment in
+            let currentPage = Int(max(0, round(contentOffset.x / environment.container.contentSize.width)))
+            if currentPage != self.item {
+                self.item = currentPage
+            }
+        }
         
         return section
     }
@@ -75,17 +96,20 @@ class HomeViewController: UIViewController {
         item.contentInsets = .init(top: 0, leading: 0, bottom: 5, trailing: 5)
         let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
                                                heightDimension: .estimated(580))
+
+        
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
         let section = NSCollectionLayoutSection(group: group)
         section.orthogonalScrollingBehavior = .groupPaging
         
-        section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 5, bottom: 20, trailing: 0)
+        section.contentInsets = NSDirectionalEdgeInsets(top: 50, leading: 5, bottom: 20, trailing: 0)
         section.boundarySupplementaryItems = [
             NSCollectionLayoutBoundarySupplementaryItem(layoutSize: .init(widthDimension: .fractionalWidth(1),
                                                                           heightDimension: .estimated(50)),
                                                         elementKind: UICollectionView.elementKindSectionHeader,
                                                         alignment: .topLeading)
         ]
+        
         return section
     }
     
@@ -175,6 +199,9 @@ class HomeViewController: UIViewController {
         homeCollectionView.register(HomeViewCategoryHeaderView.self,
                                     forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
                                     withReuseIdentifier: HomeViewCategoryHeaderView.reuseIdentifier)
+        homeCollectionView.register(PageControlFooterView.self,
+                                    forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter,
+                                    withReuseIdentifier: PageControlFooterView.reuseIdentifier)
     }
 }
 
@@ -184,7 +211,7 @@ extension HomeViewController {
             self.bannerMove()
         }
     }
-
+    
     func bannerMove() {
         currentIndex += 1
         homeCollectionView.scrollToItem(at: NSIndexPath(item: currentIndex, section: 0) as IndexPath, at: .bottom, animated: true)
@@ -195,7 +222,7 @@ extension HomeViewController {
             }
         }
     }
-
+    
     func scrollTofirstIndex() {
         homeCollectionView.scrollToItem(at: NSIndexPath(item: 0, section: 0) as IndexPath, at: .top, animated: false)
         currentIndex = 0
@@ -251,12 +278,28 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind,
-                                                                           withReuseIdentifier: HomeViewCategoryHeaderView.reuseIdentifier,
-                                                                           for: indexPath) as? HomeViewCategoryHeaderView else
-                                                                           { return UICollectionReusableView() }
-        header.configure("\(Int.random(in: 0...100))")
-        return header
+        switch kind {
+        case UICollectionView.elementKindSectionHeader:
+            guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind,
+                                                                               withReuseIdentifier: HomeViewCategoryHeaderView.reuseIdentifier,
+                                                                               for: indexPath) as? HomeViewCategoryHeaderView else
+            { return UICollectionReusableView() }
+            header.configure("\(Int.random(in: 0...100))")
+            return header
+            
+        case UICollectionView.elementKindSectionFooter:
+            guard let footer = collectionView.dequeueReusableSupplementaryView(ofKind: kind,
+                                                                               withReuseIdentifier: PageControlFooterView.reuseIdentifier,
+                                                                               for: indexPath) as? PageControlFooterView else
+            { return UICollectionReusableView() }
+            
+            self.delegate = footer
+            footer.configure(banners.count)
+            
+            return footer
+        default:
+            assert(false, "Unexpected element kind")
+        }
     }
 }
 

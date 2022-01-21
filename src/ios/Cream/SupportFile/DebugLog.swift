@@ -7,9 +7,9 @@
 
 import Foundation
 
-public func myLogPrint(_ object: Any, filename: String = #file, _ line: Int = #line, _ funcname: String = #function) {
+public func myLogPrint(_ object: Any, filename: String = #file, _ line: Int = #line, _ functionName: String = #function) {
     let dateFormatter = DateFormatter()
     dateFormatter.dateFormat = "HH:mm:ss:SSS"
-    print("Wanki's Log : \(dateFormatter.string(from: Date())) file: \(filename) line: \(line) func: \(funcname)")
+    print("Wanki's Log : \(dateFormatter.string(from: Date())) file: \(filename) line: \(line) func: \(functionName)")
     print(object)
 }

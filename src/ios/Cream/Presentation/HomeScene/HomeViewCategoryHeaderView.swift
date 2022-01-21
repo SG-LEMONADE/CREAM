@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SnapKit
 
 class HomeViewCategoryHeaderView: UICollectionReusableView {
     static let reuseIdentifier = "\(HomeViewCategoryHeaderView.self)"
@@ -55,11 +56,16 @@ extension HomeViewCategoryHeaderView {
 
 // MARK: - ViewConfiguration
 extension HomeViewCategoryHeaderView: ViewConfiguration {
-    func setupConstraints() {
-        labelStackView.frame = bounds
-    }
-    
     func buildHierarchy() {
         addSubviews(labelStackView)
+    }
+    
+    func setupConstraints() {
+        labelStackView.snp.makeConstraints {
+            $0.leading.equalTo(self.snp.leading).offset(10)
+            $0.trailing.equalTo(self.snp.trailing).offset(-10)
+            $0.top.equalTo(self.snp.top).offset(20)
+            $0.bottom.equalTo(self.snp.bottom)
+        }
     }
 }

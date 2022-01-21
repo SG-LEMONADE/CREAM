@@ -15,9 +15,9 @@ final class TradeButton: UIButton {
         
         var color: UIColor {
             if self == .buy {
-                return UIColor.red
+                return UIColor(rgb: 0xEF6253)
             } else {
-                return UIColor.green
+                return UIColor(rgb: 0x41B979)
             }
         }
         
@@ -28,6 +28,10 @@ final class TradeButton: UIButton {
             case .sell:
                 return "판매"
             }
+        }
+        
+        var labelText: String {
+            return "즉시 \(self.description)가"
         }
     }
     
@@ -47,16 +51,32 @@ final class TradeButton: UIButton {
     
     private lazy var typeLabel: UILabel = {
         let label = UILabel()
+        label.text = self.tradeType.description
+        label.textColor = .white
         return label
     }()
     
     private lazy var priceLabel: UILabel = {
         let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 13, weight: .bold)
+        label.textAlignment = .left
+        label.textColor = .white
+        if let price = self.price {
+            label.text = "\(price)원"
+        } else {
+            label.text = "\(self.tradeType.description) 입찰"
+        }
+        
         return label
     }()
     
     private lazy var detailLabel: UILabel = {
         let label = UILabel()
+        label.textColor = UIColor(rgb: 0xfce1e0)
+        label.text = self.tradeType.labelText
+        label.font = UIFont.systemFont(ofSize: 13)
+        label.textAlignment = .left
+        
         return label
     }()
     
@@ -64,7 +84,7 @@ final class TradeButton: UIButton {
         let stackView = UIStackView(arrangedSubviews: [priceLabel, detailLabel])
         stackView.axis = .vertical
         stackView.alignment = .center
-        stackView.spacing = 10
+        stackView.spacing = 2
         stackView.distribution = .equalSpacing
         
         return stackView
@@ -90,5 +110,10 @@ extension TradeButton: ViewConfiguration {
             $0.bottom.equalTo(typeLabel.snp.bottom)
             $0.trailing.equalTo(self.snp.trailing).offset(-10)
         }
+    }
+    
+    func viewConfigure() {
+        self.backgroundColor = self.tradeType.color
+        self.layer.cornerRadius = 10
     }
 }

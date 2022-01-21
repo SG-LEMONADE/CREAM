@@ -163,11 +163,13 @@ extension ShopViewController: ViewConfiguration {
     }
 }
 
-extension ShopViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+extension ShopViewController: UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 2
     }
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    
+    func collectionView(_ collectionView: UICollectionView,
+                        numberOfItemsInSection section: Int) -> Int {
         switch section {
         case 0:
             return banners.count
@@ -176,16 +178,19 @@ extension ShopViewController: UICollectionViewDelegate, UICollectionViewDataSour
         }
     }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    func collectionView(_ collectionView: UICollectionView,
+                        cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if indexPath.section == 0 {
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ShopBannerCell.reuseIdentifier, for: indexPath) as? ShopBannerCell
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ShopBannerCell.reuseIdentifier,
+                                                                for: indexPath) as? ShopBannerCell
             else { return UICollectionViewCell() }
+            
             cell.configure(banners[indexPath.item])
             
             return cell
-            
         } else {
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HomeViewItemCell.reuseIdentifier, for: indexPath) as? HomeViewItemCell
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HomeViewItemCell.reuseIdentifier,
+                                                                for: indexPath) as? HomeViewItemCell
             else { return UICollectionViewCell() }
             cell.configureTest()
             
@@ -193,7 +198,9 @@ extension ShopViewController: UICollectionViewDelegate, UICollectionViewDataSour
         }
     }
     
-    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+    func collectionView(_ collectionView: UICollectionView,
+                        viewForSupplementaryElementOfKind kind: String,
+                        at indexPath: IndexPath) -> UICollectionReusableView {
         guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind,
                                                                            withReuseIdentifier: ShopViewFilterHeaderView.reuseIdentifier,
                                                                            for: indexPath) as? ShopViewFilterHeaderView else
@@ -204,9 +211,20 @@ extension ShopViewController: UICollectionViewDelegate, UICollectionViewDataSour
     }
 }
 
+extension ShopViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if indexPath.section == 1 {
+            let nextVC = ItemViewController.init(ItemViewModel())
+            nextVC.hidesBottomBarWhenPushed = true
+            self.navigationController?.pushViewController(nextVC, animated: true)
+        }
+    }
+}
 
 extension ShopViewController: ShopViewFilterHeaderViewDelegate {
-    func setupSizeForItemAt(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+    func setupSizeForItemAt(_ collectionView: UICollectionView,
+                            layout collectionViewLayout: UICollectionViewLayout,
+                            sizeForItemAt indexPath: IndexPath) -> CGSize {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FilterCell.reuseIdentifer,
                                                                   for: indexPath) as? FilterCell else
                                                                   { return .zero }

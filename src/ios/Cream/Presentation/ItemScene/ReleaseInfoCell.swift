@@ -1,5 +1,5 @@
 //
-//  ModelInfoCell.swift
+//  ReleaseInfoCell.swift
 //  Cream
 //
 //  Created by wankikim-MN on 2022/01/20.
@@ -8,7 +8,8 @@
 import UIKit
 import SnapKit
 
-class ModelInfoCell: UICollectionViewCell {
+class ReleaseInfoCell: UICollectionViewCell {
+    static let reuseIdentifier = "\(ReleaseInfoCell.self)"
     
     private lazy var templateLabel: UILabel = {
         let label = UILabel()
@@ -33,7 +34,7 @@ class ModelInfoCell: UICollectionViewCell {
     }
 }
 
-extension ModelInfoCell: ViewConfiguration {
+extension ReleaseInfoCell: ViewConfiguration {
     func buildHierarchy() {
         self.addSubviews(templateLabel, valueLabel)
     }
@@ -54,8 +55,11 @@ extension ModelInfoCell: ViewConfiguration {
 }
 
 // MARK: Cell Configure Info
-extension ModelInfoCell {
+extension ReleaseInfoCell {
     func configure(_ data: String) {
+        templateLabel.text = "MODEL NUMBER"
+        valueLabel.text = "SERIAL \(Int.random(in: 0...100))"
+        
         myLogPrint("ModelInfoCell")
     }
 }
