@@ -22,7 +22,6 @@ import javax.mail.Message
 import javax.mail.internet.InternetAddress
 import javax.mail.internet.MimeMessage
 
-
 @RestController
 @RequestMapping("/users")
 class UserController {
@@ -41,7 +40,7 @@ class UserController {
     var passwordEncoder: PasswordEncoder = BCryptPasswordEncoder()
 
     @PostMapping("/signup")
-    fun signup(@RequestBody registerUserDTO: RegisterUserDTO): ResponseEntity<ResponseUserDTO>{
+    fun signup(@RequestBody registerUserDTO: RegisterUserDTO): ResponseEntity<ResponseUserDTO> {
         val user = registerUserDTO.toEntity(passwordEncoder)
 
         sendEmail(user.email, 0)
@@ -51,7 +50,7 @@ class UserController {
     }
 
     @PostMapping("/login")
-    fun login(@RequestBody userDTO: LoginDTO): ResponseEntity<TokenDTO>{
+    fun login(@RequestBody userDTO: LoginDTO): ResponseEntity<TokenDTO> {
         val user: UserEntity = userService.getByCredentials(userDTO.email, userDTO.password, passwordEncoder)
 
         when {
@@ -90,20 +89,20 @@ class UserController {
     }
 
     @PostMapping("/refresh")
-    fun refresh(@RequestBody tokenDTO: TokenDTO): ResponseEntity<TokenDTO>{
+    fun refresh(@RequestBody tokenDTO: TokenDTO): ResponseEntity<TokenDTO> {
         // 둘다 Bearer 앞에 와야합니다.
         val accessToken: String = tokenDTO.accessToken
         val refreshToken: String = tokenDTO.refreshToken
 
         val userId = tokenProvider.validateAndGetUserId(refreshToken)
-        if (tokenProvider.validateAndGetUserId(accessToken) != userId){
+        if (tokenProvider.validateAndGetUserId(accessToken) != userId) {
             // 엑세스 토큰과 리프레시 토큰이 다른 사람일때
             throw UserCustomException(ErrorCode.REFRESH_TOKEN_NOT_VALID)
         }
 
         val stringValueOperation = redisTemplate.opsForValue()
-        val storedToken: String? = stringValueOperation.get("refresh-${userId}")
-        if (storedToken == null || storedToken != refreshToken.substring(7)){
+        val storedToken: String? = stringValueOperation.get("refresh-$userId")
+        if (storedToken == null || storedToken != refreshToken.substring(7)) {
             throw UserCustomException(ErrorCode.REFRESH_TOKEN_EXPIRED)
         }
 
@@ -111,7 +110,7 @@ class UserController {
         val newAccessToken = tokenProvider.create(user)
         val newRefreshToken = tokenProvider.create(user, isRefresh = true)
 
-        stringValueOperation.set("refresh-${userId}", newRefreshToken, 7, TimeUnit.DAYS)
+        stringValueOperation.set("refresh-$userId", newRefreshToken, 7, TimeUnit.DAYS)
 
         return ResponseEntity.ok()
             .body(TokenDTO(userId.toLong(), newAccessToken, newRefreshToken))
@@ -123,7 +122,7 @@ class UserController {
     }
 
     @GetMapping("/verify")
-    fun verify(@RequestParam ("email", required = true) email: String, @RequestParam("key", required = true) hash: String): ResponseEntity<Any>{
+    fun verify(@RequestParam("email", required = true) email: String, @RequestParam("key", required = true) hash: String): ResponseEntity<Any> {
         val stringValueOperation = redisTemplate.opsForValue()
         val storedHash: String? = stringValueOperation.get(email)
         if (storedHash == null || storedHash != hash) {
@@ -142,13 +141,13 @@ class UserController {
 
     @PostMapping("/logout")
     fun logout(@RequestHeader("Authorization") token: String): ResponseEntity<Unit> {
-            val userId = tokenProvider.validateAndGetUserId(token)
-            redisTemplate.delete("refresh-${userId}")
-            return ResponseEntity.ok().body(null)
+        val userId = tokenProvider.validateAndGetUserId(token)
+        redisTemplate.delete("refresh-$userId")
+        return ResponseEntity.ok().body(null)
     }
 
     @PutMapping("/{id}")
-    fun update(@PathVariable id: Long,  @RequestBody updatedUser: UpdateUserDTO): ResponseEntity<ResponseUserDTO> {
+    fun update(@PathVariable id: Long, @RequestBody updatedUser: UpdateUserDTO): ResponseEntity<ResponseUserDTO> {
         val user = userService.update(userService.getById(id), updatedUser, passwordEncoder)
         return ResponseEntity.ok().body(ResponseUserDTO(user))
     }
@@ -165,17 +164,14 @@ class UserController {
         val stringValueOperation = redisTemplate.opsForValue()
         var htmlString = ""
         stringValueOperation.set(email, hash, 1, TimeUnit.DAYS)
-        if (type == 0)
-        {
+        if (type == 0) {
             htmlString +=
                 "안녕하세요 인증을 위해 아래의 링크를 눌러주세요. \n" +
-                        "<a href='http://localhost:8000/users/verify?email=${email}&key=${hash}'> 회원 가입 이메일 인증하기 </a>"
-        }
-        else if (type == 1)
-        {
+                "<a href='http://localhost:8000/users/verify?email=$email&key=$hash'> 회원 가입 이메일 인증하기 </a>"
+        } else if (type == 1) {
             htmlString +=
                 "안녕하세요 비밀번호 변경을 위해 아래의 링크를 눌러주세요. \n" +
-                        "<a href='http://localhost:8000/users/verify/password?email=${email}&key=${hash}'> 비밀번호 변경하기 </a>"
+                "<a href='http://localhost:8000/users/verify/password?email=$email&key=$hash'> 비밀번호 변경하기 </a>"
         }
 
         message.setText(htmlString, "UTF-8", "html")

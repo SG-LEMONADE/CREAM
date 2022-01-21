@@ -16,30 +16,30 @@ class UserService {
     @Autowired
     lateinit var userRepository: UserRepository
 
-    fun create(userEntity: UserEntity): UserEntity{
-        if (userEntity.email == ""){
+    fun create(userEntity: UserEntity): UserEntity {
+        if (userEntity.email == "") {
             throw UserCustomException(ErrorCode.INVALID_INPUT_VALUE)
         }
         val email: String = userEntity.email
-        if (userRepository.existsByEmail(email)){
+        if (userRepository.existsByEmail(email)) {
             throw UserCustomException(ErrorCode.DUPLICATED_USER_EMAIL)
         }
         return userRepository.save(userEntity)
     }
 
-    fun updateUserState(email: String, stateCode: Int){
+    fun updateUserState(email: String, stateCode: Int) {
         val user: UserEntity = (userRepository.findOneByEmail(email) ?: throw UserCustomException(ErrorCode.ENTITY_NOT_FOUND))
         user.status = stateCode
         userRepository.save(user)
     }
 
-    fun updateUserLastLoginTime(userEntity: UserEntity){
+    fun updateUserLastLoginTime(userEntity: UserEntity) {
         userEntity.lastLoginDateTime = LocalDateTime.now()
         userRepository.save(userEntity)
     }
 
-    fun update(userEntity: UserEntity, user: UpdateUserDTO, encoder: PasswordEncoder): UserEntity{
-        if (!encoder.matches(user.password, userEntity.password)){
+    fun update(userEntity: UserEntity, user: UpdateUserDTO, encoder: PasswordEncoder): UserEntity {
+        if (!encoder.matches(user.password, userEntity.password)) {
             userEntity.passwordChangedDateTime = LocalDateTime.now()
         }
         userEntity.email = user.email
@@ -60,7 +60,7 @@ class UserService {
         else throw UserCustomException(ErrorCode.USER_PASSWORD_NOT_MATCH)
     }
 
-    fun getById(userId: Long): UserEntity{
+    fun getById(userId: Long): UserEntity {
         return userRepository.getById(userId)
     }
 }

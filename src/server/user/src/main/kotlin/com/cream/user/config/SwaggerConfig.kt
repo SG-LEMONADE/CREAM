@@ -15,7 +15,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2
 class SwaggerConfig {
 
     @Bean
-    fun docket(): Docket{
+    fun docket(): Docket {
         val groupName: String = "CreamServer"
         return Docket(DocumentationType.SWAGGER_2)
             .useDefaultResponseMessages(false)
@@ -27,7 +27,7 @@ class SwaggerConfig {
             .apiInfo(apiInfo())
     }
 
-    private fun apiInfo(): ApiInfo{
+    private fun apiInfo(): ApiInfo {
         return ApiInfoBuilder()
             .title("CREAM API")
             .description("this is cream swagger for lemonade team")

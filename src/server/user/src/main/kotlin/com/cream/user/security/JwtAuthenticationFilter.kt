@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
 @Component
-class JwtAuthenticationFilter: OncePerRequestFilter() {
+class JwtAuthenticationFilter : OncePerRequestFilter() {
 
     @Autowired
     lateinit var tokenProvider: TokenProvider
@@ -26,7 +26,7 @@ class JwtAuthenticationFilter: OncePerRequestFilter() {
         filterChain: FilterChain
     ) {
         val token: String? = request.getHeader("Authorization")
-        if (token != null && !token.equals("null", ignoreCase = true)){
+        if (token != null && !token.equals("null", ignoreCase = true)) {
             val userId: String = tokenProvider.validateAndGetUserId(token)
             val authentication: AbstractAuthenticationToken = UsernamePasswordAuthenticationToken(
                 userId, null, AuthorityUtils.NO_AUTHORITIES

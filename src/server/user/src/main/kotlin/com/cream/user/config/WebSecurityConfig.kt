@@ -13,7 +13,7 @@ import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.web.filter.CorsFilter
 
 @EnableWebSecurity
-class WebSecurityConfig: WebSecurityConfigurerAdapter() {
+class WebSecurityConfig : WebSecurityConfigurerAdapter() {
     private val log = LoggerFactory.getLogger(javaClass)
 
     @Autowired
@@ -28,10 +28,7 @@ class WebSecurityConfig: WebSecurityConfigurerAdapter() {
     @Value("\${auth-excluded-path}")
     lateinit var authExcludedPaths: Array<String>
 
-    override fun configure(http: HttpSecurity){
-        authExcludedPaths.forEach {
-            a -> log.info(a)
-        }
+    override fun configure(http: HttpSecurity) {
         http.cors()
             .and()
             .csrf().disable()

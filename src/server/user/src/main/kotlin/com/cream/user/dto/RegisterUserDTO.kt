@@ -10,7 +10,7 @@ data class RegisterUserDTO(
     val shoeSize: Int,
     val createdAt: LocalDateTime = LocalDateTime.now()
 ) {
-    fun toEntity(encoder: PasswordEncoder): UserEntity{
+    fun toEntity(encoder: PasswordEncoder): UserEntity {
         return UserEntity(
             email = this.email,
             password = encoder.encode(this.password),

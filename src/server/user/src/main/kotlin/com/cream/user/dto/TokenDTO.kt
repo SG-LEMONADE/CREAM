@@ -1,7 +1,7 @@
 package com.cream.user.dto
 
-data class TokenDTO (
+data class TokenDTO(
     val userId: Long?,
     val accessToken: String,
     val refreshToken: String
-        )
+)

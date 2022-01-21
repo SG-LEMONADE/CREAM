@@ -15,17 +15,16 @@ import java.util.Date
 import java.time.Instant
 import java.time.temporal.ChronoUnit
 
-
 @Service
 class TokenProvider {
 
     @Value("\${secret-key}")
     lateinit var SECRET_KEY: String
 
-    fun create(userEntity: UserEntity, isRefresh: Boolean=false): String{
+    fun create(userEntity: UserEntity, isRefresh: Boolean = false): String {
         var expiryDate: Date = Date.from(Instant.now().plus(30, ChronoUnit.MINUTES))
 
-        if (isRefresh){
+        if (isRefresh) {
             expiryDate = Date.from(Instant.now().plus(7, ChronoUnit.DAYS))
         }
         return Jwts.builder()
@@ -36,7 +35,7 @@ class TokenProvider {
             .compact()
     }
 
-    fun validateAndGetUserId(token: String): String{
+    fun validateAndGetUserId(token: String): String {
         val filteredToken = token.substring(7) // without Bearer
         val claims: Claims = Jwts.parser()
             .setSigningKey(SECRET_KEY)
@@ -55,9 +54,8 @@ class TokenProvider {
                 hashText = "0$hashText"
             }
             hashText
-        } catch (e: NoSuchAlgorithmException){
+        } catch (e: NoSuchAlgorithmException) {
             throw RuntimeException(e)
         }
     }
-
 }

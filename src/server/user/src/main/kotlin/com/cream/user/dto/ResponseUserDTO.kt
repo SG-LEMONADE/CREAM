@@ -19,19 +19,19 @@ data class ResponseUserDTO(
     val updatedAt: LocalDateTime?,
 ) {
     constructor(userEntity: UserEntity) :
-            this(
-                userEntity.id,
-                userEntity.email,
-                userEntity.name,
-                userEntity.address,
-                userEntity.gender,
-                userEntity.age,
-                userEntity.shoeSize,
-                userEntity.profileImageUrl,
-                userEntity.status,
-                userEntity.passwordChangedDateTime,
-                userEntity.lastLoginDateTime,
-                userEntity.createAt,
-                userEntity.updateAt,
-            )
+        this(
+            userEntity.id,
+            userEntity.email,
+            userEntity.name,
+            userEntity.address,
+            userEntity.gender,
+            userEntity.age,
+            userEntity.shoeSize,
+            userEntity.profileImageUrl,
+            userEntity.status,
+            userEntity.passwordChangedDateTime,
+            userEntity.lastLoginDateTime,
+            userEntity.createAt,
+            userEntity.updateAt,
+        )
 }
