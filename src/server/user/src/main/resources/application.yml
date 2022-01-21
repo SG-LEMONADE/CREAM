@@ -12,10 +12,10 @@ spring:
   jpa:
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     open-in-view: false
-    show-sql: true
-    hibernate:
-      format_sql: true
-      ddl-auto: none
+    properties:
+      hibernate:
+        ddl-auto: none
+        format_sql: true
 
   redis:
     host: 127.0.0.1
@@ -46,4 +46,4 @@ logging:
             sql:
               BasicBinder: TRACE
 
-auth-excluded-path: /users/login, /users/signup, /users/refresh, /users/verify, /users/validate
+auth-excluded-path: /users/login, /users/signup, /users/refresh, /users/verify, /users/validate, /swagger-ui.html/**, /configuration/**, /swagger-resources/**, /v2/api-docs, /webjars/**, /webjars/springfox-swagger-ui/*.{js,css}

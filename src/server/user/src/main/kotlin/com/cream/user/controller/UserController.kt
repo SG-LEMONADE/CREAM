@@ -6,7 +6,6 @@ import com.cream.user.error.ErrorCode
 import com.cream.user.model.UserEntity
 import com.cream.user.security.TokenProvider
 import com.cream.user.service.UserService
-import lombok.extern.slf4j.Slf4j
 import org.slf4j.LoggerFactory
 
 import org.springframework.beans.factory.annotation.Autowired
@@ -19,15 +18,10 @@ import java.util.concurrent.TimeUnit
 
 import org.springframework.scheduling.annotation.Async
 import org.springframework.web.bind.annotation.*
-import java.math.BigInteger
-import java.security.MessageDigest
-import java.security.NoSuchAlgorithmException
 import javax.mail.Message
 import javax.mail.internet.InternetAddress
 import javax.mail.internet.MimeMessage
 
-
-@Slf4j
 @RestController
 @RequestMapping("/users")
 class UserController {
@@ -46,17 +40,17 @@ class UserController {
     var passwordEncoder: PasswordEncoder = BCryptPasswordEncoder()
 
     @PostMapping("/signup")
-    fun signup(@RequestBody registerUserDTO: RegisterUserDTO): ResponseEntity<Any>{
+    fun signup(@RequestBody registerUserDTO: RegisterUserDTO): ResponseEntity<ResponseUserDTO> {
         val user = registerUserDTO.toEntity(passwordEncoder)
 
-        sendEmail(user.email, user.name, 0)
+        sendEmail(user.email, 0)
 
         return ResponseEntity.ok()
-            .body(ResponseUserDTO(userService.create(user), ""))
+            .body(ResponseUserDTO(userService.create(user)))
     }
 
     @PostMapping("/login")
-    fun login(@RequestBody userDTO: LoginDTO): ResponseEntity<Any>{
+    fun login(@RequestBody userDTO: LoginDTO): ResponseEntity<TokenDTO> {
         val user: UserEntity = userService.getByCredentials(userDTO.email, userDTO.password, passwordEncoder)
 
         when {
@@ -81,33 +75,34 @@ class UserController {
         userService.updateUserLastLoginTime(user)
 
         return ResponseEntity.ok()
-            .header("Authorization", "Bearer $token")
-            .body(ResponseUserDTO(user, refreshToken))
+            .body(TokenDTO(user.id, token, refreshToken))
     }
 
     @PostMapping("/test")
-    fun test(): HashMap<String, String> {
+    fun test(): ResponseEntity<ResponseUserDTO> {
         val log = LoggerFactory.getLogger(javaClass)
         log.info("this is called")
         val test: HashMap<String, String> = HashMap()
         test["test"] = "this is test"
-        return test
+        val user = userService.getById(1)
+        return ResponseEntity.ok().body(ResponseUserDTO(user))
     }
 
     @PostMapping("/refresh")
-    fun refresh(@RequestBody tokenDTO: RefreshDTO): ResponseEntity<Any>{
+    fun refresh(@RequestBody tokenDTO: TokenDTO): ResponseEntity<TokenDTO> {
+        // 둘다 Bearer 앞에 와야합니다.
         val accessToken: String = tokenDTO.accessToken
         val refreshToken: String = tokenDTO.refreshToken
 
         val userId = tokenProvider.validateAndGetUserId(refreshToken)
-        if (tokenProvider.validateAndGetUserId(accessToken) != userId){
+        if (tokenProvider.validateAndGetUserId(accessToken) != userId) {
             // 엑세스 토큰과 리프레시 토큰이 다른 사람일때
             throw UserCustomException(ErrorCode.REFRESH_TOKEN_NOT_VALID)
         }
 
         val stringValueOperation = redisTemplate.opsForValue()
-        val storedToken: String? = stringValueOperation.get("refresh-${userId}")
-        if (storedToken == null || storedToken != refreshToken){
+        val storedToken: String? = stringValueOperation.get("refresh-$userId")
+        if (storedToken == null || storedToken != refreshToken.substring(7)) {
             throw UserCustomException(ErrorCode.REFRESH_TOKEN_EXPIRED)
         }
 
@@ -115,20 +110,19 @@ class UserController {
         val newAccessToken = tokenProvider.create(user)
         val newRefreshToken = tokenProvider.create(user, isRefresh = true)
 
-        stringValueOperation.set("refresh-${userId}", newRefreshToken, 7, TimeUnit.DAYS)
+        stringValueOperation.set("refresh-$userId", newRefreshToken, 7, TimeUnit.DAYS)
 
         return ResponseEntity.ok()
-            .header("Authorization", "Bearer $newAccessToken")
-            .body(RefreshDTO(newAccessToken,newRefreshToken))
+            .body(TokenDTO(userId.toLong(), newAccessToken, newRefreshToken))
     }
 
     @PostMapping("/validate")
-    fun validate(@RequestHeader("Authorization") token: String): ResponseEntity<Any> {
+    fun validate(@RequestHeader("Authorization") token: String): ResponseEntity<Unit> {
         return ResponseEntity.ok().body(null)
     }
 
     @GetMapping("/verify")
-    fun verify(@RequestParam ("email", required = true) email: String, @RequestParam("key", required = true) hash: String): ResponseEntity<Any>{
+    fun verify(@RequestParam("email", required = true) email: String, @RequestParam("key", required = true) hash: String): ResponseEntity<Any> {
         val stringValueOperation = redisTemplate.opsForValue()
         val storedHash: String? = stringValueOperation.get(email)
         if (storedHash == null || storedHash != hash) {
@@ -140,47 +134,44 @@ class UserController {
     }
 
     @GetMapping("/me")
-    fun me(@RequestHeader("Authorization") token: String): ResponseEntity<Any> {
+    fun me(@RequestHeader("Authorization") token: String): ResponseEntity<ResponseUserDTO> {
         return ResponseEntity.ok()
-            .body(ResponseUserDTO(userService.getById(tokenProvider.validateAndGetUserId(token).toLong()), ""))
+            .body(ResponseUserDTO(userService.getById(tokenProvider.validateAndGetUserId(token).toLong())))
     }
 
     @PostMapping("/logout")
-    fun logout(@RequestHeader("Authorization") token: String): ResponseEntity<Any> {
-            val userId = tokenProvider.validateAndGetUserId(token)
-            redisTemplate.delete("refresh-${userId}")
-            return ResponseEntity.ok().body(null)
+    fun logout(@RequestHeader("Authorization") token: String): ResponseEntity<Unit> {
+        val userId = tokenProvider.validateAndGetUserId(token)
+        redisTemplate.delete("refresh-$userId")
+        return ResponseEntity.ok().body(null)
     }
 
     @PutMapping("/{id}")
-    fun update(@PathVariable id: Long,  @RequestBody updatedUser: UpdateUserDTO): ResponseEntity<Any> {
+    fun update(@PathVariable id: Long, @RequestBody updatedUser: UpdateUserDTO): ResponseEntity<ResponseUserDTO> {
         val user = userService.update(userService.getById(id), updatedUser, passwordEncoder)
-        return ResponseEntity.ok().body(ResponseUserDTO(user, ""))
+        return ResponseEntity.ok().body(ResponseUserDTO(user))
     }
 
     @Async
-    fun sendEmail(email: String, name: String, type: Int) {
+    fun sendEmail(email: String, type: Int) {
         val message: MimeMessage = javaMailSender.createMimeMessage()
         message.addRecipient(Message.RecipientType.TO, InternetAddress(email))
         message.subject = "[본인인증] Cream 이메일 인증"
 
         val randNum = (0..1000000).random()
         val formatted = String.format("%06d", randNum)
-        val hash = tokenProvider.getSHA512Token(formatted + name)
+        val hash = tokenProvider.getSHA512Token(formatted + email)
         val stringValueOperation = redisTemplate.opsForValue()
         var htmlString = ""
         stringValueOperation.set(email, hash, 1, TimeUnit.DAYS)
-        if (type == 0)
-        {
+        if (type == 0) {
             htmlString +=
-                "안녕하세요 ${name}님 인증을 위해 아래의 링크를 눌러주세요. \n" +
-                        "<a href='http://localhost:8000/users/verify?email=${email}&key=${hash}'> 회원 가입 이메일 인증하기 </a>"
-        }
-        else if (type == 1)
-        {
+                "안녕하세요 인증을 위해 아래의 링크를 눌러주세요. \n" +
+                "<a href='http://localhost:8000/users/verify?email=$email&key=$hash'> 회원 가입 이메일 인증하기 </a>"
+        } else if (type == 1) {
             htmlString +=
-                "안녕하세요 ${name}님 비밀번호 변경을 위해 아래의 링크를 눌러주세요. \n" +
-                        "<a href='http://localhost:8000/users/verify/password?email=${email}&key=${hash}'> 비밀번호 변경하기 </a>"
+                "안녕하세요 비밀번호 변경을 위해 아래의 링크를 눌러주세요. \n" +
+                "<a href='http://localhost:8000/users/verify/password?email=$email&key=$hash'> 비밀번호 변경하기 </a>"
         }
 
         message.setText(htmlString, "UTF-8", "html")

@@ -1,29 +1,25 @@
 package com.cream.user.error
 
-import io.jsonwebtoken.ExpiredJwtException
-import io.jsonwebtoken.JwtException
-import io.jsonwebtoken.SignatureException
-import lombok.extern.slf4j.Slf4j
+import io.jsonwebtoken.MalformedJwtException
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.http.converter.HttpMessageNotReadableException
+import org.springframework.validation.BindException
+import org.springframework.web.HttpRequestMethodNotSupportedException
 import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.MissingRequestHeaderException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException
-import java.net.BindException
 
-@Slf4j
 @RestControllerAdvice
 class GlobalExceptionHandler {
 
     private val log = LoggerFactory.getLogger(javaClass)
 
-
     @ExceptionHandler(UserCustomException::class)
-    fun handleUserCustomException(ex: UserCustomException): ResponseEntity<ErrorResponse>{
+    fun handleUserCustomException(ex: UserCustomException): ResponseEntity<ErrorResponse> {
         log.error("UserCustomException: ${ex.errorCode.message}")
         val response = ErrorResponse(ex.errorCode)
         return ResponseEntity(response, HttpStatus.valueOf(ex.errorCode.status))
@@ -64,11 +60,24 @@ class GlobalExceptionHandler {
         return ResponseEntity(response, HttpStatus.valueOf(response.status))
     }
 
+    @ExceptionHandler(MalformedJwtException::class)
+    fun handleMalformedJwtException(ex: MalformedJwtException): ResponseEntity<ErrorResponse> {
+        log.error("HttpMessageNotReadableException", ex)
+        val response = ErrorResponse(ErrorCode.USER_TOKEN_NOT_VALID)
+        return ResponseEntity(response, HttpStatus.valueOf(response.status))
+    }
+
+    @ExceptionHandler(HttpRequestMethodNotSupportedException::class)
+    fun handleMalformedJwtException(ex: HttpRequestMethodNotSupportedException): ResponseEntity<ErrorResponse> {
+        log.error("HttpMessageNotReadableException", ex)
+        val response = ErrorResponse(ErrorCode.METHOD_NOT_ALLOWED)
+        return ResponseEntity(response, HttpStatus.valueOf(response.status))
+    }
+
     @ExceptionHandler(Exception::class)
     fun handleException(ex: Exception): ResponseEntity<ErrorResponse> {
         log.error("Exception ", ex)
         val response = ErrorResponse(ErrorCode.INTERNAL_SERVER_ERROR)
         return ResponseEntity(response, HttpStatus.INTERNAL_SERVER_ERROR)
     }
-
 }

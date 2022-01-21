@@ -1,0 +1,37 @@
+server:
+  address: localhost
+  port: 8081
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password:
+    url: jdbc:mysql://localhost:3306/product_db
+
+  jpa:
+    database: mysql
+    open-in-view: false
+
+    properties:
+      hibernate:
+        format_sql: true
+    database-platform: com.cream.product.config.MysqlCustomDialect
+
+  # swagger with spring boot 2.6.2 issue
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: DEBUG
+        type:
+          descriptor:
+            sql:
+              BasicBinder: TRACE
+
+gender: man,woman,unisex
+category: sneakers,streetwear,accessories,life,electronics

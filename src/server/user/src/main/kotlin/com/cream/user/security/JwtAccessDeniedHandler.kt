@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
 @Component
-class JwtAccessDeniedHandler: AccessDeniedHandler {
+class JwtAccessDeniedHandler : AccessDeniedHandler {
 
     override fun handle(
         request: HttpServletRequest?,

@@ -7,21 +7,17 @@ import java.time.LocalDateTime
 data class RegisterUserDTO(
     val email: String,
     val password: String,
-    val name: String,
-    val address: String,
-    val gender: Boolean,
-    val age: Int,
     val shoeSize: Int,
     val createdAt: LocalDateTime = LocalDateTime.now()
 ) {
-    fun toEntity(encoder: PasswordEncoder): UserEntity{
+    fun toEntity(encoder: PasswordEncoder): UserEntity {
         return UserEntity(
             email = this.email,
             password = encoder.encode(this.password),
-            name = this.name,
-            address = this.address,
-            gender = this.gender,
-            age = this.age,
+            name = null,
+            address = null,
+            gender = null,
+            age = null,
             shoeSize = this.shoeSize,
             profileImageUrl = "",
             status = 0,
