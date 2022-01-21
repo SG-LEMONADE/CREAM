@@ -32,3 +32,6 @@ logging:
           descriptor:
             sql:
               BasicBinder: TRACE
+
+gender: man,woman,unisex
+category: sneakers,streetwear,accessories,life,electronics

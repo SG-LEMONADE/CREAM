@@ -1,6 +1,6 @@
-package com.cream.product.filter
+package com.cream.product.dto
 
-data class ProductFilter(
+data class FilterRequestDTO(
     val category: String?,
     val brandId: String?,
     val collectionId: String?,
@@ -8,4 +8,4 @@ data class ProductFilter(
     val priceFrom: Int?,
     val priceTo: Int?,
     val keyWord: String?
-        )
+)
