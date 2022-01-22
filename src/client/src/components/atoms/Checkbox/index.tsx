@@ -1,24 +1,33 @@
-import React, { FunctionComponent, useState } from "react";
+import React, { FunctionComponent, useEffect, useState } from "react";
 import styled from "@emotion/styled";
 
 import Icon from "components/atoms/Icon";
 
 type CheckBoxProps = {
+	defaultChecked?: boolean;
 	children: React.ReactNode;
 	onClick?: React.MouseEventHandler<HTMLLabelElement>;
 };
 
 const CheckBox: FunctionComponent<CheckBoxProps> = (props) => {
-	const { children, onClick } = props;
+	const { defaultChecked = false, children, onClick } = props;
 	const [checked, setChecked] = useState<boolean>(false);
+
+	useEffect(() => {
+		setChecked(defaultChecked);
+	});
 
 	return (
 		<Wrapper onClick={onClick} checked={checked} data-content={children}>
 			{children}
 			<Input
-				onClick={() => setChecked(!checked)}
+				onClick={(e) => {
+					e.stopPropagation();
+					setChecked(!checked);
+				}}
 				type="checkbox"
 				defaultChecked={checked}
+				checkedState={checked}
 			/>
 			<CheckMark checked={checked}>
 				<Icon name="Check" />
@@ -39,15 +48,20 @@ const Wrapper = styled.label<{ checked: boolean }>`
 	font-weight: ${({ checked }) => checked && "700"};
 `;
 
-const Input = styled.input`
+const Input = styled.input<{ checkedState: boolean }>`
 	position: absolute;
 	opacity: 0;
 	cursor: pointer;
 	height: 0;
 	width: 0;
-	:checked + span {
-		background-color: black;
-	}
+	${({ checkedState }) =>
+		checkedState
+			? `+ span {
+			background-color: black;
+		}`
+			: `+ span {
+			background-color: white
+		}`}
 `;
 
 const CheckMark = styled.span<{ checked: boolean }>`
