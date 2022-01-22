@@ -87,3 +87,8 @@ export const Profile = Template.bind({});
 Profile.args = {
 	name: "Profile",
 };
+
+export const Check = Template.bind({});
+Check.args = {
+	name: "Check",
+};

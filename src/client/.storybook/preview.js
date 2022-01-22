@@ -1,4 +1,4 @@
-import "../styles/global.css";
+import "../src/styles/global.css";
 import * as nextImage from "next/image";
 
 Object.defineProperty(nextImage, "default", {
