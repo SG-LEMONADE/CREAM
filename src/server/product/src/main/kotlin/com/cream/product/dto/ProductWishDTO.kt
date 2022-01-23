@@ -4,5 +4,6 @@ import com.cream.product.model.Product
 
 data class ProductWishDTO(
     val product: Product,
-    val wishList: String?
+    val wishList: String?,
+    val lowestAsk: Int?
 )

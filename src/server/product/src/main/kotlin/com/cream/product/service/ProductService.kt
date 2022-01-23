@@ -14,10 +14,7 @@ class ProductService {
 
     fun findProductsByPageWithWish(page: PageDTO, userId: Long?, filter: FilterRequestDTO): List<ProductWishDTO>? {
         return if (userId == null) {
-            productRepository.getProducts(page.offset(), page.limit(), page.sort, filter)!!
-                .stream().map {
-                    ProductWishDTO(it, null)
-                }.toList()
+            productRepository.getProducts(page.offset(), page.limit(), page.sort, filter)
         } else {
             productRepository.getProductsWithWish(userId, page.offset(), page.limit(), page.sort, filter)
         }

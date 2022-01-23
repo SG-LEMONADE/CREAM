@@ -1,9 +1,12 @@
 package com.cream.product.persistence
 
-import com.cream.product.dto.ProductWishDTO
+import com.cream.product.constant.RequestType
+import com.cream.product.constant.TradeStatus
 import com.cream.product.dto.FilterRequestDTO
+import com.cream.product.dto.ProductWishDTO
 import com.cream.product.model.Product
 import com.cream.product.model.QProduct
+import com.cream.product.model.QTrade
 import com.cream.product.model.QWish
 import com.querydsl.core.types.Order
 import com.querydsl.core.types.OrderSpecifier
@@ -14,9 +17,10 @@ import com.querydsl.jpa.impl.JPAQueryFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport
+import java.time.LocalDateTime
 
 interface ProductRepositoryCustom {
-    fun getProducts(offset: Long, limit: Long, sort: String, filter: FilterRequestDTO): List<Product>?
+    fun getProducts(offset: Long, limit: Long, sort: String, filter: FilterRequestDTO): List<ProductWishDTO>?
     fun getProductsWithWish(userId: Long?, offset: Long, limit: Long, sort: String, filter: FilterRequestDTO): List<ProductWishDTO>?
     fun getProductWithWish(userId: Long?, productId: Long): ProductWishDTO?
 }
@@ -30,6 +34,7 @@ class ProductRepositoryImpl :
 
     val productEntity: QProduct = QProduct.product
     val wishEntity: QWish = QWish.wish
+    val tradeEntity: QTrade = QTrade.trade
 
     override fun getProductWithWish(
         userId: Long?,
@@ -52,16 +57,31 @@ class ProductRepositoryImpl :
         limit: Long,
         sort: String,
         filter: FilterRequestDTO
-    ): MutableList<Product>? {
-        return from(productEntity)
+    ): MutableList<ProductWishDTO>? {
+        return jpaQueryFactory.select(
+            Projections.constructor(
+                ProductWishDTO::class.java,
+                productEntity,
+                Expressions.stringTemplate(""),
+                tradeEntity.price.min().`as`("lowestAsk")
+            )
+        ).from(productEntity)
+            .leftJoin(tradeEntity).on(tradeEntity.product.id.eq(productEntity.id),
+                tradeEntity.tradeStatus.eq(TradeStatus.WAITING),
+                tradeEntity.requestType.eq(RequestType.BID),
+                tradeEntity.validationDateTime.gt(LocalDateTime.now())
+            )
             .where(
                 eqCategory(filter.category),
                 inBrandId(filter.brandId),
                 inCollectionId(filter.collectionId),
-                geoPrice(filter.priceFrom),
-                loePrice(filter.priceTo),
                 likeKeyword(filter.keyWord),
                 eqGender(filter.gender)
+            )
+            .groupBy(productEntity.id)
+            .having(
+                geoPrice(filter.priceFrom),
+                loePrice(filter.priceTo),
             )
             .offset(offset)
             .limit(limit)
@@ -80,20 +100,28 @@ class ProductRepositoryImpl :
             Projections.constructor(
                 ProductWishDTO::class.java,
                 productEntity,
-                Expressions.stringTemplate("group_concat({0})", wishEntity.size)
+                Expressions.stringTemplate("group_concat({0})", wishEntity.size),
+                tradeEntity.price.min().`as`("lowestAsk")
             )
         ).from(productEntity)
             .leftJoin(wishEntity).on(wishEntity.product.id.eq(productEntity.id), wishEntity.userId.eq(userId))
+            .leftJoin(tradeEntity).on(tradeEntity.product.id.eq(productEntity.id),
+                tradeEntity.tradeStatus.eq(TradeStatus.WAITING),
+                tradeEntity.requestType.eq(RequestType.BID),
+                tradeEntity.validationDateTime.gt(LocalDateTime.now())
+            )
             .where(
                 eqCategory(filter.category),
                 inBrandId(filter.brandId),
                 inCollectionId(filter.collectionId),
-                geoPrice(filter.priceFrom),
-                loePrice(filter.priceTo),
                 likeKeyword(filter.keyWord),
-                eqGender(filter.gender)
+                eqGender(filter.gender),
             )
             .groupBy(productEntity.id)
+            .having(
+                geoPrice(filter.priceFrom),
+                loePrice(filter.priceTo)
+            )
             .offset(offset)
             .limit(limit)
             .orderBy(getOrder(sort))
@@ -116,12 +144,12 @@ class ProductRepositoryImpl :
         )
     }
 
-    private fun geoPrice(priceFrom: Int?): BooleanExpression? {
-        return if (priceFrom == null) null else productEntity.highestBid.goe(priceFrom)
+    private fun geoPrice(price: Int?): BooleanExpression? {
+        return if (price == null) null else tradeEntity.price.min().goe(price)
     }
 
-    private fun loePrice(priceTo: Int?): BooleanExpression? {
-        return if (priceTo == null) null else productEntity.highestBid.loe(priceTo)
+    private fun loePrice(price: Int?): BooleanExpression? {
+        return if (price == null) null else tradeEntity.price.min().loe(price)
     }
 
     private fun likeKeyword(keyWord: String?): BooleanExpression? {
@@ -135,9 +163,6 @@ class ProductRepositoryImpl :
     private fun getOrder(sort: String?): OrderSpecifier<*> {
         val defaultOrder = OrderSpecifier(Order.DESC, productEntity.totalSale)
         when {
-            (sort == "highest_bid") -> {
-                return OrderSpecifier(Order.DESC, productEntity.highestBid)
-            }
             (sort == "released_date") -> {
                 return OrderSpecifier(Order.DESC, productEntity.releasedDate)
             }
