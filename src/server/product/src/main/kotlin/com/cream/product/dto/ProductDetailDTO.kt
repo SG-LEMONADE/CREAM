@@ -1,22 +1,18 @@
 package com.cream.product.dto
 
-import com.cream.product.model.MarketEntity
-import com.cream.product.model.ProductEntity
+import com.cream.product.model.Product
 
 data class ProductDetailDTO(
-    val product: ProductEntity,
-    val marketList: List<MarketEntity>,
+    val product: Product,
     val wishList: String?,
 ) {
-    constructor(product: ProductEntity, markets: List<MarketEntity>) : this(
+    constructor(product: Product) : this(
         product,
-        markets,
         null
     )
 
-    constructor(product: ProductWishDTO, markets: List<MarketEntity>) : this(
+    constructor(product: ProductWishDTO) : this(
         product.product,
-        markets,
         product.wishList
     )
 }
