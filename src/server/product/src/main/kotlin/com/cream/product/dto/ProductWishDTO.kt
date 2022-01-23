@@ -1,8 +1,8 @@
 package com.cream.product.dto
 
-import com.cream.product.model.ProductEntity
+import com.cream.product.model.Product
 
 data class ProductWishDTO(
-    val product: ProductEntity,
+    val product: Product,
     val wishList: String?
 )

@@ -30,9 +30,7 @@ dependencies {
     implementation("javax.xml.bind:jaxb-api:2.3.0")
     implementation("io.jsonwebtoken:jjwt:0.9.1")
 
-
-    compileOnly("org.projectlombok:lombok")
-    annotationProcessor("org.projectlombok:lombok")
+    implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client:3.1.0")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
