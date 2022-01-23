@@ -67,6 +67,9 @@ dependencies {
     // serialize lazy loaded entity to null
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-hibernate5:2.9.8")
 
+    //eureka client
+    implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client:3.1.0")
+
     //querydsl
     implementation("com.querydsl:querydsl-jpa") // 1)
     kapt(group = "com.querydsl", name = "querydsl-apt", classifier = "jpa") // 2)

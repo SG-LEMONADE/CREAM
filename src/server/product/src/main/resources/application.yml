@@ -3,6 +3,9 @@ server:
   port: 8081
 
 spring:
+  application:
+    name: product
+
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
@@ -23,6 +26,7 @@ spring:
     pathmatch:
       matching-strategy: ant_path_matcher
 
+
 logging:
   level:
     org:
@@ -35,3 +39,8 @@ logging:
 
 gender: man,woman,unisex
 category: sneakers,streetwear,accessories,life,electronics
+
+eureka:
+    client:
+        fetch-registry: true
+        register-with-eureka: true

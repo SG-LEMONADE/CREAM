@@ -1,6 +1,10 @@
 server:
   port: 8000
 
+eureka:
+  client:
+    fetch-registry: true
+    register-with-eureka: true
 
 spring:
   application:
@@ -8,12 +12,20 @@ spring:
   cloud:
     gateway:
       routes:
-        - id: user-api
-          uri: http://localhost:8080/
+        - id: user
+          uri: lb://USER
           predicates:
             - Path=/users/**
           filters:
             - JwtAuthFilter
+        - id: product
+          uri: lb://PRODUCT
+          predicates:
+            - Path=/users/**
+        - id: auction
+          uri: lb://AUCTION
+          predicates:
+            - Path=/users/**
 
 secret-key: 
 auth-excluded-path: /users/login, /users/signup, /users/refresh, /users/verify, /users/validate
