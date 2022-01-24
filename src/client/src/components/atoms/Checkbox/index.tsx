@@ -11,11 +11,11 @@ type CheckBoxProps = {
 
 const CheckBox: FunctionComponent<CheckBoxProps> = (props) => {
 	const { defaultChecked = false, children, onClick } = props;
-	const [checked, setChecked] = useState<boolean>(false);
+	const [checked, setChecked] = useState<boolean>(defaultChecked);
 
 	useEffect(() => {
 		setChecked(defaultChecked);
-	});
+	}, [checked]);
 
 	return (
 		<Wrapper onClick={onClick} checked={checked} data-content={children}>

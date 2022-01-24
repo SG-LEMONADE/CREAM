@@ -1,10 +1,10 @@
 import React from "react";
 import { ComponentMeta, ComponentStory } from "@storybook/react";
+
 import SearchFilterItem from ".";
-import { action } from "@storybook/addon-actions";
 
 export default {
-	title: "atoms/SearchFilterItem",
+	title: "molecules/SearchFilterItem",
 	component: SearchFilterItem,
 } as ComponentMeta<typeof SearchFilterItem>;
 
