@@ -20,7 +20,6 @@ const PriceThumbnail: FunctionComponent<PriceThumbnailProps> = (props) => {
 export default PriceThumbnail;
 
 const StyledPriceWrapper = styled.div<{ category: string }>`
-	padding-top: ${({ category }) => (category === "home" ? `7px` : `11px`)};
 	cursor: pointer;
 `;
 
