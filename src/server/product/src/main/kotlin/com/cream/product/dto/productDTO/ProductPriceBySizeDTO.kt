@@ -1,4 +1,4 @@
-package com.cream.product.dto
+package com.cream.product.dto.productDTO
 
 data class ProductPriceBySizeDTO(
     val size: String,

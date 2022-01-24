@@ -1,6 +1,6 @@
 package com.cream.product.service
 
-import com.cream.product.dto.FilterResponseDTO
+import com.cream.product.dto.filterDTO.FilterResponseDTO
 import com.cream.product.persistence.BrandRepository
 import com.cream.product.persistence.CollectionRepository
 import org.springframework.beans.factory.annotation.Autowired

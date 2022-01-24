@@ -18,6 +18,7 @@ class Trade(
     @Convert(converter = TradeStatusConverter::class) @Column var tradeStatus: TradeStatus, // 0-등록된 상태, 1-거래 진행중, 2-거래 완료
     @Column var price: Int,
     @Column var validationDateTime: LocalDateTime,
+    @Column var counterpartUserId: Long? = null,
     @Column var createdAt: LocalDateTime = LocalDateTime.now(),
     @Column var updatedAt: LocalDateTime? = null
 )

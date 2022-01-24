@@ -15,6 +15,8 @@ class TradeStatusConverter : AttributeConverter<TradeStatus, Int> {
             0 -> TradeStatus.WAITING
             1 -> TradeStatus.IN_PROGRESS
             2 -> TradeStatus.COMPLETED
+            3 -> TradeStatus.EXPIRED
+            4 -> TradeStatus.CANCELED
             else -> throw EnumConstantNotPresentException(TradeStatus::class.java, dbData.toString())
         }
     }

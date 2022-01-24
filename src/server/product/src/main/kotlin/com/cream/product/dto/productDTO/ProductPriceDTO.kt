@@ -1,9 +1,8 @@
-package com.cream.product.dto
+package com.cream.product.dto.productDTO
 
 import com.cream.product.model.Product
 
-data class ProductPriceWishDTO(
+data class ProductPriceDTO(
     val product: Product,
-    val wishList: String?,
     val lowestAsk: Int?
 )

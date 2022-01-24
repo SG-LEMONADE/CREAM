@@ -1,4 +1,4 @@
-package com.cream.product.dto
+package com.cream.product.dto.productDTO
 
 import com.cream.product.model.Trade
 

@@ -1,4 +1,4 @@
-package com.cream.product.dto
+package com.cream.product.dto.filterDTO
 
 import com.cream.product.model.Brand
 import com.cream.product.model.Collection

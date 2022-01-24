@@ -2,7 +2,11 @@ package com.cream.product.persistence
 
 import com.cream.product.constant.RequestType
 import com.cream.product.constant.TradeStatus
-import com.cream.product.dto.*
+import com.cream.product.dto.filterDTO.FilterRequestDTO
+import com.cream.product.dto.productDTO.ProductPriceByRequestTypeDTO
+import com.cream.product.dto.productDTO.ProductPriceBySizeDTO
+import com.cream.product.dto.productDTO.ProductPriceDTO
+import com.cream.product.dto.productDTO.ProductPriceWishDTO
 import com.cream.product.model.*
 import com.querydsl.core.types.Order
 import com.querydsl.core.types.OrderSpecifier
@@ -34,6 +38,7 @@ interface ProductRepository : JpaRepository<Product, Long>, ProductRepositoryCus
 
 class ProductRepositoryImpl :
     QuerydslRepositorySupport(Product::class.java), ProductRepositoryCustom {
+
     @Autowired
     private lateinit var jpaQueryFactory: JPAQueryFactory
 
@@ -48,6 +53,7 @@ class ProductRepositoryImpl :
             tradeEntity.requestType.eq(RequestType.ASK),
             tradeEntity.tradeStatus.eq(TradeStatus.WAITING),
             tradeEntity.product.id.eq(productEntity.id),
+            tradeEntity.validationDateTime.gt(LocalDateTime.now())
         )
 
     override fun getProducts(

@@ -1,8 +1,10 @@
 package com.cream.product.service
 
 import com.cream.product.constant.RequestType
-import com.cream.product.dto.*
-import com.cream.product.dto.FilterRequestDTO
+import com.cream.product.dto.filterDTO.FilterRequestDTO
+import com.cream.product.dto.filterDTO.PageDTO
+import com.cream.product.dto.productDTO.ProductDetailDTO
+import com.cream.product.dto.productDTO.ProductPriceWishDTO
 import com.cream.product.persistence.ProductRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
