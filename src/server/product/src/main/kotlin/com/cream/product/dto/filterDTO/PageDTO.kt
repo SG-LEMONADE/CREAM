@@ -1,4 +1,4 @@
-package com.cream.product.dto
+package com.cream.product.dto.filterDTO
 
 import com.fasterxml.jackson.annotation.JsonProperty
 

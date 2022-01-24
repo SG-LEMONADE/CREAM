@@ -1,7 +1,6 @@
 package com.cream.gateway.filter
 
-import io.jsonwebtoken.*
-import lombok.extern.slf4j.Slf4j
+import io.jsonwebtoken.Jwts
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.cloud.gateway.filter.GatewayFilter
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory
@@ -11,7 +10,6 @@ import org.springframework.stereotype.Component
 import reactor.core.publisher.Mono
 
 @Component
-@Slf4j
 class JwtAuthFilter() : AbstractGatewayFilterFactory<JwtAuthFilter.Config>(Config::class.java) {
 
     @Value("\${auth-excluded-path}")

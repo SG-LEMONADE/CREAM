@@ -33,6 +33,10 @@ spring:
           starttls:
             enable: true
 
+eureka:
+    client:
+        fetch-registry: true
+        register-with-eureka: true
 
 secret-key: 
 
@@ -47,3 +51,4 @@ logging:
               BasicBinder: TRACE
 
 auth-excluded-path: /users/login, /users/signup, /users/refresh, /users/verify, /users/validate, /swagger-ui.html/**, /configuration/**, /swagger-resources/**, /v2/api-docs, /webjars/**, /webjars/springfox-swagger-ui/*.{js,css}
+

@@ -1,4 +1,4 @@
-package com.cream.product.dto
+package com.cream.product.dto.filterDTO
 
 data class FilterRequestDTO(
     val category: String?,

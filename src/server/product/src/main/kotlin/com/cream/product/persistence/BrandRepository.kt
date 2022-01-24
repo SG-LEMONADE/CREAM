@@ -1,6 +1,6 @@
 package com.cream.product.persistence
 
-import com.cream.product.model.BrandEntity
+import com.cream.product.model.Brand
 import org.springframework.data.jpa.repository.JpaRepository
 
-interface BrandRepository : JpaRepository<BrandEntity, Long>
+interface BrandRepository : JpaRepository<Brand, Long>
