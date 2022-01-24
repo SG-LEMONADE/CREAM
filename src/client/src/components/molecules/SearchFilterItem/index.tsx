@@ -1,7 +1,7 @@
 import React, { FunctionComponent, useEffect, useState } from "react";
 
-import Icon from "../Icon";
-import CheckBox from "../Checkbox";
+import Icon from "components/atoms/Icon";
+import CheckBox from "components/atoms/Checkbox";
 
 import styled from "@emotion/styled";
 import { css } from "@emotion/react";
@@ -33,10 +33,6 @@ const SearchFilterItem: FunctionComponent<SearchFilterItemProps> = (props) => {
 		if (activatedOptions.includes(target)) setActivateOption([]);
 		else setActivateOption([target]);
 	};
-
-	useEffect(() => {
-		console.log(activatedOptions);
-	}, [activatedOptions]);
 
 	return (
 		<StyledWrapper>

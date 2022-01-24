@@ -47,7 +47,7 @@ const ProductThumbnail: FunctionComponent<ProductThumbnailProps> = (props) => {
 					</ImageArea>
 					<InfoArea>
 						<ProductInfo category={category} productInfo={productInfo} />
-						<StyledPriceThumbnail
+						<PriceThumbnail
 							category={category}
 							price={productInfo.originalPrice}
 						/>
@@ -91,10 +91,6 @@ const ImageArea = styled.div`
 
 const InfoArea = styled.div`
 	padding-top: 3px;
-`;
-
-const StyledPriceThumbnail = styled(PriceThumbnail)`
-	border: 1px solid red;
 `;
 
 const BookmarkArea = styled.div`
