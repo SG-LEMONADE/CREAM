@@ -3,7 +3,7 @@ package com.cream.product.controller
 import com.cream.product.dto.FilterResponseDTO
 import com.cream.product.dto.PageDTO
 import com.cream.product.dto.ProductDetailDTO
-import com.cream.product.dto.ProductWishDTO
+import com.cream.product.dto.ProductPriceWishDTO
 import com.cream.product.dto.FilterRequestDTO
 import com.cream.product.service.FilterService
 import com.cream.product.service.ProductService
@@ -29,7 +29,7 @@ class ProductController {
         page: PageDTO,
         filter: FilterRequestDTO,
         @RequestHeader("userId", required = false) userId: Long?
-    ): ResponseEntity<List<ProductWishDTO>> {
+    ): ResponseEntity<List<ProductPriceWishDTO>> {
         return ResponseEntity.ok(productService.findProductsByPageWithWish(page, userId, filter))
     }
 
@@ -38,7 +38,16 @@ class ProductController {
         @PathVariable id: Long,
         @RequestHeader("userId", required = false) userId: Long?
     ): ResponseEntity<ProductDetailDTO> {
-        return ResponseEntity.ok(productService.findProductById(id, userId))
+        return ResponseEntity.ok(productService.findProductById(id, userId, null))
+    }
+
+    @GetMapping("/{id}/{size}")
+    fun findProductByIdAndSize(
+        @PathVariable id: Long,
+        @PathVariable size: String,
+        @RequestHeader("userId", required = false) userId: Long?
+    ): ResponseEntity<ProductDetailDTO> {
+        return ResponseEntity.ok(productService.findProductById(id, userId, size))
     }
 
     @PostMapping("/{productId}/wish/{size}")
