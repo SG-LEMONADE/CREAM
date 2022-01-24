@@ -1,15 +1,15 @@
 import React from "react";
 import { ComponentMeta, ComponentStory } from "@storybook/react";
 
-import ShoeSize from ".";
+import ProductSizeSelect from ".";
 
 export default {
-	title: "atoms/ShoeSize",
-	componsne: ShoeSize,
-} as ComponentMeta<typeof ShoeSize>;
+	title: "atoms/ProductSizeSelect",
+	componsne: ProductSizeSelect,
+} as ComponentMeta<typeof ProductSizeSelect>;
 
-const Template: ComponentStory<typeof ShoeSize> = (args) => (
-	<ShoeSize {...args}>{args.children}</ShoeSize>
+const Template: ComponentStory<typeof ProductSizeSelect> = (args) => (
+	<ProductSizeSelect {...args}>{args.children}</ProductSizeSelect>
 );
 
 export const Buy = Template.bind({});

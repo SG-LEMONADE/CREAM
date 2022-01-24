@@ -4,15 +4,17 @@ import styled from "@emotion/styled";
 import { css } from "@emotion/react";
 import Icon from "components/atoms/Icon";
 
-type ShoeSizeProps = {
+type ProductSizeSelectProps = {
 	category: "buy" | "sell" | "wish";
-	size: number;
+	size: string;
 	active?: boolean;
-	price?: number;
+	price?: null | number;
 	onClick?: React.MouseEventHandler<HTMLLIElement>;
 };
 
-const ShoeSize: FunctionComponent<ShoeSizeProps> = (props) => {
+const ProductSizeSelect: FunctionComponent<ProductSizeSelectProps> = (
+	props,
+) => {
 	const { category, size, active = false, price, onClick } = props;
 
 	return (
@@ -20,20 +22,31 @@ const ShoeSize: FunctionComponent<ShoeSizeProps> = (props) => {
 			<ShoeSizeBtn active={active}>
 				<LinkInner>
 					<SizeSpan active={active}>{size}</SizeSpan>
-					{category !== "wish" ? (
+					{category !== "wish" && (
 						<PriceSpan category={category} active={active}>
-							{price.toLocaleString()}원
+							{price !== null ? (
+								`${price.toLocaleString()}원`
+							) : (
+								<NonPrice>구매 입찰</NonPrice>
+							)}
 						</PriceSpan>
-					) : (
+					)}
+					{category === "wish" && (
 						<IconWrapper>
 							{active ? (
 								<Icon
-									style={{ width: "14px", height: "14px" }}
+									style={{
+										width: "14px",
+										height: "14px",
+									}}
 									name="BookmarkFilled"
 								/>
 							) : (
 								<Icon
-									style={{ width: "14px", height: "14px" }}
+									style={{
+										width: "14px",
+										height: "14px",
+									}}
 									name="Bookmark"
 								/>
 							)}
@@ -45,7 +58,7 @@ const ShoeSize: FunctionComponent<ShoeSizeProps> = (props) => {
 	);
 };
 
-export default ShoeSize;
+export default ProductSizeSelect;
 
 const ShoeSizeWrapper = styled.li<{ category: string }>`
 	list-style: none;
@@ -91,6 +104,10 @@ const PriceSpan = styled.span<{ category: string; active: boolean }>`
 		css`
 			font-weight: 700;
 		`}
+`;
+
+const NonPrice = styled.span`
+	color: black;
 `;
 
 const IconWrapper = styled.div``;

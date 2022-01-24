@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useState } from "react";
+import React, { CSSProperties, FunctionComponent } from "react";
 import Image from "next/image";
 
 import styled from "@emotion/styled";
@@ -8,13 +8,14 @@ type ProductSmallInfoProps = {
 	backgroundColor: string;
 	productName: string;
 	productNameKor: string;
+	style?: CSSProperties;
 };
 
 const ProductSmallInfo: FunctionComponent<ProductSmallInfoProps> = (props) => {
-	const { imgSrc, backgroundColor, productName, productNameKor } = props;
+	const { imgSrc, backgroundColor, productName, productNameKor, style } = props;
 
 	return (
-		<ProductArea>
+		<ProductArea style={style}>
 			<ProductThumb backgroundColor={backgroundColor}>
 				<StyledImg width="100%" height="100%" src={imgSrc} />
 			</ProductThumb>
