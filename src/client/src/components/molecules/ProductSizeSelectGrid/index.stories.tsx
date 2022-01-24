@@ -5,7 +5,7 @@ import { action } from "@storybook/addon-actions";
 import ProductSizeSelectGrid from ".";
 
 export default {
-	title: "organisms/ProductSizeSelectGrid",
+	title: "molecules/ProductSizeSelectGrid",
 	componsne: ProductSizeSelectGrid,
 } as ComponentMeta<typeof ProductSizeSelectGrid>;
 

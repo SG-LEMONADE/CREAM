@@ -2,7 +2,9 @@ import React, { FunctionComponent, useState, useEffect } from "react";
 import ReactDOM from "react-dom";
 
 import styled from "@emotion/styled";
+import { keyframes } from "@emotion/react";
 import Icon from "components/atoms/Icon";
+import Button from "components/atoms/Button";
 
 type ModalProps = {
 	category: "wish" | "else";
@@ -32,6 +34,7 @@ const Modal: FunctionComponent<ModalProps> = (props) => {
 		<StyledModalOverlay onClick={onClose}>
 			<StyledModal category={category} onClick={(e) => e.stopPropagation()}>
 				<StyledModalHeader>
+					{title && <StyledModalTitle>{title}</StyledModalTitle>}
 					<Icon
 						name="Close"
 						style={{
@@ -43,8 +46,14 @@ const Modal: FunctionComponent<ModalProps> = (props) => {
 						onClick={onHandleCloseClick}
 					/>
 				</StyledModalHeader>
-				{title && <StyledModalTitle>{title}</StyledModalTitle>}
-				<StyledModalBody>{children}</StyledModalBody>
+				<StyledModalBody category={category}>{children}</StyledModalBody>
+				{category === "wish" && (
+					<ModalButtonArea>
+						<Button onClick={onClose} category="primary">
+							확인
+						</Button>
+					</ModalButtonArea>
+				)}
 			</StyledModal>
 		</StyledModalOverlay>
 	) : null;
@@ -71,12 +80,27 @@ const StyledModalOverlay = styled.div`
 	background-color: rgba(0, 0, 0, 0.5);
 `;
 
+const appear = keyframes`
+  from {
+	opacity: 0;
+	transform: translateY(20px);
+  }
+  to {
+	opacity: 1;
+	transform: translateY(0);
+  }
+`;
+
 const StyledModal = styled.div<{ category: string }>`
 	background: white;
 	width: ${({ category }) => (category === "wish" ? "440px" : "480px")};
-	height: ${({ category }) => (category === "wish" ? "527px" : "514px")};
+	max-height: ${({ category }) => (category === "wish" ? "527px" : "514px")};
 	border-radius: 16px;
 	padding: 15px;
+	overflow: auto;
+	display: flex;
+	flex-direction: column;
+	animation: ${appear} 0.8s cubic-bezier(0.77, 0, 0.175, 1) forwards;
 `;
 
 const StyledModalHeader = styled.div`
@@ -86,7 +110,7 @@ const StyledModalHeader = styled.div`
 `;
 
 const StyledModalTitle = styled.h2`
-	margin: 0;
+	margin: 0 auto;
 	font-weight: 700;
 	text-align: center;
 	font-size: 18px;
@@ -97,6 +121,18 @@ const StyledModalTitle = styled.h2`
 	background-color: #fff;
 `;
 
-const StyledModalBody = styled.div``;
+const StyledModalBody = styled.div<{ category: string }>`
+	flex: 1;
+	margin-top: 10px;
+	margin-bottom: ${({ category }) => (category === "wish" ? "10px" : "32px")};
+	overflow-x: hidden;
+	overflow-y: auto;
+`;
+
+const ModalButtonArea = styled.div`
+	padding: 6px 8px 8px;
+	display: flex;
+	justify-content: center;
+`;
 
 export default Modal;
