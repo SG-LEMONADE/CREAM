@@ -7,7 +7,7 @@ import { css } from "@emotion/react";
 type ProductImageProps = {
 	backgroundColor: string;
 	src: string;
-	category: string;
+	category: "home" | "shop" | "products";
 	style?: CSSProperties;
 };
 

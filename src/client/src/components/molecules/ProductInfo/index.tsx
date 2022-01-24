@@ -8,8 +8,7 @@ import ProductNameKor from "components/atoms/ProductNameKor";
 import styled from "@emotion/styled";
 
 type ProductInfoProps = {
-	category: string;
-	children: React.ReactNode;
+	category: "home" | "shop" | "products";
 	productInfo: ProductInfoRes;
 };
 
