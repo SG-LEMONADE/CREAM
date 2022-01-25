@@ -19,10 +19,17 @@ interface WishRepository : JpaRepository<Wish, Long>, WishRepositoryCustom {
 
 class WishRepositoryImpl :
     QuerydslRepositorySupport(Wish::class.java), WishRepositoryCustom {
-    override fun existsWish(userId: Long, productId: Long, size: String): Wish? {
-        val table = QWish.wish
-        return from(table)
-            .where(table.product.id.eq(productId), table.userId.eq(userId), table.size.eq(size))
+    override fun existsWish(
+        userId: Long,
+        productId: Long,
+        size: String
+    ): Wish? {
+        val wishEntity: QWish = QWish.wish
+        return from(wishEntity)
+            .where(
+                wishEntity.product.id.eq(productId),
+                wishEntity.userId.eq(userId),
+                wishEntity.size.eq(size))
             .fetchOne()
     }
 }

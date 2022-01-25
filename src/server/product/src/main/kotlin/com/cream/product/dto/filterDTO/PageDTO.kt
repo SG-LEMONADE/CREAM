@@ -8,7 +8,7 @@ data class PageDTO(
     @JsonProperty("per_page")
     val perPage: Long,
 
-    val sort: String
+    val sort: String? = null
 ) {
     fun offset(): Long {
         return cursor * perPage

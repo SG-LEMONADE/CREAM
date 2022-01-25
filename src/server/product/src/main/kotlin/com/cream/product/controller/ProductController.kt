@@ -2,6 +2,7 @@ package com.cream.product.controller
 
 import com.cream.product.dto.filterDTO.FilterRequestDTO
 import com.cream.product.dto.filterDTO.PageDTO
+import com.cream.product.dto.productDTO.ProductDTO
 import com.cream.product.dto.productDTO.ProductDetailDTO
 import com.cream.product.dto.productDTO.ProductPriceWishDTO
 import com.cream.product.service.ProductService
@@ -20,7 +21,7 @@ class ProductController {
         page: PageDTO,
         filter: FilterRequestDTO,
         @RequestHeader("userId", required = false) userId: Long?
-    ): ResponseEntity<List<ProductPriceWishDTO>> {
+    ): ResponseEntity<List<ProductDTO>> {
         return ResponseEntity.ok(productService.findProductsByPageWithWish(page, userId, filter))
     }
 
@@ -39,5 +40,13 @@ class ProductController {
         @RequestHeader("userId", required = false) userId: Long?
     ): ResponseEntity<ProductDetailDTO> {
         return ResponseEntity.ok(productService.findProductById(id, userId, size))
+    }
+
+    @GetMapping("/wishes")
+    fun findProductsByWish(
+        page: PageDTO,
+        @RequestHeader("userId", required = true) userId: Long
+    ): ResponseEntity<List<ProductDTO>>{
+        return ResponseEntity.ok(productService.findProductByWish(page, userId))
     }
 }
