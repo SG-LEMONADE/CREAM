@@ -1,15 +1,15 @@
 import React from "react";
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { ComponentStory, ComponentMeta } from "@storybook/react";
 
-import UserDetail from ".";
+import UserMemberShip from "./";
 
 export default {
-	title: "molecules/UserDetail",
-	component: UserDetail,
-} as ComponentMeta<typeof UserDetail>;
+	title: "organisms/UserMemberShip",
+	component: UserMemberShip,
+} as ComponentMeta<typeof UserMemberShip>;
 
-const Template: ComponentStory<typeof UserDetail> = (args) => (
-	<UserDetail {...args}>{args.children}</UserDetail>
+const Template: ComponentStory<typeof UserMemberShip> = (args) => (
+	<UserMemberShip {...args}>{args.children}</UserMemberShip>
 );
 
 export const Img = Template.bind({});
@@ -23,5 +23,5 @@ Img.args = {
 export const Default = Template.bind({});
 Default.args = {
 	userName: "레모네이드",
-	userEmail: "lemonade@naver.com",
+	userEmail: "qwerty1234@naver.com",
 };
