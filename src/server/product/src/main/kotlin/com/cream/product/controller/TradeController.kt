@@ -1,7 +1,10 @@
 package com.cream.product.controller
 
 import com.cream.product.constant.RequestType
+import com.cream.product.constant.TradeStatus
+import com.cream.product.dto.filterDTO.PageDTO
 import com.cream.product.dto.tradeDTO.TradeRegisterDTO
+import com.cream.product.model.Trade
 import com.cream.product.service.TradeService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
@@ -13,11 +16,21 @@ class TradeController {
     @Autowired
     lateinit var tradeService: TradeService
 
+    @GetMapping
+    fun getTradeList(
+        pageDTO: PageDTO,
+        @RequestParam requestType: RequestType,
+        @RequestParam tradeStatus: TradeStatus,
+        @RequestHeader("userId", required = true) userId: Long,
+        ): ResponseEntity<List<Trade>> {
+        return ResponseEntity.ok(tradeService.getTradeList(userId, pageDTO, requestType, tradeStatus))
+    }
+
     @PostMapping("/products/{productId}/{size}")
     fun createTrade(
         @PathVariable productId: Long,
         @PathVariable size: String,
-        @RequestHeader("userId") userId: Long,
+        @RequestHeader("userId", required = true) userId: Long,
         @RequestBody tradeDTO: TradeRegisterDTO
     ): ResponseEntity<Unit> {
         return ResponseEntity.ok(tradeService.create(tradeDTO, userId, productId, size))
@@ -27,7 +40,7 @@ class TradeController {
     fun sellProduct(
         @PathVariable productId: Long,
         @PathVariable size: String,
-        @RequestHeader("userId") userId: Long
+        @RequestHeader("userId", required = true) userId: Long
     ): ResponseEntity<Unit> {
         return ResponseEntity.ok(tradeService.buyOrSellProduct(productId, size, RequestType.BID, userId))
     }
@@ -36,7 +49,7 @@ class TradeController {
     fun buyProduct(
         @PathVariable productId: Long,
         @PathVariable size: String,
-        @RequestHeader("userId") userId: Long
+        @RequestHeader("userId", required = true) userId: Long
     ): ResponseEntity<Unit> {
         return ResponseEntity.ok(tradeService.buyOrSellProduct(productId, size, RequestType.ASK, userId))
     }

@@ -3,6 +3,7 @@ package com.cream.product.service
 import com.cream.product.constant.RequestType
 import com.cream.product.dto.filterDTO.FilterRequestDTO
 import com.cream.product.dto.filterDTO.PageDTO
+import com.cream.product.dto.productDTO.ProductDTO
 import com.cream.product.dto.productDTO.ProductDetailDTO
 import com.cream.product.dto.productDTO.ProductPriceWishDTO
 import com.cream.product.persistence.ProductRepository
@@ -14,14 +15,17 @@ class ProductService {
     @Autowired
     lateinit var productRepository: ProductRepository
 
-    fun findProductsByPageWithWish(page: PageDTO, userId: Long?, filter: FilterRequestDTO): List<ProductPriceWishDTO>? {
+    fun findProductsByPageWithWish(page: PageDTO, userId: Long?, filter: FilterRequestDTO): List<ProductDTO> {
         if (userId == null) {
-            return productRepository.getProducts(page.offset(), page.limit(), page.sort, filter)!!.stream()
+            return productRepository.getProducts(page.offset(), page.limit(), page.sort, filter).stream()
                 .map {
-                    ProductPriceWishDTO(it.product, null, it.lowestAsk)
+                    ProductDTO(ProductPriceWishDTO(it.product, null, it.lowestAsk))
                 }.toList()
         }
-        return productRepository.getProductsWithWish(userId, page.offset(), page.limit(), page.sort, filter)
+        return productRepository.getProductsWithWish(userId, page.offset(), page.limit(), page.sort, filter).stream()
+            .map {
+                ProductDTO(it)
+            }.toList()
     }
 
     fun findProductById(id: Long, userId: Long?, size: String?): ProductDetailDTO {
@@ -34,16 +38,25 @@ class ProductService {
         }
 
         val lastCompletedTrade = productRepository.getLastTrade(id, size)
-        val pricesBySize = productRepository.getProductPriceBySize(id)
+        val askPricesBySize = productRepository.getProductPricesBySize(id, RequestType.ASK)
+        val bidPricesBySize = productRepository.getProductPricesBySize(id, RequestType.BID)
         val lowestAsk = productRepository.getProductSizePriceByRequestType(id, size, RequestType.ASK)
         val highestBid = productRepository.getProductSizePriceByRequestType(id, size, RequestType.BID)
 
         return ProductDetailDTO(
-            product,
-            pricesBySize,
+            ProductDTO(product),
+            askPricesBySize,
+            bidPricesBySize,
             lastCompletedTrade,
             lowestAsk,
             highestBid
         )
+    }
+
+    fun findProductByWish(page: PageDTO, userId: Long): List<ProductDTO>{
+        return productRepository.getProductsByWish(userId, page.offset(), page.limit()).stream()
+            .map {
+                ProductDTO(it)
+            }.toList()
     }
 }

@@ -3,8 +3,9 @@ package com.cream.product.dto.productDTO
 import com.cream.product.model.Trade
 
 class ProductDetailDTO(
-    val product: ProductPriceWishDTO,
-    val pricesBySize: List<ProductPriceBySizeDTO>?,
+    val product: ProductDTO,
+    val askPricesBySize: List<ProductPriceBySizeDTO>?,
+    val bidPricesBySize: List<ProductPriceBySizeDTO>?,
     lastCompletedTrade: Trade?,
     lowestAsk: ProductPriceByRequestTypeDTO?,
     highestBid: ProductPriceByRequestTypeDTO?
@@ -19,12 +20,12 @@ class ProductDetailDTO(
 
     init {
         if (lastCompletedTrade != null && lowestAsk != null) {
-            this.changePercentage = (lastCompletedTrade.price - lowestAsk.price) / lowestAsk.price.toFloat()
-            this.changeValue = (lastCompletedTrade.price - lowestAsk.price)
+            this.changePercentage = (lowestAsk.price!! - lastCompletedTrade.price) / lastCompletedTrade.price.toFloat()
+            this.changeValue = (lowestAsk.price - lastCompletedTrade.price)
             this.lastSalePrice = lastCompletedTrade.price
 
-            this.pricePremium = lowestAsk.price - product.product.originalPrice
-            this.pricePremiumPercentage = (lowestAsk.price - product.product.originalPrice) / product.product.originalPrice.toFloat()
+            this.pricePremium = lowestAsk.price - product.originalPrice
+            this.pricePremiumPercentage = (lowestAsk.price - product.originalPrice) / product.originalPrice.toFloat()
         }
 
         if (highestBid != null) {

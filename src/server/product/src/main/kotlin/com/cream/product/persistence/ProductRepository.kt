@@ -3,10 +3,7 @@ package com.cream.product.persistence
 import com.cream.product.constant.RequestType
 import com.cream.product.constant.TradeStatus
 import com.cream.product.dto.filterDTO.FilterRequestDTO
-import com.cream.product.dto.productDTO.ProductPriceByRequestTypeDTO
-import com.cream.product.dto.productDTO.ProductPriceBySizeDTO
-import com.cream.product.dto.productDTO.ProductPriceDTO
-import com.cream.product.dto.productDTO.ProductPriceWishDTO
+import com.cream.product.dto.productDTO.*
 import com.cream.product.model.*
 import com.querydsl.core.types.Order
 import com.querydsl.core.types.OrderSpecifier
@@ -23,15 +20,17 @@ import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport
 import java.time.LocalDateTime
 
 interface ProductRepositoryCustom {
-    fun getProducts(offset: Long, limit: Long, sort: String, filter: FilterRequestDTO): List<ProductPriceDTO>?
-    fun getProductsWithWish(userId: Long, offset: Long, limit: Long, sort: String, filter: FilterRequestDTO): List<ProductPriceWishDTO>?
+    fun getProducts(offset: Long, limit: Long, sort: String?, filter: FilterRequestDTO): List<ProductPriceDTO>
+    fun getProductsWithWish(userId: Long, offset: Long, limit: Long, sort: String?, filter: FilterRequestDTO): List<ProductPriceWishDTO>
 
     fun getProduct(productId: Long): ProductPriceDTO
     fun getProductWithWish(userId: Long, productId: Long): ProductPriceWishDTO
 
-    fun getProductPriceBySize(productId: Long): List<ProductPriceBySizeDTO>?
+    fun getProductPricesBySize(productId: Long, requestType: RequestType): List<ProductPriceBySizeDTO>?
     fun getProductSizePriceByRequestType(productId: Long, size: String?, requestType: RequestType): ProductPriceByRequestTypeDTO?
     fun getLastTrade(productId: Long, size: String?): Trade?
+
+    fun getProductsByWish(userId: Long, offset: Long, limit: Long): List<ProductPriceWishDTO>
 }
 
 interface ProductRepository : JpaRepository<Product, Long>, ProductRepositoryCustom
@@ -59,7 +58,7 @@ class ProductRepositoryImpl :
     override fun getProducts(
         offset: Long,
         limit: Long,
-        sort: String,
+        sort: String?,
         filter: FilterRequestDTO
     ): List<ProductPriceDTO> {
         return jpaQueryFactory.select(
@@ -91,9 +90,9 @@ class ProductRepositoryImpl :
         userId: Long,
         offset: Long,
         limit: Long,
-        sort: String,
+        sort: String?,
         filter: FilterRequestDTO
-    ): MutableList<ProductPriceWishDTO>? {
+    ): MutableList<ProductPriceWishDTO> {
         return jpaQueryFactory.select(
             Projections.constructor(
                 ProductPriceWishDTO::class.java,
@@ -159,20 +158,21 @@ class ProductRepositoryImpl :
             .fetchFirst()
     }
 
-    override fun getProductPriceBySize(
-        productId: Long
+    override fun getProductPricesBySize(
+        productId: Long,
+        requestType: RequestType
     ): MutableList<ProductPriceBySizeDTO>? {
         return jpaQueryFactory.select(
             Projections.constructor(
                 ProductPriceBySizeDTO::class.java,
                 tradeEntity.size,
-                tradeEntity.price.min()
+                lowestAskOrHighestBid(requestType)
             )
         )
             .from(tradeEntity)
             .where(
                 tradeEntity.product.id.eq(productId),
-                tradeEntity.requestType.eq(RequestType.ASK),
+                tradeEntity.requestType.eq(requestType),
                 tradeEntity.tradeStatus.eq(TradeStatus.WAITING),
                 tradeEntity.validationDateTime.gt(LocalDateTime.now())
             )
@@ -214,6 +214,28 @@ class ProductRepositoryImpl :
             )
             .orderBy(OrderSpecifier(Order.DESC, tradeEntity.updatedAt))
             .fetchOne()
+    }
+
+    override fun getProductsByWish(
+        userId: Long,
+        offset: Long,
+        limit: Long,
+    ): List<ProductPriceWishDTO> {
+        return jpaQueryFactory.select(
+            Projections.constructor(
+                ProductPriceWishDTO::class.java,
+                productEntity,
+                wishEntity.size,
+                lowestAskQuery,
+            )
+        ).from(productEntity)
+            .join(wishEntity)
+            .on(wishEntity.product.id.eq(productEntity.id))
+            .where(wishEntity.userId.eq(userId))
+            .offset(offset)
+            .limit(limit)
+            .fetch()
+
     }
 
     private fun lowestAskOrHighestBid(requestType: RequestType): NumberExpression<Int>? {
