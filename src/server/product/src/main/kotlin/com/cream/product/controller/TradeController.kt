@@ -22,7 +22,7 @@ class TradeController {
         @RequestParam requestType: RequestType,
         @RequestParam tradeStatus: TradeStatus,
         @RequestHeader("userId", required = true) userId: Long,
-        ): ResponseEntity<List<Trade>> {
+    ): ResponseEntity<List<Trade>> {
         return ResponseEntity.ok(tradeService.getTradeList(userId, pageDTO, requestType, tradeStatus))
     }
 

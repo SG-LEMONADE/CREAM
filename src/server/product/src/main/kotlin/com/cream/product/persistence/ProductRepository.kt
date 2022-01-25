@@ -235,7 +235,6 @@ class ProductRepositoryImpl :
             .offset(offset)
             .limit(limit)
             .fetch()
-
     }
 
     private fun lowestAskOrHighestBid(requestType: RequestType): NumberExpression<Int>? {

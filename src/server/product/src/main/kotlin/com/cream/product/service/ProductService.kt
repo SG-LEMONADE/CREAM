@@ -53,7 +53,7 @@ class ProductService {
         )
     }
 
-    fun findProductByWish(page: PageDTO, userId: Long): List<ProductDTO>{
+    fun findProductByWish(page: PageDTO, userId: Long): List<ProductDTO> {
         return productRepository.getProductsByWish(userId, page.offset(), page.limit()).stream()
             .map {
                 ProductDTO(it)

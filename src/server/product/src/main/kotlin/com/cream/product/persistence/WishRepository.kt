@@ -29,7 +29,8 @@ class WishRepositoryImpl :
             .where(
                 wishEntity.product.id.eq(productId),
                 wishEntity.userId.eq(userId),
-                wishEntity.size.eq(size))
+                wishEntity.size.eq(size)
+            )
             .fetchOne()
     }
 }

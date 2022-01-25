@@ -9,7 +9,6 @@ import com.cream.product.persistence.ProductRepository
 import com.cream.product.persistence.TradeRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import java.awt.print.Pageable
 import java.time.LocalDateTime
 import javax.transaction.Transactional
 
@@ -26,7 +25,7 @@ class TradeService {
         tradeRepository.save(tradeRegisterDTO.toEntity(userId, product, size))
     }
 
-    fun getTradeList(userId:Long, pageDTO: PageDTO, requestType: RequestType, tradeStatus: TradeStatus): List<Trade> {
+    fun getTradeList(userId: Long, pageDTO: PageDTO, requestType: RequestType, tradeStatus: TradeStatus): List<Trade> {
         return tradeRepository.findAllByPageAndStatus(userId, pageDTO.offset(), pageDTO.limit(), requestType, tradeStatus)
     }
 

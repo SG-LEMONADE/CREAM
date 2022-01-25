@@ -2,7 +2,6 @@ package com.cream.product.persistence
 
 import com.cream.product.constant.RequestType
 import com.cream.product.constant.TradeStatus
-import com.cream.product.dto.filterDTO.PageDTO
 import com.cream.product.model.QTrade
 import com.cream.product.model.Trade
 import com.querydsl.core.types.Order
@@ -62,8 +61,6 @@ class TradeRepositoryImpl :
             .limit(limit)
             .fetch()
     }
-
-
 
     private fun eqRequestType(requestType: RequestType): OrderSpecifier<*> {
         return if (requestType == RequestType.ASK) OrderSpecifier(Order.ASC, tradeEntity.price) else OrderSpecifier(Order.DESC, tradeEntity.price)
