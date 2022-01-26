@@ -10,7 +10,7 @@ open class ProductDTO(data: ProductPriceWishDTO) {
     val originalPrice: Int = data.product.originalPrice
     val gender: String = data.product.gender
     val category: String = data.product.category
-    val color: String = data.product.color
+    val color: String? = data.product.color
     val styleCode: String = data.product.styleCode
     val wishCnt: Int = data.product.wishCnt
     val brandName: String = data.product.brandName
