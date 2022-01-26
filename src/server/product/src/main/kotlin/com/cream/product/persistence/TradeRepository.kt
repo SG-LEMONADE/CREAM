@@ -32,7 +32,9 @@ class TradeRepositoryImpl :
         size: String,
         requestType: RequestType
     ): Trade {
-        return from(tradeEntity)
+        return jpaQueryFactory
+            .select(tradeEntity)
+            .from(tradeEntity)
             .where(
                 tradeEntity.product.id.eq(productId),
                 tradeEntity.size.eq(size),
@@ -51,7 +53,9 @@ class TradeRepositoryImpl :
         requestType: RequestType,
         tradeStatus: TradeStatus
     ): List<Trade> {
-        return from(tradeEntity)
+        return jpaQueryFactory
+            .select(tradeEntity)
+            .from(tradeEntity)
             .where(
                 tradeEntity.requestType.eq(requestType),
                 tradeEntity.tradeStatus.eq(tradeStatus),

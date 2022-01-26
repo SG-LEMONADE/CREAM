@@ -1,5 +1,4 @@
 server:
-  address: localhost
   port: 8081
 
 spring:
@@ -37,7 +36,7 @@ logging:
             sql:
               BasicBinder: TRACE
 
-gender: man,woman,unisex
+gender: men,women,unisex
 category: sneakers,streetwear,accessories,life,electronics
 
 eureka:

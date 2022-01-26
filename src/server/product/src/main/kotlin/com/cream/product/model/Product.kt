@@ -1,7 +1,6 @@
 package com.cream.product.model
 
 import com.fasterxml.jackson.annotation.JsonIgnore
-import com.fasterxml.jackson.annotation.JsonValue
 import java.time.LocalDate
 import javax.persistence.*
 
@@ -21,8 +20,8 @@ class Product(
     @JsonIgnore @ManyToOne(cascade = [CascadeType.DETACH], fetch = FetchType.LAZY) @JoinColumn(name = "brand_id") var brand: Brand?,
     @Column(name = "brand_name") var brandName: String,
     @Column(name = "background_color") var backgroundColor: String,
-    @JsonValue @Column(name = "image_urls") var imageUrls: String,
-    @JsonValue @Column(name = "sizes") var sizes: String,
+    @Column(name = "image_urls") var imageUrls: String,
+    @Column(name = "sizes") var sizes: String,
     @Column(name = "released_date") var releasedDate: LocalDate?,
     @Column(name = "total_sale") var totalSale: Int
 )

@@ -31,7 +31,10 @@ class TradeService {
 
     @Transactional
     fun delete(tradeId: Long) {
-        tradeRepository.getById(tradeId).tradeStatus = TradeStatus.CANCELED
+        val trade = tradeRepository.getById(tradeId)
+
+        trade.tradeStatus = TradeStatus.CANCELED
+        trade.updatedAt = LocalDateTime.now()
     }
 
     @Transactional

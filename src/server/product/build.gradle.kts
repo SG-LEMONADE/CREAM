@@ -55,6 +55,7 @@ dependencies {
 
     //db
     implementation("mysql:mysql-connector-java:8.0.27")
+    implementation("org.json:json:20211205")
 
     //devtool, test
     developmentOnly("org.springframework.boot:spring-boot-devtools")
