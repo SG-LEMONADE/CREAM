@@ -149,12 +149,27 @@ final class SigninViewController: UIViewController {
         super.viewDidLoad()
         applyViewSettings()
         bindViewModel()
+        setupNavigationBarItem()
         
         emailTextField.delegate = self
         passwordTextField.delegate = self
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    // TODO: NavigationBarItem 추가
+    private func setupNavigationBarItem() {
+        let navigationItem = UIBarButtonItem(image: UIImage(systemName: "xmark"),
+                                             style: .plain,
+                                             target: self,
+                                             action: #selector(testFunction))s
+        self.navigationItem.rightBarButtonItem = navigationItem
+    }
+    
+    @objc
+    func testFunction() {
+        self.dismiss(animated: true, completion: nil)
     }
     
     private func bindViewModel() {
@@ -164,7 +179,6 @@ final class SigninViewController: UIViewController {
         viewModel.password.bind { [weak self] value in
             self?.viewModel.validateLoginAvailable()
         }
-        
         viewModel.isLoginAvailable.bind { [weak self] value in
             if value == true {
                 self?.loginButton.isEnabled = true
@@ -297,6 +311,9 @@ extension SigninViewController: ViewConfiguration {
             $0.width.equalTo(findIDButton.snp.width)
             $0.width.equalTo(findPasswordButton.snp.width)
         }
+    }
+    func viewConfigure() {
+        self.view.backgroundColor = .white
     }
 }
 

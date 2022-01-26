@@ -225,6 +225,5 @@ extension SizeListViewController: UICollectionViewDataSource, UICollectionViewDe
                 self.dismiss(animated: true)
             }
         }
-        
     }
 }

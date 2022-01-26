@@ -8,6 +8,20 @@
 import UIKit
 import SnapKit
 
+class SizePriceCell: SizeListCell {
+    static let reuseIdentifer = "\(SizePriceCell.self)"
+    
+    private lazy var priceLabel: UILabel = {
+        let label = UILabel()
+        label.layer.cornerRadius = 16
+        label.textAlignment = .center
+        label.layer.borderColor = UIColor.systemGray5.cgColor
+        label.layer.borderWidth = 1
+        return label
+    }()
+}
+
+
 class SizeListCell: UICollectionViewCell {
     static let reuseIdentifier = "\(SizeListCell.self)"
     

@@ -24,44 +24,16 @@ class ItemViewController: UIViewController {
             self.delegate?.didScrollTo(item)
         }
     }
+    
     private lazy var ItemInfoListView: UICollectionView = {
         let cv = UICollectionView(frame: .zero,
                                   collectionViewLayout: configureCollectionViewLayout())
         return cv
     }()
     
-    private lazy var buyButton: TradeButton = {
-        let button = TradeButton(tradeType: .buy)
-        return button
-    }()
-    
-    private lazy var sellButton: TradeButton = {
-        let button = TradeButton(tradeType: .sell)
-        return button
-    }()
-    
-    private lazy var wishButton: VerticalButton = {
-        let button = VerticalButton.init(frame: .zero)
-        button.imageView?.image = UIImage(systemName: "bookmark")
-        button.titleLabel?.text = "1,234"
-        button.backgroundColor = .yellow
-        return button
-    }()
-    
-    private lazy var tradeStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [buyButton, sellButton])
-        stackView.axis = .horizontal
-        stackView.distribution = .fillEqually
-        stackView.spacing = 5
-        return stackView
-    }()
-    
-    private lazy var containerStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [wishButton, tradeStackView])
-        stackView.axis = .horizontal
-        stackView.spacing = 10
-        stackView.backgroundColor = .white
-        return stackView
+    private lazy var tradeContainerView: TradeContainerView = {
+        let tcv = TradeContainerView()
+        return tcv
     }()
     
     // MARK: Init
@@ -75,7 +47,6 @@ class ItemViewController: UIViewController {
     }
     
     // MARK: View Life Cycle
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         configureDelegate()
@@ -91,36 +62,58 @@ class ItemViewController: UIViewController {
 
 extension ItemViewController: ViewConfiguration {
     func buildHierarchy() {
-        self.view.addSubviews(ItemInfoListView, containerStackView)
+        self.view.addSubviews(ItemInfoListView, tradeContainerView)
     }
     
     func setupConstraints() {
         ItemInfoListView.snp.makeConstraints {
             $0.top.leading.trailing.equalToSuperview()
-            $0.bottom.equalTo(self.containerStackView.snp.top).offset(-10)
         }
         
-        containerStackView.snp.makeConstraints {
-            $0.leading.equalTo(self.view.snp.leading).offset(10)
-            $0.trailing.equalTo(self.view.snp.trailing).offset(-10)
-            $0.bottom.equalTo(self.view.safeAreaLayoutGuide.snp.bottom).offset(-10)
-            $0.height.equalTo(50)
+        tradeContainerView.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview()
+            $0.top.equalTo(self.ItemInfoListView.snp.bottom)
+            $0.bottom.equalTo(self.view.safeAreaLayoutGuide.snp.bottom)
+            $0.height.equalTo(70)
         }
-        
-        wishButton.snp.makeConstraints {
-            $0.width.equalTo(self.tradeStackView).multipliedBy(0.2)
-        }
-        
-        wishButton.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+        self.view.bringSubviewToFront(tradeContainerView.buyButton)
     }
     
     func viewConfigure() {
-        collectionViewConfigure()
+        configureCollectionView()
+        configureUserEvent()
+        self.tradeContainerView.wishButton.configure(1000)
+    }
+}
+
+// MARK: User Event
+extension ItemViewController {
+    func configureUserEvent() {
+        tradeContainerView.wishButton.addTarget(self, action: #selector(didTapWishButton), for: .touchUpInside)
+        tradeContainerView.buyButton.addTarget(self, action: #selector(didTapBuyButton), for: .touchUpInside)
+        tradeContainerView.sellButton.addTarget(self, action: #selector(didTapSellButton), for: .touchUpInside)
+    }
+    
+    @objc
+    func didTapWishButton() {
+        print(#function)
+    }
+    
+    @objc
+    func didTapBuyButton() {
+        let sizeViewController = TradeViewController()
+        self.present(sizeViewController, animated: true)
+    }
+    
+    @objc
+    func didTapSellButton() {
+        let sizeViewController = TradeViewController()
+        self.present(sizeViewController, animated: true)
     }
 }
 
 extension ItemViewController {
-    func collectionViewConfigure() {
+    func configureCollectionView() {
         ItemInfoListView.register(ItemInfoCell.self, forCellWithReuseIdentifier: ItemInfoCell.reuseIdentifier)
         ItemInfoListView.register(ReleaseInfoCell.self, forCellWithReuseIdentifier: ReleaseInfoCell.reuseIdentifier)
         ItemInfoListView.register(ShopBannerCell.self, forCellWithReuseIdentifier: ShopBannerCell.reuseIdentifier)
@@ -186,7 +179,6 @@ extension ItemViewController {
     }
     
     private func configureItemInfoSectionLayout() -> NSCollectionLayoutSection {
-        print(#function)
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
                                               heightDimension: .fractionalWidth(0.52))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
@@ -207,30 +199,32 @@ extension ItemViewController {
     }
     
     private func configureReleaseSectionLayout() -> NSCollectionLayoutSection {
-        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.4),
-                                              heightDimension: .fractionalWidth(0.3))
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5),
+                                              heightDimension: .fractionalHeight(1))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        item.contentInsets.bottom = 15
+
+        item.contentInsets = .init(top: 0, leading: 5, bottom: 15, trailing: 5)
         
-        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
-                                               heightDimension: .fractionalWidth(0.35))
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.8),
+                                               heightDimension: .estimated(80))
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
-        group.contentInsets = .init(top: 0, leading: 0, bottom: 0, trailing: 0)
+        
         
         let section = NSCollectionLayoutSection(group: group)
-        section.orthogonalScrollingBehavior = .groupPaging
+        section.contentInsets = .init(top: 0, leading: 0, bottom: 0, trailing: 5)
+        section.orthogonalScrollingBehavior = .continuous
         
         return section
     }
     
     private func configureDeliverySectionLayout() -> NSCollectionLayoutSection {
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
-                                              heightDimension: .fractionalWidth(0.3))
+                                              heightDimension: .fractionalWidth(0.45))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         item.contentInsets.bottom = 0
         
         let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
-                                               heightDimension: .fractionalWidth(0.3))
+                                               heightDimension: .fractionalWidth(0.45))
         
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
         group.contentInsets = .init(top: 0, leading: 0, bottom: 0, trailing: 0)
@@ -279,44 +273,21 @@ extension ItemViewController {
     }
     
     private func configureSimilarItemSectionLayout() -> NSCollectionLayoutSection {
-        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.4),
-                                              heightDimension: .fractionalHeight(0.464))
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5),
+                                              heightDimension: .fractionalWidth(0.8))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         item.contentInsets = .init(top: 0, leading: 0, bottom: 5, trailing: 5)
-        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
-                                               heightDimension: .estimated(464))
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.8),
+                                               heightDimension: .fractionalWidth(0.8))
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
         let section = NSCollectionLayoutSection(group: group)
         section.orthogonalScrollingBehavior = .groupPaging
-        
         section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 5, bottom: 0, trailing: 0)
         
         return section
     }
     
-    private func configureSectionLayout(_ itemSize: NSCollectionLayoutSize,
-                                        _ itemContentInsets: NSDirectionalEdgeInsets = .init(top: 0, leading: 0, bottom: 0, trailing: 0),
-                                        _ groupSize: NSCollectionLayoutSize,
-                                        _ groupContenInsets: NSDirectionalEdgeInsets = .init(top: 0, leading: 0, bottom: 0, trailing: 0),
-                                        _ supplementaryItems: NSCollectionLayoutBoundarySupplementaryItem...) -> NSCollectionLayoutSection {
-        
-        let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        item.contentInsets = itemContentInsets
-        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
-        group.contentInsets = groupContenInsets
-        
-        let section = NSCollectionLayoutSection(group: group)
-        section.orthogonalScrollingBehavior = .groupPaging
-        
-        section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 5, bottom: 0, trailing: 0)
-        section.boundarySupplementaryItems = [
-            NSCollectionLayoutBoundarySupplementaryItem(layoutSize: .init(widthDimension: .fractionalWidth(1),
-                                                                          heightDimension: .estimated(40)),
-                                                        elementKind: UICollectionView.elementKindSectionHeader,
-                                                        alignment: .topLeading)
-        ]
-        return section
-    }
+
 }
 
 extension ItemViewController: UICollectionViewDelegate {
@@ -324,7 +295,6 @@ extension ItemViewController: UICollectionViewDelegate {
 }
 
 extension ItemViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-    
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         switch kind {
         case UICollectionView.elementKindSectionHeader:
@@ -333,7 +303,6 @@ extension ItemViewController: UICollectionViewDataSource, UICollectionViewDelega
                                                                                    for: indexPath) as? HomeViewCategoryHeaderView else
             { return UICollectionReusableView() }
             headerView.configure("\(Int.random(in: 0...100))")
-            headerView.backgroundColor = .green
             return headerView
         case UICollectionView.elementKindSectionFooter:
             guard let footer = collectionView.dequeueReusableSupplementaryView(ofKind: kind,
@@ -360,13 +329,10 @@ extension ItemViewController: UICollectionViewDataSource, UICollectionViewDelega
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         switch section {
         case 0:
-            print("section0")
             return 3
         case 2:
-            print("section2")
             return 4
         case 6:
-            print("section6")
             return 5
         default:
             return 1
@@ -389,7 +355,6 @@ extension ItemViewController: UICollectionViewDataSource, UICollectionViewDelega
                                                                 for: indexPath) as? ItemInfoCell
             else { return UICollectionViewCell() }
             cell.configure("itemInfo cell")
-            print("function 1")
             cell.delegate = self
             return cell
             
@@ -398,16 +363,15 @@ extension ItemViewController: UICollectionViewDataSource, UICollectionViewDelega
                                                                 for: indexPath) as? ReleaseInfoCell
             else { return UICollectionViewCell() }
             cell.configure("release cell")
-            cell.backgroundColor = .magenta
-            print("function 2")
+            
             return cell
+            
         case 3:
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ShopBannerCell.reuseIdentifier,
                                                                 for: indexPath) as? ShopBannerCell
             else { return UICollectionViewCell() }
             cell.backgroundColor = .red
             cell.configure("banner1")
-            print("function 0")
             return cell
             
         case 4:
@@ -416,7 +380,15 @@ extension ItemViewController: UICollectionViewDataSource, UICollectionViewDelega
             else { return UICollectionViewCell() }
             cell.backgroundColor = .red
             cell.configure("banner2")
-            print("function 0")
+            return cell
+            
+        case 6:
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HomeViewItemCell.reuseIdentifier,
+                                                                for: indexPath) as? HomeViewItemCell
+            else { return UICollectionViewCell() }
+            cell.backgroundColor = .systemGray
+            cell.configureTest()
+            
             return cell
             
         default:
@@ -430,11 +402,10 @@ extension ItemViewController: UICollectionViewDataSource, UICollectionViewDelega
 }
 
 extension ItemViewController: ItemInfoCellDelegate {
+    // TODO: Button Tap 이후, 상품에 해당하는 사이즈 가져오기
     func didTapSizeButton() {
-        print("클릭 잘 되고 있음.")
         let nextVC = SizeListViewController()
         nextVC.modalPresentationStyle = .overCurrentContext
         self.present(nextVC, animated: false)
     }
 }
-

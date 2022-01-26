@@ -99,7 +99,6 @@ final class SignupViewController: UIViewController {
         return label
     }()
     
-    
     private lazy var signupButton: UIButton = {
         let button = UIButton(frame: .zero)
         button.layer.cornerRadius = 10

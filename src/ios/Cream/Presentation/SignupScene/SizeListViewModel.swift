@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 final class SizeListViewModel {
     private var sizeList: [Int]
     
