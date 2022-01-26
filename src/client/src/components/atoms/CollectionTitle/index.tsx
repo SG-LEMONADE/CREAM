@@ -5,7 +5,7 @@ import colors from "colors/color";
 
 type CollectionTitleProps = {
 	title: string;
-	subTitle: string;
+	subTitle?: string;
 };
 
 const CollectionTitle: FunctionComponent<CollectionTitleProps> = (props) => {
@@ -13,7 +13,7 @@ const CollectionTitle: FunctionComponent<CollectionTitleProps> = (props) => {
 	return (
 		<>
 			<StyledTitle>{title}</StyledTitle>
-			<StyledSubTitle>{subTitle}</StyledSubTitle>
+			{subTitle && <StyledSubTitle>{subTitle}</StyledSubTitle>}
 		</>
 	);
 };

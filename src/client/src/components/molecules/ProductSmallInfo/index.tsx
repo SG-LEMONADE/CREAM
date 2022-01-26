@@ -7,12 +7,14 @@ type ProductSmallInfoProps = {
 	imgSrc: string;
 	backgroundColor: string;
 	productName: string;
-	productNameKor: string;
+	productNameKor?: string;
+	size?: string;
 	style?: CSSProperties;
 };
 
 const ProductSmallInfo: FunctionComponent<ProductSmallInfoProps> = (props) => {
-	const { imgSrc, backgroundColor, productName, productNameKor, style } = props;
+	const { imgSrc, backgroundColor, productName, productNameKor, style, size } =
+		props;
 
 	return (
 		<ProductArea style={style}>
@@ -21,7 +23,14 @@ const ProductSmallInfo: FunctionComponent<ProductSmallInfoProps> = (props) => {
 			</ProductThumb>
 			<ProductInfoArea>
 				<StyledProductName>{productName}</StyledProductName>
-				<StyledProductNameKor>{productNameKor}</StyledProductNameKor>
+				{size && (
+					<StlyledSize>
+						<StyledSpan>{size}</StyledSpan>
+					</StlyledSize>
+				)}
+				{productNameKor && (
+					<StyledProductNameKor>{productNameKor}</StyledProductNameKor>
+				)}
 			</ProductInfoArea>
 		</ProductArea>
 	);
@@ -45,6 +54,7 @@ const ProductThumb = styled.div<{ backgroundColor: string }>`
 
 const StyledImg = styled(Image)`
 	vertical-align: top;
+	border-radius: 12px;
 `;
 
 const ProductInfoArea = styled.div`
@@ -52,6 +62,20 @@ const ProductInfoArea = styled.div`
 	flex-direction: column;
 	justify-content: center;
 	flex: 1;
+`;
+
+const StlyledSize = styled.p`
+	line-height: 19px;
+	margin-top: 4px;
+`;
+
+const StyledSpan = styled.span`
+	display: inline-block;
+	vertical-align: top;
+	font-size: 14px;
+	font-weight: 700;
+	letter-spacing: -0.5px;
+	color: rgba(34, 34, 34, 0.5);
 `;
 
 const StyledProductName = styled.p`

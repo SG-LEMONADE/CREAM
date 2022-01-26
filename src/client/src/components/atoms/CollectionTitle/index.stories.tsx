@@ -17,3 +17,8 @@ Default.args = {
 	title: "New In",
 	subTitle: "신규 등록 상품",
 };
+
+export const OnlyTitle = Template.bind({});
+OnlyTitle.args = {
+	title: "구매내역",
+};
