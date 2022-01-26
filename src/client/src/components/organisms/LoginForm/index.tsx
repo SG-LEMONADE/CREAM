@@ -18,10 +18,13 @@ const LoginForm: FunctionComponent = () => {
 	const [isErrorEmail, setIsErrorEmail] = useState<boolean>(false);
 	const [isErrorPwd] = useState<boolean>(false);
 
-	const onCheckEmailFormat = (e: React.ChangeEvent<HTMLInputElement>) => {
-		let inputEmail = e.target.value;
-		setIsErrorEmail(true);
-		if (inputEmail.endsWith("com") && inputEmail.includes("@")) {
+	const onValidateEmailFormat = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const inputEmail = e.target.value;
+		const re =
+			/^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+		const validateResult = re.test(inputEmail);
+		setIsErrorEmail(!validateResult);
+		if (validateResult) {
 			setEmail(inputEmail);
 			setIsErrorEmail(false);
 		}
@@ -51,14 +54,24 @@ const LoginForm: FunctionComponent = () => {
 				<LoginArea>
 					<Logo category="LogowithTag" />
 					{isErrorEmail ? (
-						<Input onChange={onCheckEmailFormat} category="email" error />
+						<Input
+							onChange={onValidateEmailFormat}
+							category="email"
+							error
+							content="이메일 주소"
+						/>
 					) : (
-						<Input onChange={onCheckEmailFormat} category="email" />
+						<Input
+							onChange={onValidateEmailFormat}
+							category="email"
+							content="이메일 주소"
+						/>
 					)}
 					<form>
 						<Input
 							onChange={(e) => setPassword(e.target.value)}
 							category="password"
+							content="비밀번호"
 						/>
 						<ButtonArea>
 							{isErrorEmail ||

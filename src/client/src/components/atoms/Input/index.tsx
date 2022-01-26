@@ -1,44 +1,66 @@
 import React, { FunctionComponent } from "react";
-import styled from "@emotion/styled";
+import Icon from "../Icon";
 
 import colors from "colors/color";
+
 import { css } from "@emotion/react";
+import styled from "@emotion/styled";
 
 type InputProps = {
 	category: string;
+	content: string;
 	error?: boolean;
 	onChange: React.ChangeEventHandler<HTMLInputElement>;
 	onBlur?: React.ChangeEventHandler<HTMLInputElement>;
+	onClick?: () => void;
+	required?: boolean;
 };
 
 const placeholders = {
 	email: "예) cream@cream.co.kr",
 	password: "영문, 숫자, 특수문자 조합 8 ~ 16자",
 	phone: "가입하신 휴대폰 번호",
-};
-
-const fieldTitle = {
-	email: "이메일 주소",
-	password: "비밀번호",
-	phone: "핸드폰 번호",
+	sneakers: "선택하세요",
 };
 
 const Input: FunctionComponent<InputProps> = (props) => {
-	const { category, error = false, onChange, onBlur } = props;
-	const placeholder = placeholders[category];
+	const {
+		category,
+		content,
+		error = false,
+		onChange,
+		onBlur,
+		onClick,
+		required = false,
+	} = props;
+
 	return (
 		<>
-			<StyledInputTitle error={error}>{fieldTitle[category]}</StyledInputTitle>
+			<StyledInputTitle error={error} required={required}>
+				{content}
+			</StyledInputTitle>
 			<StyledInput
 				onChange={onChange}
 				onBlur={onBlur}
+				onClick={onClick}
+				category={category}
 				type={category}
 				error={error}
-				placeholder={placeholder}
+				placeholder={placeholders[category]}
 			/>
+			{category === "sneakers" && (
+				<Icon
+					name="ChevronRight"
+					style={{
+						width: "15px",
+						height: "15px",
+						color: "#222222",
+					}}
+				/>
+			)}
 			{error && (
 				<>
-					<ErrorMsg>🤔 {fieldTitle[category]} 형식을 확인해주세요!</ErrorMsg>
+					<ErrorMsg>🤔 {content} 형식을 확인해주세요!</ErrorMsg>
 					<div style={{ paddingBottom: "30px" }}></div>
 				</>
 			)}
@@ -48,15 +70,22 @@ const Input: FunctionComponent<InputProps> = (props) => {
 
 export default Input;
 
-const StyledInputTitle = styled.h3<{ error: boolean }>`
+const StyledInputTitle = styled.h3<{ error: boolean; required: boolean }>`
 	font-size: 13px;
 	letter-spacing: -0.07px;
 	line-height: 18px;
 	color: ${({ error }) =>
 		error ? `${colors.colors.error}` : `${colors.colors.default}`};
+	:after {
+		${({ required }) =>
+			required &&
+			`content: " *";
+		top: -2px;
+		right: 0;`}
+	}
 `;
 
-const StyledInput = styled.input<{ error: boolean }>`
+const StyledInput = styled.input<{ error: boolean; category: string }>`
 	width: 400px;
 	outline: 0;
 	border-width: 0 0 1px;
@@ -78,6 +107,7 @@ const StyledInput = styled.input<{ error: boolean }>`
 				border-color: ${colors.colors.error};
 			}
 		`}
+	${({ category }) => category === "sneakers" && `cursor: pointer`}
 `;
 
 const ErrorMsg = styled.p`
