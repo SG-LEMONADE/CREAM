@@ -1,5 +1,5 @@
 //
-//  ShopViewController.swift
+//  ProductViewController.swift
 //  Cream
 //
 //  Created by wankikim-MN on 2022/01/15.
@@ -8,10 +8,10 @@
 import UIKit
 import SnapKit
 
-class ShopViewController: UIViewController {
-    private let banners: [String] = ["banner1", "banner2", "banner3", "banner4", "banner5", "banner6", "banner1"]
-    private let categories = ["  ","럭셔리", " ", "스니커즈", "의류", "패션 잡화", "라이프", "테크"]
+class ProductViewController: UIViewController {
+
     private var currentBanner: Int = 0
+    private var viewModel = ProductsViewModel()
     
     enum Constraint {
         static let verticalInset: CGFloat = 20
@@ -124,7 +124,7 @@ class ShopViewController: UIViewController {
     }
 }
 
-extension ShopViewController {
+extension ProductViewController {
     func bannerTimer() {
         let _: Timer = Timer.scheduledTimer(withTimeInterval: 2, repeats: true) { (Timer) in
             self.bannerMove()
@@ -135,7 +135,7 @@ extension ShopViewController {
         currentBanner += 1
         shopCollectionView.scrollToItem(at: NSIndexPath(item: currentBanner, section: 0) as IndexPath, at: .bottom, animated: true)
         
-        if self.currentBanner == self.banners.count-1 {
+        if self.currentBanner == viewModel.banners.count-1 {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.28) {
                 self.scrollTofirstIndex()
             }
@@ -148,7 +148,7 @@ extension ShopViewController {
     }
 }
 
-extension ShopViewController: ViewConfiguration {
+extension ProductViewController: ViewConfiguration {
     func buildHierarchy() {
         view.addSubviews(shopCollectionView)
     }
@@ -163,7 +163,7 @@ extension ShopViewController: ViewConfiguration {
     }
 }
 
-extension ShopViewController: UICollectionViewDataSource {
+extension ProductViewController: UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 2
     }
@@ -172,7 +172,7 @@ extension ShopViewController: UICollectionViewDataSource {
                         numberOfItemsInSection section: Int) -> Int {
         switch section {
         case 0:
-            return banners.count
+            return viewModel.banners.count
         default:
             return 50
         }
@@ -185,7 +185,7 @@ extension ShopViewController: UICollectionViewDataSource {
                                                                 for: indexPath) as? ShopBannerCell
             else { return UICollectionViewCell() }
             
-            cell.configure(banners[indexPath.item])
+            cell.configure(viewModel.banners[indexPath.item])
             
             return cell
         } else {
@@ -211,7 +211,7 @@ extension ShopViewController: UICollectionViewDataSource {
     }
 }
 
-extension ShopViewController: UICollectionViewDelegate {
+extension ProductViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if indexPath.section == 1 {
             let nextVC = ItemViewController.init(ItemViewModel())
@@ -221,7 +221,7 @@ extension ShopViewController: UICollectionViewDelegate {
     }
 }
 
-extension ShopViewController: ShopViewFilterHeaderViewDelegate {
+extension ProductViewController: ShopViewFilterHeaderViewDelegate {
     func setupSizeForItemAt(_ collectionView: UICollectionView,
                             layout collectionViewLayout: UICollectionViewLayout,
                             sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -229,7 +229,7 @@ extension ShopViewController: ShopViewFilterHeaderViewDelegate {
                                                                   for: indexPath) as? FilterCell else
                                                                   { return .zero }
         
-        cell.configure(categories[indexPath.item])
+        cell.configure(viewModel.categories[indexPath.item])
         cell.titleLabel.sizeToFit()
         
         var cellWidth = cell.sizeThatFits(cell.titleLabel.frame.size).width + Constraint.horizontalInset
@@ -243,13 +243,13 @@ extension ShopViewController: ShopViewFilterHeaderViewDelegate {
     }
     
     func didSelectItemAt(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print(categories[indexPath.item])
+        print(viewModel.categories[indexPath.item])
     }
 }
 
-extension ShopViewController: ShopViewFilterHeaderViewDataSource {
+extension ProductViewController: ShopViewFilterHeaderViewDataSource {
     func setupNumberOfItemsInSection(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return categories.count
+        return viewModel.categories.count
     }
     
     func setupCellForItemAt(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -264,7 +264,7 @@ extension ShopViewController: ShopViewFilterHeaderViewDataSource {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FilterCell.reuseIdentifer, for: indexPath) as? FilterCell
         else { return UICollectionViewCell() }
         
-        cell.configure(categories[indexPath.item])
+        cell.configure(viewModel.categories[indexPath.item])
         cell.titleLabel.sizeToFit()
         
         if indexPath.item == 2 {

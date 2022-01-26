@@ -13,12 +13,15 @@ class ReleaseInfoCell: UICollectionViewCell {
     
     private lazy var templateLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .systemGray5
+        label.font = UIFont.systemFont(ofSize: 12)
+        label.textColor = .systemGray3
         return label
     }()
     
     private lazy var valueLabel: UILabel = {
         let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 12)
+        label.adjustsFontSizeToFitWidth = true
         label.numberOfLines = 2
         return label
     }()
@@ -43,22 +46,30 @@ extension ReleaseInfoCell: ViewConfiguration {
         self.templateLabel.snp.makeConstraints {
             $0.top.equalTo(self.snp.top).offset(5)
             $0.leading.equalTo(self.snp.leading).offset(5)
-            $0.trailing.equalTo(self.snp.leading).offset(-5)
+            $0.trailing.equalTo(self.snp.trailing).offset(-5)
             $0.bottom.equalTo(valueLabel.snp.top).offset(-5)
         }
         self.valueLabel.snp.makeConstraints {
             $0.leading.equalTo(self.snp.leading).offset(5)
-            $0.trailing.equalTo(self.snp.leading).offset(-5)
-            $0.bottom.equalTo(self.snp.bottom).offset(-5)
+            $0.trailing.equalTo(self.snp.trailing).offset(-5)
+            $0.bottom.lessThanOrEqualTo(self.snp.bottom).offset(-5)
         }
+        templateLabel.setContentHuggingPriority(.defaultHigh, for: .vertical)
+    }
+    
+    func viewConfigure() {
+        self.backgroundColor = .white
+        self.layer.borderWidth = 0.5
+        self.layer.borderColor = UIColor.systemGray.cgColor
+        self.layer.cornerRadius = 10
     }
 }
 
 // MARK: Cell Configure Info
 extension ReleaseInfoCell {
     func configure(_ data: String) {
-        templateLabel.text = "MODEL NUMBER"
-        valueLabel.text = "SERIAL \(Int.random(in: 0...100))"
+        self.templateLabel.text = "AA"
+        self.valueLabel.text = "SERIAL \n\(Int.random(in: 0...100))"
         
         myLogPrint("ModelInfoCell")
     }

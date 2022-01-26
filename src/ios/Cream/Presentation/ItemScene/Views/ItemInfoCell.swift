@@ -146,6 +146,3 @@ extension ItemInfoCell {
         sizeButton.setTitle("모든 사이즈", for: .normal)
     }
 }
-
-
-
