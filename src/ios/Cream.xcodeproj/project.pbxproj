@@ -168,12 +168,13 @@
 			path = ItemScene;
 			sourceTree = "<group>";
 		};
-		7B234915278C0307009AAF32 /* Model */ = {
+		7B234915278C0307009AAF32 /* Entity */ = {
 			isa = PBXGroup;
 			children = (
+				7B954B54279ECB0F00B80BE8 /* Product.swift */,
 				7B234916278C0315009AAF32 /* User.swift */,
 			);
-			path = Model;
+			path = Entity;
 			sourceTree = "<group>";
 		};
 		7B35667D2791B28D00C45A68 /* ShopScene */ = {
@@ -229,7 +230,7 @@
 			isa = PBXGroup;
 			children = (
 				7B193C7F27944AF000B934A3 /* SupportFile */,
-				7B234915278C0307009AAF32 /* Model */,
+				7B234915278C0307009AAF32 /* Entity */,
 				7BB0110C278AF1C3005E5C9E /* Application */,
 				7BB0111D278BD321005E5C9E /* Extension */,
 				7BB0111C278BCEE9005E5C9E /* Presentation */,
@@ -493,6 +494,7 @@
 				7B54D6F9278EF2B000214664 /* NetworkService.swift in Sources */,
 				7B193CB3279BE1A000B934A3 /* CALayer+.swift in Sources */,
 				7BB01119278BCAC0005E5C9E /* SigninViewModel.swift in Sources */,
+				7B954B55279ECB0F00B80BE8 /* Product.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
