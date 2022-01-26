@@ -71,11 +71,11 @@ const TradeHistoryItemItemWrapper = styled.div`
 	padding: 12px;
 	display: flex;
 	align-items: center;
-	cursor: pointer;
 `;
 
 const HistoryProductArea = styled.div`
 	display: flex;
+	cursor: pointer;
 `;
 
 const HistoryStatusArea = styled.div`
@@ -87,8 +87,8 @@ const HistoryStatusArea = styled.div`
 
 const StatusBlock = styled.div`
 	display: block;
-        margin-left: 10px;
-    width: 134px;
+	margin-left: 25px;
+    // width: 134px;
 }
 `;
 
