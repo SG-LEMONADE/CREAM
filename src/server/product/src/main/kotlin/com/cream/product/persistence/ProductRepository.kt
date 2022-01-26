@@ -196,6 +196,7 @@ class ProductRepositoryImpl :
             .where(
                 tradeEntity.product.id.eq(productId),
                 tradeEntity.requestType.eq(requestType),
+                tradeEntity.tradeStatus.eq(TradeStatus.WAITING),
                 tradeEntity.validationDateTime.gt(LocalDateTime.now()),
                 eqSize(size)
             )
