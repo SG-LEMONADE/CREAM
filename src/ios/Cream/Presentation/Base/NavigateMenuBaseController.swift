@@ -34,7 +34,7 @@ final class NavigateMenuBaseController: UITabBarController {
             let image = UIImage(systemName: symbol)
             return image
         }
-
+        
         var selectedImage: UIImage? {
             return UIImage(systemName: symbol + ".fill")
         }
@@ -44,7 +44,7 @@ final class NavigateMenuBaseController: UITabBarController {
             case .home:
                 return HomeViewController()
             case .shop:
-                return ShopViewController()
+                return ProductViewController()
             case .my:
                 return MyPageViewController()
             }
@@ -56,17 +56,19 @@ final class NavigateMenuBaseController: UITabBarController {
         super.viewDidLoad()
         setupViewControllers()
         setupTabBarColor()
+        configureDelegate()
     }
     
     private func setupTabBarColor() {
         tabBar.barTintColor = .white
         tabBar.isTranslucent = false
     }
-
+    
     func setupViewControllers() {
         InnerViewType.allCases.forEach { tab in
             let rootNavigationViewController = UINavigationController(rootViewController: tab.viewController)
             rootNavigationViewController.tabBarItem = configureTabBarItem(config: tab)
+            let test = UINavigationController()
             tabBarViewControllers.append(rootNavigationViewController)
         }
         self.viewControllers = tabBarViewControllers
@@ -82,7 +84,40 @@ extension NavigateMenuBaseController: UITabBarControllerDelegate {
         let generator = UIImpactFeedbackGenerator(style: .light)
         generator.impactOccurred()
     }
+    
+    
+    func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
+        let isLogout = true
+        
+        if let naviVC = viewController as? UINavigationController,
+           let _ = naviVC.viewControllers.first as? MyPageViewController {
+            if isLogout {
+                let loginViewController = SigninViewController()
+                let navigationViewController = UINavigationController(rootViewController: loginViewController)
+                navigationViewController.modalPresentationStyle = .fullScreen
+                tabBarController.present(navigationViewController, animated: true, completion: nil)
+                
+                return false
+            }
+        }
+        return true
+    }
 }
+//        if let controller = viewController is UINavigationController {
+//            let loginViewController = SigninViewContUINavigationController(rootViewController: tab.viewController)roller()
+//            let navigationViewController = UINavigationController(rootViewController: loginViewController)
+//            navigationViewController.modalPresentationStyle = .fullScreen
+//            tabBarController.present(navigationViewController, animated: true, completion: nil)
+//            return false
+//        }
+//        if tabBarController.selectedIndex == 2 && isLogout {
+//            let loginViewController = SigninViewController()
+//            let navigationViewController = UINavigationController(rootViewController: loginViewController)
+//            navigationViewController.modalPresentationStyle = .fullScreen
+//            tabBarController.present(navigationViewController, animated: true, completion: nil)
+//            return false
+//        }
+
 
 extension NavigateMenuBaseController {
     func configureTabBarItem(config: InnerViewType) -> UITabBarItem {
