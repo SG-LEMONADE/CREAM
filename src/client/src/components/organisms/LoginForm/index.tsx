@@ -1,5 +1,5 @@
-import React, { FunctionComponent, useState } from "react";
-import Router, { useRouter } from "next/router";
+import React, { FunctionComponent, useCallback, useState } from "react";
+import { useRouter } from "next/router";
 import Link from "next/link";
 import axios from "axios";
 
@@ -7,6 +7,7 @@ import Logo from "components/atoms/Logo";
 import Input from "components/atoms/Input";
 import Button from "components/atoms/Button";
 import { setToken } from "utils/token";
+import { validateEmailFormat } from "utils/validate";
 
 import styled from "@emotion/styled";
 
@@ -18,17 +19,18 @@ const LoginForm: FunctionComponent = () => {
 	const [isErrorEmail, setIsErrorEmail] = useState<boolean>(false);
 	const [isErrorPwd] = useState<boolean>(false);
 
-	const onValidateEmailFormat = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const inputEmail = e.target.value;
-		const re =
-			/^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
-		const validateResult = re.test(inputEmail);
-		setIsErrorEmail(!validateResult);
-		if (validateResult) {
-			setEmail(inputEmail);
-			setIsErrorEmail(false);
-		}
-	};
+	const onValidateEmailFormat = useCallback(
+		(e: React.ChangeEvent<HTMLInputElement>) => {
+			const inputEmail = e.target.value;
+			const validateResult = validateEmailFormat(inputEmail);
+			setIsErrorEmail(!validateResult);
+			if (validateResult) {
+				setEmail(inputEmail);
+				setIsErrorEmail(false);
+			}
+		},
+		[],
+	);
 
 	const onHandleLogin = async (e: React.MouseEvent<HTMLButtonElement>) => {
 		e.preventDefault();
@@ -134,8 +136,6 @@ const LoginArea = styled.div`
 	padding: 60px 0 160px;
 	width: 400px;
 `;
-
-const StyledInput = styled(Input)``;
 
 const ButtonArea = styled.div`
 	padding-top: 45px;

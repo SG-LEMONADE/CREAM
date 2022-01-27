@@ -78,6 +78,7 @@ const StyledModalOverlay = styled.div`
 	justify-content: center;
 	align-items: center;
 	background-color: rgba(0, 0, 0, 0.5);
+	z-index: 50;
 `;
 
 const appear = keyframes`
@@ -101,6 +102,7 @@ const StyledModal = styled.div<{ category: string }>`
 	display: flex;
 	flex-direction: column;
 	animation: ${appear} 0.8s cubic-bezier(0.77, 0, 0.175, 1) forwards;
+	z-index: 99;
 `;
 
 const StyledModalHeader = styled.div`

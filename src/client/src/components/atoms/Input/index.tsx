@@ -7,10 +7,11 @@ import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 
 type InputProps = {
+	defaultvalue?: string;
 	category: string;
 	content: string;
 	error?: boolean;
-	onChange: React.ChangeEventHandler<HTMLInputElement>;
+	onChange?: React.ChangeEventHandler<HTMLInputElement>;
 	onBlur?: React.ChangeEventHandler<HTMLInputElement>;
 	onClick?: () => void;
 	required?: boolean;
@@ -25,6 +26,7 @@ const placeholders = {
 
 const Input: FunctionComponent<InputProps> = (props) => {
 	const {
+		defaultvalue,
 		category,
 		content,
 		error = false,
@@ -40,6 +42,7 @@ const Input: FunctionComponent<InputProps> = (props) => {
 				{content}
 			</StyledInputTitle>
 			<StyledInput
+				defaultValue={defaultvalue}
 				onChange={onChange}
 				onBlur={onBlur}
 				onClick={onClick}
@@ -55,6 +58,9 @@ const Input: FunctionComponent<InputProps> = (props) => {
 						width: "15px",
 						height: "15px",
 						color: "#222222",
+						display: "inline-block",
+						position: "absolute",
+						right: 0,
 					}}
 				/>
 			)}
