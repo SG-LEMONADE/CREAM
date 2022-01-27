@@ -5,7 +5,14 @@ import javax.persistence.*
 @Entity
 @Table(name = "brand")
 class Brand(
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) @Column(name = "id") var id: Long? = null,
-    @Column(name = "name") var name: String,
-    @Column(name = "logo_image_url") var logoImageUrl: String?
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column
+    var id: Long? = null,
+
+    @Column
+    var name: String,
+
+    @Column
+    var logoImageUrl: String?
 )

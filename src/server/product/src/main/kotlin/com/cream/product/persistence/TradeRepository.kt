@@ -66,7 +66,10 @@ class TradeRepositoryImpl :
             .fetch()
     }
 
-    private fun eqRequestType(requestType: RequestType): OrderSpecifier<*> {
-        return if (requestType == RequestType.ASK) OrderSpecifier(Order.ASC, tradeEntity.price) else OrderSpecifier(Order.DESC, tradeEntity.price)
+    private fun eqRequestType(
+        requestType: RequestType
+    ): OrderSpecifier<*> {
+        return if (requestType == RequestType.ASK) OrderSpecifier(Order.ASC, tradeEntity.price)
+        else OrderSpecifier(Order.DESC, tradeEntity.price)
     }
 }
