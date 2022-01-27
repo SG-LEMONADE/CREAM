@@ -5,11 +5,11 @@ import { css } from "@emotion/react";
 import Icon from "components/atoms/Icon";
 
 type ProductSizeSelectProps = {
-	category: "buy" | "sell" | "wish";
+	category: "buy" | "sell" | "wish" | "sizeOnly";
 	size: string;
 	active?: boolean;
 	price?: null | number;
-	onClick?: React.MouseEventHandler<HTMLLIElement>;
+	onClick?: (size: string) => void;
 };
 
 const ProductSizeSelect: FunctionComponent<ProductSizeSelectProps> = (
@@ -17,12 +17,16 @@ const ProductSizeSelect: FunctionComponent<ProductSizeSelectProps> = (
 ) => {
 	const { category, size, active = false, price, onClick } = props;
 
+	const onHandleClick = () => {
+		onClick(size);
+	};
+
 	return (
-		<ShoeSizeWrapper onClick={onClick} category={category}>
+		<ShoeSizeWrapper onClick={onHandleClick} category={category}>
 			<ShoeSizeBtn active={active}>
 				<LinkInner>
 					<SizeSpan active={active}>{size}</SizeSpan>
-					{category !== "wish" && (
+					{(category === "buy" || category === "sell") && (
 						<PriceSpan category={category} active={active}>
 							{price !== null ? (
 								`${price.toLocaleString()}원`
@@ -52,6 +56,7 @@ const ProductSizeSelect: FunctionComponent<ProductSizeSelectProps> = (
 							)}
 						</IconWrapper>
 					)}
+					{category === "sizeOnly" && ``}
 				</LinkInner>
 			</ShoeSizeBtn>
 		</ShoeSizeWrapper>

@@ -54,3 +54,17 @@ WishActive.args = {
 	size: 220,
 	active: true,
 };
+
+export const sizeOnly = Template.bind({});
+sizeOnly.args = {
+	category: "sizeOnly",
+	size: 220,
+	active: false,
+};
+
+export const sizeOnlyActive = Template.bind({});
+sizeOnlyActive.args = {
+	category: "sizeOnly",
+	size: 220,
+	active: true,
+};

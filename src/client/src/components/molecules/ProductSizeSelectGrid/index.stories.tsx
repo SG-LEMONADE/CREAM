@@ -213,3 +213,10 @@ ProductWish.args = {
 		"290",
 	],
 };
+
+export const SizeOnly = Template.bind({});
+SizeOnly.args = {
+	category: "sizeOnly",
+	activeSizeOption: [],
+	onClick: action("clicked!"),
+};
