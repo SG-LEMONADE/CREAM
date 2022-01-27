@@ -58,7 +58,6 @@ dependencies {
     //eureka
     implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client:3.1.0")
 
-
     // devtool,  test
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     testImplementation("org.springframework.boot:spring-boot-starter-test")

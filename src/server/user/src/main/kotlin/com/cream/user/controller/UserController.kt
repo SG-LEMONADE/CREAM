@@ -39,8 +39,8 @@ class UserController {
 
     var passwordEncoder: PasswordEncoder = BCryptPasswordEncoder()
 
-    @PostMapping("/signup")
-    fun signup(@RequestBody registerUserDTO: RegisterUserDTO): ResponseEntity<ResponseUserDTO> {
+    @PostMapping("/join")
+    fun join(@RequestBody registerUserDTO: RegisterUserDTO): ResponseEntity<ResponseUserDTO> {
         val user = registerUserDTO.toEntity(passwordEncoder)
 
         sendEmail(user.email, 0)
