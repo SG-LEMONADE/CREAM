@@ -4,9 +4,9 @@ import com.cream.user.dto.*
 import com.cream.user.error.ErrorCode
 import com.cream.user.error.UserCustomException
 import com.cream.user.persistence.UserRepository
-import com.cream.user.model.UserEntity
+import com.cream.user.model.User
 import com.cream.user.security.TokenProvider
-import com.cream.user.utils.MailSender
+import com.cream.user.utils.UserMailSender
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.redis.core.StringRedisTemplate
@@ -29,7 +29,7 @@ class UserService {
     lateinit var redisTemplate: StringRedisTemplate
 
     @Autowired
-    lateinit var mailSender: MailSender
+    lateinit var mailSender: UserMailSender
 
     var passwordEncoder: PasswordEncoder = BCryptPasswordEncoder()
 
@@ -42,14 +42,14 @@ class UserService {
         if (userRepository.existsByEmail(email)) {
             throw UserCustomException(ErrorCode.DUPLICATED_USER_EMAIL)
         }
-        mailSender.sendEmail(email, 0)
+        mailSender.sendEmail(email, 0, redisTemplate)
         return ResponseUserDTO(userRepository.save(user))
     }
 
     fun getValidationToken(
         userDTO: LoginDTO
     ): TokenDTO {
-        val user: UserEntity = getByCredentials(userDTO.email, userDTO.password, passwordEncoder)
+        val user: User = getByCredentials(userDTO.email, userDTO.password, passwordEncoder)
 
         when {
             (user.status == 0) -> {
@@ -106,7 +106,7 @@ class UserService {
         email: String,
         stateCode: Int
     ) {
-        val user: UserEntity = (userRepository.findOneByEmail(email) ?: throw UserCustomException(ErrorCode.ENTITY_NOT_FOUND))
+        val user: User = (userRepository.findOneByEmail(email) ?: throw UserCustomException(ErrorCode.ENTITY_NOT_FOUND))
         user.status = stateCode
         userRepository.save(user)
     }
@@ -126,9 +126,9 @@ class UserService {
 
     @Transactional
     fun updateUserLastLoginTime(
-        userEntity: UserEntity
+        userEntity: User
     ) {
-        userEntity.lastLoginDateTime = LocalDateTime.now()
+        userEntity.lastLoginDatetime = LocalDateTime.now()
     }
 
     fun update(
@@ -138,7 +138,7 @@ class UserService {
         val user = userRepository.findById(userId).orElseThrow()
 
         if (!passwordEncoder.matches(user.password, userUpdateDTO.password)) {
-            user.passwordChangedDateTime = LocalDateTime.now()
+            user.passwordChangedDatetime = LocalDateTime.now()
         }
         user.email = userUpdateDTO.email
         user.password = passwordEncoder.encode(userUpdateDTO.password)
@@ -148,7 +148,7 @@ class UserService {
         user.age = userUpdateDTO.age
         user.gender = userUpdateDTO.gender
         user.profileImageUrl = userUpdateDTO.profileImageUrl
-        user.updateAt = LocalDateTime.now()
+        user.updatedAt = LocalDateTime.now()
         return ResponseUserDTO(userRepository.save(user))
     }
 
@@ -156,7 +156,7 @@ class UserService {
         email: String,
         password: String,
         encoder: PasswordEncoder
-    ): UserEntity {
+    ): User {
         val user = userRepository.findOneByEmail(email) ?: throw UserCustomException(ErrorCode.USER_EMAIL_NOT_FOUND)
         if (encoder.matches(password, user.password)) return user
         else throw UserCustomException(ErrorCode.USER_PASSWORD_NOT_MATCH)

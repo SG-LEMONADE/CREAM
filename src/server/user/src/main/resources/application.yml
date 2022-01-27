@@ -16,6 +16,9 @@ spring:
       hibernate:
         ddl-auto: none
         format_sql: true
+  mvc:
+      pathmatch:
+          matching-strategy: ant_path_matcher
 
   redis:
     host: 127.0.0.1
@@ -50,5 +53,5 @@ logging:
             sql:
               BasicBinder: TRACE
 
-auth-excluded-path: /users/login, /users/signup, /users/refresh, /users/verify, /users/validate, /swagger-ui.html/**, /configuration/**, /swagger-resources/**, /v2/api-docs, /webjars/**, /webjars/springfox-swagger-ui/*.{js,css}
+auth-excluded-path: /users/login, /users/join, /users/refresh, /users/verify, /users/validate, /swagger-ui.html/**, /configuration/**, /swagger-resources/**, /v2/api-docs, /webjars/**, /webjars/springfox-swagger-ui/*.{js,css}
 

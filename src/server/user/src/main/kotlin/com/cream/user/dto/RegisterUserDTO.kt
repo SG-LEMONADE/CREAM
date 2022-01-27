@@ -1,6 +1,6 @@
 package com.cream.user.dto
 
-import com.cream.user.model.UserEntity
+import com.cream.user.model.User
 import org.springframework.security.crypto.password.PasswordEncoder
 import java.time.LocalDateTime
 
@@ -10,8 +10,8 @@ data class RegisterUserDTO(
     val shoeSize: Int,
     val createdAt: LocalDateTime = LocalDateTime.now()
 ) {
-    fun toEntity(encoder: PasswordEncoder): UserEntity {
-        return UserEntity(
+    fun toEntity(encoder: PasswordEncoder): User {
+        return User(
             email = this.email,
             password = encoder.encode(this.password),
             name = null,
@@ -21,10 +21,10 @@ data class RegisterUserDTO(
             shoeSize = this.shoeSize,
             profileImageUrl = "",
             status = 0,
-            passwordChangedDateTime = this.createdAt,
-            lastLoginDateTime = null,
-            createAt = this.createdAt,
-            updateAt = null
+            passwordChangedDatetime = this.createdAt,
+            lastLoginDatetime = null,
+            createdAt = this.createdAt,
+            updatedAt = null
         )
     }
 }
