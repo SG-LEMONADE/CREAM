@@ -35,13 +35,13 @@ class TokenProvider {
             .compact()
     }
 
-    fun validateAndGetUserId(token: String): String {
+    fun validateAndGetUserId(token: String): Long {
         val filteredToken = token.substring(7) // without Bearer
         val claims: Claims = Jwts.parser()
             .setSigningKey(SECRET_KEY)
             .parseClaimsJws(filteredToken)
             .body
-        return claims.subject
+        return claims.subject.toLong()
     }
 
     fun getSHA512Token(value: String): String {
