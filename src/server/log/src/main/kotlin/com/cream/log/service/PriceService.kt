@@ -15,16 +15,21 @@ class PriceService {
     lateinit var priceRepository: PriceRepository
 
     @Transactional
-    fun create(productId: Long, price: Long): Price {
+    fun create(
+        productId: Long,
+        price: Long
+    ): Price {
         val priceEntity = priceRepository.findOneByCreatedDateAndProductId(LocalDate.now(), productId)
-        if (priceEntity != null){
+        if (priceEntity != null) {
             priceEntity.price = price
             return priceEntity
         }
         return priceRepository.save(Price(productId = productId, price = price))
     }
 
-    fun getPriceListByDate(productId: Long): PricesByDateDTO {
+    fun getPriceListByDate(
+        productId: Long
+    ): PricesByDateDTO {
         val totalList = priceRepository.findAllByProductId(productId)
         val data = PricesByDateDTO()
         val today = LocalDate.now()

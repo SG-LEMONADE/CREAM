@@ -9,5 +9,4 @@ class LogApplicationTests {
     @Test
     fun contextLoads() {
     }
-
 }

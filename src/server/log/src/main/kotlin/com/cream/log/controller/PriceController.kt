@@ -1,6 +1,5 @@
 package com.cream.log.controller
 
-import com.cream.log.dto.PriceDTO
 import com.cream.log.dto.PricesByDateDTO
 import com.cream.log.model.Price
 import com.cream.log.service.PriceService

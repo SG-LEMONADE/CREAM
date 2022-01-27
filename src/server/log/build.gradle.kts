@@ -37,7 +37,6 @@ dependencies {
     // db
     implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
 
-
     // web
     implementation("org.springframework.boot:spring-boot-starter-web")
 
@@ -49,7 +48,6 @@ dependencies {
     // swagger
     implementation("io.springfox:springfox-swagger2:3.0.0")
     implementation("io.springfox:springfox-swagger-ui:2.9.2")
-
 
     //eureka
     implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client")
