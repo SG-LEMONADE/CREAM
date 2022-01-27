@@ -71,6 +71,9 @@ dependencies {
     //eureka client
     implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client:3.1.0")
 
+    //feign client
+    implementation("org.springframework.cloud:spring-cloud-starter-openfeign:3.1.0")
+
     //querydsl
     implementation("com.querydsl:querydsl-jpa") // 1)
     kapt(group = "com.querydsl", name = "querydsl-apt", classifier = "jpa") // 2)

@@ -108,7 +108,8 @@ class TradeRepositoryImpl :
             .select(tradeEntity)
             .from(tradeEntity)
             .where(
-                tradeEntity.tradeStatus.eq(TradeStatus.COMPLETED)
+                tradeEntity.tradeStatus.eq(TradeStatus.COMPLETED),
+                tradeEntity.product.id.eq(productId)
             )
             .orderBy(OrderSpecifier(Order.DESC, tradeEntity.updatedAt))
             .limit(5)
