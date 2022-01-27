@@ -8,4 +8,14 @@ spring:
   data:
     mongodb:
       host: localhost
-      port: 2707
+      port: 27017
+
+  # swagger with spring boot 2.6.2 issue
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
+eureka:
+  client:
+    fetch-registry: true
+    register-with-eureka: true
