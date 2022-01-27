@@ -28,7 +28,6 @@ interface ProductRepositoryCustom {
 
     fun getProductPricesBySize(productId: Long, requestType: RequestType): List<ProductPriceBySizeDTO>?
     fun getProductSizePriceByRequestType(productId: Long, size: String?, requestType: RequestType): ProductPriceByRequestTypeDTO?
-    fun getLastTrade(productId: Long, size: String?): Trade?
 
     fun getProductsByWish(userId: Long, offset: Long, limit: Long): List<ProductPriceWishDTO>
 }
@@ -201,20 +200,6 @@ class ProductRepositoryImpl :
                 eqSize(size)
             )
             .fetchFirst()
-    }
-
-    override fun getLastTrade(
-        productId: Long,
-        size: String?
-    ): Trade? {
-        return from(tradeEntity)
-            .where(
-                tradeEntity.product.id.eq(productId),
-                tradeEntity.tradeStatus.eq(TradeStatus.COMPLETED),
-                eqSize(size)
-            )
-            .orderBy(OrderSpecifier(Order.DESC, tradeEntity.updatedAt))
-            .fetchOne()
     }
 
     override fun getProductsByWish(

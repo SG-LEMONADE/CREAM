@@ -1,5 +1,6 @@
 package com.cream.product.dto.productDTO
 
+import com.cream.product.dto.tradeDTO.TradeBySizeCountDTO
 import com.cream.product.model.Trade
 import org.json.JSONArray
 
@@ -7,9 +8,11 @@ class ProductDetailDTO(
     val product: ProductDTO,
     askPricesBySize: List<ProductPriceBySizeDTO>?,
     bidPricesBySize: List<ProductPriceBySizeDTO>?,
-    lastCompletedTrade: Trade?,
+    val lastCompletedTrade: List<Trade>,
     lowestAsk: ProductPriceByRequestTypeDTO?,
-    highestBid: ProductPriceByRequestTypeDTO?
+    highestBid: ProductPriceByRequestTypeDTO?,
+    val asksBySizeCount: List<TradeBySizeCountDTO>,
+    val bidsBySizeCount: List<TradeBySizeCountDTO>
 ) {
     var changePercentage: Float? = null
     var changeValue: Int? = null
@@ -22,15 +25,19 @@ class ProductDetailDTO(
     var bidPrices: HashMap<String, Int?> = java.util.HashMap()
 
     init {
-        if (lastCompletedTrade?.price != null && lowestAsk?.price != null) {
-            this.changePercentage = (lowestAsk.price - lastCompletedTrade.price) / lastCompletedTrade.price.toFloat()
-            this.changeValue = (lowestAsk.price - lastCompletedTrade.price)
 
-            this.pricePremium = lowestAsk.price - product.originalPrice
-            this.pricePremiumPercentage = (lowestAsk.price - product.originalPrice) / product.originalPrice.toFloat()
+        if (lastCompletedTrade.isNotEmpty()) {
+            val latestTrade = lastCompletedTrade[0]
+            if (lowestAsk?.price != null) {
+                this.changePercentage = (lowestAsk.price - latestTrade.price) / latestTrade.price.toFloat()
+                this.changeValue = (lowestAsk.price - latestTrade.price)
+
+                this.pricePremium = lowestAsk.price - product.originalPrice
+                this.pricePremiumPercentage = (lowestAsk.price - product.originalPrice) / product.originalPrice.toFloat()
+            }
+
+            this.lastSalePrice = latestTrade.price
         }
-
-        this.lastSalePrice = lastCompletedTrade?.price
 
         if (highestBid?.price != null) {
             this.highestBid = highestBid.price

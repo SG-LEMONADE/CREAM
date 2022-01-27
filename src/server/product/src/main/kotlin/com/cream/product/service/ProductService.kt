@@ -7,11 +7,16 @@ import com.cream.product.dto.productDTO.ProductDTO
 import com.cream.product.dto.productDTO.ProductDetailDTO
 import com.cream.product.dto.productDTO.ProductPriceWishDTO
 import com.cream.product.persistence.ProductRepository
+import com.cream.product.persistence.TradeRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import kotlin.streams.toList
 @Service
 class ProductService {
+
+    @Autowired
+    lateinit var tradeRepository: TradeRepository
+
     @Autowired
     lateinit var productRepository: ProductRepository
 
@@ -37,11 +42,14 @@ class ProductService {
             productRepository.getProductWithWish(userId, id)
         }
 
-        val lastCompletedTrade = productRepository.getLastTrade(id, size)
         val askPricesBySize = productRepository.getProductPricesBySize(id, RequestType.ASK)
         val bidPricesBySize = productRepository.getProductPricesBySize(id, RequestType.BID)
         val lowestAsk = productRepository.getProductSizePriceByRequestType(id, size, RequestType.ASK)
         val highestBid = productRepository.getProductSizePriceByRequestType(id, size, RequestType.BID)
+
+        val lastCompletedTrade = tradeRepository.findByProductIdCompleted(id)
+        val asksBySizeCount = tradeRepository.findByProductIdWithCount(size, id, RequestType.ASK)
+        val bidsBySizeCount = tradeRepository.findByProductIdWithCount(size, id, RequestType.BID)
 
         return ProductDetailDTO(
             ProductDTO(product),
@@ -49,7 +57,9 @@ class ProductService {
             bidPricesBySize,
             lastCompletedTrade,
             lowestAsk,
-            highestBid
+            highestBid,
+            asksBySizeCount,
+            bidsBySizeCount
         )
     }
 

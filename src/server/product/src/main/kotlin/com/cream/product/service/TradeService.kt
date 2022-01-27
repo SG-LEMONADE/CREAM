@@ -20,17 +20,29 @@ class TradeService {
     @Autowired
     lateinit var tradeRepository: TradeRepository
 
-    fun create(tradeRegisterDTO: TradeRegisterDTO, userId: Long, productId: Long, size: String) {
+    fun create(
+        tradeRegisterDTO: TradeRegisterDTO,
+        userId: Long,
+        productId: Long,
+        size: String
+    ) {
         val product = productRepository.getById(productId)
         tradeRepository.save(tradeRegisterDTO.toEntity(userId, product, size))
     }
 
-    fun getTradeList(userId: Long, pageDTO: PageDTO, requestType: RequestType, tradeStatus: TradeStatus): List<Trade> {
+    fun getTradeList(
+        userId: Long,
+        pageDTO: PageDTO,
+        requestType: RequestType,
+        tradeStatus: TradeStatus
+    ): List<Trade> {
         return tradeRepository.findAllByPageAndStatus(userId, pageDTO.offset(), pageDTO.limit(), requestType, tradeStatus)
     }
 
     @Transactional
-    fun delete(tradeId: Long) {
+    fun delete(
+        tradeId: Long
+    ) {
         val trade = tradeRepository.getById(tradeId)
 
         trade.tradeStatus = TradeStatus.CANCELED
@@ -38,9 +50,15 @@ class TradeService {
     }
 
     @Transactional
-    fun buyOrSellProduct(productId: Long, size: String, requestType: RequestType, userId: Long) {
+    fun buyOrSellProduct(
+        productId: Long,
+        size: String,
+        requestType: RequestType,
+        userId: Long
+    ) {
         val trade = tradeRepository.findFirstTrade(productId, size, requestType)
         val product = productRepository.findById(productId)
+
         trade.tradeStatus = TradeStatus.COMPLETED
         trade.counterpartUserId = userId
         trade.updatedAt = LocalDateTime.now()
