@@ -49,7 +49,7 @@ extension FilterCell: ViewConfiguration {
     
     func setupConstraints() {
         titleLabel.snp.makeConstraints {
-            $0.edges.equalToSuperview().inset(UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10))
+            $0.edges.equalToSuperview().inset(UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0))
         }
     }
 }

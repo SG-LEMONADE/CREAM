@@ -7,11 +7,22 @@
 
 import Foundation
 
+enum Category: String, CaseIterable {
+    case slide = "slid"
+    case luxury = "럭셔리"
+    case blank = " "
+    case sneakers = "스니커즈"
+    case clothes = "의류"
+    case accessory = "패션 잡화"
+    case life = "라이프"
+    case tech = "테크"
+}
+
 class ProductsViewModel: NSObject {
     private var productService: ProductsServiceProtocol
     var reloadCollectionView: (() -> Void)?
-    
-    let categories = ["  ", "럭셔리", " ", "스니커즈", "의류", "패션 잡화", "라이프", "테크"]
+//    let categories = Category.allCases
+    let categories = ["필터", "럭셔리", " ", "스니커즈", "의류", "패션 잡화", "라이프", "테크"]
     let banners: [String] = ["banner1", "banner2", "banner3", "banner4", "banner5", "banner6"]
     
     var products: Products = Products()

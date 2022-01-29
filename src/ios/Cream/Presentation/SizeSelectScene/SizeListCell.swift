@@ -21,7 +21,6 @@ class SizePriceCell: SizeListCell {
     }()
 }
 
-
 class SizeListCell: UICollectionViewCell {
     static let reuseIdentifier = "\(SizeListCell.self)"
     

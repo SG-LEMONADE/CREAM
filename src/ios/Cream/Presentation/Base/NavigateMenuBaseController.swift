@@ -68,7 +68,6 @@ final class NavigateMenuBaseController: UITabBarController {
         InnerViewType.allCases.forEach { tab in
             let rootNavigationViewController = UINavigationController(rootViewController: tab.viewController)
             rootNavigationViewController.tabBarItem = configureTabBarItem(config: tab)
-            let test = UINavigationController()
             tabBarViewControllers.append(rootNavigationViewController)
         }
         self.viewControllers = tabBarViewControllers
@@ -90,34 +89,27 @@ extension NavigateMenuBaseController: UITabBarControllerDelegate {
         let isLogout = true
         
         if let naviVC = viewController as? UINavigationController,
-           let _ = naviVC.viewControllers.first as? MyPageViewController {
-            if isLogout {
-                let loginViewController = SigninViewController()
-                let navigationViewController = UINavigationController(rootViewController: loginViewController)
-                navigationViewController.modalPresentationStyle = .fullScreen
-                tabBarController.present(navigationViewController, animated: true, completion: nil)
-                
-                return false
-            }
+           (naviVC.viewControllers.first as? MyPageViewController != nil) && isLogout {
+            guard let baseURL = URL(string: "http://ec2-13-125-85-156.ap-northeast-2.compute.amazonaws.com:8081")
+            else { fatalError() }
+        
+            let config: NetworkConfigurable = ApiDataNetworkConfig(baseURL: baseURL)
+            let networkService: NetworkService = DefaultNetworkService(config: config)
+            let dataTransferService: DataTransferService = DefaultDataTransferService(with: networkService)
+            let repository: UserRepositoryInterface = UserRepository(dataTransferService: dataTransferService)
+            let usecase: UserUseCaseInterface = UserUseCase(repository)
+            let viewModel: LoginViewModel = DefaultLoginViewModel(usecase: usecase)
+            let loginViewController = LoginViewController(viewModel)
+            let navigationViewController = UINavigationController(rootViewController: loginViewController)
+            
+            navigationViewController.modalPresentationStyle = .fullScreen
+            tabBarController.present(navigationViewController, animated: true, completion: nil)
+            
+            return false
         }
         return true
     }
 }
-//        if let controller = viewController is UINavigationController {
-//            let loginViewController = SigninViewContUINavigationController(rootViewController: tab.viewController)roller()
-//            let navigationViewController = UINavigationController(rootViewController: loginViewController)
-//            navigationViewController.modalPresentationStyle = .fullScreen
-//            tabBarController.present(navigationViewController, animated: true, completion: nil)
-//            return false
-//        }
-//        if tabBarController.selectedIndex == 2 && isLogout {
-//            let loginViewController = SigninViewController()
-//            let navigationViewController = UINavigationController(rootViewController: loginViewController)
-//            navigationViewController.modalPresentationStyle = .fullScreen
-//            tabBarController.present(navigationViewController, animated: true, completion: nil)
-//            return false
-//        }
-
 
 extension NavigateMenuBaseController {
     func configureTabBarItem(config: InnerViewType) -> UITabBarItem {

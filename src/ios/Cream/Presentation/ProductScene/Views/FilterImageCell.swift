@@ -32,14 +32,10 @@ class FilterImageCell: UICollectionViewCell {
     }
         
     func configure(_ image: String) {
-        guard let image = UIImage(named: image) else { return }
+        guard let image = UIImage(systemName: image) else { return }
         
-        print(image.size)
-        
-        self.resize(image: image, scale: 0.02) { [weak self] result in
-            DispatchQueue.main.async {
-                self?.imageView.image = result
-            }
+        DispatchQueue.main.async {
+            self.imageView.image = image
         }
     }
     

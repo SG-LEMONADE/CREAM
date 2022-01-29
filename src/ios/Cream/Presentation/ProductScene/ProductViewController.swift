@@ -161,6 +161,13 @@ extension ProductViewController: ViewConfiguration {
             $0.trailing.equalTo(view)
         }
     }
+    
+    func viewConfigure() {
+        let backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)
+        backBarButtonItem.tintColor = .systemGray
+        
+        self.navigationItem.backBarButtonItem = backBarButtonItem
+    }
 }
 
 extension ProductViewController: UICollectionViewDataSource {
@@ -253,20 +260,35 @@ extension ProductViewController: ShopViewFilterHeaderViewDataSource {
     }
     
     func setupCellForItemAt(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if indexPath.item == 0 {
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FilterImageCell.reuseIdentifier, for: indexPath) as? FilterImageCell
-            else { return UICollectionViewCell() }
-            cell.configure("slider")
-            
-            return cell
-        }
+//        if indexPath.item == 0 {
+//            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FilterImageCell.reuseIdentifier, for: indexPath) as? FilterImageCell
+//            else { return UICollectionViewCell() }
+//            cell.configure("wand.and.rays")
+//
+//            return cell
+//        }
         
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FilterCell.reuseIdentifer, for: indexPath) as? FilterCell
         else { return UICollectionViewCell() }
-        
-        cell.configure(viewModel.categories[indexPath.item])
-        cell.titleLabel.sizeToFit()
-        
+        if indexPath.item == .zero {
+            let attachment = NSTextAttachment()
+//            attachment.image = UIImage(systemName: "wand.and.rays")
+            attachment.image = UIImage(systemName: "checklist")
+            let attachmentString = NSAttributedString(attachment: attachment)
+//            let myString = NSMutableAttributedString(string: "")
+//            myString.append(attachmentString)
+            cell.titleLabel.attributedText = attachmentString
+            
+            cell.titleLabel.sizeToFit()
+            
+        } else {
+            cell.configure(viewModel.categories[indexPath.item])
+            cell.titleLabel.sizeToFit()
+        }
+
+//
+//        cell.configure(viewModel.categories[indexPath.item])
+//        cell.titleLabel.sizeToFit()
         if indexPath.item == 2 {
             cell.isUserInteractionEnabled = false
         }

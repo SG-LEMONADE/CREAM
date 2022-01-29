@@ -30,7 +30,7 @@ class TradeViewController: UIViewController {
 
     private var viewModel: SizeListViewModel?
     
-    init (_ viewModel: SizeListViewModel = SizeListViewModel()) {
+    init (_ viewModel: SizeListViewModel = DefaultSizeListViewModel()) {
         super.init(nibName: nil, bundle: nil)
         self.viewModel = viewModel
     }

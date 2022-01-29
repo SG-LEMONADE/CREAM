@@ -1,10 +1,10 @@
+////
+////  Product.swift
+////  Cream
+////
+////  Created by wankikim-MN on 2022/01/24.
+////
 //
-//  Product.swift
-//  Cream
-//
-//  Created by wankikim-MN on 2022/01/24.
-//
-
 import Foundation
 
 struct HomeData {
@@ -44,7 +44,7 @@ struct ProductInfo: Decodable {
     let totalSale: Int
     let translatedName: String
     let wishCount: Int
-    
+
     private enum CodingKeys: String, CodingKey {
         case backgroundColor, brandName, category, color,
              gender, id, imageUrls, originalName, originalPrice,
@@ -59,7 +59,7 @@ protocol ProductsServiceProtocol {
 
 class ProductsService: ProductsServiceProtocol {
     func getProducts(completion: @escaping (Bool, Products?, String?) -> ()) {
-        
+
     }
 }
 

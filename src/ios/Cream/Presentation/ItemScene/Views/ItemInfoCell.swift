@@ -111,10 +111,10 @@ extension ItemInfoCell: ViewConfiguration {
             $0.bottom.equalTo(sizeButton.snp.top).offset(-10)
         }
         
-        sizeButton.imageView?.snp.makeConstraints {
-            $0.trailing.equalTo(sizeButton.snp.trailing).offset(-10)
-            $0.centerY.equalTo(sizeButton.snp.centerY)
-        }
+//        sizeButton.imageView?.snp.makeConstraints {
+//            $0.trailing.equalTo(sizeButton.snp.trailing).offset(-10)
+//            $0.centerY.equalTo(sizeButton.snp.centerY)
+//        }
         sizeButton.snp.makeConstraints {
             $0.leading.equalTo(self.snp.leading).offset(10)
             $0.trailing.equalTo(self.snp.trailing).offset(-10)

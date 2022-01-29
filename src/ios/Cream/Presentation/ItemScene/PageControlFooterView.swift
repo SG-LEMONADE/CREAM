@@ -7,7 +7,6 @@
 
 import UIKit
 import SnapKit
-import CHIPageControl
 
 class PageControlFooterView: UICollectionReusableView {
     static let reuseIdentifier = "\(PageControlFooterView.self)"

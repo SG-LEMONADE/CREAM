@@ -404,7 +404,7 @@ extension ItemViewController: UICollectionViewDataSource, UICollectionViewDelega
 extension ItemViewController: ItemInfoCellDelegate {
     // TODO: Button Tap 이후, 상품에 해당하는 사이즈 가져오기
     func didTapSizeButton() {
-        let nextVC = SizeListViewController()
+        let nextVC = SizeListViewController(DefaultSizeListViewModel())
         nextVC.modalPresentationStyle = .overCurrentContext
         self.present(nextVC, animated: false)
     }
