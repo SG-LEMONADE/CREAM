@@ -1,14 +1,14 @@
 package com.cream.product.dto.productDTO
 
 import com.cream.product.dto.tradeDTO.TradeBySizeCountDTO
-import com.cream.product.model.Trade
+import com.cream.product.dto.tradeDTO.TradeLastCompletedDTO
 import org.json.JSONArray
 
 class ProductDetailDTO(
     val product: ProductDTO,
     askPricesBySize: List<ProductPriceBySizeDTO>?,
     bidPricesBySize: List<ProductPriceBySizeDTO>?,
-    val lastCompletedTrade: List<Trade>,
+    val lastCompletedTrade: List<TradeLastCompletedDTO>,
     lowestAsk: ProductPriceByRequestTypeDTO?,
     highestBid: ProductPriceByRequestTypeDTO?,
     val asksBySizeCount: List<TradeBySizeCountDTO>,

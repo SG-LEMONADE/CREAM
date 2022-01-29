@@ -2,7 +2,7 @@ package com.cream.product.persistence
 
 import com.cream.product.constant.RequestType
 import com.cream.product.constant.TradeStatus
-import com.cream.product.dto.tradeDTO.TradeBySizeCountDTO
+import com.cream.product.dto.tradeDTO.*
 import com.cream.product.model.QTrade
 import com.cream.product.model.Trade
 import com.querydsl.core.types.Order
@@ -17,9 +17,10 @@ import java.time.LocalDateTime
 
 interface TradeRepositoryCustom {
     fun findFirstTrade(productId: Long, size: String, requestType: RequestType): Trade
-    fun findAllByPageAndStatus(userId: Long, offset: Long, limit: Long, requestType: RequestType, tradeStatus: TradeStatus): List<Trade>
+    fun findAllByPageAndStatus(userId: Long, offset: Long, limit: Long, requestType: RequestType, tradeStatus: TradeStatus): List<TradeHistoryDTO>
+
     fun findByProductIdWithCount(size: String?, productId: Long, requestType: RequestType): List<TradeBySizeCountDTO>
-    fun findByProductIdCompleted(productId: Long): List<Trade>
+    fun findByProductIdCompleted(productId: Long): List<TradeLastCompletedDTO>
 }
 
 interface TradeRepository : JpaRepository<Trade, Long>, TradeRepositoryCustom
@@ -47,7 +48,10 @@ class TradeRepositoryImpl :
                 tradeEntity.validationDateTime.gt(LocalDateTime.now()),
                 tradeEntity.requestType.eq(requestType)
             )
-            .orderBy(eqRequestType(requestType), OrderSpecifier(Order.ASC, tradeEntity.updatedAt))
+            .orderBy(
+                getOrderByRequestType(requestType),
+                OrderSpecifier(Order.ASC, tradeEntity.updatedAt)
+            )
             .fetchFirst()
     }
 
@@ -57,9 +61,17 @@ class TradeRepositoryImpl :
         limit: Long,
         requestType: RequestType,
         tradeStatus: TradeStatus
-    ): List<Trade> {
+    ): List<TradeHistoryDTO> {
         return jpaQueryFactory
-            .select(tradeEntity)
+            .select(
+                QTradeHistoryDTO(
+                    tradeEntity.product.originalName,
+                    tradeEntity.size,
+                    tradeEntity.tradeStatus,
+                    tradeEntity.updatedAt,
+                    tradeEntity.validationDateTime
+                )
+            )
             .from(tradeEntity)
             .where(
                 tradeEntity.requestType.eq(requestType),
@@ -103,9 +115,15 @@ class TradeRepositoryImpl :
 
     override fun findByProductIdCompleted(
         productId: Long
-    ): List<Trade> {
+    ): List<TradeLastCompletedDTO> {
         return jpaQueryFactory
-            .select(tradeEntity)
+            .select(
+                QTradeLastCompletedDTO(
+                    tradeEntity.size,
+                    tradeEntity.price,
+                    tradeEntity.updatedAt
+                )
+            )
             .from(tradeEntity)
             .where(
                 tradeEntity.tradeStatus.eq(TradeStatus.COMPLETED),
@@ -116,7 +134,7 @@ class TradeRepositoryImpl :
             .fetch()
     }
 
-    private fun eqRequestType(
+    private fun getOrderByRequestType(
         requestType: RequestType
     ): OrderSpecifier<*> {
         return if (requestType == RequestType.ASK) OrderSpecifier(Order.ASC, tradeEntity.price)

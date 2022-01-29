@@ -14,7 +14,7 @@ class Trade(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null,
 
-    @ManyToOne
+    @ManyToOne(cascade = [CascadeType.DETACH], fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
     var product: Product,
 

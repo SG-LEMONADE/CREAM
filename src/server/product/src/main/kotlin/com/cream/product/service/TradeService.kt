@@ -4,8 +4,8 @@ import com.cream.product.client.LogServiceClient
 import com.cream.product.constant.RequestType
 import com.cream.product.constant.TradeStatus
 import com.cream.product.dto.filterDTO.PageDTO
+import com.cream.product.dto.tradeDTO.TradeHistoryDTO
 import com.cream.product.dto.tradeDTO.TradeRegisterDTO
-import com.cream.product.model.Trade
 import com.cream.product.persistence.ProductRepository
 import com.cream.product.persistence.TradeRepository
 import feign.FeignException
@@ -43,7 +43,7 @@ class TradeService {
         pageDTO: PageDTO,
         requestType: RequestType,
         tradeStatus: TradeStatus
-    ): List<Trade> {
+    ): List<TradeHistoryDTO> {
         return tradeRepository.findAllByPageAndStatus(userId, pageDTO.offset(), pageDTO.limit(), requestType, tradeStatus)
     }
 
