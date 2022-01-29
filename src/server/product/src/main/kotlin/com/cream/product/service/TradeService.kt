@@ -67,9 +67,9 @@ class TradeService {
         val trade = tradeRepository.findFirstTrade(productId, size, requestType)
         val product = productRepository.findById(productId)
 
-        try{
+        try {
             logServiceClient.insertPrice(productId, trade.price)
-        } catch (ex: FeignException){
+        } catch (ex: FeignException) {
             log.error(ex.message)
         }
 

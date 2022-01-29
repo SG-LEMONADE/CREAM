@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 
-@FeignClient(name="log")
+@FeignClient(name = "log")
 interface LogServiceClient {
 
     @PostMapping("/prices/products/{productId}")
