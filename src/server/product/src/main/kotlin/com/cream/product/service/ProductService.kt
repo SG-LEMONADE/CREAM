@@ -11,6 +11,7 @@ import com.cream.product.persistence.TradeRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import kotlin.streams.toList
+
 @Service
 class ProductService {
 
@@ -24,7 +25,7 @@ class ProductService {
         if (userId == null) {
             return productRepository.getProducts(page.offset(), page.limit(), page.sort, filter).stream()
                 .map {
-                    ProductDTO(ProductPriceWishDTO(it.product, null, it.lowestAsk))
+                    ProductDTO(it)
                 }.toList()
         }
         return productRepository.getProductsWithWish(userId, page.offset(), page.limit(), page.sort, filter).stream()
@@ -36,8 +37,7 @@ class ProductService {
     fun findProductById(id: Long, userId: Long?, size: String?): ProductDetailDTO {
 
         val product: ProductPriceWishDTO = if (userId == null) {
-            val returnValue = productRepository.getProduct(id)
-            ProductPriceWishDTO(returnValue.product, null, returnValue.lowestAsk)
+            productRepository.getProduct(id)
         } else {
             productRepository.getProductWithWish(userId, id)
         }

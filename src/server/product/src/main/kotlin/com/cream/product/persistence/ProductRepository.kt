@@ -11,6 +11,7 @@ import com.querydsl.core.types.Projections
 import com.querydsl.core.types.dsl.BooleanExpression
 import com.querydsl.core.types.dsl.Expressions
 import com.querydsl.core.types.dsl.NumberExpression
+import com.querydsl.core.types.dsl.NumberPath
 import com.querydsl.jpa.JPAExpressions
 import com.querydsl.jpa.JPQLQuery
 import com.querydsl.jpa.impl.JPAQueryFactory
@@ -20,10 +21,10 @@ import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport
 import java.time.LocalDateTime
 
 interface ProductRepositoryCustom {
-    fun getProducts(offset: Long, limit: Long, sort: String?, filter: FilterRequestDTO): List<ProductPriceDTO>
+    fun getProducts(offset: Long, limit: Long, sort: String?, filter: FilterRequestDTO): List<ProductPriceWishDTO>
     fun getProductsWithWish(userId: Long, offset: Long, limit: Long, sort: String?, filter: FilterRequestDTO): List<ProductPriceWishDTO>
 
-    fun getProduct(productId: Long): ProductPriceDTO
+    fun getProduct(productId: Long): ProductPriceWishDTO
     fun getProductWithWish(userId: Long, productId: Long): ProductPriceWishDTO
 
     fun getProductPricesBySize(productId: Long, requestType: RequestType): List<ProductPriceBySizeDTO>?
@@ -44,6 +45,10 @@ class ProductRepositoryImpl :
     private val wishEntity: QWish = QWish.wish
     private val tradeEntity: QTrade = QTrade.trade
 
+    val lowestAsk: NumberPath<Int> = Expressions.numberPath(Int::class.java, "lowestAsk")
+    val premiumPrice: NumberPath<Int> = Expressions.numberPath(Int::class.java, "premiumPrice")
+    val highestBid: NumberPath<Int> = Expressions.numberPath(Int::class.java, "highestBid")
+
     private val lowestAskQuery: JPQLQuery<Int> = JPAExpressions
         .select(tradeEntity.price.min())
         .from(tradeEntity)
@@ -54,17 +59,39 @@ class ProductRepositoryImpl :
             tradeEntity.validationDateTime.gt(LocalDateTime.now())
         )
 
+    private val premiumPriceQuery: JPQLQuery<Int> = JPAExpressions
+        .select(tradeEntity.price.min().subtract(productEntity.originalPrice))
+        .from(tradeEntity)
+        .where(
+            tradeEntity.requestType.eq(RequestType.ASK),
+            tradeEntity.tradeStatus.eq(TradeStatus.WAITING),
+            tradeEntity.product.id.eq(productEntity.id),
+            tradeEntity.validationDateTime.gt(LocalDateTime.now()),
+        )
+
+    private val highestBidQuery: JPQLQuery<Int> = JPAExpressions
+        .select(tradeEntity.price.max())
+        .from(tradeEntity)
+        .where(
+            tradeEntity.requestType.eq(RequestType.BID),
+            tradeEntity.tradeStatus.eq(TradeStatus.WAITING),
+            tradeEntity.product.id.eq(productEntity.id),
+            tradeEntity.validationDateTime.gt(LocalDateTime.now())
+        )
+
     override fun getProducts(
         offset: Long,
         limit: Long,
         sort: String?,
         filter: FilterRequestDTO
-    ): List<ProductPriceDTO> {
+    ): List<ProductPriceWishDTO> {
         return jpaQueryFactory.select(
-            Projections.constructor(
-                ProductPriceDTO::class.java,
+            QProductPriceWishDTO(
                 productEntity,
-                lowestAskQuery
+                Expressions.asString(""),
+                Expressions.`as`(lowestAskQuery, "lowestAsk"),
+                Expressions.`as`(highestBidQuery, "highestBid"),
+                Expressions.`as`(premiumPriceQuery, "premiumPrice")
             )
         ).from(productEntity)
             .where(
@@ -91,13 +118,14 @@ class ProductRepositoryImpl :
         limit: Long,
         sort: String?,
         filter: FilterRequestDTO
-    ): MutableList<ProductPriceWishDTO> {
+    ): List<ProductPriceWishDTO> {
         return jpaQueryFactory.select(
-            Projections.constructor(
-                ProductPriceWishDTO::class.java,
+            QProductPriceWishDTO(
                 productEntity,
                 Expressions.stringTemplate("group_concat({0})", wishEntity.size),
-                lowestAskQuery
+                Expressions.`as`(lowestAskQuery, "lowestAsk"),
+                Expressions.`as`(highestBidQuery, "highestBid"),
+                Expressions.`as`(premiumPriceQuery, "premiumPrice")
             )
         ).from(productEntity)
             .leftJoin(wishEntity).on(
@@ -124,12 +152,14 @@ class ProductRepositoryImpl :
 
     override fun getProduct(
         productId: Long
-    ): ProductPriceDTO {
+    ): ProductPriceWishDTO {
         return jpaQueryFactory.select(
-            Projections.constructor(
-                ProductPriceDTO::class.java,
+            QProductPriceWishDTO(
                 productEntity,
-                lowestAskQuery
+                Expressions.asString(""),
+                lowestAskQuery,
+                highestBidQuery,
+                premiumPriceQuery
             )
         ).from(productEntity)
             .where(productEntity.id.eq(productId))
@@ -141,11 +171,12 @@ class ProductRepositoryImpl :
         productId: Long
     ): ProductPriceWishDTO {
         return jpaQueryFactory.select(
-            Projections.constructor(
-                ProductPriceWishDTO::class.java,
+            QProductPriceWishDTO(
                 productEntity,
                 Expressions.stringTemplate("group_concat({0})", wishEntity.size),
-                lowestAskQuery
+                lowestAskQuery,
+                highestBidQuery,
+                premiumPriceQuery
             )
         ).from(productEntity)
             .leftJoin(wishEntity).on(
@@ -251,11 +282,11 @@ class ProductRepositoryImpl :
     }
 
     private fun geoPrice(price: Int?): BooleanExpression? {
-        return if (price == null) null else lowestAskQuery.goe(price)
+        return if (price == null) null else lowestAsk.goe(price)
     }
 
     private fun loePrice(price: Int?): BooleanExpression? {
-        return if (price == null) null else lowestAskQuery.loe(price)
+        return if (price == null) null else lowestAsk.loe(price)
     }
 
     private fun likeKeyword(keyWord: String?): BooleanExpression? {
@@ -268,9 +299,18 @@ class ProductRepositoryImpl :
 
     private fun getOrder(sort: String?): OrderSpecifier<*> {
         val defaultOrder = OrderSpecifier(Order.DESC, productEntity.totalSale)
-        when {
-            (sort == "released_date") -> {
+        when (sort) {
+            ("released_date") -> {
                 return OrderSpecifier(Order.DESC, productEntity.releasedDate)
+            }
+            ("lowest_ask") -> {
+                return OrderSpecifier(Order.ASC, lowestAsk).nullsLast()
+            }
+            ("highest_bid") -> {
+                return OrderSpecifier(Order.DESC, highestBid).nullsLast()
+            }
+            ("premium_price") -> {
+                return OrderSpecifier(Order.DESC, premiumPrice).nullsLast()
             }
         }
         return defaultOrder

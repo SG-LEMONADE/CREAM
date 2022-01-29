@@ -21,4 +21,6 @@ open class ProductDTO(data: ProductPriceWishDTO) {
     val totalSale: Int = data.product.totalSale
     val wishList: List<String>? = if (data.wishList.isNullOrBlank()) null else data.wishList.split(",")
     val lowestAsk: Int? = data.lowestAsk
+    val highestBid: Int? = data.highestBid
+    val premiumPrice: Int? = data.premiumPrice
 }
