@@ -67,10 +67,8 @@ extension ReleaseInfoCell: ViewConfiguration {
 
 // MARK: Cell Configure Info
 extension ReleaseInfoCell {
-    func configure(_ data: String) {
-        self.templateLabel.text = "AA"
-        self.valueLabel.text = "SERIAL \n\(Int.random(in: 0...100))"
-        
-        myLogPrint("ModelInfoCell")
+    func configure(with info: (String, String)) {
+        self.templateLabel.text = info.0
+        self.valueLabel.text = info.1
     }
 }

@@ -20,8 +20,6 @@ class HomeViewController: UIViewController {
         case itemList
     }
     
-    //    typealias DataSource = UICollectionViewDiffableDataSource<Section, Video>
-    
     private let viewModel = HomeViewModel.init("test")
     private let banners: [String] = ["homebanner1",
                                      "homebanner2",
@@ -142,12 +140,16 @@ class HomeViewController: UIViewController {
     private func configureNavigation() {
         let alertBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "house"), style: .plain, target: self, action: #selector(alertBarButtonItemTapped))
         navigationItem.setRightBarButton(alertBarButtonItem, animated: false)
+
+        let backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)
+        backBarButtonItem.tintColor = .systemGray
+        navigationItem.backBarButtonItem = backBarButtonItem
     }
     
     @objc
     private func alertBarButtonItemTapped() {
         DispatchQueue.global().asyncAfter(deadline: .now() + 2) {
-            
+            print("알림버튼 클릭")
         }
     }
     
@@ -155,7 +157,6 @@ class HomeViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationController?.navigationBar.backgroundColor = .white
         self.homeCollectionView.delegate = self
         self.homeCollectionView.dataSource = self
         applyViewSettings()
@@ -213,19 +214,26 @@ extension HomeViewController: ViewConfiguration {
     }
     func viewConfigure() {
         configureCollectionView()
-        let backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)
-        backBarButtonItem.tintColor = .systemGray
+        configureNavigation()
         
-        self.navigationItem.backBarButtonItem = backBarButtonItem
     }
 }
 
 extension HomeViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if indexPath.section % 2 == 1 {
-            let nextVC = ItemViewController(ItemViewModel())
-            nextVC.hidesBottomBarWhenPushed = true
-            self.navigationController?.pushViewController(nextVC, animated: true)
+            guard let baseURL = URL(string: "http://ec2-3-35-137-187.ap-northeast-2.compute.amazonaws.com:8081")
+            else { return }
+            
+            let config: NetworkConfigurable = ApiDataNetworkConfig(baseURL: baseURL)
+            let networkService: NetworkService = DefaultNetworkService(config: config)
+            let dataTransferService: DataTransferService = DefaultDataTransferService(with: networkService)
+            let repository: ProductRepositoryInterface = ProductRepository(dataTransferService: dataTransferService)
+            let usecase: ProductUseCaseInterface = ProductUseCase(repository)
+            let viewModel: ProductViewModel = DefaultProductViewModel(usecase: usecase)
+            let productViewController = ProductViewController(viewModel)
+            productViewController.hidesBottomBarWhenPushed = true
+            self.navigationController?.pushViewController(productViewController, animated: true)
         }
     }
 }

@@ -2,296 +2,213 @@
 //  ProductViewController.swift
 //  Cream
 //
-//  Created by wankikim-MN on 2022/01/15.
+//  Created by wankikim-MN on 2022/01/30.
 //
 
 import UIKit
-import SnapKit
 
-class ProductViewController: UIViewController {
+protocol FooterScrollDelegate: AnyObject {
+    func didScrollTo(_ page: Int)
+}
 
-    private var currentBanner: Int = 0
-    private var viewModel = ProductsViewModel()
+// MARK: CollectionViewLayout
+class ProductViewController: BaseDIViewController<ProductViewModel> {
+    // MARK: Properties
+    weak var delegate: FooterScrollDelegate?
     
-    enum Constraint {
-        static let verticalInset: CGFloat = 20
-        static let horizontalInset: CGFloat = 20
+    private var item: Int = 0 {
+        didSet {
+            self.delegate?.didScrollTo(item)
+        }
     }
     
-    private lazy var shopCollectionView: UICollectionView = {
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: createCompositionalLayout())
-        
-        return collectionView
-    }()
+    private lazy var productView = ProductView()
+    
+    // MARK: Init
+    override init(_ viewModel: ProductViewModel) {
+        super.init(viewModel)
+    }
+    
+    // MARK: View Life Cycle
+    override func loadView() {
+        self.view = productView
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationController?.navigationBar.backgroundColor = .white
-        applyViewSettings()
-        setupCollectionView()
+        configureDelegate()
+        configure()
+        bindViewModel()
+        viewModel.viewDidLoad()
     }
     
-    private func setupCollectionView() {
-        self.shopCollectionView.dataSource = self
-        self.shopCollectionView.delegate = self
-        
-        shopCollectionView.register(ShopBannerCell.self,
-                                    forCellWithReuseIdentifier: ShopBannerCell.reuseIdentifier)
-        shopCollectionView.register(SizeListCell.self,
-                                    forCellWithReuseIdentifier: SizeListCell.reuseIdentifier)
-        shopCollectionView.register(HomeViewItemCell.self,
-                                    forCellWithReuseIdentifier: HomeViewItemCell.reuseIdentifier)
-        shopCollectionView.register(ShopViewFilterHeaderView.self,
-                                    forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
-                                    withReuseIdentifier: ShopViewFilterHeaderView.reuseIdentifier)
+    func configureDelegate() {
+        productView.ItemInfoListView.delegate = self
+        productView.ItemInfoListView.dataSource = self
+        productView.delegate = self
     }
     
-    private func createCompositionalLayout() -> UICollectionViewCompositionalLayout {
-        return UICollectionViewCompositionalLayout { (section, env) -> NSCollectionLayoutSection? in
-            switch section {
-            case 0:
-                return self.firstLayoutSection()
-            case 1:
-                return self.secondLayoutSection()
-            default:
-                return self.thirdLayoutSection()
-            }
+    func configure() {
+        configureUserEvent()
+        productView.tradeContainerView.wishButton.configure(1000)
+    }
+    
+    func bindViewModel() {
+        viewModel.item.bind { [weak self] product in
+            self?.productView.ItemInfoListView.reloadData()
+            // TODO: button Info Setting
+            self?.productView.tradeContainerView.sellButton.setPrice(product.highestBid)
+            self?.productView.tradeContainerView.buyButton.setPrice(product.lowestAsk)
         }
-    }
-    
-    private func firstLayoutSection() -> NSCollectionLayoutSection {
-        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
-                                              heightDimension: .fractionalWidth(0.256))
-        let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        item.contentInsets.bottom = 0
-        
-        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
-                                               heightDimension: .fractionalWidth(0.256))
-        
-        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
-        
-        group.contentInsets = .init(top: 0, leading: 0, bottom: 0, trailing: 0)
-        
-        let section = NSCollectionLayoutSection(group: group)
-        section.orthogonalScrollingBehavior = .groupPaging
-        
-        return section
-    }
-    
-    private func secondLayoutSection() -> NSCollectionLayoutSection {
-        
-        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5),
-                                              heightDimension: .fractionalHeight(0.58))
-        let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        item.contentInsets = .init(top: 0, leading: 0, bottom: 5, trailing: 5)
-        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
-                                               heightDimension: .estimated(580))
-        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
-        let section = NSCollectionLayoutSection(group: group)
-        
-        section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 0, bottom: 20, trailing: 0)
-        
-        let sectionSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
-                                                 heightDimension: .absolute(60))
-        
-        let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: sectionSize,
-                                                                 elementKind: UICollectionView.elementKindSectionHeader,
-                                                                 alignment: .top)
-        header.pinToVisibleBounds = true
-        section.boundarySupplementaryItems = [header]
-        return section
-    }
-    
-    private func thirdLayoutSection() -> NSCollectionLayoutSection {
-        
-        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
-                                              heightDimension: .fractionalHeight(1))
-        
-        let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        item.contentInsets.bottom = 15
-        
-        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.8),
-                                               heightDimension: .fractionalWidth(0.35))
-        
-        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
-        group.contentInsets = .init(top: 0, leading: 15, bottom: 0, trailing: 2)
-        
-        let section = NSCollectionLayoutSection(group: group)
-        
-        section.orthogonalScrollingBehavior = .continuous
-        
-        return section
     }
 }
 
+extension ProductViewController: BannerViewDelegate {
+    func didReceivePageNumber(_ page: Int) {
+        if page != self.item {
+            self.item = page
+        }
+    }
+}
+
+// MARK: User Event
 extension ProductViewController {
-    func bannerTimer() {
-        let _: Timer = Timer.scheduledTimer(withTimeInterval: 2, repeats: true) { (Timer) in
-            self.bannerMove()
-        }
+    func configureUserEvent() {
+        self.productView.tradeContainerView.wishButton.addTarget(self, action: #selector(didTapWishButton), for: .touchUpInside)
+        self.productView.tradeContainerView.buyButton.addTarget(self, action: #selector(didTapBuyButton), for: .touchUpInside)
+        self.productView.tradeContainerView.sellButton.addTarget(self, action: #selector(didTapSellButton), for: .touchUpInside)
     }
     
-    func bannerMove() {
-        currentBanner += 1
-        shopCollectionView.scrollToItem(at: NSIndexPath(item: currentBanner, section: 0) as IndexPath, at: .bottom, animated: true)
-        
-        if self.currentBanner == viewModel.banners.count-1 {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.28) {
-                self.scrollTofirstIndex()
-            }
-        }
+    @objc
+    func didTapWishButton() {
+        print(#function)
     }
     
-    func scrollTofirstIndex() {
-        shopCollectionView.scrollToItem(at: NSIndexPath(item: 0, section: 0) as IndexPath, at: .top, animated: false)
-        currentBanner = 0
-    }
-}
-
-extension ProductViewController: ViewConfiguration {
-    func buildHierarchy() {
-        view.addSubviews(shopCollectionView)
+    @objc
+    func didTapBuyButton() {
+        let sizeViewController = TradeViewController()
+        self.present(sizeViewController, animated: true)
     }
     
-    func setupConstraints() {
-        shopCollectionView.snp.makeConstraints {
-            $0.top.equalTo(view)
-            $0.bottom.equalTo(view)
-            $0.leading.equalTo(view)
-            $0.trailing.equalTo(view)
-        }
-    }
-    
-    func viewConfigure() {
-        let backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)
-        backBarButtonItem.tintColor = .systemGray
-        
-        self.navigationItem.backBarButtonItem = backBarButtonItem
-    }
-}
-
-extension ProductViewController: UICollectionViewDataSource {
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 2
-    }
-    
-    func collectionView(_ collectionView: UICollectionView,
-                        numberOfItemsInSection section: Int) -> Int {
-        switch section {
-        case 0:
-            return viewModel.banners.count
-        default:
-            return 50
-        }
-    }
-    
-    func collectionView(_ collectionView: UICollectionView,
-                        cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if indexPath.section == 0 {
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ShopBannerCell.reuseIdentifier,
-                                                                for: indexPath) as? ShopBannerCell
-            else { return UICollectionViewCell() }
-            
-            cell.configure(viewModel.banners[indexPath.item])
-            
-            return cell
-        } else {
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HomeViewItemCell.reuseIdentifier,
-                                                                for: indexPath) as? HomeViewItemCell
-            else { return UICollectionViewCell() }
-            cell.configureTest()
-            
-            return cell
-        }
-    }
-    
-    func collectionView(_ collectionView: UICollectionView,
-                        viewForSupplementaryElementOfKind kind: String,
-                        at indexPath: IndexPath) -> UICollectionReusableView {
-        guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind,
-                                                                           withReuseIdentifier: ShopViewFilterHeaderView.reuseIdentifier,
-                                                                           for: indexPath) as? ShopViewFilterHeaderView else
-                                                                           { return UICollectionReusableView() }
-        header.delegate = self
-        header.dataSource = self
-        return header
+    @objc
+    func didTapSellButton() {
+        let sizeViewController = TradeViewController()
+        self.present(sizeViewController, animated: true)
     }
 }
 
 extension ProductViewController: UICollectionViewDelegate {
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if indexPath.section == 1 {
-            let nextVC = ItemViewController.init(ItemViewModel())
-            nextVC.hidesBottomBarWhenPushed = true
-            self.navigationController?.pushViewController(nextVC, animated: true)
+    
+}
+
+extension ProductViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        switch kind {
+        case UICollectionView.elementKindSectionHeader:
+            guard let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind,
+                                                                                   withReuseIdentifier: HomeViewCategoryHeaderView.reuseIdentifier,
+                                                                                   for: indexPath) as? HomeViewCategoryHeaderView else
+            { return UICollectionReusableView() }
+            headerView.configure("\(Int.random(in: 0...100))")
+            return headerView
+        case UICollectionView.elementKindSectionFooter:
+            guard let footer = collectionView.dequeueReusableSupplementaryView(ofKind: kind,
+                                                                               withReuseIdentifier: PageControlFooterView.reuseIdentifier,
+                                                                               for: indexPath) as? PageControlFooterView else
+            { return UICollectionReusableView() }
+            
+            self.delegate = footer
+            
+            footer.configure(viewModel.count)
+            
+            return footer
+        default:
+            assert(false, "Unexpected element kind")
+        }
+    }
+    
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 7
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        switch section {
+        case 0:
+            return viewModel.item.value.imageUrls.count
+        case 2:
+            return 4
+        case 6:
+            return 5
+        default:
+            return 1
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        switch indexPath.section {
+        case 0:
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ShopBannerCell.reuseIdentifier,
+                                                                for: indexPath) as? ShopBannerCell
+            else { return UICollectionViewCell() }
+            cell.backgroundColor = .lightGray
+            cell.configure(viewModel.item.value.imageUrls[indexPath.item])
+            
+            return cell
+            
+        case 1:
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ItemInfoCell.reuseIdentifier,
+                                                                for: indexPath) as? ItemInfoCell
+            else { return UICollectionViewCell() }
+            cell.configure(viewModel.item.value)
+            cell.delegate = self
+            return cell
+            
+        case 2:
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ReleaseInfoCell.reuseIdentifier, for: indexPath) as? ReleaseInfoCell
+            else { return UICollectionViewCell() }
+            cell.configure(with: viewModel.releaseInfo[indexPath.item])
+           return cell
+            
+        case 3:
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ShopBannerCell.reuseIdentifier,
+                                                                for: indexPath) as? ShopBannerCell
+            else { return UICollectionViewCell() }
+            cell.backgroundColor = .red
+            cell.configure("banner1")
+            return cell
+            
+        case 4:
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ShopBannerCell.reuseIdentifier,
+                                                                for: indexPath) as? ShopBannerCell
+            else { return UICollectionViewCell() }
+            cell.backgroundColor = .blue
+            cell.configure("banner2")
+            return cell
+            
+        case 6:
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HomeViewItemCell.reuseIdentifier,
+                                                                for: indexPath) as? HomeViewItemCell
+            else { return UICollectionViewCell() }
+            cell.backgroundColor = .systemGray
+            cell.configureTest()
+            
+            return cell
+            
+        default:
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ShopBannerCell.reuseIdentifier,
+                                                                for: indexPath) as? ShopBannerCell
+            else { return UICollectionViewCell() }
+            cell.configure("homeBanner5")
+            return cell
         }
     }
 }
 
-extension ProductViewController: ShopViewFilterHeaderViewDelegate {
-    func setupSizeForItemAt(_ collectionView: UICollectionView,
-                            layout collectionViewLayout: UICollectionViewLayout,
-                            sizeForItemAt indexPath: IndexPath) -> CGSize {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FilterCell.reuseIdentifer,
-                                                                  for: indexPath) as? FilterCell else
-                                                                  { return .zero }
-        
-        cell.configure(viewModel.categories[indexPath.item])
-        cell.titleLabel.sizeToFit()
-        
-        var cellWidth = cell.sizeThatFits(cell.titleLabel.frame.size).width + Constraint.horizontalInset
-        let cellHeight = cell.sizeThatFits(cell.titleLabel.frame.size).height + Constraint.verticalInset
-        
-        if indexPath.item == 2 {
-            cellWidth = 2
-        }
-        
-        return CGSize(width: cellWidth, height: cellHeight)
-    }
-    
-    func didSelectItemAt(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print(viewModel.categories[indexPath.item])
-    }
-}
-
-extension ProductViewController: ShopViewFilterHeaderViewDataSource {
-    func setupNumberOfItemsInSection(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return viewModel.categories.count
-    }
-    
-    func setupCellForItemAt(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-//        if indexPath.item == 0 {
-//            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FilterImageCell.reuseIdentifier, for: indexPath) as? FilterImageCell
-//            else { return UICollectionViewCell() }
-//            cell.configure("wand.and.rays")
-//
-//            return cell
-//        }
-        
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FilterCell.reuseIdentifer, for: indexPath) as? FilterCell
-        else { return UICollectionViewCell() }
-        if indexPath.item == .zero {
-            let attachment = NSTextAttachment()
-//            attachment.image = UIImage(systemName: "wand.and.rays")
-            attachment.image = UIImage(systemName: "checklist")
-            let attachmentString = NSAttributedString(attachment: attachment)
-//            let myString = NSMutableAttributedString(string: "")
-//            myString.append(attachmentString)
-            cell.titleLabel.attributedText = attachmentString
-            
-            cell.titleLabel.sizeToFit()
-            
-        } else {
-            cell.configure(viewModel.categories[indexPath.item])
-            cell.titleLabel.sizeToFit()
-        }
-
-//
-//        cell.configure(viewModel.categories[indexPath.item])
-//        cell.titleLabel.sizeToFit()
-        if indexPath.item == 2 {
-            cell.isUserInteractionEnabled = false
-        }
-        return cell
+extension ProductViewController: ItemInfoCellDelegate {
+    // TODO: Button Tap 이후, 상품에 해당하는 사이즈 가져오기
+    func didTapSizeButton() {
+        let nextVC = SizeListViewController(DefaultSizeListViewModel())
+        nextVC.modalPresentationStyle = .overCurrentContext
+        self.present(nextVC, animated: false)
     }
 }

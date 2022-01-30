@@ -93,7 +93,7 @@ final class SizeListViewController: BaseDIViewController<SizeListViewModel> {
 
 // MARK: CollectionView Layout & CollectionView Cell Configuration
 extension SizeListViewController: UICollectionViewDelegateFlowLayout {
-    
+
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let cellLayout = CGSize(width: (collectionView.bounds.size.width - 2 * SizeListView.Constraint.GridWidthSpacing) / 3,
                                 height: ((collectionView.bounds.size.width - SizeListView.Constraint.GridHeightSpacing) / 3) * 0.35)
@@ -102,6 +102,7 @@ extension SizeListViewController: UICollectionViewDelegateFlowLayout {
 }
 
 extension SizeListViewController: UICollectionViewDataSource, UICollectionViewDelegate {
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SizeListCell.reuseIdentifier,
                                                             for: indexPath) as? SizeListCell

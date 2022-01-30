@@ -8,5 +8,9 @@
 import Foundation
 
 protocol ProductRepositoryInterface {
-    func fetch(completion: @escaping ((Result<HomeData, Error>) -> Void)) -> Cancellable
+    func fetchHome(completion: @escaping ((Result<HomeData, Error>) -> Void)) -> Cancellable
+    func requestProducts(page: Int,
+                         completion: @escaping ((Result<Products, Error>) -> Void)) -> Cancellable
+    func requestProductById(_ id: Int,
+                            completion: @escaping ((Result<ProductDetail, Error>) -> Void)) -> Cancellable
 }

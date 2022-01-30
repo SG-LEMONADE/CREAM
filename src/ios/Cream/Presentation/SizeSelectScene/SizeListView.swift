@@ -124,19 +124,6 @@ extension SizeListView: ViewConfiguration {
             $0.width.height.equalTo(36)
         }
         
-//        NSLayoutConstraint.activate([
-//            contentStackView.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 32),
-//            contentStackView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -10),
-//            contentStackView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 10),
-//            contentStackView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -10),
-//            dimmedView.topAnchor.constraint(equalTo: self.topAnchor),
-//            dimmedView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
-//            dimmedView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-//            dimmedView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-//            containerView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-//            containerView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-//        ])
-//
         containerViewHeightConstraint = containerView.heightAnchor.constraint(equalToConstant: defaultHeight)
         containerViewBottomConstraint = containerView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: defaultHeight)
         

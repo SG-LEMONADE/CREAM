@@ -27,7 +27,7 @@ class LoginView: UIView {
     }()
     
     lazy var loginImageView: UIImageView = {
-        let imageView = UIImageView(image: UIImage(named: "loginTitle"))
+        let imageView = UIImageView(image: UIImage(named: "cream_logo_detail"))
         return imageView
     }()
     
@@ -158,10 +158,10 @@ extension LoginView: ViewConfiguration {
     
     func setupConstraints() {
         loginImageView.snp.makeConstraints {
-            $0.top.equalTo(self.safeAreaLayoutGuide).offset(150)
-            $0.leading.equalTo(self).offset(80)
-            $0.trailing.equalTo(self).offset(-80)
-            $0.height.equalTo(loginImageView.snp.width).multipliedBy(0.3)
+            $0.top.equalTo(self.safeAreaLayoutGuide).offset(120)
+            $0.leading.equalTo(self).offset(40)
+            $0.trailing.equalTo(self).offset(-40)
+            $0.height.equalTo(loginImageView.snp.width).multipliedBy(0.4)
         }
         
         emailLabel.snp.makeConstraints {

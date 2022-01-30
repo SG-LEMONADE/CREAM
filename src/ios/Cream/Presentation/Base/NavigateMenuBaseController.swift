@@ -44,7 +44,7 @@ final class NavigateMenuBaseController: UITabBarController {
             case .home:
                 return HomeViewController()
             case .shop:
-                return ProductViewController()
+                return ProductListViewController()
             case .my:
                 return MyPageViewController()
             }

@@ -20,7 +20,7 @@ protocol JoinViewModelValidatable {
     func validatePassword(_ password: String)
 }
 
-protocol JoinViewModelInput {
+protocol JoinViewModelOutput {
     func didValidateEmail()
     func didValidatePassword()
 }

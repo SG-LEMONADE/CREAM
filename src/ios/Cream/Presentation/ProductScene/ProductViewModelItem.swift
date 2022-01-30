@@ -46,7 +46,6 @@ class ProductViewModelImageItem: ProductViewModelItem {
     }
 }
 
-
 struct Info {
     var brand: String
     var detailInfo: String

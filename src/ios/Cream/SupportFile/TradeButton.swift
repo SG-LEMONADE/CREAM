@@ -148,7 +148,6 @@ final class TradeButton: UIButton {
     }()
 }
 
-
 extension TradeButton: ViewConfiguration {
     func buildHierarchy() {
         self.addSubviews(typeLabel, infoStackView)
@@ -172,5 +171,19 @@ extension TradeButton: ViewConfiguration {
     func viewConfigure() {
         self.backgroundColor = self.tradeType.color
         self.layer.cornerRadius = 10
+    }
+}
+
+extension TradeButton {
+    func setPrice(_ price: Int?) {
+        print(#function)
+        if let price = self.price {
+            DispatchQueue.main.async {
+                print("true")
+                self.priceLabel.text = "\(price.priceFormat)원"
+            }
+        } else {
+            print("false")
+        }
     }
 }

@@ -111,10 +111,6 @@ extension ItemInfoCell: ViewConfiguration {
             $0.bottom.equalTo(sizeButton.snp.top).offset(-10)
         }
         
-//        sizeButton.imageView?.snp.makeConstraints {
-//            $0.trailing.equalTo(sizeButton.snp.trailing).offset(-10)
-//            $0.centerY.equalTo(sizeButton.snp.centerY)
-//        }
         sizeButton.snp.makeConstraints {
             $0.leading.equalTo(self.snp.leading).offset(10)
             $0.trailing.equalTo(self.snp.trailing).offset(-10)
@@ -137,12 +133,22 @@ extension ItemInfoCell {
 
 // MARK: Configure Cell Info
 extension ItemInfoCell {
-    func configure(_ itemInfo: String) {
-        brandLabel.text = "Nike"
-        detailLabel.text = "Nike x Sacai x Fragment"
-        translateLabel.text = "나이키 x 사카이 x 프라그먼트 LD와플"
+    func configure(_ product: ProductDetail) {
+        brandLabel.text = product.brandName
+        detailLabel.text = product.originalName
+        translateLabel.text = product.translatedName
+        priceLabel.text = product.originalPrice.priceFormat
+        
         recentDescLabel.text = "최근 거래가"
-        priceLabel.text = "431,000원"
         sizeButton.setTitle("모든 사이즈", for: .normal)
+    }
+}
+
+extension Int {
+    var priceFormat: String {
+        let numberFormatter = NumberFormatter()
+        numberFormatter.numberStyle = .decimal
+        let result = numberFormatter.string(for: self) ?? "0" + "원"
+        return result
     }
 }
