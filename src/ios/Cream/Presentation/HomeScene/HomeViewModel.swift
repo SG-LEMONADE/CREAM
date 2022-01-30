@@ -7,6 +7,41 @@
 
 import Foundation
 
+protocol HomeListViewModelInterface {
+    var products: Observable<[Product]> { get }
+    func fetch()
+}
+protocol HomeListUseCaseInterface {
+    func fetch()
+}
+
+final class HomeListUseCase {
+    private let repository: HomeListRepositoryInterface
+    
+    init(repository: HomeListRepositoryInterface) {
+        self.repository = repository
+    }
+}
+
+protocol HomeListRepositoryInterface {
+    func fetch()
+}
+
+final class HomeListViewModel: HomeListViewModelInterface {
+    private let usecase: HomeListUseCaseInterface
+    private(set) var products: Observable<[Product]>
+    
+    init(usecase: HomeListUseCaseInterface) {
+        self.usecase = usecase
+        self.products = Observable([])
+    }
+    
+    func fetch() {
+         
+    }
+}
+
+
 protocol HomeViewModelDelegate: AnyObject {
     func didStartFetchingMessage()
     func didFinishFetchingMessage(_ message: String)

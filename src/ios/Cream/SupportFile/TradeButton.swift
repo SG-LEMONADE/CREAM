@@ -5,9 +5,66 @@
 //  Created by wankikim-MN on 2022/01/13.
 //
 
-
 import UIKit
 import SnapKit
+
+final class TradeContainerView: UIView {
+    
+    lazy var buyButton: TradeButton = {
+        let button = TradeButton(tradeType: .buy)
+        return button
+    }()
+    
+    lazy var sellButton: TradeButton = {
+        let button = TradeButton(tradeType: .sell)
+        return button
+    }()
+    
+    lazy var wishButton: WishButton = {
+        let button = WishButton(frame: .zero)
+        return button
+    }()
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        applyViewSettings()
+    }
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        applyViewSettings()
+    }
+}
+
+extension TradeContainerView: ViewConfiguration {
+    func buildHierarchy() {
+        self.addSubviews(buyButton, sellButton, wishButton)
+    }
+    
+    func setupConstraints() {
+        wishButton.snp.makeConstraints {
+            $0.top.equalTo(self.snp.top).offset(10)
+            $0.leading.equalTo(self.snp.leading).offset(10)
+            $0.bottom.equalTo(self.snp.bottom).offset(-10)
+            $0.trailing.equalTo(self.buyButton.snp.leading).offset(-20)
+            $0.width.equalTo(self.buyButton.snp.width).multipliedBy(0.5)
+        }
+        
+        buyButton.snp.makeConstraints {
+            $0.top.equalTo(self.snp.top).offset(10)
+            $0.trailing.equalTo(self.sellButton.snp.leading).offset(-10)
+            $0.bottom.equalTo(self.snp.bottom).offset(-10)
+            $0.width.equalTo(self.sellButton.snp.width).multipliedBy(1)
+        }
+        
+        sellButton.snp.makeConstraints {
+            $0.top.equalTo(self.snp.top).offset(10)
+            $0.trailing.equalTo(self.snp.trailing).offset(-10)
+            $0.bottom.equalTo(self.snp.bottom).offset(-10)
+        }
+        wishButton.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+    }
+}
 
 final class TradeButton: UIButton {
     enum TradeType: String, CustomStringConvertible {
@@ -86,11 +143,10 @@ final class TradeButton: UIButton {
         stackView.alignment = .center
         stackView.spacing = 2
         stackView.distribution = .equalSpacing
-        
+        stackView.isUserInteractionEnabled = false
         return stackView
     }()
 }
-
 
 extension TradeButton: ViewConfiguration {
     func buildHierarchy() {
@@ -115,5 +171,19 @@ extension TradeButton: ViewConfiguration {
     func viewConfigure() {
         self.backgroundColor = self.tradeType.color
         self.layer.cornerRadius = 10
+    }
+}
+
+extension TradeButton {
+    func setPrice(_ price: Int?) {
+        print(#function)
+        if let price = self.price {
+            DispatchQueue.main.async {
+                print("true")
+                self.priceLabel.text = "\(price.priceFormat)원"
+            }
+        } else {
+            print("false")
+        }
     }
 }

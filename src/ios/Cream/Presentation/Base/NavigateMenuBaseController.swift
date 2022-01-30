@@ -34,7 +34,7 @@ final class NavigateMenuBaseController: UITabBarController {
             let image = UIImage(systemName: symbol)
             return image
         }
-
+        
         var selectedImage: UIImage? {
             return UIImage(systemName: symbol + ".fill")
         }
@@ -44,7 +44,7 @@ final class NavigateMenuBaseController: UITabBarController {
             case .home:
                 return HomeViewController()
             case .shop:
-                return ShopViewController()
+                return ProductListViewController()
             case .my:
                 return MyPageViewController()
             }
@@ -56,13 +56,14 @@ final class NavigateMenuBaseController: UITabBarController {
         super.viewDidLoad()
         setupViewControllers()
         setupTabBarColor()
+        configureDelegate()
     }
     
     private func setupTabBarColor() {
         tabBar.barTintColor = .white
         tabBar.isTranslucent = false
     }
-
+    
     func setupViewControllers() {
         InnerViewType.allCases.forEach { tab in
             let rootNavigationViewController = UINavigationController(rootViewController: tab.viewController)
@@ -81,6 +82,32 @@ extension NavigateMenuBaseController: UITabBarControllerDelegate {
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
         let generator = UIImpactFeedbackGenerator(style: .light)
         generator.impactOccurred()
+    }
+    
+    
+    func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
+        let isLogout = true
+        
+        if let naviVC = viewController as? UINavigationController,
+           (naviVC.viewControllers.first as? MyPageViewController != nil) && isLogout {
+            guard let baseURL = URL(string: "http://ec2-13-125-85-156.ap-northeast-2.compute.amazonaws.com:8081")
+            else { fatalError() }
+        
+            let config: NetworkConfigurable = ApiDataNetworkConfig(baseURL: baseURL)
+            let networkService: NetworkService = DefaultNetworkService(config: config)
+            let dataTransferService: DataTransferService = DefaultDataTransferService(with: networkService)
+            let repository: UserRepositoryInterface = UserRepository(dataTransferService: dataTransferService)
+            let usecase: UserUseCaseInterface = UserUseCase(repository)
+            let viewModel: LoginViewModel = DefaultLoginViewModel(usecase: usecase)
+            let loginViewController = LoginViewController(viewModel)
+            let navigationViewController = UINavigationController(rootViewController: loginViewController)
+            
+            navigationViewController.modalPresentationStyle = .fullScreen
+            tabBarController.present(navigationViewController, animated: true, completion: nil)
+            
+            return false
+        }
+        return true
     }
 }
 

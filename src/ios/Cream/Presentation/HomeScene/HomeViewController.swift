@@ -7,15 +7,18 @@
 
 import UIKit
 import SnapKit
-import BetterSegmentedControl
-import Kingfisher
+
+class HomeListViewController: BaseDIViewController<HomeViewModel> {
+    override func viewDidLoad() {
+        super.viewDidLoad()
+    }
+}
 
 class HomeViewController: UIViewController {
-    enum Section {
+    enum SectionInfo {
         case banner
+        case itemList
     }
-    
-    //    typealias DataSource = UICollectionViewDiffableDataSource<Section, Video>
     
     private let viewModel = HomeViewModel.init("test")
     private let banners: [String] = ["homebanner1",
@@ -38,25 +41,25 @@ class HomeViewController: UIViewController {
     private var currentIndex: Int = 0
     private lazy var homeCollectionView: UICollectionView = {
         let cv = UICollectionView(frame: .zero,
-                                  collectionViewLayout: createCompositionalLayout())
+                                  collectionViewLayout: configureCompositionalLayout())
         return cv
     }()
     
-    private func createCompositionalLayout() -> UICollectionViewCompositionalLayout {
+    private func configureCompositionalLayout() -> UICollectionViewCompositionalLayout {
         return UICollectionViewCompositionalLayout { (section, env) -> NSCollectionLayoutSection? in
             let info = section % 2
             switch info {
             case 0:
-                return self.createBannerSection()
+                return self.configureBannerSection()
             case 1:
-                return self.createItemListSection()
+                return self.configureItemListSection()
             default:
-                return self.thirdLayoutSection()
+                return self.configureItemListSection()
             }
         }
     }
     
-    private func createBannerSection() -> NSCollectionLayoutSection {
+    private func configureBannerSection() -> NSCollectionLayoutSection {
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
                                               heightDimension: .fractionalWidth(1))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
@@ -88,7 +91,7 @@ class HomeViewController: UIViewController {
         return section
     }
     
-    private func createItemListSection() -> NSCollectionLayoutSection {
+    private func configureItemListSection() -> NSCollectionLayoutSection {
         
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5),
                                               heightDimension: .fractionalHeight(0.58))
@@ -102,7 +105,7 @@ class HomeViewController: UIViewController {
         let section = NSCollectionLayoutSection(group: group)
         section.orthogonalScrollingBehavior = .groupPaging
         
-        section.contentInsets = NSDirectionalEdgeInsets(top: 50, leading: 5, bottom: 20, trailing: 0)
+        section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 5, bottom: 20, trailing: 0)
         section.boundarySupplementaryItems = [
             NSCollectionLayoutBoundarySupplementaryItem(layoutSize: .init(widthDimension: .fractionalWidth(1),
                                                                           heightDimension: .estimated(50)),
@@ -134,56 +137,26 @@ class HomeViewController: UIViewController {
         return section
     }
     
-    private func configureSegmentedControl() {
-        let navigationSegmentedControl = BetterSegmentedControl(
-            frame: CGRect(x: 0, y: 0, width: 200.0, height: 30.0),
-            segments: LabelSegment.segments(withTitles: ["투데이", "발매정보"],
-                                            normalTextColor: .systemGray4,
-                                            selectedTextColor: .black),
-            options:[.backgroundColor(.white),
-                     .indicatorViewBackgroundColor(UIColor(red: 0.36, green: 0.38, blue: 0.87, alpha: 1.00)),
-                     .cornerRadius(3.0),
-                     .animationSpringDamping(1.0),
-                     .indicatorViewBorderWidth(1.0)
-                    ]
-        )
-        navigationSegmentedControl.addTarget(self,
-                                             action: #selector(navigationSegmentedControlValueChanged),
-                                             for: .valueChanged)
-        
-        navigationItem.titleView = navigationSegmentedControl
-    }
-    
     private func configureNavigation() {
         let alertBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "house"), style: .plain, target: self, action: #selector(alertBarButtonItemTapped))
         navigationItem.setRightBarButton(alertBarButtonItem, animated: false)
+
+        let backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)
+        backBarButtonItem.tintColor = .systemGray
+        navigationItem.backBarButtonItem = backBarButtonItem
     }
     
     @objc
     private func alertBarButtonItemTapped() {
         DispatchQueue.global().asyncAfter(deadline: .now() + 2) {
-            
+            print("알림버튼 클릭")
         }
     }
     
     // MARK: - Action handlers
-    @objc func navigationSegmentedControlValueChanged(_ sender: BetterSegmentedControl) {
-        if sender.index == 0 {
-            print("first")
-            if #available(iOS 13.0, *) {
-                view.backgroundColor = .systemGray5
-            } else {
-                view.backgroundColor = .white
-            }
-        } else {
-            print("second")
-            view.backgroundColor = .darkGray
-        }
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationController?.navigationBar.backgroundColor = .white
         self.homeCollectionView.delegate = self
         self.homeCollectionView.dataSource = self
         applyViewSettings()
@@ -240,15 +213,36 @@ extension HomeViewController: ViewConfiguration {
         }
     }
     func viewConfigure() {
-        configureSegmentedControl()
         configureCollectionView()
+        configureNavigation()
+        
     }
 }
 
-extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelegate {
+extension HomeViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if indexPath.section % 2 == 1 {
+            guard let baseURL = URL(string: "http://ec2-3-35-137-187.ap-northeast-2.compute.amazonaws.com:8081")
+            else { return }
+            
+            let config: NetworkConfigurable = ApiDataNetworkConfig(baseURL: baseURL)
+            let networkService: NetworkService = DefaultNetworkService(config: config)
+            let dataTransferService: DataTransferService = DefaultDataTransferService(with: networkService)
+            let repository: ProductRepositoryInterface = ProductRepository(dataTransferService: dataTransferService)
+            let usecase: ProductUseCaseInterface = ProductUseCase(repository)
+            let viewModel: ProductViewModel = DefaultProductViewModel(usecase: usecase)
+            let productViewController = ProductViewController(viewModel)
+            productViewController.hidesBottomBarWhenPushed = true
+            self.navigationController?.pushViewController(productViewController, animated: true)
+        }
+    }
+}
+
+extension HomeViewController: UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 11
     }
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if section == 0 {
             return banners.count
