@@ -11,10 +11,14 @@ import SnapKit
 class HomeViewItemCell: UICollectionViewCell {
     static let reuseIdentifier = "\(HomeViewItemCell.self)"
     
-    private lazy var productImageView: UIImageView = {
+    var sessionTask: URLSessionDataTask?
+    
+    lazy var productImageView: UIImageView = {
         let imageView = UIImageView(frame: .zero)
         imageView.contentMode = .scaleToFill
         imageView.backgroundColor = .white
+        imageView.layer.cornerRadius = 10
+        imageView.clipsToBounds = true
         return imageView
     }()
     
@@ -29,7 +33,7 @@ class HomeViewItemCell: UICollectionViewCell {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 13, weight: .bold)
         label.textColor = .systemGray4
-        label.numberOfLines = 0
+        label.numberOfLines = 2
         return label
     }()
     
@@ -110,7 +114,6 @@ class HomeViewItemCell: UICollectionViewCell {
         return stackView
     }()
     
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
         applyViewSettings()
@@ -119,6 +122,11 @@ class HomeViewItemCell: UICollectionViewCell {
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         applyViewSettings()
+    }
+    
+    override func prepareForReuse() {
+        sessionTask?.cancel()
+        
     }
 }
 
@@ -151,14 +159,49 @@ extension HomeViewItemCell: ViewConfiguration {
 }
 
 extension HomeViewItemCell {
-    func configureTest() {
+    func configure(_ viewModel: Product) {
+        self.titleLabel.text = viewModel.brandName
+        self.detailLabel.text = viewModel.originalName
+        if let price = viewModel.premiumPrice {
+            self.priceLabel.text = "\(price.priceFormat)원"
+        } else {
+            self.priceLabel.text = "-"
+        }
+        self.priceExpressionLabel.text = "즉시 구매가"
+        self.productImageView.backgroundColor = .init(rgb: viewModel.backgroundColor.hexToInt ?? 0)
+        guard let urlString = viewModel.imageUrls.first,
+              let url = URL(string: urlString)
+        else { return }
         
+        sessionTask = loadImage(url: url) { [weak self] (image) in
+            DispatchQueue.main.async {
+                self?.productImageView.image = image
+            }
+        }
+    }
+    
+    func configureTest() {
         self.productImageView.image = UIImage(systemName: "bookmark")?
             .withAlignmentRectInsets(UIEdgeInsets(top: -10, left: -10, bottom: -10, right: -10))
         self.productImageView.sizeToFit()
         self.titleLabel.text = "Nike"
         self.detailLabel.text = "Nike Big Swoosh Full Zip \nJacket Black Sail"
         self.priceLabel.text = "269,000원"
-        self.priceExpressionLabel.text = "즉시 구매가"
+    }
+}
+
+
+extension HomeViewItemCell {
+    func loadImage(url: URL, completion: @escaping (UIImage?) -> Void) -> URLSessionDataTask {
+        
+        let task = URLSession.shared.dataTask(with: url) { data, _, _ in
+            guard let data = data
+            else { return }
+            
+            let image = UIImage(data: data)
+            completion(image)
+        }
+        task.resume()
+        return task
     }
 }

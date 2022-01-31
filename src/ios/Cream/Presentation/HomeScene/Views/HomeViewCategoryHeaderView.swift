@@ -34,11 +34,9 @@ class HomeViewCategoryHeaderView: UICollectionReusableView {
         return stackView
     }()
     
-
     override init(frame: CGRect) {
         super.init(frame: frame)
         applyViewSettings()
-        
     }
 
     required init?(coder: NSCoder) {

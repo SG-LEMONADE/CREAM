@@ -23,8 +23,22 @@ extension ProductRepository: ProductRepositoryInterface {
     }
     
     func requestProducts(page: Int, completion: @escaping ((Result<Products, Error>) -> Void)) -> Cancellable {
-        let task = RepositoryTask()
+        let endpoint = APIEndpoints.loadProducts(page)
         
+        let task = RepositoryTask()
+        task.networkTask = dataTransferService.request(with: endpoint) { result in
+            switch result {
+            case .success(let response):
+                print(response)
+                var result: Products = []
+                response.forEach {
+                    result.append($0.toDomain())
+                }
+                completion(.success(result))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
         return task
     }
     

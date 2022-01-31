@@ -50,7 +50,6 @@ extension ShopBannerCell: ViewConfiguration {
 // MARK: Configure Cell
 extension ShopBannerCell {
     func loadImage(url: URL, completion: @escaping (UIImage?) -> Void) -> URLSessionDataTask {
-        
         let task = URLSession.shared.dataTask(with: url) { data, Response, error in
             guard let data = data
             else { return }
@@ -59,6 +58,7 @@ extension ShopBannerCell {
             completion(image)
         }
         task.resume()
+        
         return task
     }
     

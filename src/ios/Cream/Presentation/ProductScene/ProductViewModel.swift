@@ -13,6 +13,7 @@ protocol ProductViewModelInput {
     func didTapWishButton()
     func didTapBuyButton()
     func didTapSellButton()
+    var id: Int { get set }
 }
 
 protocol ProductViewModelOutput {
@@ -27,11 +28,7 @@ protocol ProductViewModel: ProductViewModelInput, ProductViewModelOutput {
 
 final class DefaultProductViewModel: ProductViewModel {
     var usecase: ProductUseCaseInterface
-    
     var item: Observable<ProductDetail> = Observable(ProductDetail.create())
-
-    let imageUrls: [String] = ["mock_shoe1", "mock_shoe2", "mock_shoe3"]
-    
     var releaseInfo: [(String, String)] {
         var info = [(String, String)]()
         info.append(("모델 번호", item.value.styleCode))
@@ -41,18 +38,19 @@ final class DefaultProductViewModel: ProductViewModel {
         
         return info
     }
-    private var page: Int = 1
-    
+    var id: Int = 0
     var count: Int {
-        return imageUrls.count
+        return item.value.imageUrls.count
     }
+    
+    private var page: Int = 1
     
     init(usecase: ProductUseCaseInterface) {
         self.usecase = usecase
     }
     
     func viewDidLoad() {
-        usecase.fetchItemById(2351) { result in
+        usecase.fetchItemById(id) { result in
             switch result {
             case .success(let product):
                 self.item.value = product

@@ -126,7 +126,6 @@ extension SizeListView: ViewConfiguration {
         
         containerViewHeightConstraint = containerView.heightAnchor.constraint(equalToConstant: defaultHeight)
         containerViewBottomConstraint = containerView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: defaultHeight)
-        
         containerViewHeightConstraint?.isActive = true
         containerViewBottomConstraint?.isActive = true
     }

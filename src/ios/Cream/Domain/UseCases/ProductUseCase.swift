@@ -24,9 +24,14 @@ extension ProductUseCase: ProductUseCaseInterface {
     // TODO: 목록 요청
     @discardableResult
     func fetch(page: Int, completion: @escaping ((Result<Products, Error>) -> Void)) -> Cancellable {
-        let task = RepositoryTask()
-        
-        return task
+        repository.requestProducts(page: page) { result in
+            switch result {
+            case .success(let products):
+                completion(.success(products))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
     }
     
     // TODO: 특정 Product 요청
@@ -37,7 +42,7 @@ extension ProductUseCase: ProductUseCaseInterface {
             case .success(let product):
                 completion(.success(product))
             case .failure(let error):
-                print(error)
+                completion(.failure(error))
             }
         }
     }

@@ -32,4 +32,12 @@ struct APIEndpoints {
                         headerParamaters: ["Content-Type":"application/json"])
     }
     
+    static func loadProducts(_ page: Int) -> Endpoint<[ProductInfoResponseDTO]> {
+        return Endpoint(path: "products",
+                        method: .get,
+                        headerParamaters: ["Content-Type":"application/json"],
+                        queryParameters: ["cursor": page,
+                                          "perPage": 40])
+    }
+    
 }

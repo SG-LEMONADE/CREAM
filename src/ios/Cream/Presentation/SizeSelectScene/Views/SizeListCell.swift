@@ -60,7 +60,7 @@ extension SizeListCell: ViewConfiguration {
 }
 
 extension SizeListCell {
-    func configure(with viewModel: SizeListCellViewModel) {
-        self.sizeLabel.text = viewModel.sizeText
+    func configure(with viewModel: String) {
+        self.sizeLabel.text = viewModel
     }
 }

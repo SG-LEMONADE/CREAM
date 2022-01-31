@@ -14,7 +14,7 @@ protocol SizeSelectDelegate: NSObject {
 final class SizeListViewController: BaseDIViewController<SizeListViewModel> {
     
     private lazy var sizeView = SizeListView()
-    
+    private var columnCount: CGFloat = 1
     weak var delegate: SizeSelectDelegate?
     
     override init(_ viewModel: SizeListViewModel) {
@@ -83,19 +83,25 @@ final class SizeListViewController: BaseDIViewController<SizeListViewModel> {
     }
     
     func bindViewModel() {
-        viewModel.reloadCollectionViewClosure = { [weak self] () in
+        viewModel.sizeList.bind { [weak self] lists in
+            if lists.count < 4 {
+                self?.columnCount = 1
+            } else if lists.count < 13 {
+                self?.columnCount = 3
+            } else {
+                self?.columnCount = 2
+            }
             DispatchQueue.main.async {
                 self?.sizeView.sizeCollectionView.reloadData()
             }
         }
     }
 }
-
 // MARK: CollectionView Layout & CollectionView Cell Configuration
 extension SizeListViewController: UICollectionViewDelegateFlowLayout {
-
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let cellLayout = CGSize(width: (collectionView.bounds.size.width - 2 * SizeListView.Constraint.GridWidthSpacing) / 3,
+        let cellLayout = CGSize(width: (collectionView.bounds.size.width - (columnCount - 1) * SizeListView.Constraint.GridWidthSpacing) / columnCount,
                                 height: ((collectionView.bounds.size.width - SizeListView.Constraint.GridHeightSpacing) / 3) * 0.35)
         return cellLayout
     }
@@ -108,6 +114,8 @@ extension SizeListViewController: UICollectionViewDataSource, UICollectionViewDe
                                                             for: indexPath) as? SizeListCell
         else { return UICollectionViewCell() }
         
+        cell.configure(with: viewModel.sizeList.value[indexPath.item])
+        
         viewModel.getCellViewModel(at: indexPath) {
             cell.configure(with: $0)
         }
@@ -118,12 +126,13 @@ extension SizeListViewController: UICollectionViewDataSource, UICollectionViewDe
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return viewModel.numberOfCells
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         self.viewModel.didSelectSize(at: indexPath) { [weak self] sizeString in
             guard let self = self,
                   let size = Int(sizeString)
             else { return }
+            
             self.delegate?.configureShoesSize(size)
             UIView.animate(withDuration: 0.3) {
                 self.sizeView.containerViewBottomConstraint?.constant = self.sizeView.defaultHeight

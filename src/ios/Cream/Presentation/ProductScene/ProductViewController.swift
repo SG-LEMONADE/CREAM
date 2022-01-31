@@ -86,14 +86,14 @@ extension ProductViewController {
     
     @objc
     func didTapBuyButton() {
-        let sizeViewController = TradeViewController()
-        self.present(sizeViewController, animated: true)
+        let tradeViewController = TradeViewController()
+        self.present(tradeViewController, animated: true)
     }
     
     @objc
     func didTapSellButton() {
-        let sizeViewController = TradeViewController()
-        self.present(sizeViewController, animated: true)
+        let tradeViewController = TradeViewController()
+        self.present(tradeViewController, animated: true)
     }
 }
 
@@ -134,7 +134,7 @@ extension ProductViewController: UICollectionViewDataSource, UICollectionViewDel
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         switch section {
         case 0:
-            return viewModel.item.value.imageUrls.count
+            return viewModel.count
         case 2:
             return 4
         case 6:
@@ -207,8 +207,8 @@ extension ProductViewController: UICollectionViewDataSource, UICollectionViewDel
 extension ProductViewController: ItemInfoCellDelegate {
     // TODO: Button Tap 이후, 상품에 해당하는 사이즈 가져오기
     func didTapSizeButton() {
-        let nextVC = SizeListViewController(DefaultSizeListViewModel())
-        nextVC.modalPresentationStyle = .overCurrentContext
-        self.present(nextVC, animated: false)
+        let sizeListViewController = SizeListViewController(DefaultSizeListViewModel(viewModel.item.value.sizes))
+        sizeListViewController.modalPresentationStyle = .overCurrentContext
+        self.present(sizeListViewController, animated: false)
     }
 }

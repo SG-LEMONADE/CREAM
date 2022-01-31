@@ -20,12 +20,26 @@ struct SectionInfo {
 }
 
 typealias Products = [Product]
+
 // MARK: - Product
 struct Product {
-    let productInfo: ProductInfo
-    let wishList: [String]
-    let lowestAsk: Int
+    let id: Int
+    let originalName, translatedName: String
+    let originalPrice: Int
+    let gender, category, color, styleCode: String
+    let brandName, backgroundColor: String
+    let imageUrls: [String]
+    let sizes: [String]
+    let releasedDate: String
+    let totalSale: Int
+    let wishList: [String]?
+    let lowestAsk: Int?
+    let highestBid: Int?
+    let premiumPrice: Int?
+    let wishCount: Int
 }
+
+
 
 struct ProductDetail {
     let imageUrls: [String]
@@ -69,23 +83,4 @@ struct CompletedTrade {
     let price: Int
     let size: String
     let tradeDate: String
-}
-
-// MARK: - ProductClass
-struct ProductInfo {
-    let id: Int
-    let originalName, translatedName: String
-    let originalPrice: Int
-    let gender, category, color, styleCode: String
-    let wishCnt: Int
-    let brandName, backgroundColor: String
-    let imageUrls: [String]
-    let sizes: [String]
-    let releasedDate: String
-    let totalSale: Int
-    let wishList: [String?]
-    let lowestAsk: Int?
-    let highestBid: Int?
-    let premiumPrice: Int?
-    let wishCount: Int
 }
