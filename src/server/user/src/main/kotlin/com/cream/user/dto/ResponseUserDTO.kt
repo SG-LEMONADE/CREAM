@@ -1,5 +1,6 @@
 package com.cream.user.dto
 
+import com.cream.user.constant.UserStatus
 import com.cream.user.model.User
 import java.time.LocalDateTime
 
@@ -12,7 +13,7 @@ data class ResponseUserDTO(
     val age: Int?,
     val shoeSize: Int,
     val profileImageUrl: String?,
-    val status: Int,
+    val status: UserStatus,
     val passwordChangedDateTime: LocalDateTime?,
     val lastLoginDateTime: LocalDateTime?,
     val createdAt: LocalDateTime,

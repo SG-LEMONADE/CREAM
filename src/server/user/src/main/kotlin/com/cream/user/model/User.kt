@@ -1,5 +1,7 @@
 package com.cream.user.model
 
+import com.cream.user.constant.UserStatus
+import com.cream.user.converter.UserStatusConverter
 import java.time.LocalDateTime
 import javax.persistence.*
 
@@ -35,8 +37,9 @@ class User(
     @Column
     var profileImageUrl: String?,
 
+    @Convert(converter = UserStatusConverter::class)
     @Column
-    var status: Int,
+    var status: UserStatus,
 
     @Column
     var passwordChangedDatetime: LocalDateTime?,

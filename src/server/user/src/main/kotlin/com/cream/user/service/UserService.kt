@@ -1,5 +1,6 @@
 package com.cream.user.service
 
+import com.cream.user.constant.UserStatus
 import com.cream.user.dto.*
 import com.cream.user.error.ErrorCode
 import com.cream.user.error.UserCustomException
@@ -51,16 +52,16 @@ class UserService {
     ): TokenDTO {
         val user: User = getByCredentials(userDTO.email, userDTO.password, passwordEncoder)
 
-        when {
-            (user.status == 0) -> {
+        when (user.status) {
+            (UserStatus.NEED_CONFIRM_EMAIL) -> {
                 // 이메일 인증 안됐을때
                 throw UserCustomException(ErrorCode.USER_EMAIL_NOT_VERIFIED)
             }
-            (user.status == 1) -> {
+            (UserStatus.NEED_CHANGE_PASSWORD) -> {
                 // 비밀번호를 반드시 바꾸어야 할 때
                 throw UserCustomException(ErrorCode.USER_NEED_TO_CHANGE_PASSWORD)
             }
-            (user.status == 3) -> {
+            (UserStatus.DELETED_USER) -> {
                 // 삭제된 유저 일때
                 throw UserCustomException(ErrorCode.USER_NOT_FOUND)
             }
@@ -70,7 +71,8 @@ class UserService {
         val refreshToken: String = tokenProvider.create(user, isRefresh = true)
         val stringValueOperation = redisTemplate.opsForValue()
         stringValueOperation.set("refresh-${user.id}", refreshToken, 7, TimeUnit.DAYS)
-        updateUserLastLoginTime(user)
+        user.lastLoginDatetime = LocalDateTime.now()
+        userRepository.save(user)
 
         return TokenDTO(user.id, token, refreshToken)
     }
@@ -102,15 +104,7 @@ class UserService {
         return TokenDTO(userId, newAccessToken, newRefreshToken)
     }
 
-    fun updateUserState(
-        email: String,
-        stateCode: Int
-    ) {
-        val user: User = (userRepository.findOneByEmail(email) ?: throw UserCustomException(ErrorCode.ENTITY_NOT_FOUND))
-        user.status = stateCode
-        userRepository.save(user)
-    }
-
+    @Transactional
     fun verify(
         email: String,
         hash: String
@@ -120,16 +114,13 @@ class UserService {
         if (storedHash == null || storedHash != hash) {
             throw UserCustomException(ErrorCode.EMAIL_HASH_NOT_VALID)
         }
-        updateUserState(email, 2)
+
+        val user: User = (userRepository.findOneByEmail(email) ?: throw UserCustomException(ErrorCode.ENTITY_NOT_FOUND))
+        user.status = UserStatus.EMAIL_CONFIRMED
+
         redisTemplate.delete(email)
     }
 
-    @Transactional
-    fun updateUserLastLoginTime(
-        userEntity: User
-    ) {
-        userEntity.lastLoginDatetime = LocalDateTime.now()
-    }
 
     fun update(
         userId: Long,
