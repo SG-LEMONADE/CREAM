@@ -15,7 +15,7 @@ const CheckBox: FunctionComponent<CheckBoxProps> = (props) => {
 
 	useEffect(() => {
 		setChecked(defaultChecked);
-	}, [checked]);
+	});
 
 	return (
 		<Wrapper onClick={onClick} checked={checked} data-content={children}>

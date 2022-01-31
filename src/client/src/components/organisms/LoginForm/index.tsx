@@ -35,10 +35,13 @@ const LoginForm: FunctionComponent = () => {
 	const onHandleLogin = async (e: React.MouseEvent<HTMLButtonElement>) => {
 		e.preventDefault();
 		try {
-			const res = await axios.post(`${process.env.END_POINT}/users/login`, {
-				email: email,
-				password: password,
-			});
+			const res = await axios.post(
+				`${process.env.END_POINT_USER}/users/login`,
+				{
+					email: email,
+					password: password,
+				},
+			);
 			const data = await res.data;
 			setToken("accessToken", data.accessToken);
 			setToken("refreshToken", data.refreshToken);

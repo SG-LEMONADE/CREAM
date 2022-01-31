@@ -15,6 +15,16 @@ const Template: ComponentStory<typeof QuickFilterBar> = (args) => (
 
 export const Default = Template.bind({});
 Default.args = {
+	luxaryActivateState: false,
+	filteredCategory: "",
+	onApplyFilter: (luxury: boolean, category: string) =>
+		console.log(`럭셔리 필터는 ${luxury}로 하고, 상품 필터는 ${category}다.`),
+};
+
+export const Activated = Template.bind({});
+Activated.args = {
+	luxaryActivateState: true,
+	filteredCategory: "패션잡화",
 	onApplyFilter: (luxury: boolean, category: string) =>
 		console.log(`럭셔리 필터는 ${luxury}로 하고, 상품 필터는 ${category}다.`),
 };
