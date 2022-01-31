@@ -62,7 +62,7 @@ class ProductRepositoryImpl :
                 eqCategory(filter.category),
                 inBrandId(filter.brandId),
                 inCollectionId(filter.collectionId),
-                likeKeyword(filter.keyWord),
+                likeKeyword(filter.keyword),
                 eqGender(filter.gender),
             )
             .groupBy(productEntity.id)
@@ -100,7 +100,7 @@ class ProductRepositoryImpl :
                 eqCategory(filter.category),
                 inBrandId(filter.brandId),
                 inCollectionId(filter.collectionId),
-                likeKeyword(filter.keyWord),
+                likeKeyword(filter.keyword),
                 eqGender(filter.gender),
             )
             .groupBy(productEntity.id)

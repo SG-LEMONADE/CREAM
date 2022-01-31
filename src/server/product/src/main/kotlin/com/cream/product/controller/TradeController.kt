@@ -56,8 +56,9 @@ class TradeController {
 
     @DeleteMapping("/{tradeId}")
     fun deleteTrade(
-        @PathVariable tradeId: Long
+        @PathVariable tradeId: Long,
+        @RequestHeader("userId", required = true) userId: Long
     ): ResponseEntity<Unit> {
-        return ResponseEntity.ok(tradeService.delete(tradeId))
+        return ResponseEntity.ok(tradeService.delete(tradeId, userId))
     }
 }

@@ -6,8 +6,11 @@ import com.cream.product.constant.TradeStatus
 import com.cream.product.dto.filterDTO.PageDTO
 import com.cream.product.dto.tradeDTO.TradeHistoryDTO
 import com.cream.product.dto.tradeDTO.TradeRegisterDTO
+import com.cream.product.error.BaseException
+import com.cream.product.error.ErrorCode
 import com.cream.product.persistence.ProductRepository
 import com.cream.product.persistence.TradeRepository
+import com.fasterxml.jackson.databind.ObjectMapper
 import feign.FeignException
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -34,7 +37,10 @@ class TradeService {
         productId: Long,
         size: String
     ) {
-        val product = productRepository.getById(productId)
+        val product = productRepository.findById(productId).orElseThrow()
+        if (!ObjectMapper().readValue(product.sizes, ArrayList::class.java).contains(size)) {
+            throw BaseException(ErrorCode.INVALID_SIZE_FOR_PRODUCT)
+        }
         tradeRepository.save(tradeRegisterDTO.toEntity(userId, product, size))
     }
 
@@ -49,9 +55,12 @@ class TradeService {
 
     @Transactional
     fun delete(
-        tradeId: Long
+        tradeId: Long,
+        userId: Long
     ) {
-        val trade = tradeRepository.getById(tradeId)
+        val trade = tradeRepository.findById(tradeId).orElseThrow()
+
+        if (trade.userId != userId) throw BaseException(ErrorCode.USER_DOES_NOT_MATCH_TRADE_UPDATE)
 
         trade.tradeStatus = TradeStatus.CANCELED
         trade.updatedAt = LocalDateTime.now()
@@ -65,7 +74,9 @@ class TradeService {
         userId: Long
     ) {
         val trade = tradeRepository.findFirstTrade(productId, size, requestType)
-        val product = productRepository.findById(productId)
+        val product = productRepository.findById(productId).orElseThrow()
+
+        if (trade.userId == userId) throw BaseException(ErrorCode.CANNOT_TRADE_MYSELF)
 
         try {
             logServiceClient.insertPrice(productId, trade.price)
@@ -76,6 +87,7 @@ class TradeService {
         trade.tradeStatus = TradeStatus.COMPLETED
         trade.counterpartUserId = userId
         trade.updatedAt = LocalDateTime.now()
-        product.orElseThrow().totalSale += 1
+
+        product.totalSale += 1
     }
 }

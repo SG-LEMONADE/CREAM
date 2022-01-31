@@ -6,8 +6,11 @@ import com.cream.product.dto.filterDTO.PageDTO
 import com.cream.product.dto.productDTO.ProductDTO
 import com.cream.product.dto.productDTO.ProductDetailDTO
 import com.cream.product.dto.productDTO.ProductPriceWishDTO
+import com.cream.product.error.BaseException
+import com.cream.product.error.ErrorCode
 import com.cream.product.persistence.ProductRepository
 import com.cream.product.persistence.TradeRepository
+import com.fasterxml.jackson.databind.ObjectMapper
 import org.json.JSONArray
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -22,7 +25,11 @@ class ProductService {
     @Autowired
     lateinit var productRepository: ProductRepository
 
-    fun findProductsByPageWithWish(page: PageDTO, userId: Long?, filter: FilterRequestDTO): List<ProductDTO> {
+    fun findProductsByPageWithWish(
+        page: PageDTO,
+        userId: Long?,
+        filter: FilterRequestDTO
+    ): List<ProductDTO> {
         if (userId == null) {
             return productRepository.getProducts(page.offset(), page.limit(), page.sort, filter).stream()
                 .map {
@@ -35,12 +42,20 @@ class ProductService {
             }.toList()
     }
 
-    fun findProductById(id: Long, userId: Long?, size: String?): ProductDetailDTO {
+    fun findProductById(
+        id: Long,
+        userId: Long?,
+        size: String?
+    ): ProductDetailDTO {
 
         val product: ProductPriceWishDTO = if (userId == null) {
             productRepository.getProduct(id, size)
         } else {
             productRepository.getProductWithWish(userId, id, size)
+        }
+
+        if (!ObjectMapper().readValue(product.product.sizes, ArrayList::class.java).contains(size)) {
+            throw BaseException(ErrorCode.INVALID_SIZE_FOR_PRODUCT)
         }
 
         val askPricesBySize = productRepository.getProductPricesBySize(id, RequestType.ASK)
@@ -99,7 +114,10 @@ class ProductService {
         )
     }
 
-    fun findProductByWish(page: PageDTO, userId: Long): List<ProductDTO> {
+    fun findProductByWish(
+        page: PageDTO,
+        userId: Long
+    ): List<ProductDTO> {
         return productRepository.getProductsByWish(userId, page.offset(), page.limit()).stream()
             .map {
                 ProductDTO(it)

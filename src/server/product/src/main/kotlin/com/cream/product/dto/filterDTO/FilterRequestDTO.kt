@@ -7,5 +7,5 @@ data class FilterRequestDTO(
     val gender: String?,
     val priceFrom: Int?,
     val priceTo: Int?,
-    val keyWord: String?
+    val keyword: String?
 )

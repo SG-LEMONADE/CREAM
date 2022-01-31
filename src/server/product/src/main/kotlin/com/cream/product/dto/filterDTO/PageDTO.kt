@@ -1,11 +1,8 @@
 package com.cream.product.dto.filterDTO
 
-import com.fasterxml.jackson.annotation.JsonProperty
-
 data class PageDTO(
     val cursor: Long,
 
-    @JsonProperty("per_page")
     val perPage: Long,
 
     val sort: String? = null

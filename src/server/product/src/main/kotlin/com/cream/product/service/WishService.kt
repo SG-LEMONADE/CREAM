@@ -1,7 +1,10 @@
 package com.cream.product.service
 
+import com.cream.product.error.BaseException
+import com.cream.product.error.ErrorCode
 import com.cream.product.persistence.ProductRepository
 import com.cream.product.persistence.WishRepository
+import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import javax.transaction.Transactional
@@ -15,9 +18,18 @@ class WishService {
     lateinit var wishRepository: WishRepository
 
     @Transactional
-    fun toggleWish(userId: Long, productId: Long, size: String) {
+    fun toggleWish(
+        userId: Long,
+        productId: Long,
+        size: String
+    ) {
         val wish = wishRepository.existsWish(userId, productId, size)
+
         val product = productRepository.findById(productId).orElseThrow()
+        if (!ObjectMapper().readValue(product.sizes, ArrayList::class.java).contains(size)) {
+            throw BaseException(ErrorCode.INVALID_SIZE_FOR_PRODUCT)
+        }
+
         if (wish != null) {
             wishRepository.delete(wish)
             product.wishCnt -= 1
