@@ -39,7 +39,7 @@ final class DefaultListViewModel: ProductListViewModel {
     }
     
     func viewDidLoad() {
-        usecase.fetch(page: page) { result in
+        let _ = usecase.fetch(page: page) { result in
             switch result {
             case .success(let products):
                 self.products.value.append(contentsOf: products)

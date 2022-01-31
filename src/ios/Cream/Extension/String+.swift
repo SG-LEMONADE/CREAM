@@ -9,6 +9,7 @@ import Foundation
 
 extension String {
     var hexToInt: Int? {
-        return Int(self, radix: 16)
+        let hexString = self.replacingOccurrences(of: "#", with: "")
+        return Int(hexString, radix: 16)
     }
 }

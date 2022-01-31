@@ -48,6 +48,7 @@
 		7B5EEE3B27A7713100990E37 /* ProductListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B5EEE3A27A7713100990E37 /* ProductListView.swift */; };
 		7B5EEE3D27A773AE00990E37 /* ProductListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B5EEE3C27A773AE00990E37 /* ProductListViewModel.swift */; };
 		7B5EEE3F27A80E8B00990E37 /* String+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B5EEE3E27A80E8B00990E37 /* String+.swift */; };
+		7B5EEE4927A83A6900990E37 /* ProductView+CompositionalLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B5EEE4827A83A6900990E37 /* ProductView+CompositionalLayout.swift */; };
 		7B8EAA78279FBBB600B07259 /* ProductRepositoryInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B8EAA77279FBBB600B07259 /* ProductRepositoryInterface.swift */; };
 		7B8EAA7D279FC2CD00B07259 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B8EAA7C279FC2CD00B07259 /* BaseViewController.swift */; };
 		7B8EAA7F279FC38300B07259 /* BaseDIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B8EAA7E279FC38300B07259 /* BaseDIViewController.swift */; };
@@ -134,6 +135,7 @@
 		7B5EEE3A27A7713100990E37 /* ProductListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListView.swift; sourceTree = "<group>"; };
 		7B5EEE3C27A773AE00990E37 /* ProductListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListViewModel.swift; sourceTree = "<group>"; };
 		7B5EEE3E27A80E8B00990E37 /* String+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+.swift"; sourceTree = "<group>"; };
+		7B5EEE4827A83A6900990E37 /* ProductView+CompositionalLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProductView+CompositionalLayout.swift"; sourceTree = "<group>"; };
 		7B8EAA77279FBBB600B07259 /* ProductRepositoryInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductRepositoryInterface.swift; sourceTree = "<group>"; };
 		7B8EAA7C279FC2CD00B07259 /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		7B8EAA7E279FC38300B07259 /* BaseDIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseDIViewController.swift; sourceTree = "<group>"; };
@@ -224,7 +226,7 @@
 				7B5EEE2827A5AD7A00990E37 /* ProductViewController.swift */,
 				7B5EEE2A27A5AD8500990E37 /* ProductViewModel.swift */,
 				7B5EEE2C27A5B08B00990E37 /* ProductView.swift */,
-				7B193CB4279D115500B934A3 /* TradeViewController.swift */,
+				7B5EEE4827A83A6900990E37 /* ProductView+CompositionalLayout.swift */,
 				7B193CA82799447900B934A3 /* ProductViewModelItem.swift */,
 			);
 			path = ProductScene;
@@ -235,8 +237,8 @@
 			children = (
 				7B954B56279ECDA700B80BE8 /* Views */,
 				7B5EEE3827A770AA00990E37 /* ProductListViewController.swift */,
-				7B5EEE3A27A7713100990E37 /* ProductListView.swift */,
 				7B5EEE3C27A773AE00990E37 /* ProductListViewModel.swift */,
+				7B5EEE3A27A7713100990E37 /* ProductListView.swift */,
 			);
 			path = ProductListScene;
 			sourceTree = "<group>";
@@ -313,6 +315,14 @@
 				7B54D7032790351400214664 /* SizeListCell.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		7B5EEE4327A832B600990E37 /* TradeScene */ = {
+			isa = PBXGroup;
+			children = (
+				7B193CB4279D115500B934A3 /* TradeViewController.swift */,
+			);
+			path = TradeScene;
 			sourceTree = "<group>";
 		};
 		7B8EAA7B279FBC6100B07259 /* Views */ = {
@@ -678,6 +688,7 @@
 				7B193C972797E49700B934A3 /* FilterImageCell.swift in Sources */,
 				7B193CA12798EE7E00B934A3 /* ItemInfoCell.swift in Sources */,
 				7B8EAA9E27A2411700B07259 /* Endpoint.swift in Sources */,
+				7B5EEE4927A83A6900990E37 /* ProductView+CompositionalLayout.swift in Sources */,
 				7BF82E0E27A3CCB9007E0A79 /* Cancellable.swift in Sources */,
 				7B5EEE3327A6B01900990E37 /* ProductUseCase.swift in Sources */,
 				7B8EAA9027A191A300B07259 /* LoginViewModel.swift in Sources */,

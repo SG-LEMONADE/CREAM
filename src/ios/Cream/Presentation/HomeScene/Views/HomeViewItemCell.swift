@@ -13,6 +13,13 @@ class HomeViewItemCell: UICollectionViewCell {
     
     var sessionTask: URLSessionDataTask?
     
+    lazy var tradeLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 11)
+        label.textColor = .systemGray3
+        return label
+    }()
+    
     lazy var productImageView: UIImageView = {
         let imageView = UIImageView(frame: .zero)
         imageView.contentMode = .scaleToFill
@@ -53,13 +60,12 @@ class HomeViewItemCell: UICollectionViewCell {
     
     private lazy var wishButton: UIButton = {
         let button = UIButton()
-        
+        button.tintColor = .systemGray4
         button.setImage(UIImage(systemName: "bookmark"), for: .normal)
         button.setImage(UIImage(systemName: "bookmark.fill"), for: .selected)
-        button.setTitle("1,234", for: .normal)
+        button.setTitleColor(.systemGray4, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 10, weight: .black)
-        button.titleLabel?.textColor = .systemGray4
-        
+        button.contentHorizontalAlignment = .leading
         return button
     }()
     
@@ -71,6 +77,8 @@ class HomeViewItemCell: UICollectionViewCell {
         button.setTitle("4,321", for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 10, weight: .black)
         button.titleLabel?.textColor = .systemGray4
+        button.contentHorizontalAlignment = .leading
+        
         button.isHidden = true
         return button
     }()
@@ -127,17 +135,29 @@ class HomeViewItemCell: UICollectionViewCell {
     override func prepareForReuse() {
         sessionTask?.cancel()
         
+        productImageView.image = nil
+        self.titleLabel.text = nil
+        self.tradeLabel.text = nil
+        self.detailLabel.text = nil
+        self.wishButton.setTitle(nil, for: .normal)
+        self.priceLabel.text = nil
+        self.priceExpressionLabel.text = nil
     }
 }
 
 extension HomeViewItemCell: ViewConfiguration {
     func buildHierarchy() {
+        productImageView.addSubviews(tradeLabel)
         self.addSubviews(productImageView,
                          containerStackView,
                          wishButton)
     }
     
     func setupConstraints() {
+        tradeLabel.snp.makeConstraints {
+            $0.top.trailing.equalToSuperview().inset(10)
+        }
+        
         productImageView.snp.makeConstraints {
             $0.top.bottom.equalTo(self.snp.top)
             $0.width.height.equalTo(self.snp.width)
@@ -158,15 +178,14 @@ extension HomeViewItemCell: ViewConfiguration {
     }
 }
 
+// MARK: Cell Configure
 extension HomeViewItemCell {
     func configure(_ viewModel: Product) {
+        self.tradeLabel.text = viewModel.totalSaleText
         self.titleLabel.text = viewModel.brandName
         self.detailLabel.text = viewModel.originalName
-        if let price = viewModel.premiumPrice {
-            self.priceLabel.text = "\(price.priceFormat)원"
-        } else {
-            self.priceLabel.text = "-"
-        }
+        self.wishButton.setTitle(viewModel.wishText, for: .normal)
+        self.priceLabel.text = viewModel.price
         self.priceExpressionLabel.text = "즉시 구매가"
         self.productImageView.backgroundColor = .init(rgb: viewModel.backgroundColor.hexToInt ?? 0)
         guard let urlString = viewModel.imageUrls.first,

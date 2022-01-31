@@ -50,7 +50,7 @@ final class DefaultProductViewModel: ProductViewModel {
     }
     
     func viewDidLoad() {
-        usecase.fetchItemById(id) { result in
+        let _ = usecase.fetchItemById(id) { result in
             switch result {
             case .success(let product):
                 self.item.value = product

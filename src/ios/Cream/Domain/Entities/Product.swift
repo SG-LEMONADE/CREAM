@@ -39,7 +39,33 @@ struct Product {
     let wishCount: Int
 }
 
-
+extension Product {
+    var totalSaleText: String {
+        if totalSale < 10_000 {
+            return "거래 \(totalSale.priceFormat)"
+        } else {
+            let value = Double(totalSale) / 10_000
+            return "거래 \(round(value * 10)/10)만"
+        }
+    }
+    
+    var wishText: String {
+        if wishCount < 10_000 {
+            return wishCount.priceFormat
+        } else {
+            let value = Double(wishCount) / 10_000
+            return "\(round(value * 10)/10)만"
+        }
+    }
+    
+    var price: String {
+        if let lowestAsk = lowestAsk {
+            return "\(lowestAsk.priceFormat)원"
+        } else {
+            return "-"
+        }
+    }
+}
 
 struct ProductDetail {
     let imageUrls: [String]

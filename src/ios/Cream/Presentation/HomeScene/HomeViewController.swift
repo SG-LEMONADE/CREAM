@@ -212,10 +212,10 @@ extension HomeViewController: ViewConfiguration {
             $0.edges.equalToSuperview()
         }
     }
+    
     func viewConfigure() {
         configureCollectionView()
         configureNavigation()
-        
     }
 }
 

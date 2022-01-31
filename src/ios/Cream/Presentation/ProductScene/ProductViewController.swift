@@ -11,7 +11,6 @@ protocol FooterScrollDelegate: AnyObject {
     func didScrollTo(_ page: Int)
 }
 
-// MARK: CollectionViewLayout
 class ProductViewController: BaseDIViewController<ProductViewModel> {
     // MARK: Properties
     weak var delegate: FooterScrollDelegate?
@@ -37,7 +36,7 @@ class ProductViewController: BaseDIViewController<ProductViewModel> {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureDelegate()
-        configure()
+        configureUserEvent()
         bindViewModel()
         viewModel.viewDidLoad()
     }
@@ -48,17 +47,14 @@ class ProductViewController: BaseDIViewController<ProductViewModel> {
         productView.delegate = self
     }
     
-    func configure() {
-        configureUserEvent()
-        productView.tradeContainerView.wishButton.configure(1000)
-    }
-    
     func bindViewModel() {
         viewModel.item.bind { [weak self] product in
             self?.productView.ItemInfoListView.reloadData()
             // TODO: button Info Setting
             self?.productView.tradeContainerView.sellButton.setPrice(product.highestBid)
             self?.productView.tradeContainerView.buyButton.setPrice(product.lowestAsk)
+            self?.productView.tradeContainerView.wishButton.configure(product.wishCount)
+            
         }
     }
 }
@@ -86,14 +82,12 @@ extension ProductViewController {
     
     @objc
     func didTapBuyButton() {
-        let tradeViewController = TradeViewController()
-        self.present(tradeViewController, animated: true)
+        print(#function)
     }
     
     @objc
     func didTapSellButton() {
-        let tradeViewController = TradeViewController()
-        self.present(tradeViewController, animated: true)
+        print(#function)
     }
 }
 
