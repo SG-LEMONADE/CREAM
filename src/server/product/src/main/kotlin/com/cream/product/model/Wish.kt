@@ -10,13 +10,13 @@ class Wish(
     @Column
     var id: Long? = null,
 
-    @ManyToOne(cascade = [CascadeType.DETACH], fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id")
-    var product: Product,
-
     @Column
     var userId: Long,
 
     @Column
-    var size: String
+    var size: String,
+
+    @ManyToOne(cascade = [CascadeType.DETACH], fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id")
+    var product: Product
 )

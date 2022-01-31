@@ -24,12 +24,10 @@ interface ProductRepositoryCustom {
     fun getProducts(offset: Long, limit: Long, sort: String?, filter: FilterRequestDTO): List<ProductPriceWishDTO>
     fun getProductsWithWish(userId: Long, offset: Long, limit: Long, sort: String?, filter: FilterRequestDTO): List<ProductPriceWishDTO>
 
-    fun getProduct(productId: Long): ProductPriceWishDTO
-    fun getProductWithWish(userId: Long, productId: Long): ProductPriceWishDTO
+    fun getProduct(productId: Long, size: String?): ProductPriceWishDTO
+    fun getProductWithWish(userId: Long, productId: Long, size: String?): ProductPriceWishDTO
 
     fun getProductPricesBySize(productId: Long, requestType: RequestType): List<ProductPriceBySizeDTO>?
-    fun getProductSizePriceByRequestType(productId: Long, size: String?, requestType: RequestType): ProductPriceByRequestTypeDTO?
-
     fun getProductsByWish(userId: Long, offset: Long, limit: Long): List<ProductPriceWishDTO>
 }
 
@@ -45,40 +43,6 @@ class ProductRepositoryImpl :
     private val wishEntity: QWish = QWish.wish
     private val tradeEntity: QTrade = QTrade.trade
 
-    val lowestAsk: NumberPath<Int> = Expressions.numberPath(Int::class.java, "lowestAsk")
-    val premiumPrice: NumberPath<Int> = Expressions.numberPath(Int::class.java, "premiumPrice")
-    val highestBid: NumberPath<Int> = Expressions.numberPath(Int::class.java, "highestBid")
-
-    private val lowestAskQuery: JPQLQuery<Int> = JPAExpressions
-        .select(tradeEntity.price.min())
-        .from(tradeEntity)
-        .where(
-            tradeEntity.requestType.eq(RequestType.ASK),
-            tradeEntity.tradeStatus.eq(TradeStatus.WAITING),
-            tradeEntity.product.id.eq(productEntity.id),
-            tradeEntity.validationDateTime.gt(LocalDateTime.now())
-        )
-
-    private val premiumPriceQuery: JPQLQuery<Int> = JPAExpressions
-        .select(tradeEntity.price.min().subtract(productEntity.originalPrice))
-        .from(tradeEntity)
-        .where(
-            tradeEntity.requestType.eq(RequestType.ASK),
-            tradeEntity.tradeStatus.eq(TradeStatus.WAITING),
-            tradeEntity.product.id.eq(productEntity.id),
-            tradeEntity.validationDateTime.gt(LocalDateTime.now()),
-        )
-
-    private val highestBidQuery: JPQLQuery<Int> = JPAExpressions
-        .select(tradeEntity.price.max())
-        .from(tradeEntity)
-        .where(
-            tradeEntity.requestType.eq(RequestType.BID),
-            tradeEntity.tradeStatus.eq(TradeStatus.WAITING),
-            tradeEntity.product.id.eq(productEntity.id),
-            tradeEntity.validationDateTime.gt(LocalDateTime.now())
-        )
-
     override fun getProducts(
         offset: Long,
         limit: Long,
@@ -89,9 +53,9 @@ class ProductRepositoryImpl :
             QProductPriceWishDTO(
                 productEntity,
                 Expressions.asString(""),
-                Expressions.`as`(lowestAskQuery, "lowestAsk"),
-                Expressions.`as`(highestBidQuery, "highestBid"),
-                Expressions.`as`(premiumPriceQuery, "premiumPrice")
+                Expressions.`as`(lowestAskQuery(null), "lowestAsk"),
+                Expressions.`as`(highestBidQuery(null), "highestBid"),
+                Expressions.`as`(premiumPriceQuery(null), "premiumPrice")
             )
         ).from(productEntity)
             .where(
@@ -123,9 +87,9 @@ class ProductRepositoryImpl :
             QProductPriceWishDTO(
                 productEntity,
                 Expressions.stringTemplate("group_concat({0})", wishEntity.size),
-                Expressions.`as`(lowestAskQuery, "lowestAsk"),
-                Expressions.`as`(highestBidQuery, "highestBid"),
-                Expressions.`as`(premiumPriceQuery, "premiumPrice")
+                Expressions.`as`(lowestAskQuery(null), "lowestAsk"),
+                Expressions.`as`(highestBidQuery(null), "highestBid"),
+                Expressions.`as`(premiumPriceQuery(null), "premiumPrice")
             )
         ).from(productEntity)
             .leftJoin(wishEntity).on(
@@ -151,15 +115,16 @@ class ProductRepositoryImpl :
     }
 
     override fun getProduct(
-        productId: Long
+        productId: Long,
+        size: String?
     ): ProductPriceWishDTO {
         return jpaQueryFactory.select(
             QProductPriceWishDTO(
                 productEntity,
                 Expressions.asString(""),
-                lowestAskQuery,
-                highestBidQuery,
-                premiumPriceQuery
+                lowestAskQuery(size),
+                highestBidQuery(size),
+                premiumPriceQuery(size)
             )
         ).from(productEntity)
             .where(productEntity.id.eq(productId))
@@ -168,15 +133,16 @@ class ProductRepositoryImpl :
 
     override fun getProductWithWish(
         userId: Long,
-        productId: Long
+        productId: Long,
+        size: String?
     ): ProductPriceWishDTO {
         return jpaQueryFactory.select(
             QProductPriceWishDTO(
                 productEntity,
                 Expressions.stringTemplate("group_concat({0})", wishEntity.size),
-                lowestAskQuery,
-                highestBidQuery,
-                premiumPriceQuery
+                lowestAskQuery(size),
+                highestBidQuery(size),
+                premiumPriceQuery(size)
             )
         ).from(productEntity)
             .leftJoin(wishEntity).on(
@@ -210,29 +176,6 @@ class ProductRepositoryImpl :
             .fetch()
     }
 
-    override fun getProductSizePriceByRequestType(
-        productId: Long,
-        size: String?,
-        requestType: RequestType
-    ): ProductPriceByRequestTypeDTO? {
-        return jpaQueryFactory.select(
-            Projections.constructor(
-                ProductPriceByRequestTypeDTO::class.java,
-                tradeEntity.requestType,
-                lowestAskOrHighestBid(requestType)
-            )
-        )
-            .from(tradeEntity)
-            .where(
-                tradeEntity.product.id.eq(productId),
-                tradeEntity.requestType.eq(requestType),
-                tradeEntity.tradeStatus.eq(TradeStatus.WAITING),
-                tradeEntity.validationDateTime.gt(LocalDateTime.now()),
-                eqSize(size)
-            )
-            .fetchFirst()
-    }
-
     override fun getProductsByWish(
         userId: Long,
         offset: Long,
@@ -243,7 +186,7 @@ class ProductRepositoryImpl :
                 ProductPriceWishDTO::class.java,
                 productEntity,
                 wishEntity.size,
-                lowestAskQuery,
+                lowestAskQuery(null),
             )
         ).from(productEntity)
             .join(wishEntity)
@@ -252,6 +195,55 @@ class ProductRepositoryImpl :
             .offset(offset)
             .limit(limit)
             .fetch()
+    }
+
+    val lowestAsk: NumberPath<Int> = Expressions.numberPath(Int::class.java, "lowestAsk")
+    val premiumPrice: NumberPath<Int> = Expressions.numberPath(Int::class.java, "premiumPrice")
+    val highestBid: NumberPath<Int> = Expressions.numberPath(Int::class.java, "highestBid")
+
+    private fun lowestAskQuery(
+        size: String?
+    ): JPQLQuery<Int> {
+        return JPAExpressions
+            .select(tradeEntity.price.min())
+            .from(tradeEntity)
+            .where(
+                tradeEntity.requestType.eq(RequestType.ASK),
+                tradeEntity.tradeStatus.eq(TradeStatus.WAITING),
+                tradeEntity.product.id.eq(productEntity.id),
+                tradeEntity.validationDateTime.gt(LocalDateTime.now()),
+                eqSize(size)
+            )
+    }
+
+    private fun premiumPriceQuery(
+        size: String?
+    ): JPQLQuery<Int> {
+        return JPAExpressions
+            .select(tradeEntity.price.min().subtract(productEntity.originalPrice))
+            .from(tradeEntity)
+            .where(
+                tradeEntity.requestType.eq(RequestType.ASK),
+                tradeEntity.tradeStatus.eq(TradeStatus.WAITING),
+                tradeEntity.product.id.eq(productEntity.id),
+                tradeEntity.validationDateTime.gt(LocalDateTime.now()),
+                eqSize(size)
+            )
+    }
+
+    private fun highestBidQuery(
+        size: String?
+    ): JPQLQuery<Int> {
+        return JPAExpressions
+            .select(tradeEntity.price.max())
+            .from(tradeEntity)
+            .where(
+                tradeEntity.requestType.eq(RequestType.BID),
+                tradeEntity.tradeStatus.eq(TradeStatus.WAITING),
+                tradeEntity.product.id.eq(productEntity.id),
+                tradeEntity.validationDateTime.gt(LocalDateTime.now()),
+                eqSize(size)
+            )
     }
 
     private fun lowestAskOrHighestBid(requestType: RequestType): NumberExpression<Int>? {

@@ -10,10 +10,10 @@ class Collection(
     @Column
     var id: Long? = null,
 
-    @ManyToOne(cascade = [CascadeType.DETACH], fetch = FetchType.LAZY)
-    @JoinColumn(name = "brand_id")
-    var brand: Brand,
-
     @Column
     var name: String,
+
+    @ManyToOne(cascade = [CascadeType.DETACH], fetch = FetchType.LAZY)
+    @JoinColumn(name = "brand_id")
+    var brand: Brand
 )

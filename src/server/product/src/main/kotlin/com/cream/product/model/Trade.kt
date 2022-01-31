@@ -14,10 +14,6 @@ class Trade(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null,
 
-    @ManyToOne(cascade = [CascadeType.DETACH], fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id")
-    var product: Product,
-
     @Column
     var userId: Long,
 
@@ -45,5 +41,9 @@ class Trade(
 
     @Convert(converter = RequestTypeConverter::class)
     @Column
-    var requestType: RequestType // 0-bid(판매 요청), 1-ask(구매 요청)
+    var requestType: RequestType, // 0-bid(판매 요청), 1-ask(구매 요청)
+
+    @ManyToOne(cascade = [CascadeType.DETACH], fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id")
+    var product: Product
 )
