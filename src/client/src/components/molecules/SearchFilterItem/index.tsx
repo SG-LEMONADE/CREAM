@@ -15,8 +15,8 @@ type SearchFilterItemProps = {
 	onlyOneChecked?: boolean;
 	title: string;
 	optionsList: string[];
-	state?: string | string[];
-	cb: React.Dispatch<React.SetStateAction<string | string[]>>;
+	state: string | string[];
+	cb?: React.Dispatch<React.SetStateAction<string | string[]>>;
 };
 
 const SearchFilterItem: FunctionComponent<SearchFilterItemProps> = (props) => {

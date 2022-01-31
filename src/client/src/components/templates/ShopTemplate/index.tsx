@@ -48,6 +48,7 @@ const ShopTemplate: FunctionComponent<ShopTemplateProps> = (props) => {
 	const [filteredBrand, setFilteredBrand] = useState<string[]>([]);
 	const [filteredCollections, setFilteredCollections] = useState<string[]>([]);
 	const [filteredGender, setFilteredGender] = useState<string>("");
+	const [filteredPrice, setFilteredPrice] = useState<string[]>([]);
 
 	const onHandleQuickFilter = useCallback(
 		(luxary: boolean, category: string) => {
@@ -63,7 +64,14 @@ const ShopTemplate: FunctionComponent<ShopTemplateProps> = (props) => {
 		console.log(filteredCategory);
 		console.log(filteredBrand);
 		console.log(filteredGender);
-	}, [luxaryFilter, filteredCategory, filteredBrand, filteredGender]);
+		console.log(filteredPrice);
+	}, [
+		luxaryFilter,
+		filteredCategory,
+		filteredBrand,
+		filteredGender,
+		filteredPrice,
+	]);
 
 	return (
 		<ShopTemplateWrapper>
@@ -97,6 +105,8 @@ const ShopTemplate: FunctionComponent<ShopTemplateProps> = (props) => {
 						setFilteredCollections={setFilteredCollections}
 						filteredGender={filteredGender}
 						setFilteredGender={setFilteredGender}
+						filteredPrice={filteredPrice}
+						setFilteredPrice={setFilteredPrice}
 					/>
 				</SearchFilterWrapper>
 				<SearchContentWrapper>
@@ -141,6 +151,18 @@ const ShopTemplate: FunctionComponent<ShopTemplateProps> = (props) => {
 									{filteredGender}
 								</TagItem>
 							)}
+							{filteredPrice.length > 0 &&
+								filteredPrice.map((option) => (
+									<TagItem
+										onClick={() =>
+											setFilteredPrice(
+												filteredPrice.filter((price) => price !== option),
+											)
+										}
+									>
+										{option}
+									</TagItem>
+								))}
 						</FilteredTags>
 						<SortWrapper>
 							<SortContent>인기순</SortContent>

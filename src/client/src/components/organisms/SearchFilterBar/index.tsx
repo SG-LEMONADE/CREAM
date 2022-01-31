@@ -23,6 +23,8 @@ type SearchFilterBarProps = {
 	setFilteredCollections: React.Dispatch<React.SetStateAction<string[]>>;
 	filteredGender: string;
 	setFilteredGender: React.Dispatch<React.SetStateAction<string>>;
+	filteredPrice: string[];
+	setFilteredPrice: React.Dispatch<React.SetStateAction<string[]>>;
 };
 
 const SearchFilterBar: FunctionComponent<SearchFilterBarProps> = (props) => {
@@ -37,6 +39,8 @@ const SearchFilterBar: FunctionComponent<SearchFilterBarProps> = (props) => {
 		setFilteredCollections,
 		filteredGender,
 		setFilteredGender,
+		filteredPrice,
+		setFilteredPrice,
 	} = props;
 
 	const [brandData, setBrandData] = useState<string[]>([]);
@@ -103,13 +107,23 @@ const SearchFilterBar: FunctionComponent<SearchFilterBarProps> = (props) => {
 				state={filteredCollections}
 				cb={setFilteredCollections}
 			/>
-
 			<SearchFilterItem
 				title="성별"
 				optionsList={["남성", "여성", "공용"]}
 				state={filteredGender}
 				cb={setFilteredGender}
 				onlyOneChecked
+			/>
+			<SearchFilterItem
+				title="가격"
+				optionsList={[
+					"10만원 이하",
+					"10만원 ~ 30만원이하",
+					"30만원 ~ 50만원 이하",
+					"50만원 이상",
+				]}
+				state={filteredPrice}
+				cb={setFilteredPrice}
 			/>
 		</SearchFilterBarWrapper>
 	);
