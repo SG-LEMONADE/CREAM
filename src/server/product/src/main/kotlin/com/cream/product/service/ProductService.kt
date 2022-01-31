@@ -54,7 +54,7 @@ class ProductService {
             productRepository.getProductWithWish(userId, id, size)
         }
 
-        if (!ObjectMapper().readValue(product.product.sizes, ArrayList::class.java).contains(size)) {
+        if (size != null && !ObjectMapper().readValue(product.product.sizes, ArrayList::class.java).contains(size)) {
             throw BaseException(ErrorCode.INVALID_SIZE_FOR_PRODUCT)
         }
 
