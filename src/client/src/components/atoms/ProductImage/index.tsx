@@ -21,7 +21,13 @@ const ProductImage: FunctionComponent<ProductImageProps> = (props) => {
 	const { backgroundColor, category, src } = props;
 	return (
 		<ImageWrapper category={category} backgroundColor={backgroundColor}>
-			<StyledImage category={category} src={src} alt={src} />
+			<StyledImage
+				width="100"
+				height="100"
+				category={category}
+				src={src}
+				alt={src}
+			/>
 		</ImageWrapper>
 	);
 };

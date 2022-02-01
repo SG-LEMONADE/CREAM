@@ -1,19 +1,23 @@
 export interface ProductInfoRes {
-	id: string;
-	name: string;
+	id: number;
+	originalSname: string;
 	translatedName: string;
 	originalPrice: number;
-	color: string;
-	releasedDate: string;
 	gender: string;
 	category: string;
-	styleCode: number;
+	color: string;
+	styleCode: string;
 	wishCnt: number;
-	collectionId: string;
-	brandId: string;
-	backgroundColor: string;
 	brandName: string;
-	imageUrls: string;
+	backgroundColor: string;
+	imageUrls: string[];
+	sizes: string[];
+	releasedDate: string;
+	totalSale: number;
+	wishList: null;
+	lowestAsk: null;
+	highestBid: null;
+	premiumPrice: null;
 }
 
 export interface ShortcutItemRes {

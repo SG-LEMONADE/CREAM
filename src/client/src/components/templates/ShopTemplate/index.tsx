@@ -12,6 +12,7 @@ import TagItem from "components/atoms/TagItem";
 import SearchFilterBar from "components/organisms/SearchFilterBar";
 
 import styled from "@emotion/styled";
+import { css } from "@emotion/react";
 
 type ShopTemplateProps = {
 	children: React.ReactNode;
@@ -43,6 +44,8 @@ const ImageInfos = [
 const ShopTemplate: FunctionComponent<ShopTemplateProps> = (props) => {
 	const { children } = props;
 
+	const [scrolled, setScrolled] = useState<boolean>(false);
+
 	const [luxaryFilter, setLuxaryFilter] = useState<boolean>(false);
 	const [filteredCategory, setFilteredCategory] = useState<string>("");
 	const [filteredBrand, setFilteredBrand] = useState<string[]>([]);
@@ -73,104 +76,119 @@ const ShopTemplate: FunctionComponent<ShopTemplateProps> = (props) => {
 		filteredPrice,
 	]);
 
+	const handleScroll = () => {
+		setScrolled(window.scrollY > 0);
+	};
+
+	useEffect(() => {
+		window.addEventListener("scroll", handleScroll);
+		return () => window.removeEventListener("scroll", handleScroll);
+	});
+
 	return (
 		<ShopTemplateWrapper>
-			<ShopTopBox
-				luxaryActivateState={luxaryFilter}
-				filteredCategory={filteredCategory}
-				onApplyFilter={onHandleQuickFilter}
-			/>
-			<BannerWrapper>
-				<Slider
-					small={true}
-					images={ImageInfos.map((info) => (
-						<BannerImage
-							bgColor={info.bgColor}
-							category="small"
-							src={info.src}
-						/>
-					))}
+			<ShopTopBoxWrapper scrolled={scrolled}>
+				<ShopTopBox
+					luxaryActivateState={luxaryFilter}
+					filteredCategory={filteredCategory}
+					onApplyFilter={onHandleQuickFilter}
 				/>
-			</BannerWrapper>
-			<ContentsWrapper>
-				<SearchFilterWrapper>
-					<SearchFilterBar
-						luxaryFilter={luxaryFilter}
-						setLuxaryFilter={setLuxaryFilter}
-						filteredCategory={filteredCategory}
-						setFilteredCategory={setFilteredCategory}
-						filteredBrand={filteredBrand}
-						setFilteredBrand={setFilteredBrand}
-						filteredCollections={filteredCollections}
-						setFilteredCollections={setFilteredCollections}
-						filteredGender={filteredGender}
-						setFilteredGender={setFilteredGender}
-						filteredPrice={filteredPrice}
-						setFilteredPrice={setFilteredPrice}
+			</ShopTopBoxWrapper>
+			<ShopContentsWrapper scrolled={scrolled}>
+				<BannerWrapper>
+					<Slider
+						small={true}
+						images={ImageInfos.map((info) => (
+							<BannerImage
+								bgColor={info.bgColor}
+								category="small"
+								src={info.src}
+							/>
+						))}
 					/>
-				</SearchFilterWrapper>
-				<SearchContentWrapper>
-					<SearchContentOption>
-						<FilteredTags>
-							{luxaryFilter && (
-								<TagItem onClick={() => setLuxaryFilter(false)}>럭셔리</TagItem>
-							)}
-							{filteredCategory.length > 0 && (
-								<TagItem onClick={() => setFilteredCategory("")}>
-									{filteredCategory}
-								</TagItem>
-							)}
-							{filteredBrand.length > 0 &&
-								filteredBrand.map((option) => (
-									<TagItem
-										key={option}
-										onClick={() =>
-											setFilteredBrand(
-												filteredBrand.filter((brand) => brand !== option),
-											)
-										}
-									>
-										{option}
+				</BannerWrapper>
+				<ContentsWrapper>
+					<SearchFilterWrapper>
+						<SearchFilterBar
+							luxaryFilter={luxaryFilter}
+							setLuxaryFilter={setLuxaryFilter}
+							filteredCategory={filteredCategory}
+							setFilteredCategory={setFilteredCategory}
+							filteredBrand={filteredBrand}
+							setFilteredBrand={setFilteredBrand}
+							filteredCollections={filteredCollections}
+							setFilteredCollections={setFilteredCollections}
+							filteredGender={filteredGender}
+							setFilteredGender={setFilteredGender}
+							filteredPrice={filteredPrice}
+							setFilteredPrice={setFilteredPrice}
+						/>
+					</SearchFilterWrapper>
+					<SearchContentWrapper>
+						<SearchContentOption>
+							<FilteredTags>
+								{luxaryFilter && (
+									<TagItem onClick={() => setLuxaryFilter(false)}>
+										럭셔리
 									</TagItem>
-								))}
-							{filteredCollections.length > 0 &&
-								filteredCollections.map((option) => (
-									<TagItem
-										key={option}
-										onClick={() =>
-											setFilteredCollections(
-												filteredCollections.filter((col) => col !== option),
-											)
-										}
-									>
-										{option}
+								)}
+								{filteredCategory.length > 0 && (
+									<TagItem onClick={() => setFilteredCategory("")}>
+										{filteredCategory}
 									</TagItem>
-								))}
-							{filteredGender.length > 0 && (
-								<TagItem onClick={() => setFilteredGender("")}>
-									{filteredGender}
-								</TagItem>
-							)}
-							{filteredPrice.length > 0 &&
-								filteredPrice.map((option) => (
-									<TagItem
-										onClick={() =>
-											setFilteredPrice(
-												filteredPrice.filter((price) => price !== option),
-											)
-										}
-									>
-										{option}
+								)}
+								{filteredBrand.length > 0 &&
+									filteredBrand.map((option) => (
+										<TagItem
+											key={option}
+											onClick={() =>
+												setFilteredBrand(
+													filteredBrand.filter((brand) => brand !== option),
+												)
+											}
+										>
+											{option}
+										</TagItem>
+									))}
+								{filteredCollections.length > 0 &&
+									filteredCollections.map((option) => (
+										<TagItem
+											key={option}
+											onClick={() =>
+												setFilteredCollections(
+													filteredCollections.filter((col) => col !== option),
+												)
+											}
+										>
+											{option}
+										</TagItem>
+									))}
+								{filteredGender.length > 0 && (
+									<TagItem onClick={() => setFilteredGender("")}>
+										{filteredGender}
 									</TagItem>
-								))}
-						</FilteredTags>
-						<SortWrapper>
-							<SortContent>인기순</SortContent>
-						</SortWrapper>
-					</SearchContentOption>
-					{children}
-				</SearchContentWrapper>
-			</ContentsWrapper>
+								)}
+								{filteredPrice.length > 0 &&
+									filteredPrice.map((option) => (
+										<TagItem
+											onClick={() =>
+												setFilteredPrice(
+													filteredPrice.filter((price) => price !== option),
+												)
+											}
+										>
+											{option}
+										</TagItem>
+									))}
+							</FilteredTags>
+							<SortWrapper>
+								<SortContent>인기순</SortContent>
+							</SortWrapper>
+						</SearchContentOption>
+						<SearchContent>{children}</SearchContent>
+					</SearchContentWrapper>
+				</ContentsWrapper>
+			</ShopContentsWrapper>
 		</ShopTemplateWrapper>
 	);
 };
@@ -181,6 +199,28 @@ const ShopTemplateWrapper = styled.div`
 	overflow: hidden;
 	margin: 0;
 	padding: 0;
+	padding-top: 100px;
+`;
+
+const ShopTopBoxWrapper = styled.div<{ scrolled: boolean }>`
+	${({ scrolled }) =>
+		scrolled &&
+		css`
+			position: fixed;
+			top: 99px;
+			left: 0;
+			right: 0;
+			border-bottom: 1px solid #ebebeb;
+			z-index: 1000;
+		`}
+`;
+
+const ShopContentsWrapper = styled.div<{ scrolled: boolean }>`
+	${({ scrolled }) =>
+		scrolled &&
+		css`
+			padding-top: 175px;
+		`}
 `;
 
 const BannerWrapper = styled.div`
@@ -244,4 +284,12 @@ const SortContent = styled.div`
 		background: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGZpbGw9Im5vbmUiIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZmlsbD0iIzIyMiIgZmlsbC1ydWxlPSJldmVub2RkIiBkPSJNNi40NyAxOS41M2wuNTMuNTMuNTMtLjUzIDQtNC0xLjA2LTEuMDYtMi43MiAyLjcyVjVoLTEuNXYxMi4xOWwtMi43Mi0yLjcyLTEuMDYgMS4wNiA0IDR6TTE3LjUzIDQuNDdMMTcgMy45NGwtLjUzLjUzLTQgNCAxLjA2IDEuMDYgMi43Mi0yLjcyVjE5aDEuNVY2LjgxbDIuNzIgMi43MiAxLjA2LTEuMDYtNC00eiIgY2xpcC1ydWxlPSJldmVub2RkIi8+PC9zdmc+)
 			no-repeat;
 	}
+`;
+
+const SearchContent = styled.div`
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	gap: 5px 5px;
+	border: 1px solid red;
+	overflow-y: auto;
 `;

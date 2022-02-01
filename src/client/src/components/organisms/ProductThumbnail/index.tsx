@@ -32,7 +32,7 @@ const ProductThumbnail: FunctionComponent<ProductThumbnailProps> = (props) => {
 					<ImageArea>
 						{category === "home" ? (
 							<ProductThumbnailImage
-								imgSrc={productInfo.imageUrls}
+								imgSrc={productInfo.imageUrls[0]}
 								backgroundColor={productInfo.backgroundColor}
 								isInWishList={isWishState}
 								onHandleWishClick={onHandleWishClick}
@@ -40,7 +40,7 @@ const ProductThumbnail: FunctionComponent<ProductThumbnailProps> = (props) => {
 						) : (
 							<ProductImage
 								category="shop"
-								src={productInfo.imageUrls}
+								src={productInfo.imageUrls[0]}
 								backgroundColor={productInfo.backgroundColor}
 							/>
 						)}
