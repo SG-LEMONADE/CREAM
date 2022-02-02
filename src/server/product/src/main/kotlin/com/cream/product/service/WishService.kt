@@ -1,5 +1,7 @@
 package com.cream.product.service
 
+import com.cream.product.client.LogServiceClient
+import com.cream.product.dto.UserLogDTO
 import com.cream.product.error.BaseException
 import com.cream.product.error.ErrorCode
 import com.cream.product.persistence.ProductRepository
@@ -16,6 +18,9 @@ class WishService {
 
     @Autowired
     lateinit var wishRepository: WishRepository
+
+    @Autowired
+    lateinit var logServiceClient: LogServiceClient
 
     @Transactional
     fun toggleWish(
@@ -36,6 +41,7 @@ class WishService {
         } else {
             wishRepository.createWish(userId, productId, size)
             product.wishCnt += 1
+            logServiceClient.insertUserLogData(UserLogDTO(userId, productId, 2))
         }
     }
 }

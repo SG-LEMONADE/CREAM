@@ -3,6 +3,7 @@ package com.cream.product.service
 import com.cream.product.client.LogServiceClient
 import com.cream.product.constant.RequestType
 import com.cream.product.constant.TradeStatus
+import com.cream.product.dto.UserLogDTO
 import com.cream.product.dto.filterDTO.PageDTO
 import com.cream.product.dto.tradeDTO.TradeHistoryDTO
 import com.cream.product.dto.tradeDTO.TradeRegisterDTO
@@ -41,6 +42,11 @@ class TradeService {
         if (!ObjectMapper().readValue(product.sizes, ArrayList::class.java).contains(size)) {
             throw BaseException(ErrorCode.INVALID_SIZE_FOR_PRODUCT)
         }
+
+        if (tradeRegisterDTO.requestType == RequestType.BID){
+            logServiceClient.insertUserLogData(UserLogDTO(userId, productId, 3))
+        }
+
         tradeRepository.save(tradeRegisterDTO.toEntity(userId, product, size))
     }
 
@@ -82,6 +88,10 @@ class TradeService {
             logServiceClient.insertPrice(productId, trade.price)
         } catch (ex: FeignException) {
             log.error(ex.message)
+        }
+
+        if (requestType == RequestType.ASK) {
+            logServiceClient.insertUserLogData(UserLogDTO(userId, productId, 3))
         }
 
         trade.tradeStatus = TradeStatus.COMPLETED

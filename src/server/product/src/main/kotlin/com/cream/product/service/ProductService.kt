@@ -1,6 +1,8 @@
 package com.cream.product.service
 
+import com.cream.product.client.LogServiceClient
 import com.cream.product.constant.RequestType
+import com.cream.product.dto.UserLogDTO
 import com.cream.product.dto.filterDTO.FilterRequestDTO
 import com.cream.product.dto.filterDTO.PageDTO
 import com.cream.product.dto.productDTO.ProductDTO
@@ -25,6 +27,9 @@ class ProductService {
     @Autowired
     lateinit var productRepository: ProductRepository
 
+    @Autowired
+    lateinit var logServiceClient: LogServiceClient
+
     fun findProductsByPageWithWish(
         page: PageDTO,
         userId: Long?,
@@ -48,10 +53,12 @@ class ProductService {
         size: String?
     ): ProductDetailDTO {
 
-        val product: ProductPriceWishDTO = if (userId == null) {
-            productRepository.getProduct(id, size)
+        val product: ProductPriceWishDTO
+        if (userId == null) {
+            product = productRepository.getProduct(id, size)
         } else {
-            productRepository.getProductWithWish(userId, id, size)
+            product = productRepository.getProductWithWish(userId, id, size)
+            logServiceClient.insertUserLogData(UserLogDTO(userId, id, 1))
         }
 
         if (size != null && !ObjectMapper().readValue(product.product.sizes, ArrayList::class.java).contains(size)) {
