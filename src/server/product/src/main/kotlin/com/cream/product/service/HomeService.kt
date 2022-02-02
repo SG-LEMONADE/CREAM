@@ -26,12 +26,12 @@ class HomeService {
     fun getHomeView(
         userId: Long?
     ): HomeDTO{
-        val imageUrls: List<String> = bannerRepository.findAllByValid(true)
+        val imageUrls: List<String> = bannerRepository.findAllByValidIsTrue()
             .stream().map {
                 it.imageUrl
             }.toList()
 
-        val sections: List<SectionDTO> = sectionRepository.findAllByValid(true)
+        val sections: List<SectionDTO> = sectionRepository.findAllByValidIsTrue()
             .stream().map { section ->
                 val filter = ObjectMapper().readValue(section.filterInfo, FilterRequestDTO::class.java)
 

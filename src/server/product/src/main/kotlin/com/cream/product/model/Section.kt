@@ -23,5 +23,5 @@ class Section (
     var filterInfo: String,
 
     @Column
-    var isValid: Boolean
+    var valid: Boolean
 )

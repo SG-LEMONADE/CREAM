@@ -15,5 +15,5 @@ class Banner (
     var imageUrl: String,
 
     @Column
-    var isValid: Boolean
+    var valid: Boolean
 )
