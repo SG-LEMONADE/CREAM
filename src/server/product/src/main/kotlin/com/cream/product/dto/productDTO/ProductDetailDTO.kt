@@ -5,7 +5,7 @@ import com.cream.product.dto.tradeDTO.TradeLastCompletedDTO
 
 data class ProductDetailDTO(
     val product: ProductDTO,
-    val lastCompletedTrade: List<TradeLastCompletedDTO>,
+    val lastCompletedTrades: List<TradeLastCompletedDTO>,
     val asksBySizeCount: List<TradeBySizeCountDTO>,
     val bidsBySizeCount: List<TradeBySizeCountDTO>,
     val lastSalePrice: Int?,

@@ -68,7 +68,7 @@ class ProductService {
         val askPricesBySize = productRepository.getProductPricesBySize(id, RequestType.ASK)
         val bidPricesBySize = productRepository.getProductPricesBySize(id, RequestType.BID)
 
-        val lastCompletedTrade = tradeRepository.findByProductIdCompleted(id)
+        val lastCompletedTrades = tradeRepository.findByProductIdCompleted(id)
         val asksBySizeCount = tradeRepository.findByProductIdWithCount(size, id, RequestType.ASK)
         val bidsBySizeCount = tradeRepository.findByProductIdWithCount(size, id, RequestType.BID)
 
@@ -79,13 +79,13 @@ class ProductService {
         val askPrices: HashMap<String, Int?> = java.util.HashMap()
         val bidPrices: HashMap<String, Int?> = java.util.HashMap()
 
-        if (lastCompletedTrade.isNotEmpty()) {
-            val latestCompletedTrade = lastCompletedTrade[0]
+        if (lastCompletedTrades.isNotEmpty()) {
+            val latestCompletedTrade = lastCompletedTrades[0]
             lastSalePrice = latestCompletedTrade.price
 
-            if (product.lowestAsk != null) {
-                changePercentage = ((product.lowestAsk - latestCompletedTrade.price) / latestCompletedTrade.price).toFloat()
-                changeValue = (product.lowestAsk - latestCompletedTrade.price)
+            if (lastCompletedTrades.size > 1) {
+                changePercentage = ((lastCompletedTrades[1].price - latestCompletedTrade.price) / lastCompletedTrades[1].price).toFloat()
+                changeValue = (lastCompletedTrades[1].price - latestCompletedTrade.price)
             }
         }
 
@@ -109,7 +109,7 @@ class ProductService {
 
         return ProductDetailDTO(
             ProductDTO(product),
-            lastCompletedTrade,
+            lastCompletedTrades,
             asksBySizeCount,
             bidsBySizeCount,
             lastSalePrice,
