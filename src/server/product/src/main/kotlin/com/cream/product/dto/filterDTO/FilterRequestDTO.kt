@@ -1,11 +1,14 @@
 package com.cream.product.dto.filterDTO
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize
+
+@JsonDeserialize
 data class FilterRequestDTO(
-    val category: String?,
-    val brandId: String?,
-    val collectionId: String?,
-    val gender: String?,
-    val priceFrom: Int?,
-    val priceTo: Int?,
-    val keyword: String?
+    val gender: String? = null,
+    val brandId: String? = null,
+    val keyword: String? = null,
+    val priceTo: Int? = null,
+    val category: String? = null,
+    val priceFrom: Int? = null,
+    val collectionId: String? = null
 )

@@ -10,6 +10,7 @@ import com.cream.product.persistence.SectionRepository
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import java.nio.charset.StandardCharsets
 import kotlin.streams.toList
 
 @Service
@@ -34,7 +35,6 @@ class HomeService {
         val sections: List<SectionDTO> = sectionRepository.findAllByValidIsTrue()
             .stream().map { section ->
                 val filter = ObjectMapper().readValue(section.filterInfo, FilterRequestDTO::class.java)
-
                 val products = if (userId == null) {
                     productRepository.getProducts(0, 16, "total_sale", filter).stream()
                         .map {
