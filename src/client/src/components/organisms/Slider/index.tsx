@@ -25,7 +25,7 @@ const Slider: FunctionComponent<SliderProps> = (props) => {
 				style={{
 					position: "absolute",
 					left: "20px",
-					zIndex: "99",
+					zIndex: "49",
 					cursor: "pointer",
 					width: "10px",
 				}}
@@ -36,7 +36,7 @@ const Slider: FunctionComponent<SliderProps> = (props) => {
 				name="ChevronRight"
 				style={{
 					marginLeft: "-30px",
-					zIndex: "99",
+					zIndex: "49",
 					cursor: "pointer",
 					width: "10px",
 				}}

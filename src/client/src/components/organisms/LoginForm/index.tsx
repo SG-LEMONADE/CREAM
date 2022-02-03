@@ -126,6 +126,7 @@ export default LoginForm;
 const LoginContainer = styled.div`
 	margin: 0;
 	padding: 0;
+	padding-top: 100px;
 `;
 
 const LoginContents = styled.div`

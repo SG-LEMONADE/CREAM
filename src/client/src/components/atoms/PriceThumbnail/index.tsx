@@ -4,14 +4,16 @@ import styled from "@emotion/styled";
 
 type PriceThumbnailProps = {
 	category: string;
-	price: number;
+	price: number | null;
 };
 
 const PriceThumbnail: FunctionComponent<PriceThumbnailProps> = (props) => {
 	const { category, price } = props;
 	return (
 		<StyledPriceWrapper category={category}>
-			<StyledPrice>{price.toLocaleString()}원</StyledPrice>
+			<StyledPrice>
+				{price > 0 ? `${price.toLocaleString()}원` : `-`}
+			</StyledPrice>
 			<StyledDesc>즉시 구매가</StyledDesc>
 		</StyledPriceWrapper>
 	);

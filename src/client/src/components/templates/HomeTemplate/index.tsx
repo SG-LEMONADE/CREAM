@@ -32,7 +32,7 @@ const StyledTopFixed = styled.header`
 	top: 0;
 	left: 0;
 	right: 0;
-	z-index: 1000;
+	z-index: 50;
 	background-color: #fff;
 `;
 

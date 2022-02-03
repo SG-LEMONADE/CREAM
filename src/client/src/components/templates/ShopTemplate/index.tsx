@@ -211,7 +211,7 @@ const ShopTopBoxWrapper = styled.div<{ scrolled: boolean }>`
 			left: 0;
 			right: 0;
 			border-bottom: 1px solid #ebebeb;
-			z-index: 1000;
+			z-index: 50;
 		`}
 `;
 
@@ -221,6 +221,14 @@ const ShopContentsWrapper = styled.div<{ scrolled: boolean }>`
 		css`
 			padding-top: 175px;
 		`}
+	@media screen and (max-width: 1240px) {
+		padding: 0 40px 0;
+		${({ scrolled }) =>
+			scrolled &&
+			css`
+				padding-top: 175px;
+			`}
+	}
 `;
 
 const BannerWrapper = styled.div`
@@ -289,7 +297,12 @@ const SortContent = styled.div`
 const SearchContent = styled.div`
 	display: grid;
 	grid-template-columns: repeat(4, 1fr);
-	gap: 5px 5px;
-	border: 1px solid red;
+	@media screen and (max-width: 1000px) {
+		grid-template-columns: repeat(3, 1fr);
+	}
+	@media screen and (max-width: 880px) {
+		grid-template-columns: repeat(2, 1fr);
+	}
+	gap: 70px 20px;
 	overflow-y: auto;
 `;

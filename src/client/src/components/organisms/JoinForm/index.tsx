@@ -59,7 +59,6 @@ const JoinForm: FunctionComponent = () => {
 					shoeSize: size,
 				},
 			);
-			const data = await res.data;
 			Swal.fire({
 				position: "top",
 				icon: "success",
@@ -170,6 +169,7 @@ export default JoinForm;
 const JoinContainer = styled.div`
 	margin: 0;
 	padding: 0;
+	padding-top: 100px;
 `;
 
 const JoinContents = styled.div`

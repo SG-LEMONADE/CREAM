@@ -1,6 +1,6 @@
 export interface ProductInfoRes {
 	id: number;
-	originalSname: string;
+	originalName: string;
 	translatedName: string;
 	originalPrice: number;
 	gender: string;
@@ -14,7 +14,7 @@ export interface ProductInfoRes {
 	sizes: string[];
 	releasedDate: string;
 	totalSale: number;
-	wishList: null;
+	wishList: null | string[];
 	lowestAsk: null;
 	highestBid: null;
 	premiumPrice: null;
