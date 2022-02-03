@@ -1,66 +1,169 @@
 package com.cream.user.service
 
-import com.cream.user.dto.UpdateUserDTO
+import com.cream.user.constant.UserStatus
+import com.cream.user.dto.*
 import com.cream.user.error.ErrorCode
 import com.cream.user.error.UserCustomException
 import com.cream.user.persistence.UserRepository
-import com.cream.user.model.UserEntity
+import com.cream.user.model.User
+import com.cream.user.security.TokenProvider
+import com.cream.user.utils.UserMailSender
 
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.redis.core.StringRedisTemplate
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
+import java.util.concurrent.TimeUnit
+import javax.transaction.Transactional
 
 @Service
 class UserService {
     @Autowired
     lateinit var userRepository: UserRepository
 
-    fun create(userEntity: UserEntity): UserEntity {
-        if (userEntity.email == "") {
+    @Autowired
+    lateinit var tokenProvider: TokenProvider
+
+    @Autowired
+    lateinit var redisTemplate: StringRedisTemplate
+
+    @Autowired
+    lateinit var mailSender: UserMailSender
+
+    var passwordEncoder: PasswordEncoder = BCryptPasswordEncoder()
+
+    fun create(userDTO: RegisterUserDTO): ResponseUserDTO {
+        val user = userDTO.toEntity(passwordEncoder)
+        if (user.email == "") {
             throw UserCustomException(ErrorCode.INVALID_INPUT_VALUE)
         }
-        val email: String = userEntity.email
+        val email: String = user.email
         if (userRepository.existsByEmail(email)) {
             throw UserCustomException(ErrorCode.DUPLICATED_USER_EMAIL)
         }
-        return userRepository.save(userEntity)
+        mailSender.sendEmail(email, 0, redisTemplate)
+        return ResponseUserDTO(userRepository.save(user))
     }
 
-    fun updateUserState(email: String, stateCode: Int) {
-        val user: UserEntity = (userRepository.findOneByEmail(email) ?: throw UserCustomException(ErrorCode.ENTITY_NOT_FOUND))
-        user.status = stateCode
-        userRepository.save(user)
-    }
+    fun getValidationToken(
+        userDTO: LoginDTO
+    ): TokenDTO {
+        val user: User = getByCredentials(userDTO.email, userDTO.password, passwordEncoder)
 
-    fun updateUserLastLoginTime(userEntity: UserEntity) {
-        userEntity.lastLoginDateTime = LocalDateTime.now()
-        userRepository.save(userEntity)
-    }
-
-    fun update(userEntity: UserEntity, user: UpdateUserDTO, encoder: PasswordEncoder): UserEntity {
-        if (!encoder.matches(user.password, userEntity.password)) {
-            userEntity.passwordChangedDateTime = LocalDateTime.now()
+        when (user.status) {
+            (UserStatus.NEED_CONFIRM_EMAIL) -> {
+                // 이메일 인증 안됐을때
+                throw UserCustomException(ErrorCode.USER_EMAIL_NOT_VERIFIED)
+            }
+            (UserStatus.NEED_CHANGE_PASSWORD) -> {
+                // 비밀번호를 반드시 바꾸어야 할 때
+                throw UserCustomException(ErrorCode.USER_NEED_TO_CHANGE_PASSWORD)
+            }
+            (UserStatus.DELETED_USER) -> {
+                // 삭제된 유저 일때
+                throw UserCustomException(ErrorCode.USER_NOT_FOUND)
+            }
         }
-        userEntity.email = user.email
-        userEntity.password = encoder.encode(user.password)
-        userEntity.name = user.name
-        userEntity.address = user.address
-        userEntity.shoeSize = user.shoeSize
-        userEntity.age = user.age
-        userEntity.gender = user.gender
-        userEntity.profileImageUrl = user.profileImageUrl
-        userEntity.updateAt = LocalDateTime.now()
-        return userRepository.save(userEntity)
+
+        val token: String = tokenProvider.create(user)
+        val refreshToken: String = tokenProvider.create(user, isRefresh = true)
+        val stringValueOperation = redisTemplate.opsForValue()
+        stringValueOperation.set("refresh-${user.id}", refreshToken, 7, TimeUnit.DAYS)
+        user.lastLoginDatetime = LocalDateTime.now()
+        userRepository.save(user)
+
+        return TokenDTO(user.id, token, refreshToken)
     }
 
-    fun getByCredentials(email: String, password: String, encoder: PasswordEncoder): UserEntity {
+    fun refreshToken(
+        tokenDTO: TokenDTO
+    ): TokenDTO {
+        // 둘다 Bearer 앞에 와야합니다.
+        val accessToken: String = tokenDTO.accessToken
+        val refreshToken: String = tokenDTO.refreshToken
+
+        val userId = tokenProvider.validateAndGetUserId(refreshToken)
+        if (tokenProvider.validateAndGetUserId(accessToken) != userId) {
+            // 엑세스 토큰과 리프레시 토큰이 다른 사람일때
+            throw UserCustomException(ErrorCode.REFRESH_TOKEN_NOT_VALID)
+        }
+
+        val stringValueOperation = redisTemplate.opsForValue()
+        val storedToken: String? = stringValueOperation.get("refresh-$userId")
+        if (storedToken == null || storedToken != refreshToken.substring(7)) {
+            throw UserCustomException(ErrorCode.REFRESH_TOKEN_EXPIRED)
+        }
+
+        val user = userRepository.getById(userId)
+        val newAccessToken = tokenProvider.create(user)
+        val newRefreshToken = tokenProvider.create(user, isRefresh = true)
+
+        stringValueOperation.set("refresh-$userId", newRefreshToken, 7, TimeUnit.DAYS)
+        return TokenDTO(userId, newAccessToken, newRefreshToken)
+    }
+
+    @Transactional
+    fun verify(
+        email: String,
+        hash: String
+    ) {
+        val stringValueOperation = redisTemplate.opsForValue()
+        val storedHash: String? = stringValueOperation.get(email)
+        if (storedHash == null || storedHash != hash) {
+            throw UserCustomException(ErrorCode.EMAIL_HASH_NOT_VALID)
+        }
+
+        val user: User = (userRepository.findOneByEmail(email) ?: throw UserCustomException(ErrorCode.ENTITY_NOT_FOUND))
+        user.status = UserStatus.EMAIL_CONFIRMED
+
+        redisTemplate.delete(email)
+    }
+
+
+    fun update(
+        userId: Long,
+        userUpdateDTO: UpdateUserDTO,
+    ): ResponseUserDTO {
+        val user = userRepository.findById(userId).orElseThrow()
+
+        if (!passwordEncoder.matches(user.password, userUpdateDTO.password)) {
+            user.passwordChangedDatetime = LocalDateTime.now()
+        }
+        user.email = userUpdateDTO.email
+        user.password = passwordEncoder.encode(userUpdateDTO.password)
+        user.name = userUpdateDTO.name
+        user.address = userUpdateDTO.address
+        user.shoeSize = userUpdateDTO.shoeSize
+        user.age = userUpdateDTO.age
+        user.gender = userUpdateDTO.gender
+        user.profileImageUrl = userUpdateDTO.profileImageUrl
+        user.updatedAt = LocalDateTime.now()
+        return ResponseUserDTO(userRepository.save(user))
+    }
+
+    fun getByCredentials(
+        email: String,
+        password: String,
+        encoder: PasswordEncoder
+    ): User {
         val user = userRepository.findOneByEmail(email) ?: throw UserCustomException(ErrorCode.USER_EMAIL_NOT_FOUND)
         if (encoder.matches(password, user.password)) return user
         else throw UserCustomException(ErrorCode.USER_PASSWORD_NOT_MATCH)
     }
 
-    fun getById(userId: Long): UserEntity {
-        return userRepository.getById(userId)
+    fun getMe(
+        token: String
+    ): ResponseUserDTO {
+        val userId = tokenProvider.validateAndGetUserId(token)
+        return ResponseUserDTO(userRepository.getById(userId))
+    }
+
+    fun logOut(
+        token: String
+    ) {
+        val userId = tokenProvider.validateAndGetUserId(token)
+        redisTemplate.delete("refresh-$userId")
     }
 }

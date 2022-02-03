@@ -9,7 +9,7 @@ import java.time.LocalDateTime
 data class TradeRegisterDTO(
     val requestType: RequestType,
     val price: Int,
-    val validation_day: Long
+    val validationDay: Long
 ) {
     fun toEntity(userId: Long, product: Product, size: String): Trade {
         return Trade(
@@ -19,7 +19,7 @@ data class TradeRegisterDTO(
             requestType = this.requestType,
             tradeStatus = TradeStatus.WAITING,
             price = this.price,
-            validationDateTime = LocalDateTime.now().plusDays(this.validation_day)
+            validationDateTime = LocalDateTime.now().plusDays(this.validationDay)
         )
     }
 }

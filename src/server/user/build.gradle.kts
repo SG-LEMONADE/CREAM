@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    id("org.springframework.boot") version "2.5.2"
+    id("org.springframework.boot") version "2.6.2"
     id("io.spring.dependency-management") version "1.0.11.RELEASE"
     kotlin("jvm") version "1.6.10"
     kotlin("plugin.spring") version "1.6.10"
@@ -27,7 +27,7 @@ repositories {
 }
 
 dependencies {
-    implementation("org.springframework.boot:spring-boot-starter-web:2.5.2")
+    implementation("org.springframework.boot:spring-boot-starter-web:2.6.2")
 
     //jpa
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
@@ -57,7 +57,6 @@ dependencies {
 
     //eureka
     implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client:3.1.0")
-
 
     // devtool,  test
     developmentOnly("org.springframework.boot:spring-boot-devtools")

@@ -68,7 +68,7 @@ class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(HttpRequestMethodNotSupportedException::class)
-    fun handleMalformedJwtException(ex: HttpRequestMethodNotSupportedException): ResponseEntity<ErrorResponse> {
+    fun handleHttpRequestMethodNotSupportedException(ex: HttpRequestMethodNotSupportedException): ResponseEntity<ErrorResponse> {
         log.error("HttpMessageNotReadableException", ex)
         val response = ErrorResponse(ErrorCode.METHOD_NOT_ALLOWED)
         return ResponseEntity(response, HttpStatus.valueOf(response.status))

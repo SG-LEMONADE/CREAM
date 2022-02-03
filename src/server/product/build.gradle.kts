@@ -55,6 +55,7 @@ dependencies {
 
     //db
     implementation("mysql:mysql-connector-java:8.0.27")
+    implementation("org.json:json:20211205")
 
     //devtool, test
     developmentOnly("org.springframework.boot:spring-boot-devtools")
@@ -69,6 +70,9 @@ dependencies {
 
     //eureka client
     implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client:3.1.0")
+
+    //feign client
+    implementation("org.springframework.cloud:spring-cloud-starter-openfeign:3.1.0")
 
     //querydsl
     implementation("com.querydsl:querydsl-jpa") // 1)

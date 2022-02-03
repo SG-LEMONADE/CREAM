@@ -1,6 +1,7 @@
 package com.cream.user.dto
 
-import com.cream.user.model.UserEntity
+import com.cream.user.constant.UserStatus
+import com.cream.user.model.User
 import java.time.LocalDateTime
 
 data class ResponseUserDTO(
@@ -12,13 +13,13 @@ data class ResponseUserDTO(
     val age: Int?,
     val shoeSize: Int,
     val profileImageUrl: String?,
-    val status: Int,
+    val status: UserStatus,
     val passwordChangedDateTime: LocalDateTime?,
     val lastLoginDateTime: LocalDateTime?,
     val createdAt: LocalDateTime,
     val updatedAt: LocalDateTime?,
 ) {
-    constructor(userEntity: UserEntity) :
+    constructor(userEntity: User) :
         this(
             userEntity.id,
             userEntity.email,
@@ -29,9 +30,9 @@ data class ResponseUserDTO(
             userEntity.shoeSize,
             userEntity.profileImageUrl,
             userEntity.status,
-            userEntity.passwordChangedDateTime,
-            userEntity.lastLoginDateTime,
-            userEntity.createAt,
-            userEntity.updateAt,
+            userEntity.passwordChangedDatetime,
+            userEntity.lastLoginDatetime,
+            userEntity.createdAt,
+            userEntity.updatedAt,
         )
 }

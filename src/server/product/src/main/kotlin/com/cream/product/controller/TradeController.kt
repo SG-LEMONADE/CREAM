@@ -3,8 +3,8 @@ package com.cream.product.controller
 import com.cream.product.constant.RequestType
 import com.cream.product.constant.TradeStatus
 import com.cream.product.dto.filterDTO.PageDTO
+import com.cream.product.dto.tradeDTO.TradeHistoryDTO
 import com.cream.product.dto.tradeDTO.TradeRegisterDTO
-import com.cream.product.model.Trade
 import com.cream.product.service.TradeService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
@@ -22,7 +22,7 @@ class TradeController {
         @RequestParam requestType: RequestType,
         @RequestParam tradeStatus: TradeStatus,
         @RequestHeader("userId", required = true) userId: Long,
-        ): ResponseEntity<List<Trade>> {
+    ): ResponseEntity<List<TradeHistoryDTO>> {
         return ResponseEntity.ok(tradeService.getTradeList(userId, pageDTO, requestType, tradeStatus))
     }
 
@@ -56,8 +56,9 @@ class TradeController {
 
     @DeleteMapping("/{tradeId}")
     fun deleteTrade(
-        @PathVariable tradeId: Long
+        @PathVariable tradeId: Long,
+        @RequestHeader("userId", required = true) userId: Long
     ): ResponseEntity<Unit> {
-        return ResponseEntity.ok(tradeService.delete(tradeId))
+        return ResponseEntity.ok(tradeService.delete(tradeId, userId))
     }
 }

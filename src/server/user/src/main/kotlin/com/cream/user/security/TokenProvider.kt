@@ -1,6 +1,6 @@
 package com.cream.user.security
 
-import com.cream.user.model.UserEntity
+import com.cream.user.model.User
 
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
@@ -21,7 +21,7 @@ class TokenProvider {
     @Value("\${secret-key}")
     lateinit var SECRET_KEY: String
 
-    fun create(userEntity: UserEntity, isRefresh: Boolean = false): String {
+    fun create(userEntity: User, isRefresh: Boolean = false): String {
         var expiryDate: Date = Date.from(Instant.now().plus(30, ChronoUnit.MINUTES))
 
         if (isRefresh) {
@@ -35,13 +35,13 @@ class TokenProvider {
             .compact()
     }
 
-    fun validateAndGetUserId(token: String): String {
+    fun validateAndGetUserId(token: String): Long {
         val filteredToken = token.substring(7) // without Bearer
         val claims: Claims = Jwts.parser()
             .setSigningKey(SECRET_KEY)
             .parseClaimsJws(filteredToken)
             .body
-        return claims.subject
+        return claims.subject.toLong()
     }
 
     fun getSHA512Token(value: String): String {

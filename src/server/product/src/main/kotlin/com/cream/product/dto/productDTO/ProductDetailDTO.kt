@@ -1,39 +1,17 @@
 package com.cream.product.dto.productDTO
 
-import com.cream.product.model.Trade
+import com.cream.product.dto.tradeDTO.TradeBySizeCountDTO
+import com.cream.product.dto.tradeDTO.TradeLastCompletedDTO
 
-class ProductDetailDTO(
+data class ProductDetailDTO(
     val product: ProductDTO,
-    val askPricesBySize: List<ProductPriceBySizeDTO>?,
-    val bidPricesBySize: List<ProductPriceBySizeDTO>?,
-    lastCompletedTrade: Trade?,
-    lowestAsk: ProductPriceByRequestTypeDTO?,
-    highestBid: ProductPriceByRequestTypeDTO?
-) {
-    var changePercentage: Float? = null
-    var changeValue: Int? = null
-    var lastSalePrice: Int? = null
-    var pricePremium: Int? = null
-    var pricePremiumPercentage: Float? = null
-    var highestBid: Int? = null
-    var lowestAsk: Int? = null
-
-    init {
-        if (lastCompletedTrade != null && lowestAsk != null) {
-            this.changePercentage = (lowestAsk.price!! - lastCompletedTrade.price) / lastCompletedTrade.price.toFloat()
-            this.changeValue = (lowestAsk.price - lastCompletedTrade.price)
-            this.lastSalePrice = lastCompletedTrade.price
-
-            this.pricePremium = lowestAsk.price - product.originalPrice
-            this.pricePremiumPercentage = (lowestAsk.price - product.originalPrice) / product.originalPrice.toFloat()
-        }
-
-        if (highestBid != null) {
-            this.highestBid = highestBid.price
-        }
-
-        if (lowestAsk != null) {
-            this.lowestAsk = lowestAsk.price
-        }
-    }
-}
+    val lastCompletedTrades: List<TradeLastCompletedDTO>,
+    val asksBySizeCount: List<TradeBySizeCountDTO>,
+    val bidsBySizeCount: List<TradeBySizeCountDTO>,
+    val lastSalePrice: Int?,
+    val changePercentage: Float?,
+    val changeValue: Int?,
+    val pricePremiumPercentage: Float?,
+    val askPrices: HashMap<String, Int?>,
+    val bidPrices: HashMap<String, Int?>,
+)

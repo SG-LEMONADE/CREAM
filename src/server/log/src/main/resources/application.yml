@@ -1,0 +1,29 @@
+server:
+  port: 8082
+
+spring:
+  application:
+    name: log
+
+  data:
+    mongodb:
+        uri: mongodb://localhost:27017/log
+
+    # swagger with spring boot 2.6.2 issue
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
+eureka:
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+
+logging:
+    level:
+        org:
+            springframework:
+                data:
+                    mongodb:
+                        core:
+                            MongoTemplate: DEBUG
