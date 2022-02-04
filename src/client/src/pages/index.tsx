@@ -4,6 +4,7 @@ import NavTemplate from "components/templates/NavTemplate";
 import HeaderTop from "components/organisms/HeaderTop";
 import HeaderMain from "components/organisms/HeaderMain";
 import Footer from "components/organisms/Footer";
+import HomeTemplate from "components/templates/HomeTemplate";
 
 const Home: FunctionComponent = () => {
 	return (
@@ -12,9 +13,7 @@ const Home: FunctionComponent = () => {
 			headerMain={<HeaderMain />}
 			footer={<Footer />}
 		>
-			<h1>Testing</h1>
-			<h1>Testing</h1>
-			<h1>Testing</h1>
+			<HomeTemplate children={<h1>Test</h1>} />
 		</NavTemplate>
 	);
 };

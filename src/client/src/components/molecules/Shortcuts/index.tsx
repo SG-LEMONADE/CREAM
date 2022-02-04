@@ -42,7 +42,7 @@ const Shortcuts: FunctionComponent<ShortcutsProps> = (props) => {
 					/>
 					<ShortcutItem
 						link={"/"}
-						bigImgSrc="https://kream-phinf.pstatic.net/MjAyMjAxMTRfMjgw/MDAxNjQyMTU5MTU3NjM5.p89ur4TcB7U6IJLE2GJEMtMfYbCgQwjiPkjccxdsJ3kg.DzCb0EY9KMVSa-bbu9mwwPTP7He_inHbnkz6EXB7x2Mg.JPEG/a_3e2d573f7ab04f319d05837caa8ccf2c.jpg?type=m"
+						bigImgSrc="https://kream-phinf.pstatic.net/MjAyMjAxMjhfMTQw/MDAxNjQzMzQwNDkzMjg3.8_2MetaVZa3nN2nXsY12HYJh-99WsrTz4I2Rh8WdCrcg.o5JC2XBdtKQMxsT-qMt8LaTllyYkQyllXBNJ-9AUroog.JPEG/a_7dabc4d43517452bb817a040197b0033.jpg?type=m"
 						smallImgSrc="https://kream-phinf.pstatic.net/MjAyMjAxMTRfMTc5/MDAxNjQyMTU5MTY0NjAy.meJovZOpmReE3OMln2KOQWNECkhWRpBfkFLL2_gqrm8g.4Z96Qs3T1khnZiv2JLAQFmWkY46j6fION-uXwkJqURIg.JPEG/a_2f4743870ed3490591e19767ee6a8411.jpg"
 						title="럭키 드로우"
 					/>
@@ -62,7 +62,12 @@ export default Shortcuts;
 
 const StyledShortcutWrapper = styled.section`
 	margin: 20px auto 0;
-	padding: 0 32.5px;
 	max-width: 1280px;
 	padding: 0 0 20px;
+	@media screen and (max-width: 1200px) {
+		text-align: center;
+		padding: 0 100px 20px;
+		display: flex;
+		justify-content: space-around;
+	}
 `;
