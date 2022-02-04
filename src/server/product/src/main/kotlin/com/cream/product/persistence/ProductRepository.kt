@@ -72,7 +72,7 @@ class ProductRepositoryImpl :
             )
             .offset(offset)
             .limit(limit)
-            .orderBy(getOrder(sort))
+            .orderBy(getOrder(sort), OrderSpecifier(Order.ASC, productEntity.id))
             .fetch()
     }
 
@@ -110,7 +110,7 @@ class ProductRepositoryImpl :
             )
             .offset(offset)
             .limit(limit)
-            .orderBy(getOrder(sort))
+            .orderBy(getOrder(sort), OrderSpecifier(Order.ASC, productEntity.id))
             .fetch()
     }
 
@@ -274,11 +274,11 @@ class ProductRepositoryImpl :
     }
 
     private fun geoPrice(price: Int?): BooleanExpression? {
-        return if (price == null) null else lowestAsk.goe(price)
+        return if (price == null) null else lowestAskQuery(null).goe(price)
     }
 
     private fun loePrice(price: Int?): BooleanExpression? {
-        return if (price == null) null else lowestAsk.loe(price)
+        return if (price == null) null else lowestAskQuery(null).loe(price)
     }
 
     private fun likeKeyword(keyWord: String?): BooleanExpression? {

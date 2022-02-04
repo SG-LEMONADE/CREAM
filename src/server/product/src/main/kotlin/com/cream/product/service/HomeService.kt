@@ -10,7 +10,6 @@ import com.cream.product.persistence.SectionRepository
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import java.nio.charset.StandardCharsets
 import kotlin.streams.toList
 
 @Service
@@ -26,7 +25,7 @@ class HomeService {
 
     fun getHomeView(
         userId: Long?
-    ): HomeDTO{
+    ): HomeDTO {
         val imageUrls: List<String> = bannerRepository.findAllByValidIsTrue()
             .stream().map {
                 it.imageUrl
