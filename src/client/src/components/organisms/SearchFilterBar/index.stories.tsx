@@ -13,4 +13,18 @@ const Template: ComponentStory<typeof SearchFilterBar> = (args) => (
 );
 
 export const Default = Template.bind({});
-Default.args = {};
+Default.args = {
+	setBrandId: {},
+	luxaryFilter: false,
+	//setLuxaryFilter: ,
+	filteredCategory: "sneakers",
+	//setFilteredCategory: () => void,
+	filteredBrand: ["adidas"],
+	//setFilteredBrand: () => void,
+	filteredCollections: [],
+	// setFilteredCollections,
+	filteredGender: "여성",
+	// setFilteredGender,
+	filteredPrice: "10만원 이하",
+	// setFilteredPrice,
+};

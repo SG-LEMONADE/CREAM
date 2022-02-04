@@ -78,10 +78,11 @@ const ShopTemplate: FunctionComponent<ShopTemplateProps> = (props) => {
 			filteredPrice,
 			sortOption,
 		);
-		router.push({
-			pathname: "/search",
-			query: query,
-		});
+		router &&
+			router.push({
+				pathname: "/search",
+				query: query,
+			});
 	}, [
 		luxaryFilter,
 		filteredCategory,
