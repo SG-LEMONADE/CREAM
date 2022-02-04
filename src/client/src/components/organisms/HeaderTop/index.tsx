@@ -6,13 +6,15 @@ import React, {
 } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import axios from "axios";
 
 import { validateUser } from "utils/user";
 import HeaderTopItem from "components/atoms/HeaderTopItem";
+import Swal from "sweetalert2";
 
-import colors from "colors/color";
 import styled from "@emotion/styled";
-import { customAxios } from "lib/customAxios";
+import colors from "colors/color";
+import { getToken } from "utils/token";
 
 const HeaderTop: FunctionComponent = () => {
 	const router = useRouter();
@@ -20,14 +22,28 @@ const HeaderTop: FunctionComponent = () => {
 	const [islogin, setIsLogin] = useState<boolean>(false);
 
 	const onLogout = async () => {
+		const token = getToken("accessToken");
 		try {
-			const res = await customAxios.post("/users/logout");
+			const res = await axios.post(
+				`${process.env.END_POINT_USER}/users/logout`,
+				{},
+				{
+					headers: {
+						Authorization: `Bearer ${token}`,
+					},
+				},
+			);
 			if (res.data === "") {
 				// user logout OK.
 				window.localStorage.removeItem("creamAccessToken");
 				window.localStorage.removeItem("creamRefreshToken");
-				alert("로그아웃 되셨습니다!");
-				router.reload();
+				Swal.fire({
+					position: "top",
+					icon: "success",
+					html: `로그아웃 되었습니다!`,
+					showConfirmButton: true,
+					didClose: () => router.reload(),
+				});
 			}
 		} catch (e) {
 			console.error("STH wrong when user logout.");

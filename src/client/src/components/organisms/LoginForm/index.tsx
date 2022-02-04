@@ -35,14 +35,17 @@ const LoginForm: FunctionComponent = () => {
 	const onHandleLogin = async (e: React.MouseEvent<HTMLButtonElement>) => {
 		e.preventDefault();
 		try {
-			const res = await axios.post(`${process.env.END_POINT}/users/login`, {
-				email: email,
-				password: password,
-			});
+			const res = await axios.post(
+				`${process.env.END_POINT_USER}/users/login`,
+				{
+					email: email,
+					password: password,
+				},
+			);
 			const data = await res.data;
 			setToken("accessToken", data.accessToken);
 			setToken("refreshToken", data.refreshToken);
-			router.push("/");
+			router.back();
 		} catch (err) {
 			const errResponse = err.response.data;
 			errResponse.code &&
@@ -123,6 +126,7 @@ export default LoginForm;
 const LoginContainer = styled.div`
 	margin: 0;
 	padding: 0;
+	padding-top: 100px;
 `;
 
 const LoginContents = styled.div`

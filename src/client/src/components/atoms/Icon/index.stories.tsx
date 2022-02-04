@@ -92,3 +92,8 @@ export const Check = Template.bind({});
 Check.args = {
 	name: "Check",
 };
+
+export const TurnOn = Template.bind({});
+TurnOn.args = {
+	name: "TurnOn",
+};

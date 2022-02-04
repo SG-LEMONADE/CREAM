@@ -42,10 +42,21 @@ const ProductSizeSelectGrid: FunctionComponent<ProductSizeSelectGridProps> = (
 				)}
 			{category === "wish" &&
 				datas.map((data) =>
-					activeSizeOption.includes(data) ? (
-						<ProductSizeSelect key={data} category="wish" size={data} active />
+					activeSizeOption && activeSizeOption.includes(data) ? (
+						<ProductSizeSelect
+							key={data}
+							category="wish"
+							size={data}
+							onClick={onClick}
+							active
+						/>
 					) : (
-						<ProductSizeSelect key={data} category="wish" size={data} />
+						<ProductSizeSelect
+							key={data}
+							category="wish"
+							size={data}
+							onClick={onClick}
+						/>
 					),
 				)}
 			{category === "sizeOnly" &&

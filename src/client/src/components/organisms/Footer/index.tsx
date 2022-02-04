@@ -4,7 +4,7 @@ import styled from "@emotion/styled";
 
 const Footer: FunctionComponent = () => {
 	return (
-		<StyledFooterWrapper style={{ position: "fixed", bottom: 0 }}>
+		<StyledFooterWrapper style={{}}>
 			<StyledServiceArea>
 				<ServiceArea>
 					<ServiceTitle>Team Lemonade 🍋</ServiceTitle>
@@ -75,7 +75,6 @@ const ServiceArea = styled.div``;
 
 const ServiceTitle = styled.div`
 	display: inline-flex;
-
 	align-items: center;
 	font-size: 16px;
 	letter-spacing: -0.16px;

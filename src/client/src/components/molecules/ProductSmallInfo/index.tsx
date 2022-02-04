@@ -79,9 +79,9 @@ const StyledSpan = styled.span`
 `;
 
 const StyledProductName = styled.p`
+	white-space: normal;
 	overflow: hidden;
 	text-overflow: ellipsis;
-	white-space: nowrap;
 	line-height: 18px;
 	font-size: 15px;
 	margin: 10px 0 0 0;
@@ -94,5 +94,5 @@ const StyledProductNameKor = styled.p`
 	color: rgba(34, 34, 34, 0.5);
 	overflow: hidden;
 	text-overflow: ellipsis;
-	white-space: nowrap;
+	white-space: normal;
 `;

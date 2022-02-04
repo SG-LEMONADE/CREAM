@@ -7,7 +7,7 @@ export type IconTypes = keyof typeof svg;
 type IconProps = {
 	name: IconTypes;
 	style?: CSSProperties;
-	onClick?: React.MouseEventHandler<SVGSVGElement>;
+	onClick?: React.MouseEventHandler<SVGSVGElement> | any;
 };
 
 const Icon: FunctionComponent<IconProps> = (props) => {

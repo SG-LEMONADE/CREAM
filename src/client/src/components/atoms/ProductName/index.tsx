@@ -18,7 +18,7 @@ export default ProductName;
 const StyledProductName = styled.p<{ category: string }>`
 	overflow: hidden;
 	text-overflow: ellipsis;
-	white-space: nowrap;
+	white-space: normal;
 	height: auto;
 	line-height: ${({ category }) => (category === "home" ? `17px` : `16px`)}
 	font-size: ${({ category }) => (category === "home" ? `14px` : `13px`)};

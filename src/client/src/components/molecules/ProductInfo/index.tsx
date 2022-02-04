@@ -14,11 +14,11 @@ type ProductInfoProps = {
 
 const ProductInfo: FunctionComponent<ProductInfoProps> = (props) => {
 	const { category, productInfo } = props;
-	const { brandName, name, translatedName } = productInfo;
+	const { brandName, originalName, translatedName } = productInfo;
 	return (
 		<StyledProductInfo category={category}>
 			<Brand category={category}>{brandName}</Brand>
-			<ProductName category={category}>{name}</ProductName>
+			<ProductName category={category}>{originalName}</ProductName>
 			<ProductNameKor category={category}>{translatedName}</ProductNameKor>
 		</StyledProductInfo>
 	);

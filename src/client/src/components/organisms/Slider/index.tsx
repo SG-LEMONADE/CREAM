@@ -2,7 +2,6 @@ import React, { FunctionComponent } from "react";
 import { Zoom, Fade } from "react-slideshow-image";
 
 import Icon from "components/atoms/Icon";
-import BannerImage from "components/atoms/BannerImage";
 
 import "react-slideshow-image/dist/styles.css";
 import styled from "@emotion/styled";
@@ -10,7 +9,7 @@ import styled from "@emotion/styled";
 type SliderProps = {
 	productSlider?: boolean;
 	small?: boolean;
-	images: typeof BannerImage[];
+	images: JSX.Element[];
 };
 
 const Slider: FunctionComponent<SliderProps> = (props) => {
@@ -24,8 +23,9 @@ const Slider: FunctionComponent<SliderProps> = (props) => {
 			<Icon
 				name="ChevronLeft"
 				style={{
-					marginRight: "-30px",
-					zIndex: "99",
+					position: "absolute",
+					left: "20px",
+					zIndex: "49",
 					cursor: "pointer",
 					width: "10px",
 				}}
@@ -36,7 +36,7 @@ const Slider: FunctionComponent<SliderProps> = (props) => {
 				name="ChevronRight"
 				style={{
 					marginLeft: "-30px",
-					zIndex: "99",
+					zIndex: "49",
 					cursor: "pointer",
 					width: "10px",
 				}}
@@ -100,6 +100,7 @@ export default Slider;
 
 const StyledFade = styled(Fade)<{ small: boolean }>`
 	max-width: ${({ small }) => small && "1200px"};
+	position: relative;
 `;
 
 const StyledSlider = styled(Zoom)`

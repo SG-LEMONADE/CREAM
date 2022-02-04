@@ -19,7 +19,8 @@
 		"react": "^17.0.2",
 		"react-dom": "^17.0.2",
 		"react-slideshow-image": "^3.6.1",
-		"sweetalert2": "^11.3.10"
+		"sweetalert2": "^11.3.10",
+		"swr": "^1.2.0"
 	},
 	"devDependencies": {
 		"@babel/core": "^7.16.5",

@@ -9,7 +9,7 @@ export const validateUser = async (): Promise<number> => {
 	}
 	try {
 		const res = await axios.post(
-			`${process.env.END_POINT}/users/validate`,
+			`${process.env.END_POINT_USER}/users/validate`,
 			{},
 			{
 				headers: {

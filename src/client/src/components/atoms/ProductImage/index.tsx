@@ -20,9 +20,15 @@ const imageSizes = {
 const ProductImage: FunctionComponent<ProductImageProps> = (props) => {
 	const { backgroundColor, category, src } = props;
 	return (
-		<ImageWrapper category={category} backgroundColor={backgroundColor}>
-			<StyledImage category={category} src={src} alt={src} />
-		</ImageWrapper>
+		<TmpWrapper category={category} backgroundColor={backgroundColor}>
+			<StyledImg
+				src={src}
+				alt={src}
+				width="230"
+				height="230"
+				category={category}
+			/>
+		</TmpWrapper>
 	);
 };
 
@@ -45,14 +51,27 @@ const ImageWrapper = styled.div<{ category: string; backgroundColor: string }>`
 		`}
 `;
 
-const StyledImage = styled(Image)<{ category: string }>`
+const TmpWrapper = styled.div<{ category: string; backgroundColor: string }>`
+	background-color: ${({ backgroundColor }) => backgroundColor};
+	border-radius: 8px;
+	position: relative;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: ${({ category }) => category === "products" && `560px`};
+	${({ category }) =>
+		category !== "products" &&
+		css`
+			max-width: ${category === "home" ? `282px` : `230px`};
+		`}
+`;
+
+const StyledImg = styled(Image)<{ category: string }>`
+	border-radius: 8px;
+	top: 0;
 	width: ${({ category }) =>
 		category === "products"
 			? `${imageSizes[category]}px`
 			: `${imageSizes[category]}%`};
 	height: auto;
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
 `;

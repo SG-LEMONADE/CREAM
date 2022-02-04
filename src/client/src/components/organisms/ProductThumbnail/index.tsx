@@ -14,7 +14,7 @@ type ProductThumbnailProps = {
 	category: "home" | "shop" | "products";
 	productInfo: ProductInfoRes;
 	isWishState?: boolean;
-	onHandleWishClick: () => void;
+	onHandleWishClick: (selectedProduct?: ProductInfoRes) => void;
 };
 
 const ProductThumbnail: FunctionComponent<ProductThumbnailProps> = (props) => {
@@ -32,7 +32,7 @@ const ProductThumbnail: FunctionComponent<ProductThumbnailProps> = (props) => {
 					<ImageArea>
 						{category === "home" ? (
 							<ProductThumbnailImage
-								imgSrc={productInfo.imageUrls}
+								imgSrc={productInfo.imageUrls[0]}
 								backgroundColor={productInfo.backgroundColor}
 								isInWishList={isWishState}
 								onHandleWishClick={onHandleWishClick}
@@ -40,17 +40,14 @@ const ProductThumbnail: FunctionComponent<ProductThumbnailProps> = (props) => {
 						) : (
 							<ProductImage
 								category="shop"
-								src={productInfo.imageUrls}
+								src={productInfo.imageUrls[0]}
 								backgroundColor={productInfo.backgroundColor}
 							/>
 						)}
 					</ImageArea>
 					<InfoArea>
 						<ProductInfo category={category} productInfo={productInfo} />
-						<PriceThumbnail
-							category={category}
-							price={productInfo.originalPrice}
-						/>
+						<PriceThumbnail category={category} price={productInfo.lowestAsk} />
 					</InfoArea>
 				</ProductLink>
 			</Link>
@@ -59,7 +56,7 @@ const ProductThumbnail: FunctionComponent<ProductThumbnailProps> = (props) => {
 					<BookmarkContents>
 						<Icon
 							name={isWishState ? "BookmarkFilled" : "Bookmark"}
-							style={{ width: "20px", height: "20px" }}
+							style={{ width: "20px", height: "20px", cursor: "pointer" }}
 							onClick={onHandleWishClick}
 						/>
 						<BookemarkCnt selected={isWishState}>

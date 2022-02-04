@@ -30,8 +30,9 @@ Home.args = {
 		brandId: "1",
 		backgroundColor: "#f6eeed",
 		brandName: "Jordan",
-		imageUrls:
+		imageUrls: [
 			"https://kream-phinf.pstatic.net/MjAyMDEwMjJfOCAg/MDAxNjAzMzQwOTUzNzMx.nCU7Bumo43r7JZcTRjq4blFOcj33dPIxNYW-_94RtWgg.rJwsoEL3W-f7pgpwfYISb-0HBItIWL04h7p8Ixyp8CUg.PNG/p_4cedd884b4a3427ca616bc31b3bf2867.png?type=m",
+		],
 	},
 	isWishState: true,
 };
@@ -54,8 +55,9 @@ Shop.args = {
 		brandId: "1",
 		backgroundColor: "#f6eeed",
 		brandName: "Jordan",
-		imageUrls:
+		imageUrls: [
 			"https://kream-phinf.pstatic.net/MjAyMDEwMjJfOCAg/MDAxNjAzMzQwOTUzNzMx.nCU7Bumo43r7JZcTRjq4blFOcj33dPIxNYW-_94RtWgg.rJwsoEL3W-f7pgpwfYISb-0HBItIWL04h7p8Ixyp8CUg.PNG/p_4cedd884b4a3427ca616bc31b3bf2867.png?type=m",
+		],
 	},
 	isWishState: true,
 };
@@ -78,7 +80,8 @@ Products.args = {
 		brandId: "1",
 		backgroundColor: "#f6eeed",
 		brandName: "Jordan",
-		imageUrls:
+		imageUrls: [
 			"https://kream-phinf.pstatic.net/MjAyMDEwMjJfOCAg/MDAxNjAzMzQwOTUzNzMx.nCU7Bumo43r7JZcTRjq4blFOcj33dPIxNYW-_94RtWgg.rJwsoEL3W-f7pgpwfYISb-0HBItIWL04h7p8Ixyp8CUg.PNG/p_4cedd884b4a3427ca616bc31b3bf2867.png?type=m",
+		],
 	},
 };

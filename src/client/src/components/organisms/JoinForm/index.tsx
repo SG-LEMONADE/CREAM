@@ -51,12 +51,14 @@ const JoinForm: FunctionComponent = () => {
 	const onHandleJoin = async (e: React.MouseEvent<HTMLButtonElement>) => {
 		e.preventDefault();
 		try {
-			const res = await axios.post(`${process.env.END_POINT}/users/signup`, {
-				email: email,
-				password: password,
-				shoeSize: size,
-			});
-			const data = await res.data;
+			const res = await axios.post(
+				`${process.env.END_POINT_USER}/users/signup`,
+				{
+					email: email,
+					password: password,
+					shoeSize: size,
+				},
+			);
 			Swal.fire({
 				position: "top",
 				icon: "success",
@@ -167,6 +169,7 @@ export default JoinForm;
 const JoinContainer = styled.div`
 	margin: 0;
 	padding: 0;
+	padding-top: 100px;
 `;
 
 const JoinContents = styled.div`

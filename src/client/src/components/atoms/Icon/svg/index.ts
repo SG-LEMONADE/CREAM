@@ -14,3 +14,4 @@ export { ReactComponent as ChevronDown } from "./chevronDown.svg";
 export { ReactComponent as Question } from "./question.svg";
 export { ReactComponent as Profile } from "./profile.svg";
 export { ReactComponent as Check } from "./check.svg";
+export { ReactComponent as TurnOn } from "./turnOn.svg";

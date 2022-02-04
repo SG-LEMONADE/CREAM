@@ -6,23 +6,36 @@ import Icon from "components/atoms/Icon";
 import styled from "@emotion/styled";
 
 type QuickFilterBarProps = {
+	luxaryActivateState: boolean;
+	filteredCategory: string;
 	onApplyFilter: (luxury: boolean, category: string) => void;
 };
 
-const productCategory = ["스니커즈", "의류", "패션잡화", "라이프", "테크"];
+const productCategory = ["스니커즈", "의류", "패션 잡화", "라이프", "테크"];
 
 const QuickFilterBar: FunctionComponent<QuickFilterBarProps> = (props) => {
-	const { onApplyFilter } = props;
+	const { luxaryActivateState, filteredCategory, onApplyFilter } = props;
 
-	const [filtered, setFiltered] = useState<boolean>(false);
-	const [luxaryFilter, setLuxuryFilter] = useState<boolean>(false);
-	const [activateItem, setActivateItem] = useState<string>("");
+	const [filtered, setFiltered] = useState<boolean>(
+		luxaryActivateState || (filteredCategory && filteredCategory.length > 0),
+	);
+	const [luxaryFilter, setLuxuryFilter] = useState<boolean>(
+		() => luxaryActivateState,
+	);
+	const [activateItem, setActivateItem] = useState<string>(
+		() => filteredCategory,
+	);
 
 	const onHandleFilter = (content: string) => {
 		if (content === activateItem) {
 			setActivateItem("");
 		} else setActivateItem(content);
 	};
+
+	useEffect(() => {
+		setLuxuryFilter(luxaryActivateState);
+		setActivateItem(filteredCategory);
+	}, [luxaryActivateState, filteredCategory]);
 
 	useEffect(() => {
 		onApplyFilter(luxaryFilter, activateItem);
@@ -46,11 +59,19 @@ const QuickFilterBar: FunctionComponent<QuickFilterBarProps> = (props) => {
 					activate={false}
 				/>
 			)}
-			<QuickFilter
-				onClick={() => setLuxuryFilter(!luxaryFilter)}
-				content="럭셔리"
-				activate={false}
-			/>
+			{luxaryFilter ? (
+				<QuickFilter
+					onClick={() => setLuxuryFilter(!luxaryFilter)}
+					content="럭셔리"
+					activate={true}
+				/>
+			) : (
+				<QuickFilter
+					onClick={() => setLuxuryFilter(!luxaryFilter)}
+					content="럭셔리"
+					activate={false}
+				/>
+			)}
 			<StyledDivider />
 			{productCategory.map((product) =>
 				activateItem === product ? (
