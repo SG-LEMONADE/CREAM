@@ -115,9 +115,9 @@ extension ProductListViewController: UICollectionViewDataSource {
 extension ProductListViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if indexPath.section == 1 {
-            guard let baseURL = URL(string: "http://ec2-3-35-137-187.ap-northeast-2.compute.amazonaws.com:8081")
+            guard let baseURL = URL(string: "http://ec2-13-209-18-231.ap-northeast-2.compute.amazonaws.com:8081")
             else { return }
-            
+        
             let config: NetworkConfigurable = ApiDataNetworkConfig(baseURL: baseURL)
             let networkService: NetworkService = DefaultNetworkService(config: config)
             let dataTransferService: DataTransferService = DefaultDataTransferService(with: networkService)

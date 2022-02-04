@@ -14,7 +14,7 @@ protocol SizeSelectDelegate: NSObject {
 final class SizeListViewController: BaseDIViewController<SizeListViewModel> {
     
     private lazy var sizeView = SizeListView()
-    private var columnCount: CGFloat = 1
+    
     weak var delegate: SizeSelectDelegate?
     
     override init(_ viewModel: SizeListViewModel) {
@@ -29,7 +29,6 @@ final class SizeListViewController: BaseDIViewController<SizeListViewModel> {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureCollectionView()
-        bindViewModel()
         configureUserActions()
     }
     
@@ -81,27 +80,12 @@ final class SizeListViewController: BaseDIViewController<SizeListViewModel> {
             self.dismiss(animated: true)
         }
     }
-    
-    func bindViewModel() {
-        viewModel.sizeList.bind { [weak self] lists in
-            if lists.count < 4 {
-                self?.columnCount = 1
-            } else if lists.count < 13 {
-                self?.columnCount = 3
-            } else {
-                self?.columnCount = 2
-            }
-            DispatchQueue.main.async {
-                self?.sizeView.sizeCollectionView.reloadData()
-            }
-        }
-    }
 }
 // MARK: CollectionView Layout & CollectionView Cell Configuration
 extension SizeListViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let cellLayout = CGSize(width: (collectionView.bounds.size.width - (columnCount - 1) * SizeListView.Constraint.GridWidthSpacing) / columnCount,
+        let cellLayout = CGSize(width: (collectionView.bounds.size.width - (viewModel.numberOfColumns - 1) * SizeListView.Constraint.GridWidthSpacing) / viewModel.numberOfColumns,
                                 height: ((collectionView.bounds.size.width - SizeListView.Constraint.GridHeightSpacing) / 3) * 0.35)
         return cellLayout
     }
@@ -114,10 +98,10 @@ extension SizeListViewController: UICollectionViewDataSource, UICollectionViewDe
                                                             for: indexPath) as? SizeListCell
         else { return UICollectionViewCell() }
         
-        cell.configure(with: viewModel.sizeList.value[indexPath.item])
+//        cell.configure(with: viewModel.sizeList.value[indexPath.item])
         
         viewModel.getCellViewModel(at: indexPath) {
-            cell.configure(with: $0)
+            cell.configure(size: $0)
         }
         
         return cell

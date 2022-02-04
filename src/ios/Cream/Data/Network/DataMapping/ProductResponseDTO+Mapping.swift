@@ -9,12 +9,13 @@ import Foundation
 
 struct ProductResponseDTO: Decodable {
     let product: ProductInfoResponseDTO
-    let lastCompletedTrade: [CompletedTradeDTO]
+    let lastCompletedTrade: [CompletedTradeDTO]?
     let lowestAsk: Int?
     let highestBid: Int?
     let asksBySizeCount, bidsBySizeCount: [TradeBySizeCountDTO]
     let changePercentage: Double?
     let changeValue, lastSalePrice, pricePremium: Int?
+    let backgroundColor: String?
     let pricePremiumPercentage: Int?
     let askPrices, bidPrices: [String: Int?]
 }
@@ -78,7 +79,7 @@ extension ProductInfoResponseDTO {
 extension ProductResponseDTO {
     func toDomain() -> ProductDetail {
         var trades: [CompletedTrade] = []
-        lastCompletedTrade.forEach {
+        lastCompletedTrade?.forEach {
             trades.append(.init(price: $0.price,
                                 size: $0.size,
                                 tradeDate: $0.tradeDate))
@@ -103,6 +104,7 @@ extension ProductResponseDTO {
                      changeValue: changeValue,
                      lastSalePrice: lastSalePrice,
                      pricePremium: pricePremium,
+                     backgroundColor: product.backgroundColor,
                      styleCode: product.styleCode,
                      releaseDate: product.releasedDate ?? "-",
                      color: product.color ?? "-",

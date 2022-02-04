@@ -54,8 +54,16 @@ class ProductViewController: BaseDIViewController<ProductViewModel> {
             self?.productView.tradeContainerView.sellButton.setPrice(product.highestBid)
             self?.productView.tradeContainerView.buyButton.setPrice(product.lowestAsk)
             self?.productView.tradeContainerView.wishButton.configure(product.wishCount)
-            
         }
+    }
+}
+
+extension ProductViewController: TradeDelegate {
+    func moveFocusToProcessScene() {
+        let processViewController = ProcessViewController(DefaultProcessViewModel())
+        let navigationController = UINavigationController(rootViewController: processViewController)
+        navigationController.modalPresentationStyle = .fullScreen
+        self.present(navigationController, animated: true, completion: nil)
     }
 }
 
@@ -82,12 +90,19 @@ extension ProductViewController {
     
     @objc
     func didTapBuyButton() {
-        print(#function)
+        let tradeViewController = TradeViewController(DefaultTradeViewModel(tradeType: .buy,
+                                                                            viewModel.item.value))
+        let navigationController = UINavigationController(rootViewController: tradeViewController)
+        tradeViewController.delegate = self
+        self.present(navigationController, animated: true)
     }
     
     @objc
     func didTapSellButton() {
-        print(#function)
+        let tradeViewController = TradeViewController(DefaultTradeViewModel(tradeType: .sell,
+                                                                            viewModel.item.value))
+        let navigationController = UINavigationController(rootViewController: tradeViewController)
+        self.present(navigationController, animated: true)
     }
 }
 
@@ -144,7 +159,8 @@ extension ProductViewController: UICollectionViewDataSource, UICollectionViewDel
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ShopBannerCell.reuseIdentifier,
                                                                 for: indexPath) as? ShopBannerCell
             else { return UICollectionViewCell() }
-            cell.backgroundColor = .lightGray
+            print(viewModel.item.value.backgroundColor)
+            cell.backgroundColor = UIColor(rgb: viewModel.item.value.backgroundColor.hexToInt!)
             cell.configure(viewModel.item.value.imageUrls[indexPath.item])
             
             return cell
@@ -185,7 +201,6 @@ extension ProductViewController: UICollectionViewDataSource, UICollectionViewDel
             else { return UICollectionViewCell() }
             cell.backgroundColor = .systemGray
             cell.configureTest()
-            
             return cell
             
         default:

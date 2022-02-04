@@ -66,32 +66,36 @@ extension TradeContainerView: ViewConfiguration {
     }
 }
 
-final class TradeButton: UIButton {
-    enum TradeType: String, CustomStringConvertible {
-        case buy, sell
-        
-        var color: UIColor {
-            if self == .buy {
-                return UIColor(rgb: 0xEF6253)
-            } else {
-                return UIColor(rgb: 0x41B979)
-            }
-        }
-        
-        var description: String {
-            switch self {
-            case .buy:
-                return "구매"
-            case .sell:
-                return "판매"
-            }
-        }
-        
-        var labelText: String {
-            return "즉시 \(self.description)가"
+enum TradeType: String, CustomStringConvertible {
+    case buy, sell
+    
+    var color: UIColor {
+        if self == .buy {
+            return UIColor(rgb: 0xEF6253)
+        } else {
+            return UIColor(rgb: 0x41B979)
         }
     }
     
+    var description: String {
+        switch self {
+        case .buy:
+            return "구매"
+        case .sell:
+            return "판매"
+        }
+    }
+    
+    var navigationTitle: String {
+        return self.description+"하기"
+    }
+    
+    var labelText: String {
+        return "즉시 \(self.description)가"
+    }
+}
+
+final class TradeButton: UIButton {
     private var tradeType: TradeType
     private var price: Int?
     
@@ -176,14 +180,10 @@ extension TradeButton: ViewConfiguration {
 
 extension TradeButton {
     func setPrice(_ price: Int?) {
-        print(#function)
         if let price = self.price {
             DispatchQueue.main.async {
-                print("true")
                 self.priceLabel.text = "\(price.priceFormat)원"
             }
-        } else {
-            print("false")
         }
     }
 }

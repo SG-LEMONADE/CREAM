@@ -16,6 +16,7 @@ protocol SizeListViewModelInput {
 protocol SizeListViewModelOutput {
     var size: Observable<String> { get set }
     var numberOfCells: Int { get }
+    var numberOfColumns: Double { get }
     func getCellViewModel(at indexPath: IndexPath, completion: @escaping (String) -> Void)
 }
 
@@ -24,11 +25,21 @@ protocol SizeListViewModel: SizeListViewModelInput, SizeListViewModelOutput { }
 final class DefaultSizeListViewModel: SizeListViewModel {
     var size: Observable<String> = Observable("")
     var sizeList: Observable<[String]> = Observable([])
-
+    
     var numberOfCells: Int {
         return sizeList.value.count
     }
     
+    var numberOfColumns: Double {
+        if sizeList.value.count < 4 {
+            return 1
+        } else if sizeList.value.count < 13 {
+            return 3
+        } else {
+            return 2
+        }
+    }
+
     init(_ sizeList: [String] = Array(0...16).map { "\($0 * 5 + 220)" }) {
         self.sizeList.value = sizeList
     }
@@ -42,6 +53,6 @@ final class DefaultSizeListViewModel: SizeListViewModel {
     }
     
     func viewDidLoad() {
-         
+        
     }
 }

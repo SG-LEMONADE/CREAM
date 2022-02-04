@@ -48,7 +48,16 @@
 		7B5EEE3B27A7713100990E37 /* ProductListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B5EEE3A27A7713100990E37 /* ProductListView.swift */; };
 		7B5EEE3D27A773AE00990E37 /* ProductListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B5EEE3C27A773AE00990E37 /* ProductListViewModel.swift */; };
 		7B5EEE3F27A80E8B00990E37 /* String+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B5EEE3E27A80E8B00990E37 /* String+.swift */; };
+		7B5EEE4527A8390C00990E37 /* TradeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B5EEE4427A8390C00990E37 /* TradeViewModel.swift */; };
+		7B5EEE4727A8391700990E37 /* TradeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B5EEE4627A8391700990E37 /* TradeView.swift */; };
 		7B5EEE4927A83A6900990E37 /* ProductView+CompositionalLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B5EEE4827A83A6900990E37 /* ProductView+CompositionalLayout.swift */; };
+		7B5EEE4D27A9195E00990E37 /* SizePriceButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B5EEE4C27A9195E00990E37 /* SizePriceButton.swift */; };
+		7B5EEE5027A95DCB00990E37 /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B5EEE4F27A95DCB00990E37 /* ImageLoader.swift */; };
+		7B5EEE5627A9A0B000990E37 /* TradePriceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B5EEE5527A9A0B000990E37 /* TradePriceView.swift */; };
+		7B5EEE5D27ABDC9B00990E37 /* ProcessViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B5EEE5C27ABDC9B00990E37 /* ProcessViewController.swift */; };
+		7B5EEE5F27ACBFA300990E37 /* UITextField+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B5EEE5E27ACBFA300990E37 /* UITextField+.swift */; };
+		7B5EEE6127AD10E500990E37 /* ProcessView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B5EEE6027AD10E500990E37 /* ProcessView.swift */; };
+		7B5EEE6327AD481900990E37 /* ProcessViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B5EEE6227AD481900990E37 /* ProcessViewModel.swift */; };
 		7B8EAA78279FBBB600B07259 /* ProductRepositoryInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B8EAA77279FBBB600B07259 /* ProductRepositoryInterface.swift */; };
 		7B8EAA7D279FC2CD00B07259 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B8EAA7C279FC2CD00B07259 /* BaseViewController.swift */; };
 		7B8EAA7F279FC38300B07259 /* BaseDIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B8EAA7E279FC38300B07259 /* BaseDIViewController.swift */; };
@@ -135,7 +144,16 @@
 		7B5EEE3A27A7713100990E37 /* ProductListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListView.swift; sourceTree = "<group>"; };
 		7B5EEE3C27A773AE00990E37 /* ProductListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListViewModel.swift; sourceTree = "<group>"; };
 		7B5EEE3E27A80E8B00990E37 /* String+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+.swift"; sourceTree = "<group>"; };
+		7B5EEE4427A8390C00990E37 /* TradeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradeViewModel.swift; sourceTree = "<group>"; };
+		7B5EEE4627A8391700990E37 /* TradeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradeView.swift; sourceTree = "<group>"; };
 		7B5EEE4827A83A6900990E37 /* ProductView+CompositionalLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProductView+CompositionalLayout.swift"; sourceTree = "<group>"; };
+		7B5EEE4C27A9195E00990E37 /* SizePriceButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SizePriceButton.swift; sourceTree = "<group>"; };
+		7B5EEE4F27A95DCB00990E37 /* ImageLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoader.swift; sourceTree = "<group>"; };
+		7B5EEE5527A9A0B000990E37 /* TradePriceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradePriceView.swift; sourceTree = "<group>"; };
+		7B5EEE5C27ABDC9B00990E37 /* ProcessViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessViewController.swift; sourceTree = "<group>"; };
+		7B5EEE5E27ACBFA300990E37 /* UITextField+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+.swift"; sourceTree = "<group>"; };
+		7B5EEE6027AD10E500990E37 /* ProcessView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessView.swift; sourceTree = "<group>"; };
+		7B5EEE6227AD481900990E37 /* ProcessViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessViewModel.swift; sourceTree = "<group>"; };
 		7B8EAA77279FBBB600B07259 /* ProductRepositoryInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductRepositoryInterface.swift; sourceTree = "<group>"; };
 		7B8EAA7C279FC2CD00B07259 /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		7B8EAA7E279FC38300B07259 /* BaseDIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseDIViewController.swift; sourceTree = "<group>"; };
@@ -205,8 +223,10 @@
 				7B193CA62799189900B934A3 /* WishButton.swift */,
 				7B54D707279045F400214664 /* TradeButton.swift */,
 				7B193CAA2799B3D900B934A3 /* SizeButton.swift */,
+				7B5EEE4C27A9195E00990E37 /* SizePriceButton.swift */,
 				7B8EAA8527A0DB4700B07259 /* ValidationHelper.swift */,
 				7BF82E1827A56C8B007E0A79 /* ErrorMessage.swift */,
+				7B5EEE4F27A95DCB00990E37 /* ImageLoader.swift */,
 			);
 			path = SupportFile;
 			sourceTree = "<group>";
@@ -320,9 +340,23 @@
 		7B5EEE4327A832B600990E37 /* TradeScene */ = {
 			isa = PBXGroup;
 			children = (
+				7B5EEE5927AB7D9900990E37 /* Views */,
 				7B193CB4279D115500B934A3 /* TradeViewController.swift */,
+				7B5EEE4427A8390C00990E37 /* TradeViewModel.swift */,
+				7B5EEE4627A8391700990E37 /* TradeView.swift */,
+				7B5EEE5C27ABDC9B00990E37 /* ProcessViewController.swift */,
+				7B5EEE6227AD481900990E37 /* ProcessViewModel.swift */,
+				7B5EEE6027AD10E500990E37 /* ProcessView.swift */,
 			);
 			path = TradeScene;
+			sourceTree = "<group>";
+		};
+		7B5EEE5927AB7D9900990E37 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				7B5EEE5527A9A0B000990E37 /* TradePriceView.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		7B8EAA7B279FBC6100B07259 /* Views */ = {
@@ -471,6 +505,7 @@
 				7B35667E2791B29500C45A68 /* HomeScene */,
 				7B35667D2791B28D00C45A68 /* ProductListScene */,
 				7B193C8F2796F8C900B934A3 /* ProductScene */,
+				7B5EEE4327A832B600990E37 /* TradeScene */,
 				7BB0111A278BCEB7005E5C9E /* LoginScene */,
 				7B54D6FA278EF2D900214664 /* JoinScene */,
 				7BF82E0F27A3FE21007E0A79 /* SizeSelectScene */,
@@ -487,6 +522,7 @@
 				7B193CAC2799BDEF00B934A3 /* UIColor+.swift */,
 				7B193CB2279BE1A000B934A3 /* CALayer+.swift */,
 				7B5EEE3E27A80E8B00990E37 /* String+.swift */,
+				7B5EEE5E27ACBFA300990E37 /* UITextField+.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -676,6 +712,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7B5EEE5F27ACBFA300990E37 /* UITextField+.swift in Sources */,
 				7B8EAAA227A2414300B07259 /* DataTransferService.swift in Sources */,
 				7B8EAA8E27A1919600B07259 /* LoginViewController.swift in Sources */,
 				7B5EEE2D27A5B08B00990E37 /* ProductView.swift in Sources */,
@@ -688,7 +725,9 @@
 				7B193C972797E49700B934A3 /* FilterImageCell.swift in Sources */,
 				7B193CA12798EE7E00B934A3 /* ItemInfoCell.swift in Sources */,
 				7B8EAA9E27A2411700B07259 /* Endpoint.swift in Sources */,
+				7B5EEE6327AD481900990E37 /* ProcessViewModel.swift in Sources */,
 				7B5EEE4927A83A6900990E37 /* ProductView+CompositionalLayout.swift in Sources */,
+				7B5EEE5D27ABDC9B00990E37 /* ProcessViewController.swift in Sources */,
 				7BF82E0E27A3CCB9007E0A79 /* Cancellable.swift in Sources */,
 				7B5EEE3327A6B01900990E37 /* ProductUseCase.swift in Sources */,
 				7B8EAA9027A191A300B07259 /* LoginViewModel.swift in Sources */,
@@ -704,6 +743,7 @@
 				7BF82E1327A54939007E0A79 /* SizeListView.swift in Sources */,
 				7B8EAA9227A191AA00B07259 /* LoginView.swift in Sources */,
 				7B193C8D2796B6A900B934A3 /* ShopBannerCell.swift in Sources */,
+				7B5EEE4527A8390C00990E37 /* TradeViewModel.swift in Sources */,
 				7B5EEE3727A6C6B000990E37 /* Product.swift in Sources */,
 				7B54D708279045F400214664 /* TradeButton.swift in Sources */,
 				7B5EEE2227A58A4400990E37 /* UserUseCase.swift in Sources */,
@@ -727,18 +767,23 @@
 				7BB01117278BCA54005E5C9E /* Observable.swift in Sources */,
 				7B8EAA9C27A240F900B07259 /* NetworkConfigurable.swift in Sources */,
 				7BB01115278BC6D1005E5C9E /* BindingTextField.swift in Sources */,
+				7B5EEE5627A9A0B000990E37 /* TradePriceView.swift in Sources */,
 				7BB01121278BD66C005E5C9E /* UIView+.swift in Sources */,
 				7B36DB102789202800D8ACB0 /* SceneDelegate.swift in Sources */,
+				7B5EEE4D27A9195E00990E37 /* SizePriceButton.swift in Sources */,
 				7B8EAA78279FBBB600B07259 /* ProductRepositoryInterface.swift in Sources */,
 				7B54D7042790351400214664 /* SizeListCell.swift in Sources */,
+				7B5EEE4727A8391700990E37 /* TradeView.swift in Sources */,
 				7B193C8927965E5A00B934A3 /* HomeViewCategoryHeaderView.swift in Sources */,
 				7BF82E1927A56C8B007E0A79 /* ErrorMessage.swift in Sources */,
+				7B5EEE6127AD10E500990E37 /* ProcessView.swift in Sources */,
 				7B5EEE2F27A69ADA00990E37 /* ProductResponseDTO+Mapping.swift in Sources */,
 				7B193CAD2799BDEF00B934A3 /* UIColor+.swift in Sources */,
 				7B3566842791E66400C45A68 /* HTTPMethod.swift in Sources */,
 				7B35667C27914EF200C45A68 /* SizeListCellViewModel.swift in Sources */,
 				7BF82E0227A2CD18007E0A79 /* JoinRequestDTO+Mapping.swift in Sources */,
 				7BF82E1527A54944007E0A79 /* SizeListViewModel.swift in Sources */,
+				7B5EEE5027A95DCB00990E37 /* ImageLoader.swift in Sources */,
 				7B8EAA7D279FC2CD00B07259 /* BaseViewController.swift in Sources */,
 				7BF82E0B27A38BB5007E0A79 /* UserRepository.swift in Sources */,
 				7B8EAA8A27A17C7600B07259 /* JoinView.swift in Sources */,
