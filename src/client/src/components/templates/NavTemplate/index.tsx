@@ -2,30 +2,30 @@ import React, { FunctionComponent } from "react";
 
 import styled from "@emotion/styled";
 
-type HomeTemplateProps = {
+type NavTemplateProps = {
 	headerTop: React.ReactNode;
 	headerMain: React.ReactNode;
 	children: React.ReactNode;
 	footer?: React.ReactNode;
 };
 
-const HomeTemplate: FunctionComponent<HomeTemplateProps> = (props) => {
+const NavTemplate: FunctionComponent<NavTemplateProps> = (props) => {
 	const { headerTop, headerMain, children, footer } = props;
 	return (
-		<StyledHomeWrapper>
+		<StyledNavWrapper>
 			<StyledTopFixed>
 				{headerTop && <>{headerTop}</>}
 				{headerMain && <>{headerMain}</>}
 			</StyledTopFixed>
 			<StyledContent>{children}</StyledContent>
 			{footer && <>{footer}</>}
-		</StyledHomeWrapper>
+		</StyledNavWrapper>
 	);
 };
 
-export default HomeTemplate;
+export default NavTemplate;
 
-const StyledHomeWrapper = styled.div``;
+const StyledNavWrapper = styled.div``;
 
 const StyledTopFixed = styled.header`
 	position: fixed;

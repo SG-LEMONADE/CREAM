@@ -4,12 +4,15 @@ import React, {
 	useEffect,
 	useState,
 } from "react";
+import { useRouter } from "next/router";
 
 import ShopTopBox from "components/organisms/ShopTopBox";
 import Slider from "components/organisms/Slider";
 import BannerImage from "components/atoms/BannerImage";
 import TagItem from "components/atoms/TagItem";
 import SearchFilterBar from "components/organisms/SearchFilterBar";
+import Dropdown from "components/organisms/Dropdown";
+import { queryMaker } from "utils/query";
 
 import styled from "@emotion/styled";
 import { css } from "@emotion/react";
@@ -44,14 +47,19 @@ const ImageInfos = [
 const ShopTemplate: FunctionComponent<ShopTemplateProps> = (props) => {
 	const { children } = props;
 
+	const router = useRouter();
+
 	const [scrolled, setScrolled] = useState<boolean>(false);
+
+	const [brandId, setBrandId] = useState<Map<string, number>>();
 
 	const [luxaryFilter, setLuxaryFilter] = useState<boolean>(false);
 	const [filteredCategory, setFilteredCategory] = useState<string>("");
 	const [filteredBrand, setFilteredBrand] = useState<string[]>([]);
 	const [filteredCollections, setFilteredCollections] = useState<string[]>([]);
 	const [filteredGender, setFilteredGender] = useState<string>("");
-	const [filteredPrice, setFilteredPrice] = useState<string[]>([]);
+	const [filteredPrice, setFilteredPrice] = useState<string>("");
+	const [sortOption, setSortOption] = useState<string>("");
 
 	const onHandleQuickFilter = useCallback(
 		(luxary: boolean, category: string) => {
@@ -62,23 +70,31 @@ const ShopTemplate: FunctionComponent<ShopTemplateProps> = (props) => {
 	);
 
 	useEffect(() => {
-		console.log("===========shopTemplate Rendered!============");
-		console.log(luxaryFilter);
-		console.log(filteredCategory);
-		console.log(filteredBrand);
-		console.log(filteredGender);
-		console.log(filteredPrice);
+		const query = queryMaker(
+			filteredCategory,
+			filteredBrand.map((brand) => brandId.get(brand)),
+			filteredCollections,
+			filteredGender,
+			filteredPrice,
+			sortOption,
+		);
+		router.push({
+			pathname: "/search",
+			query: query,
+		});
 	}, [
 		luxaryFilter,
 		filteredCategory,
 		filteredBrand,
 		filteredGender,
 		filteredPrice,
+		sortOption,
+		brandId,
 	]);
 
-	const handleScroll = () => {
+	const handleScroll = useCallback(() => {
 		setScrolled(window.scrollY > 0);
-	};
+	}, []);
 
 	useEffect(() => {
 		window.addEventListener("scroll", handleScroll);
@@ -110,6 +126,7 @@ const ShopTemplate: FunctionComponent<ShopTemplateProps> = (props) => {
 				<ContentsWrapper>
 					<SearchFilterWrapper>
 						<SearchFilterBar
+							setBrandId={setBrandId}
 							luxaryFilter={luxaryFilter}
 							setLuxaryFilter={setLuxaryFilter}
 							filteredCategory={filteredCategory}
@@ -168,21 +185,18 @@ const ShopTemplate: FunctionComponent<ShopTemplateProps> = (props) => {
 										{filteredGender}
 									</TagItem>
 								)}
-								{filteredPrice.length > 0 &&
-									filteredPrice.map((option) => (
-										<TagItem
-											onClick={() =>
-												setFilteredPrice(
-													filteredPrice.filter((price) => price !== option),
-												)
-											}
-										>
-											{option}
-										</TagItem>
-									))}
+								{filteredPrice.length > 0 && (
+									<TagItem onClick={() => setFilteredPrice("")}>
+										{filteredPrice}
+									</TagItem>
+								)}
 							</FilteredTags>
 							<SortWrapper>
-								<SortContent>인기순</SortContent>
+								<Dropdown
+									onClickSort={(sortOption: string) =>
+										setSortOption(sortOption)
+									}
+								/>
 							</SortWrapper>
 						</SearchContentOption>
 						<SearchContent>{children}</SearchContent>
@@ -276,24 +290,6 @@ const SortWrapper = styled.div`
 	position: relative;
 `;
 
-const SortContent = styled.div`
-	display: flex;
-	align-items: center;
-	cursor: pointer;
-	font-size: 14px;
-	letter-spacing: -0.21px;
-	font-weight: 600;
-	:after {
-		content: "";
-		margin-left: 2px;
-		display: inline-flex;
-		width: 24px;
-		height: 24px;
-		background: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGZpbGw9Im5vbmUiIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZmlsbD0iIzIyMiIgZmlsbC1ydWxlPSJldmVub2RkIiBkPSJNNi40NyAxOS41M2wuNTMuNTMuNTMtLjUzIDQtNC0xLjA2LTEuMDYtMi43MiAyLjcyVjVoLTEuNXYxMi4xOWwtMi43Mi0yLjcyLTEuMDYgMS4wNiA0IDR6TTE3LjUzIDQuNDdMMTcgMy45NGwtLjUzLjUzLTQgNCAxLjA2IDEuMDYgMi43Mi0yLjcyVjE5aDEuNVY2LjgxbDIuNzIgMi43MiAxLjA2LTEuMDYtNC00eiIgY2xpcC1ydWxlPSJldmVub2RkIi8+PC9zdmc+)
-			no-repeat;
-	}
-`;
-
 const SearchContent = styled.div`
 	display: grid;
 	grid-template-columns: repeat(4, 1fr);
@@ -305,4 +301,6 @@ const SearchContent = styled.div`
 	}
 	gap: 70px 20px;
 	overflow-y: auto;
+	position: relative;
+	z-index: -1;
 `;

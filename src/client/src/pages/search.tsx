@@ -6,11 +6,12 @@ import React, {
 } from "react";
 import { useRouter } from "next/router";
 import useSWR from "swr";
+import axios from "axios";
 
 import Footer from "components/organisms/Footer";
 import HeaderMain from "components/organisms/HeaderMain";
 import HeaderTop from "components/organisms/HeaderTop";
-import HomeTemplate from "components/templates/HomeTemplate";
+import NavTemplate from "components/templates/NavTemplate";
 import ShopTemplate from "components/templates/ShopTemplate";
 import ProductThumbnail from "components/organisms/ProductThumbnail";
 import Modal from "components/molecules/Modal";
@@ -19,7 +20,7 @@ import ProductSizeSelectGrid from "components/molecules/ProductSizeSelectGrid";
 import { validateUser } from "utils/user";
 import { fetcher } from "lib/fetcher";
 import { ProductInfoRes } from "types";
-import axios from "axios";
+import { queryStringMaker } from "utils/query";
 
 const Search: FunctionComponent = () => {
 	const router = useRouter();
@@ -29,7 +30,11 @@ const Search: FunctionComponent = () => {
 	const [pickedProductInfo, setPickedProductInfo] = useState<ProductInfoRes>();
 
 	const { data, error, mutate } = useSWR<ProductInfoRes[]>(
-		`${process.env.END_POINT_PRODUCT}/products?cursor=0&perPage=40`,
+		Object.keys(router.query).length > 0
+			? `${
+					process.env.END_POINT_PRODUCT
+			  }/products?cursor=0&perPage=40&${queryStringMaker(router.query)}`
+			: `${process.env.END_POINT_PRODUCT}/products?cursor=0&perPage=40`,
 		fetcher,
 	);
 
@@ -101,7 +106,7 @@ const Search: FunctionComponent = () => {
 	}, [data, pickedProductInfo]);
 
 	return (
-		<HomeTemplate
+		<NavTemplate
 			headerTop={<HeaderTop />}
 			headerMain={<HeaderMain />}
 			footer={<Footer />}
@@ -150,7 +155,7 @@ const Search: FunctionComponent = () => {
 					</>
 				)}
 			</Modal>
-		</HomeTemplate>
+		</NavTemplate>
 	);
 };
 

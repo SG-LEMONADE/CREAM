@@ -13,6 +13,7 @@ import SearchFilterItem from "components/molecules/SearchFilterItem";
 import styled from "@emotion/styled";
 
 type SearchFilterBarProps = {
+	setBrandId: React.Dispatch<React.SetStateAction<Map<string, number>>>;
 	luxaryFilter: boolean;
 	setLuxaryFilter: React.Dispatch<React.SetStateAction<boolean>>;
 	filteredCategory: string;
@@ -23,12 +24,13 @@ type SearchFilterBarProps = {
 	setFilteredCollections: React.Dispatch<React.SetStateAction<string[]>>;
 	filteredGender: string;
 	setFilteredGender: React.Dispatch<React.SetStateAction<string>>;
-	filteredPrice: string[];
-	setFilteredPrice: React.Dispatch<React.SetStateAction<string[]>>;
+	filteredPrice: string;
+	setFilteredPrice: React.Dispatch<React.SetStateAction<string>>;
 };
 
 const SearchFilterBar: FunctionComponent<SearchFilterBarProps> = (props) => {
 	const {
+		setBrandId,
 		luxaryFilter,
 		setLuxaryFilter,
 		filteredCategory,
@@ -47,8 +49,7 @@ const SearchFilterBar: FunctionComponent<SearchFilterBarProps> = (props) => {
 	const [collectionData, setCollectionData] = useState<string[]>([]);
 
 	const { data, error } = useSWR(
-		//`${process.env.END_POINT_PRODUCT}/filters`,
-		"http://ec2-3-35-137-187.ap-northeast-2.compute.amazonaws.com:8081/filters",
+		`${process.env.END_POINT_PRODUCT}/filters`,
 		fetcher,
 	);
 
@@ -61,6 +62,11 @@ const SearchFilterBar: FunctionComponent<SearchFilterBarProps> = (props) => {
 
 	useEffect(() => {
 		if (data) {
+			let map = new Map();
+			data.brands.forEach((brand) => {
+				map.set(brand.name, brand.id);
+			});
+			setBrandId(map);
 			setBrandData(data.brands.map((obj) => obj.name));
 			setCollectionData(data.collections.map((obj) => obj.name));
 		}
@@ -118,10 +124,11 @@ const SearchFilterBar: FunctionComponent<SearchFilterBarProps> = (props) => {
 				title="가격"
 				optionsList={[
 					"10만원 이하",
-					"10만원 ~ 30만원이하",
+					"10만원 ~ 30만원 이하",
 					"30만원 ~ 50만원 이하",
 					"50만원 이상",
 				]}
+				onlyOneChecked
 				state={filteredPrice}
 				cb={setFilteredPrice}
 			/>

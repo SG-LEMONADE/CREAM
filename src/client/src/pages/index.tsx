@@ -1,20 +1,22 @@
 import React, { FunctionComponent } from "react";
 
-import HomeTemplate from "components/templates/HomeTemplate";
+import NavTemplate from "components/templates/NavTemplate";
 import HeaderTop from "components/organisms/HeaderTop";
 import HeaderMain from "components/organisms/HeaderMain";
 import Footer from "components/organisms/Footer";
 
-const home: FunctionComponent = () => {
+const Home: FunctionComponent = () => {
 	return (
-		<HomeTemplate
+		<NavTemplate
 			headerTop={<HeaderTop />}
 			headerMain={<HeaderMain />}
 			footer={<Footer />}
 		>
-			<h1>Next JS 테스팅</h1>
-		</HomeTemplate>
+			<h1>Testing</h1>
+			<h1>Testing</h1>
+			<h1>Testing</h1>
+		</NavTemplate>
 	);
 };
 
-export default home;
+export default Home;
