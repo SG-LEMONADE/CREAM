@@ -1,5 +1,8 @@
 CREATE DATABASE `product_db` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
 
+use product_db;
+
+
 CREATE TABLE `banner` (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `image_url` varchar(255) NOT NULL,
@@ -91,6 +94,10 @@ CREATE TABLE `wish` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='찜';
 
+
+truncate table product;
+truncate table brand;
+truncate table collection;
 
 insert into banner (image_url, valid) values ("https://kream-phinf.pstatic.net/MjAyMjAxMjhfMjk0/MDAxNjQzMzM5MjYzODU1.cdlMQx38vTgTq7Gv7x6aUUtInzvEE_dzkyl4nNA2NwYg.W771A2Ma7g0bdKe9V_vTjBAbVDorcXhpqJp4bP2Aemsg.PNG/a_84e730df26b0461a958b47a868a6e047.png?type=m_2560", true);
 insert into banner (image_url, valid) values ("https://kream-phinf.pstatic.net/MjAyMjAxMjhfMTEz/MDAxNjQzMzYwMDg5Njky.l6Xoov3_JXNKWYCBO5IxjNzmBDe1svKsqUB7NBcqthQg.ypkLxb2fdiX2julTL1GkUh51WH-AykkdXmvPt4_0tTIg.PNG/a_2985d4ae2e95457e9f4fa7940d926275.png?type=m_2560", true);
