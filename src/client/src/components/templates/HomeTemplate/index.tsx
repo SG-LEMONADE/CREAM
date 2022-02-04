@@ -43,7 +43,6 @@ const HomeTemplateWrapper = styled.div`
 	position: relative;
 	padding-top: 100px;
 	overflow-anchor: none;
-	border: 1px solid red;
 `;
 
 const ShortcutCollection = styled.section`
