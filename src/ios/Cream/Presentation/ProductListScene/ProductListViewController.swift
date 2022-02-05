@@ -156,7 +156,8 @@ extension ProductListViewController: ShopViewFilterHeaderViewDelegate {
     
     func didSelectItemAt(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if indexPath.item == .zero {
-            let filterViewModel: FilterViewModel = DefaultFilterViewModel()
+            // TODO: FilterUseCase 구성
+            let filterViewModel: FilterViewModel = DefaultFilterViewModel(FilterUseCase())
             let filterViewController = FilterViewController(filterViewModel)
             let navigationController = UINavigationController(rootViewController: filterViewController)
             self.present(navigationController, animated: true)
