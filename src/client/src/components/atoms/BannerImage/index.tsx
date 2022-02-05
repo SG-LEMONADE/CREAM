@@ -22,8 +22,8 @@ const BannerImage: FunctionComponent<BannerProps> = (props) => {
 			bgColor={bgColor}
 		>
 			<StyledImage
-				width="400%"
-				height="100%"
+				width={category === "small" ? "400%" : "500%"}
+				height={category === "small" ? "100%" : "480px"}
 				category={category}
 				src={src}
 				alt={src}
