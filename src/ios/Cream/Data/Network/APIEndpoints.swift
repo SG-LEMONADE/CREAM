@@ -32,12 +32,16 @@ struct APIEndpoints {
                         headerParamaters: ["Content-Type":"application/json"])
     }
     
-    static func loadProducts(_ page: Int) -> Endpoint<[ProductInfoResponseDTO]> {
+    static func loadProducts(_ page: Int, category: String?) -> Endpoint<[ProductInfoResponseDTO]> {
+        var queryParameters: [String: Any] = ["cursor": page,
+                                              "perPage": 20]
+        _ = category.flatMap {
+            queryParameters.updateValue($0, forKey:"category")
+        }
+        
         return Endpoint(path: "products",
                         method: .get,
                         headerParamaters: ["Content-Type":"application/json"],
-                        queryParameters: ["cursor": page,
-                                          "perPage": 40])
+                        queryParameters: queryParameters)
     }
-    
 }

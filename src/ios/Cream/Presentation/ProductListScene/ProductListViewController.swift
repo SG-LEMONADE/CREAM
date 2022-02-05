@@ -17,6 +17,7 @@ class ProductListViewController: BaseDIViewController<ProductListViewModel> {
     }
     
     private lazy var productListView = ProductListView()
+    private var selectedIndexPaths = [IndexPath]()
     
     override init(_ viewModel: ProductListViewModel) {
         super.init(viewModel)
@@ -154,7 +155,54 @@ extension ProductListViewController: ShopViewFilterHeaderViewDelegate {
     }
     
     func didSelectItemAt(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print(viewModel.categories[indexPath.item])
+        if indexPath.item == .zero {
+            let sizeListViewModel: SizeListViewModel = DefaultSizeListViewModel()
+            let sizeListViewController = SizeListViewController(sizeListViewModel)
+            self.present(sizeListViewController, animated: false)
+            return
+        }
+        
+        guard let filterCell = collectionView.cellForItem(at: IndexPath(item: 0, section: 0)) as? FilterCell,
+              let selectedCell = collectionView.cellForItem(at: indexPath) as? FilterCell
+        else { return }
+        
+        if let index = selectedIndexPaths.firstIndex(of: indexPath) {
+            collectionView.deselectItem(at: indexPath, animated: true)
+            selectedCell.titleLabel.textColor = .black
+            selectedIndexPaths.remove(at: index)
+        } else if (3 ..< viewModel.categories.count).contains(indexPath.item) {
+//            selectedIndexPaths.forEach {
+//                if $0.item > 2 {
+//                    collectionView.deselectItem(at: $0, animated: true)
+//                    selectedCell.titleLabel.textColor = .black
+//                    selectedIndexPaths.firstIndex(of: $0).flatMap {
+//                        selectedIndexPaths.remove(at: $0)
+//                    }
+//                    
+//                }
+//            }
+            selectedIndexPaths.append(indexPath)
+            selectedCell.titleLabel.textColor = .red
+            
+            viewModel.didTapCategory(indexPath: indexPath)
+        }
+        
+        if selectedIndexPaths.isEmpty {
+            filterCell.titleLabel.attributedText = getAttachment(color: .black)
+        } else {
+            filterCell.titleLabel.attributedText = getAttachment(color: .red)
+        }
+    }
+    
+    func didDeSelectItemAt(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+
+    }
+    
+    private func getAttachment(color: UIColor) -> NSAttributedString {
+        let attachment = NSTextAttachment()
+        attachment.image = UIImage(systemName: "checklist")
+        attachment.image = attachment.image?.withTintColor(color)
+        return NSAttributedString(attachment: attachment)
     }
 }
 

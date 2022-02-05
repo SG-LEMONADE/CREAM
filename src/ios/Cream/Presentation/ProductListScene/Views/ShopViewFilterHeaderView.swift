@@ -11,6 +11,7 @@ import SnapKit
 protocol ShopViewFilterHeaderViewDelegate: AnyObject {
     func setupSizeForItemAt(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize
     func didSelectItemAt(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath)
+    func didDeSelectItemAt(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath)
 }
 
 protocol ShopViewFilterHeaderViewDataSource: AnyObject {
@@ -71,6 +72,14 @@ extension ShopViewFilterHeaderView: UICollectionViewDelegate, UICollectionViewDe
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         delegate?.didSelectItemAt(collectionView, didSelectItemAt: indexPath)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+        delegate?.didDeSelectItemAt(collectionView, didSelectItemAt: indexPath)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
+        return indexPath.item == 2 ? false : true
     }
 }
 

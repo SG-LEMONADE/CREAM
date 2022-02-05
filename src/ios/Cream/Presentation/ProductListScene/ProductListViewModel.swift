@@ -11,6 +11,7 @@ protocol ProductListViewModelInput {
     func viewDidLoad()
     func didTapProduct(indexPath: IndexPath)
     func didScroll()
+    func didTapCategory(indexPath: IndexPath)
 }
 
 protocol ProductListViewModelOutput {
@@ -32,6 +33,7 @@ final class DefaultListViewModel: ProductListViewModel {
     private var page = 1
     
     let categories = ["필터", "럭셔리", " ", "스니커즈", "의류", "패션 잡화", "라이프", "테크"]
+    let categoryFilters = ["sneakers", "", "", "", ""]
     let banners: [String] = ["banner1", "banner2", "banner3", "banner4", "banner5", "banner6"]
     
     init(_ usecase: ProductUseCaseInterface) {
@@ -39,12 +41,23 @@ final class DefaultListViewModel: ProductListViewModel {
     }
     
     func viewDidLoad() {
-        let _ = usecase.fetch(page: page) { result in
+        let _ = usecase.fetch(page: page, category: nil) { result in
             switch result {
             case .success(let products):
-                print(products)
                 self.products.value.append(contentsOf: products)
-                
+            case .failure(let error):
+                print(error)
+            }
+        }
+    }
+    
+    func didTapCategory(indexPath: IndexPath) {
+        print(indexPath)
+        let _ = usecase.fetch(page: page, category: nil) { result in
+            switch result {
+            case .success(let products):
+                self.products.value.removeAll()
+                self.products.value.append(contentsOf: products)
             case .failure(let error):
                 print(error)
             }

@@ -22,8 +22,8 @@ extension ProductRepository: ProductRepositoryInterface {
         return task
     }
     
-    func requestProducts(page: Int, completion: @escaping ((Result<Products, Error>) -> Void)) -> Cancellable {
-        let endpoint = APIEndpoints.loadProducts(page)
+    func requestProducts(page: Int, category: String?, completion: @escaping ((Result<Products, Error>) -> Void)) -> Cancellable {
+        let endpoint = APIEndpoints.loadProducts(page, category: category)
         
         let task = RepositoryTask()
         task.networkTask = dataTransferService.request(with: endpoint) { result in
