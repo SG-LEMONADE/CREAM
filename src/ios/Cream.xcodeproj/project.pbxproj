@@ -58,6 +58,7 @@
 		7B5EEE5F27ACBFA300990E37 /* UITextField+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B5EEE5E27ACBFA300990E37 /* UITextField+.swift */; };
 		7B5EEE6127AD10E500990E37 /* ProcessView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B5EEE6027AD10E500990E37 /* ProcessView.swift */; };
 		7B5EEE6327AD481900990E37 /* ProcessViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B5EEE6227AD481900990E37 /* ProcessViewModel.swift */; };
+		7B5EEE6527AEBCD800990E37 /* FilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B5EEE6427AEBCD800990E37 /* FilterViewController.swift */; };
 		7B8EAA78279FBBB600B07259 /* ProductRepositoryInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B8EAA77279FBBB600B07259 /* ProductRepositoryInterface.swift */; };
 		7B8EAA7D279FC2CD00B07259 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B8EAA7C279FC2CD00B07259 /* BaseViewController.swift */; };
 		7B8EAA7F279FC38300B07259 /* BaseDIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B8EAA7E279FC38300B07259 /* BaseDIViewController.swift */; };
@@ -154,6 +155,7 @@
 		7B5EEE5E27ACBFA300990E37 /* UITextField+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+.swift"; sourceTree = "<group>"; };
 		7B5EEE6027AD10E500990E37 /* ProcessView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessView.swift; sourceTree = "<group>"; };
 		7B5EEE6227AD481900990E37 /* ProcessViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessViewModel.swift; sourceTree = "<group>"; };
+		7B5EEE6427AEBCD800990E37 /* FilterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterViewController.swift; sourceTree = "<group>"; };
 		7B8EAA77279FBBB600B07259 /* ProductRepositoryInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductRepositoryInterface.swift; sourceTree = "<group>"; };
 		7B8EAA7C279FC2CD00B07259 /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		7B8EAA7E279FC38300B07259 /* BaseDIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseDIViewController.swift; sourceTree = "<group>"; };
@@ -259,6 +261,7 @@
 				7B5EEE3827A770AA00990E37 /* ProductListViewController.swift */,
 				7B5EEE3C27A773AE00990E37 /* ProductListViewModel.swift */,
 				7B5EEE3A27A7713100990E37 /* ProductListView.swift */,
+				7B5EEE6427AEBCD800990E37 /* FilterViewController.swift */,
 			);
 			path = ProductListScene;
 			sourceTree = "<group>";
@@ -770,6 +773,7 @@
 				7B5EEE5627A9A0B000990E37 /* TradePriceView.swift in Sources */,
 				7BB01121278BD66C005E5C9E /* UIView+.swift in Sources */,
 				7B36DB102789202800D8ACB0 /* SceneDelegate.swift in Sources */,
+				7B5EEE6527AEBCD800990E37 /* FilterViewController.swift in Sources */,
 				7B5EEE4D27A9195E00990E37 /* SizePriceButton.swift in Sources */,
 				7B8EAA78279FBBB600B07259 /* ProductRepositoryInterface.swift in Sources */,
 				7B54D7042790351400214664 /* SizeListCell.swift in Sources */,

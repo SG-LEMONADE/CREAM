@@ -156,9 +156,10 @@ extension ProductListViewController: ShopViewFilterHeaderViewDelegate {
     
     func didSelectItemAt(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if indexPath.item == .zero {
-            let sizeListViewModel: SizeListViewModel = DefaultSizeListViewModel()
-            let sizeListViewController = SizeListViewController(sizeListViewModel)
-            self.present(sizeListViewController, animated: false)
+            let filterViewModel: FilterViewModel = DefaultFilterViewModel()
+            let filterViewController = FilterViewController(filterViewModel)
+            let navigationController = UINavigationController(rootViewController: filterViewController)
+            self.present(navigationController, animated: true)
             return
         }
         
@@ -171,6 +172,7 @@ extension ProductListViewController: ShopViewFilterHeaderViewDelegate {
             selectedCell.titleLabel.textColor = .black
             selectedIndexPaths.remove(at: index)
         } else if (3 ..< viewModel.categories.count).contains(indexPath.item) {
+        // TODO: category Multi select event 
 //            selectedIndexPaths.forEach {
 //                if $0.item > 2 {
 //                    collectionView.deselectItem(at: $0, animated: true)
