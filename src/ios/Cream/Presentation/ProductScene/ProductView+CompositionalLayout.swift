@@ -9,6 +9,10 @@ import UIKit
 
 // MARK: - ConfigureCollectionView
 extension ProductView {
+    enum SectionList: Int {
+        case image, itemInfo, release, delivery, advertise, priceChart, similarItem
+    }
+    
     func configureCollectionView() {
         self.ItemInfoListView.register(ItemInfoCell.self, forCellWithReuseIdentifier: ItemInfoCell.reuseIdentifier)
         self.ItemInfoListView.register(ReleaseInfoCell.self, forCellWithReuseIdentifier: ReleaseInfoCell.reuseIdentifier)
@@ -24,21 +28,17 @@ extension ProductView {
     
     func configureCollectionViewLayout() -> UICollectionViewCompositionalLayout {
         return UICollectionViewCompositionalLayout { (section, env) -> NSCollectionLayoutSection? in
+            guard let section = SectionList(rawValue: section)
+            else { return nil }
+            
             switch section {
-            case 0:
-                return self.configureImageSectionLayout()
-            case 1:
-                return self.configureItemInfoSectionLayout()
-            case 2:
-                return self.configureReleaseSectionLayout()
-            case 3:
-                return self.configureDeliverySectionLayout()
-            case 4:
-                return self.configureAdvertiseSectionLayout()
-            case 5:
-                return self.configurePriceChartSectionLayout()
-            default:
-                return self.configureSimilarItemSectionLayout()
+            case .image:        return self.configureImageSectionLayout()
+            case .itemInfo:     return self.configureItemInfoSectionLayout()
+            case .release:      return self.configureReleaseSectionLayout()
+            case .delivery:     return self.configureDeliverySectionLayout()
+            case .advertise:    return self.configureAdvertiseSectionLayout()
+            case .priceChart:   return self.configurePriceChartSectionLayout()
+            case .similarItem:  return self.configureSimilarItemSectionLayout()
             }
         }
     }

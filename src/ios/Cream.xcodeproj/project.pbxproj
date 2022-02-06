@@ -61,6 +61,8 @@
 		7B5EEE6527AEBCD800990E37 /* FilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B5EEE6427AEBCD800990E37 /* FilterViewController.swift */; };
 		7B5EEE6827B00F0300990E37 /* BaseItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B5EEE6727B00F0300990E37 /* BaseItemView.swift */; };
 		7B5EEE6A27B0103500990E37 /* ProductListItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B5EEE6927B0103500990E37 /* ProductListItemCell.swift */; };
+		7B5EEE6C27B01AA600990E37 /* HomeView+CompositionalLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B5EEE6B27B01AA600990E37 /* HomeView+CompositionalLayout.swift */; };
+		7B5EEE6E27B01E9A00990E37 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B5EEE6D27B01E9A00990E37 /* HomeView.swift */; };
 		7B8EAA78279FBBB600B07259 /* ProductRepositoryInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B8EAA77279FBBB600B07259 /* ProductRepositoryInterface.swift */; };
 		7B8EAA7D279FC2CD00B07259 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B8EAA7C279FC2CD00B07259 /* BaseViewController.swift */; };
 		7B8EAA7F279FC38300B07259 /* BaseDIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B8EAA7E279FC38300B07259 /* BaseDIViewController.swift */; };
@@ -160,6 +162,8 @@
 		7B5EEE6427AEBCD800990E37 /* FilterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterViewController.swift; sourceTree = "<group>"; };
 		7B5EEE6727B00F0300990E37 /* BaseItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseItemView.swift; sourceTree = "<group>"; };
 		7B5EEE6927B0103500990E37 /* ProductListItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListItemCell.swift; sourceTree = "<group>"; };
+		7B5EEE6B27B01AA600990E37 /* HomeView+CompositionalLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HomeView+CompositionalLayout.swift"; sourceTree = "<group>"; };
+		7B5EEE6D27B01E9A00990E37 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		7B8EAA77279FBBB600B07259 /* ProductRepositoryInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductRepositoryInterface.swift; sourceTree = "<group>"; };
 		7B8EAA7C279FC2CD00B07259 /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		7B8EAA7E279FC38300B07259 /* BaseDIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseDIViewController.swift; sourceTree = "<group>"; };
@@ -276,6 +280,8 @@
 				7B8EAA7B279FBC6100B07259 /* Views */,
 				7B3566812791E53C00C45A68 /* HomeViewController.swift */,
 				7B193C942797900E00B934A3 /* HomeViewModel.swift */,
+				7B5EEE6D27B01E9A00990E37 /* HomeView.swift */,
+				7B5EEE6B27B01AA600990E37 /* HomeView+CompositionalLayout.swift */,
 			);
 			path = HomeScene;
 			sourceTree = "<group>";
@@ -780,6 +786,7 @@
 				7B5EEE5627A9A0B000990E37 /* TradePriceView.swift in Sources */,
 				7BB01121278BD66C005E5C9E /* UIView+.swift in Sources */,
 				7B36DB102789202800D8ACB0 /* SceneDelegate.swift in Sources */,
+				7B5EEE6E27B01E9A00990E37 /* HomeView.swift in Sources */,
 				7B5EEE6527AEBCD800990E37 /* FilterViewController.swift in Sources */,
 				7B5EEE4D27A9195E00990E37 /* SizePriceButton.swift in Sources */,
 				7B8EAA78279FBBB600B07259 /* ProductRepositoryInterface.swift in Sources */,
@@ -795,6 +802,7 @@
 				7B35667C27914EF200C45A68 /* SizeListCellViewModel.swift in Sources */,
 				7BF82E0227A2CD18007E0A79 /* JoinRequestDTO+Mapping.swift in Sources */,
 				7BF82E1527A54944007E0A79 /* SizeListViewModel.swift in Sources */,
+				7B5EEE6C27B01AA600990E37 /* HomeView+CompositionalLayout.swift in Sources */,
 				7B5EEE5027A95DCB00990E37 /* ImageLoader.swift in Sources */,
 				7B8EAA7D279FC2CD00B07259 /* BaseViewController.swift in Sources */,
 				7BF82E0B27A38BB5007E0A79 /* UserRepository.swift in Sources */,

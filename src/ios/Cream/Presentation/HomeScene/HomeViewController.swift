@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import SnapKit
 
 class HomeListViewController: BaseDIViewController<HomeViewModel> {
     override func viewDidLoad() {
@@ -14,12 +13,15 @@ class HomeListViewController: BaseDIViewController<HomeViewModel> {
     }
 }
 
-class HomeViewController: UIViewController {
-    enum SectionInfo: Int {
-        case ads = 0
-        case banner = 1
-        case itemList = 2
+extension HomeViewController: FooterScrollDelegate {
+    func didScrollTo(_ page: Int) {
+        delegate?.didScrollTo(page)
     }
+}
+
+class HomeViewController: UIViewController {
+    
+    weak var delegate: FooterScrollDelegate?
     
     private let viewModel = HomeViewModel.init("test")
     private let banners: [String] = ["homebanner1",
@@ -31,110 +33,16 @@ class HomeViewController: UIViewController {
                                      "homebanner7",
                                      "homebanner1"]
     
-    weak var delegate: FooterScrollDelegate?
     
-    private var item: Int = 0 {
-        didSet {
-            self.delegate?.didScrollTo(item)
-        }
-    }
-    
+    private lazy var homeView = HomeView()
     private var currentIndex: Int = 0
-    private lazy var homeCollectionView: UICollectionView = {
-        let cv = UICollectionView(frame: .zero,
-                                  collectionViewLayout: configureCompositionalLayout())
-        return cv
-    }()
     
-    private func configureCompositionalLayout() -> UICollectionViewCompositionalLayout {
-        return UICollectionViewCompositionalLayout { (section, env) -> NSCollectionLayoutSection? in
-            let info = section % 2
-            switch info {
-            case 0:
-                return self.configureBannerSection()
-            case 1:
-                return self.configureItemListSection()
-            default:
-                return self.configureItemListSection()
-            }
-        }
-    }
+//    var item: Int = 0 {
+//        didSet {
+//            self.delegate?.didScrollTo(item)
+//        }
+//    }
     
-    private func configureBannerSection() -> NSCollectionLayoutSection {
-        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
-                                              heightDimension: .fractionalWidth(1))
-        let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        item.contentInsets.bottom = -20
-        
-        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
-                                               heightDimension: .fractionalWidth(1))
-        
-        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
-        group.contentInsets = .init(top: 0, leading: 0, bottom: 0, trailing: 0)
-        
-        let section = NSCollectionLayoutSection(group: group)
-        section.orthogonalScrollingBehavior = .groupPaging
-        section.boundarySupplementaryItems = [
-            NSCollectionLayoutBoundarySupplementaryItem(layoutSize: .init(widthDimension: .fractionalWidth(0.9),
-                                                                          heightDimension: .absolute(10)),
-                                                        elementKind: UICollectionView.elementKindSectionFooter,
-                                                        alignment: .bottom)
-        ]
-        
-        section.visibleItemsInvalidationHandler = { items, contentOffset, environment in
-            let currentPage = Int(max(0, round(contentOffset.x / environment.container.contentSize.width)))
-            if currentPage != self.item {
-                self.item = currentPage
-            }
-        }
-        
-        return section
-    }
-    
-    private func configureItemListSection() -> NSCollectionLayoutSection {
-        
-        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5),
-                                              heightDimension: .fractionalHeight(0.56))
-        let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        item.contentInsets = .init(top: 0, leading: 0, bottom: 5, trailing: 5)
-        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
-                                               heightDimension: .estimated(560))
-        
-        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
-        let section = NSCollectionLayoutSection(group: group)
-        section.orthogonalScrollingBehavior = .groupPaging
-        
-        section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 5, bottom: 20, trailing: 0)
-        section.boundarySupplementaryItems = [
-            NSCollectionLayoutBoundarySupplementaryItem(layoutSize: .init(widthDimension: .fractionalWidth(1),
-                                                                          heightDimension: .estimated(50)),
-                                                        elementKind: UICollectionView.elementKindSectionHeader,
-                                                        alignment: .topLeading)
-        ]
-        
-        return section
-    }
-    
-    private func thirdLayoutSection() -> NSCollectionLayoutSection {
-        
-        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
-                                              heightDimension: .fractionalHeight(1))
-        
-        let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        item.contentInsets.bottom = 15
-        
-        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.8),
-                                               heightDimension: .fractionalWidth(0.35))
-        
-        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
-        group.contentInsets = .init(top: 0, leading: 15, bottom: 0, trailing: 2)
-        
-        let section = NSCollectionLayoutSection(group: group)
-        
-        section.orthogonalScrollingBehavior = .continuous
-        
-        return section
-    }
     
     private func configureNavigation() {
         self.navigationController?.navigationBar.tintColor = .black
@@ -150,24 +58,34 @@ class HomeViewController: UIViewController {
     }
     // MARK: - Action handlers
     
+    override func loadView() {
+        self.view = homeView
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.homeCollectionView.delegate = self
-        self.homeCollectionView.dataSource = self
-        applyViewSettings()
+        configureDelegate()
+        configureCollectionView()
+        configureNavigation()
+    }
+    
+    private func configureDelegate() {
+        homeView.homeCollectionView.delegate = self
+        homeView.homeCollectionView.dataSource = self
+        homeView.delegate = self
     }
     
     func configureCollectionView() {
-        homeCollectionView.register(ShopBannerCell.self,
+        homeView.homeCollectionView.register(ShopBannerCell.self,
                                     forCellWithReuseIdentifier: ShopBannerCell.reuseIdentifier)
-        homeCollectionView.register(SizeListCell.self,
+        homeView.homeCollectionView.register(SizeListCell.self,
                                     forCellWithReuseIdentifier: SizeListCell.reuseIdentifier)
-        homeCollectionView.register(HomeProductCell.self,
+        homeView.homeCollectionView.register(HomeProductCell.self,
                                     forCellWithReuseIdentifier: HomeProductCell.reuseIdentifier)
-        homeCollectionView.register(HomeViewCategoryHeaderView.self,
+        homeView.homeCollectionView.register(HomeViewCategoryHeaderView.self,
                                     forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
                                     withReuseIdentifier: HomeViewCategoryHeaderView.reuseIdentifier)
-        homeCollectionView.register(PageControlFooterView.self,
+        homeView.homeCollectionView.register(PageControlFooterView.self,
                                     forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter,
                                     withReuseIdentifier: PageControlFooterView.reuseIdentifier)
     }
@@ -179,38 +97,21 @@ extension HomeViewController {
             self.bannerMove()
         }
     }
-    
+
     func bannerMove() {
         currentIndex += 1
-        homeCollectionView.scrollToItem(at: NSIndexPath(item: currentIndex, section: 0) as IndexPath, at: .bottom, animated: true)
-        
+        homeView.homeCollectionView.scrollToItem(at: NSIndexPath(item: currentIndex, section: 0) as IndexPath, at: .bottom, animated: true)
+
         if self.currentIndex == self.banners.count-1 {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.28) {
                 self.scrollTofirstIndex()
             }
         }
     }
-    
-    func scrollTofirstIndex() {
-        homeCollectionView.scrollToItem(at: NSIndexPath(item: 0, section: 0) as IndexPath, at: .top, animated: false)
-        currentIndex = 0
-    }
-}
 
-extension HomeViewController: ViewConfiguration {
-    func buildHierarchy() {
-        view.addSubviews(homeCollectionView)
-    }
-    
-    func setupConstraints() {
-        homeCollectionView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
-        }
-    }
-    
-    func viewConfigure() {
-        configureCollectionView()
-        configureNavigation()
+    func scrollTofirstIndex() {
+        homeView.homeCollectionView.scrollToItem(at: NSIndexPath(item: 0, section: 0) as IndexPath, at: .top, animated: false)
+        currentIndex = 0
     }
 }
 
@@ -262,6 +163,7 @@ extension HomeViewController: UICollectionViewDataSource {
                                                             for: indexPath) as? HomeProductCell else
                                                             { return UICollectionViewCell() }
         cell.configureTest()
+        
         return cell
     }
     
