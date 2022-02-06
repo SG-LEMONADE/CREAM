@@ -1,14 +1,14 @@
 //
-//  HomeViewItemCell.swift
+//  ProductListItemCell.swift
 //  Cream
 //
-//  Created by wankikim-MN on 2022/01/17.
+//  Created by wankikim-MN on 2022/02/06.
 //
 
 import UIKit
 import SnapKit
 
-final class HomeProductCell: UICollectionViewCell {
+final class ProductListItemCell: UICollectionViewCell {
     static let reuseIdentifier = "\(HomeProductCell.self)"
     
     var sessionTask: URLSessionDataTask?
@@ -20,10 +20,12 @@ final class HomeProductCell: UICollectionViewCell {
     
     private lazy var wishButton: UIButton = {
         let button = UIButton()
-        button.tintColor = .black
+        button.tintColor = .systemGray4
         button.setImage(UIImage(systemName: "bookmark"), for: .normal)
         button.setImage(UIImage(systemName: "bookmark.fill"), for: .selected)
-        button.contentHorizontalAlignment = .center
+        button.setTitleColor(.systemGray4, for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 10, weight: .black)
+        button.contentHorizontalAlignment = .leading
         return button
     }()
     
@@ -50,34 +52,32 @@ final class HomeProductCell: UICollectionViewCell {
     }
 }
 
-extension HomeProductCell: ViewConfiguration {
+extension ProductListItemCell: ViewConfiguration {
     func buildHierarchy() {
-        itemView.productImageView.addSubviews(wishButton)
-        self.addSubviews(itemView)
+        self.addSubviews(itemView,
+                         wishButton)
     }
     
     func setupConstraints() {
         itemView.snp.makeConstraints {
             $0.leading.trailing.top.equalToSuperview()
+            $0.bottom.equalTo(wishButton.snp.top).offset(-10)
+        }
+        wishButton.snp.makeConstraints {
+            $0.leading.equalTo(itemView.snp.leading).offset(10)
+            $0.width.equalTo(itemView.snp.width).multipliedBy(0.3)
             $0.bottom.equalTo(self.snp.bottom).offset(-10)
         }
-
-        wishButton.snp.makeConstraints {
-            $0.bottom.trailing.equalToSuperview().inset(10)
-        }
-    }
-    
-    func viewConfigure() {
-        itemView.productImageView.isUserInteractionEnabled = true
     }
 }
 
 // MARK: Cell Configure
-extension HomeProductCell {
+extension ProductListItemCell {
     func configure(_ viewModel: Product) {
         self.itemView.tradeLabel.text = viewModel.totalSaleText
         self.itemView.titleLabel.text = viewModel.brandName
         self.itemView.detailLabel.text = viewModel.originalName
+        self.wishButton.setTitle(viewModel.wishText, for: .normal)
         self.itemView.priceLabel.text = viewModel.price
         self.itemView.priceExpressionLabel.text = "즉시 구매가"
         self.itemView.productImageView.backgroundColor = .init(rgb: viewModel.backgroundColor.hexToInt ?? 0)
@@ -91,19 +91,9 @@ extension HomeProductCell {
             }
         }
     }
-    
-    func configureTest() {
-        self.itemView.productImageView.image = UIImage(systemName: "bookmark")?
-            .withAlignmentRectInsets(UIEdgeInsets(top: -10, left: -10, bottom: -10, right: -10))
-        self.itemView.productImageView.sizeToFit()
-        self.itemView.titleLabel.text = "Nike"
-        self.itemView.detailLabel.text = "Nike Big Swoosh Full Zip \nJacket Black Sail"
-        self.itemView.priceLabel.text = "269,000원"
-        self.itemView.priceExpressionLabel.text = "즉시 구매가"
-    }
 }
 
-extension HomeProductCell {
+extension ProductListItemCell {
     func loadImage(url: URL, completion: @escaping (UIImage?) -> Void) -> URLSessionDataTask {
         
         let task = URLSession.shared.dataTask(with: url) { data, _, _ in

@@ -15,9 +15,10 @@ class HomeListViewController: BaseDIViewController<HomeViewModel> {
 }
 
 class HomeViewController: UIViewController {
-    enum SectionInfo {
-        case banner
-        case itemList
+    enum SectionInfo: Int {
+        case ads = 0
+        case banner = 1
+        case itemList = 2
     }
     
     private let viewModel = HomeViewModel.init("test")
@@ -69,7 +70,6 @@ class HomeViewController: UIViewController {
                                                heightDimension: .fractionalWidth(1))
         
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
-        
         group.contentInsets = .init(top: 0, leading: 0, bottom: 0, trailing: 0)
         
         let section = NSCollectionLayoutSection(group: group)
@@ -94,12 +94,11 @@ class HomeViewController: UIViewController {
     private func configureItemListSection() -> NSCollectionLayoutSection {
         
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5),
-                                              heightDimension: .fractionalHeight(0.58))
+                                              heightDimension: .fractionalHeight(0.56))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         item.contentInsets = .init(top: 0, leading: 0, bottom: 5, trailing: 5)
         let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
-                                               heightDimension: .estimated(580))
-
+                                               heightDimension: .estimated(560))
         
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
         let section = NSCollectionLayoutSection(group: group)
@@ -138,21 +137,17 @@ class HomeViewController: UIViewController {
     }
     
     private func configureNavigation() {
-        let alertBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "house"), style: .plain, target: self, action: #selector(alertBarButtonItemTapped))
+        self.navigationController?.navigationBar.tintColor = .black
+        let alertBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "bell"), style: .plain, target: self, action: #selector(alertBarButtonItemTapped))
         navigationItem.setRightBarButton(alertBarButtonItem, animated: false)
-
-        let backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)
-        backBarButtonItem.tintColor = .systemGray
-        navigationItem.backBarButtonItem = backBarButtonItem
     }
     
     @objc
     private func alertBarButtonItemTapped() {
         DispatchQueue.global().asyncAfter(deadline: .now() + 2) {
-            print("알림버튼 클릭")
+            print(#function)
         }
     }
-    
     // MARK: - Action handlers
     
     override func viewDidLoad() {
@@ -167,8 +162,8 @@ class HomeViewController: UIViewController {
                                     forCellWithReuseIdentifier: ShopBannerCell.reuseIdentifier)
         homeCollectionView.register(SizeListCell.self,
                                     forCellWithReuseIdentifier: SizeListCell.reuseIdentifier)
-        homeCollectionView.register(HomeViewItemCell.self,
-                                    forCellWithReuseIdentifier: HomeViewItemCell.reuseIdentifier)
+        homeCollectionView.register(HomeProductCell.self,
+                                    forCellWithReuseIdentifier: HomeProductCell.reuseIdentifier)
         homeCollectionView.register(HomeViewCategoryHeaderView.self,
                                     forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
                                     withReuseIdentifier: HomeViewCategoryHeaderView.reuseIdentifier)
@@ -222,7 +217,7 @@ extension HomeViewController: ViewConfiguration {
 extension HomeViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if indexPath.section % 2 == 1 {
-            guard let baseURL = URL(string: "http://ec2-3-35-137-187.ap-northeast-2.compute.amazonaws.com:8081")
+            guard let baseURL = URL(string: "http://ec2-3-36-85-82.ap-northeast-2.compute.amazonaws.com:8081")
             else { return }
             
             let config: NetworkConfigurable = ApiDataNetworkConfig(baseURL: baseURL)
@@ -263,11 +258,10 @@ extension HomeViewController: UICollectionViewDataSource {
             return cell
         }
         
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HomeViewItemCell.reuseIdentifier,
-                                                            for: indexPath) as? HomeViewItemCell else
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HomeProductCell.reuseIdentifier,
+                                                            for: indexPath) as? HomeProductCell else
                                                             { return UICollectionViewCell() }
         cell.configureTest()
-        cell.backgroundColor = .orange
         return cell
     }
     

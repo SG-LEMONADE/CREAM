@@ -44,7 +44,7 @@ final class NavigateMenuBaseController: UITabBarController {
             case .home:
                 return HomeViewController()
             case .shop:
-                guard let baseURL = URL(string: "http://ec2-13-209-18-231.ap-northeast-2.compute.amazonaws.com:8081")
+                guard let baseURL = URL(string: "http://ec2-3-36-85-82.ap-northeast-2.compute.amazonaws.com:8081")
                 else { fatalError() }
                 
                 let config: NetworkConfigurable = ApiDataNetworkConfig(baseURL: baseURL)

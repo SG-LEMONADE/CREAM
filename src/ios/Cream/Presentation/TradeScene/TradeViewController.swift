@@ -13,10 +13,11 @@ protocol TradeDelegate: AnyObject {
 }
 
 class TradeViewController: BaseDIViewController<TradeViewModel>, ImageLoadable {
-    
+
     // MARK: Property
     var session: URLSessionDataTask?
     weak var delegate: TradeDelegate?
+    
     private lazy var tradeView = TradeView()
     
     override init(_ viewModel: TradeViewModel) {
@@ -94,7 +95,6 @@ extension TradeViewController {
         }
     }
 }
-
 
 // MARK: CollectionView Layout & CollectionView Cell Configuration
 extension TradeViewController: UICollectionViewDelegateFlowLayout {

@@ -44,8 +44,8 @@ class ProductListViewController: BaseDIViewController<ProductListViewModel> {
                                     forCellWithReuseIdentifier: ShopBannerCell.reuseIdentifier)
         productListView.shopCollectionView.register(SizeListCell.self,
                                     forCellWithReuseIdentifier: SizeListCell.reuseIdentifier)
-        productListView.shopCollectionView.register(HomeViewItemCell.self,
-                                    forCellWithReuseIdentifier: HomeViewItemCell.reuseIdentifier)
+        productListView.shopCollectionView.register(ProductListItemCell.self,
+                                    forCellWithReuseIdentifier: ProductListItemCell.reuseIdentifier)
         productListView.shopCollectionView.register(ShopViewFilterHeaderView.self,
                                     forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
                                     withReuseIdentifier: ShopViewFilterHeaderView.reuseIdentifier)
@@ -90,8 +90,8 @@ extension ProductListViewController: UICollectionViewDataSource {
             cell.configure(viewModel.banners[indexPath.item])
             return cell
         } else {
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HomeViewItemCell.reuseIdentifier,
-                                                                for: indexPath) as? HomeViewItemCell
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ProductListItemCell.reuseIdentifier,
+                                                                for: indexPath) as? ProductListItemCell
             else { return UICollectionViewCell() }
             
             cell.configure(viewModel.products.value[indexPath.item])
@@ -116,7 +116,7 @@ extension ProductListViewController: UICollectionViewDataSource {
 extension ProductListViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if indexPath.section == 1 {
-            guard let baseURL = URL(string: "http://ec2-13-209-18-231.ap-northeast-2.compute.amazonaws.com:8081")
+            guard let baseURL = URL(string: "http://ec2-3-36-85-82.ap-northeast-2.compute.amazonaws.com:8081")
             else { return }
         
             let config: NetworkConfigurable = ApiDataNetworkConfig(baseURL: baseURL)

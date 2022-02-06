@@ -29,7 +29,7 @@ protocol HomeListRepositoryInterface {
 
 final class HomeListViewModel: HomeListViewModelInterface {
     private let usecase: HomeListUseCaseInterface
-    private(set) var products: Observable<[Product]>
+    private(set) var products: Observable<Products>
     
     init(usecase: HomeListUseCaseInterface) {
         self.usecase = usecase
@@ -41,13 +41,12 @@ final class HomeListViewModel: HomeListViewModelInterface {
     }
 }
 
-
 protocol HomeViewModelDelegate: AnyObject {
     func didStartFetchingMessage()
     func didFinishFetchingMessage(_ message: String)
 }
 
-class HomeViewModel {
+final class HomeViewModel {
 
     private let test: String
     
