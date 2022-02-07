@@ -18,8 +18,9 @@ protocol ProductViewModelInput {
 
 protocol ProductViewModelOutput {
     var item: Observable<ProductDetail> { get set }
-    var count: Int { get }
+    var numberOfImageUrls: Int { get }
     var releaseInfo: [(String, String)] { get }
+    var numberOfSections: Int { get }
 }
 
 protocol ProductViewModel: ProductViewModelInput, ProductViewModelOutput {
@@ -39,8 +40,12 @@ final class DefaultProductViewModel: ProductViewModel {
         return info
     }
     var id: Int = 0
-    var count: Int {
+    var numberOfImageUrls: Int {
         return item.value.imageUrls.count
+    }
+    
+    var numberOfSections: Int {
+        return ProductView.SectionList.allCases.count
     }
     
     private var page: Int = 1

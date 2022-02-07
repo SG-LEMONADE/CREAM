@@ -50,4 +50,13 @@ struct APIEndpoints {
                         headerParamaters: ["Content-Type":"application/json"],
                         queryParameters: queryParameters)
     }
+    
+    static func addToWishList(id: Int, size: String) -> Endpoint<Void> {
+        let queryParameters: [String: Any] = ["id": id,
+                                              "size": size]
+        return Endpoint(path: "wish",
+                        method: .post,
+                        headerParamaters: ["Content-Type":"application/json"],
+                        queryParameters: queryParameters)
+    }
 }

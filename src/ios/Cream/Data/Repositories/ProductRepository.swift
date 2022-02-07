@@ -52,6 +52,14 @@ extension ProductRepository: ProductRepositoryInterface {
         })
         return task
     }
+    
+    func addWishList(id: Int, size: String, completion: @escaping ((Result<Void, Error>) -> Void)) -> Cancellable {
+        let endpoint = APIEndpoints.addToWishList(id: id, size: size)
+        
+        let task = RepositoryTask()
+        
+        return task
+    }
 }
 
 // MARK: Home View Repository Interface

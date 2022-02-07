@@ -114,42 +114,46 @@ extension ProductViewController: UICollectionViewDataSource, UICollectionViewDel
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         switch kind {
         case UICollectionView.elementKindSectionHeader:
-            guard let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind,
+            guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind,
                                                                                    withReuseIdentifier: HomeViewCategoryHeaderView.reuseIdentifier,
-                                                                                   for: indexPath) as? HomeViewCategoryHeaderView else
-            { return UICollectionReusableView() }
+                                                                                   for: indexPath) as? HomeViewCategoryHeaderView
+            else { return UICollectionReusableView() }
 
-            return headerView
+            return header
+            
         case UICollectionView.elementKindSectionFooter:
             guard let footer = collectionView.dequeueReusableSupplementaryView(ofKind: kind,
                                                                                withReuseIdentifier: PageControlFooterView.reuseIdentifier,
-                                                                               for: indexPath) as? PageControlFooterView else
-            { return UICollectionReusableView() }
+                                                                               for: indexPath) as? PageControlFooterView
+            else { return UICollectionReusableView() }
             
             self.delegate = footer
-            
-            footer.configure(viewModel.count)
+            footer.configure(viewModel.numberOfImageUrls)
             
             return footer
+            
         default:
             assert(false, "Unexpected element kind")
         }
     }
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 7
+        return viewModel.numberOfSections
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        guard let section = ProductView.SectionList(rawValue: section)
+        else { return .zero }
+        
         switch section {
-        case 0:
-            return viewModel.count
-        case 2:
-            return 4
-        case 6:
-            return 5
-        default:
+        case .image:
+            return viewModel.numberOfImageUrls
+        case .release, .advertise, .delivery, .priceChart:
             return 1
+        case .itemInfo:
+            return viewModel.releaseInfo.count
+        case .similarity:
+            return 5
         }
     }
     

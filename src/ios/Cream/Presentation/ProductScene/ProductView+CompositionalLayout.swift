@@ -9,7 +9,7 @@ import UIKit
 
 // MARK: - ConfigureCollectionView
 extension ProductView {
-    enum SectionList: Int {
+    enum SectionList: Int, CaseIterable {
         case image, itemInfo, release, delivery, advertise, priceChart, similarity
     }
     
