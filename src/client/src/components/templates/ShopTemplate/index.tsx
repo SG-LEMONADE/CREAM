@@ -303,5 +303,4 @@ const SearchContent = styled.div`
 	gap: 70px 20px;
 	overflow-y: auto;
 	position: relative;
-	z-index: -1;
 `;

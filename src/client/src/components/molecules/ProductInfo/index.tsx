@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from "react";
-import { ProductInfoRes } from "types";
+import { HomeProductInfoRes, ProductInfoRes } from "types";
 
 import Brand from "components/atoms/Brand";
 import ProductName from "components/atoms/ProductName";
@@ -9,7 +9,7 @@ import styled from "@emotion/styled";
 
 type ProductInfoProps = {
 	category: "home" | "shop" | "products";
-	productInfo: ProductInfoRes;
+	productInfo: ProductInfoRes | HomeProductInfoRes;
 };
 
 const ProductInfo: FunctionComponent<ProductInfoProps> = (props) => {

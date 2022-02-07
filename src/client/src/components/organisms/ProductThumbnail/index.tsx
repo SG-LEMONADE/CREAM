@@ -7,14 +7,16 @@ import ProductInfo from "components/molecules/ProductInfo";
 import PriceThumbnail from "components/atoms/PriceThumbnail";
 import Icon from "components/atoms/Icon";
 
-import { ProductInfoRes } from "types";
+import { HomeProductInfoRes, ProductInfoRes } from "types";
 import styled from "@emotion/styled";
 
 type ProductThumbnailProps = {
 	category: "home" | "shop" | "products";
-	productInfo: ProductInfoRes;
+	productInfo: ProductInfoRes | HomeProductInfoRes;
 	isWishState?: boolean;
-	onHandleWishClick: (selectedProduct?: ProductInfoRes) => void;
+	onHandleWishClick: (
+		selectedProduct?: ProductInfoRes | HomeProductInfoRes,
+	) => void;
 };
 
 const ProductThumbnail: FunctionComponent<ProductThumbnailProps> = (props) => {
@@ -32,7 +34,7 @@ const ProductThumbnail: FunctionComponent<ProductThumbnailProps> = (props) => {
 					<ImageArea>
 						{category === "home" ? (
 							<ProductThumbnailImage
-								imgSrc={productInfo.imageUrls[0]}
+								imgSrc={productInfo.imageUrls as string}
 								backgroundColor={productInfo.backgroundColor}
 								isInWishList={isWishState}
 								onHandleWishClick={onHandleWishClick}

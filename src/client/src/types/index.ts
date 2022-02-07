@@ -20,6 +20,28 @@ export interface ProductInfoRes {
 	premiumPrice: null;
 }
 
+export interface HomeProductInfoRes {
+	backgroundColor: string;
+	brandName: string;
+	category: string;
+	color: string;
+	gender: string;
+	highestBid: number;
+	id: number;
+	imageUrls: string;
+	lowestAsk: number;
+	originalName: string;
+	originalPrice: number;
+	premiumPrice: number;
+	releasedDate: string;
+	sizes: string;
+	styleCode: string;
+	totalSale: number;
+	translatedName: string;
+	wishCnt: number;
+	wishList: string[];
+}
+
 export interface ShortcutItemRes {
 	link: string;
 	bigImg: string;
