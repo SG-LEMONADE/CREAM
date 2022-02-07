@@ -7,6 +7,7 @@ import styled from "@emotion/styled";
 import Shortcuts from "components/molecules/Shortcuts";
 
 type HomeTemplateProps = {
+	isLoading?: boolean;
 	children: React.ReactNode;
 };
 
@@ -24,7 +25,7 @@ const bigList = [
 ];
 
 const HomeTemplate: FunctionComponent<HomeTemplateProps> = (props) => {
-	const { children } = props;
+	const { children, isLoading = false } = props;
 
 	return (
 		<HomeTemplateWrapper>
@@ -32,7 +33,7 @@ const HomeTemplate: FunctionComponent<HomeTemplateProps> = (props) => {
 			<ShortcutCollection>
 				<Shortcuts />
 			</ShortcutCollection>
-			{children}
+			{isLoading ? <LoadingWrapper>{children}</LoadingWrapper> : children}
 		</HomeTemplateWrapper>
 	);
 };
@@ -49,4 +50,11 @@ const ShortcutCollection = styled.section`
 	margin-top: 50px;
 	padding-top: 0;
 	padding-bottom: 0;
+`;
+
+const LoadingWrapper = styled.div`
+	display: flex;
+	margin: 120px 0;
+	justify-content: center;
+	align-items: center;
 `;

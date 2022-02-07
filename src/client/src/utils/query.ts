@@ -52,6 +52,6 @@ export const queryStringMaker = (queryObj) => {
 		queryString += `${key}=${value}`;
 		queryString += "&";
 	}
-	console.log("===퀴리는, ", queryString, "===");
+	queryString = queryString.slice(0, -1);
 	return queryString;
 };

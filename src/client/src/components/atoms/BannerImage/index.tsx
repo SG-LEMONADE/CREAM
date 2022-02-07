@@ -22,11 +22,13 @@ const BannerImage: FunctionComponent<BannerProps> = (props) => {
 			bgColor={bgColor}
 		>
 			<StyledImage
-				width={category === "small" ? "400%" : "500%"}
-				height={category === "small" ? "100%" : "480px"}
+				width={category === "small" ? "400%" : "100%"}
+				height="30%"
+				layout="responsive"
 				category={category}
 				src={src}
 				alt={src}
+				objectFit="contain"
 			/>
 		</StyledBannerWrapper>
 	);
@@ -52,5 +54,5 @@ const StyledImage = styled(Image)<{ category: string }>`
 	top: 0;
 	width: auto;
 	max-height: ${({ category }) => (category === "big" ? `480px;` : `100px`)};
-	max-width: 100%;
+	max-width: 80%;
 `;

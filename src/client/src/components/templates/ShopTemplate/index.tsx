@@ -18,6 +18,7 @@ import styled from "@emotion/styled";
 import { css } from "@emotion/react";
 
 type ShopTemplateProps = {
+	isLoading?: boolean;
 	children: React.ReactNode;
 };
 
@@ -45,7 +46,7 @@ const ImageInfos = [
 ];
 
 const ShopTemplate: FunctionComponent<ShopTemplateProps> = (props) => {
-	const { children } = props;
+	const { children, isLoading = false } = props;
 
 	const router = useRouter();
 
@@ -78,7 +79,8 @@ const ShopTemplate: FunctionComponent<ShopTemplateProps> = (props) => {
 			filteredPrice,
 			sortOption,
 		);
-		router &&
+		Object.keys(query).length > 0 &&
+			router &&
 			router.push({
 				pathname: "/search",
 				query: query,
@@ -200,7 +202,20 @@ const ShopTemplate: FunctionComponent<ShopTemplateProps> = (props) => {
 								/>
 							</SortWrapper>
 						</SearchContentOption>
-						<SearchContent>{children}</SearchContent>
+						{isLoading && <SearchLoading>{children}</SearchLoading>}
+						{!isLoading &&
+							(React.Children.count(children) > 0 ? (
+								<SearchContent>{children}</SearchContent>
+							) : (
+								<SearchEmptyConent>
+									<p style={{ fontSize: "16px", color: "rgba(34,34,34,.8)" }}>
+										검색하신 결과가 없습니다.
+									</p>
+									<p style={{ fontSize: "13px", color: "rgba(34,34,34,.8)" }}>
+										상품 등록 요청은 <strong>대면</strong> 으로 요청해주세요.
+									</p>
+								</SearchEmptyConent>
+							))}
 					</SearchContentWrapper>
 				</ContentsWrapper>
 			</ShopContentsWrapper>
@@ -303,4 +318,18 @@ const SearchContent = styled.div`
 	gap: 70px 20px;
 	overflow-y: auto;
 	position: relative;
+`;
+
+const SearchLoading = styled.div`
+	display: flex;
+	margin-top: 120px;
+	justify-content: center;
+	align-items: center;
+`;
+
+const SearchEmptyConent = styled.div`
+	position: relative;
+	padding: 120px 0 100px;
+	background-color: #fff;
+	text-align: center;
 `;

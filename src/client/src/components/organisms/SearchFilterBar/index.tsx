@@ -51,6 +51,9 @@ const SearchFilterBar: FunctionComponent<SearchFilterBarProps> = (props) => {
 	const { data, error } = useSWR(
 		`${process.env.END_POINT_PRODUCT}/filters`,
 		fetcher,
+		{
+			revalidateOnFocus: false,
+		},
 	);
 
 	const onHandleDeleteAll = useCallback(() => {

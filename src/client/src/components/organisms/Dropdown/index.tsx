@@ -106,6 +106,7 @@ const StyledDropdownWrapper = styled.div`
 	right: 0;
 	width: 100%;
 	height: 100%;
+	z-index: 100;
 `;
 
 const DropdownParent = styled.div`

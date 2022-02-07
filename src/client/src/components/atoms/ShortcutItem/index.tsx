@@ -15,14 +15,16 @@ const ShortcutItem: FunctionComponent<ShortcutItemProps> = (props) => {
 	const { bigImgSrc, smallImgSrc, link, title } = props;
 	return (
 		<StyledWrapper>
-			<Link href={`/${link}`}>
-				<StyledImage
-					src={bigImgSrc}
-					smallSrc={smallImgSrc}
-					layout="fill"
-					alt={bigImgSrc}
-				/>
-			</Link>
+			{/* <Link href={`${link}`}>
+				<a> */}
+			<StyledImage
+				src={bigImgSrc}
+				smallsrc={smallImgSrc}
+				layout="fill"
+				alt={bigImgSrc}
+			/>
+			{/* </a>
+			</Link> */}
 			<StyledTitle>{title}</StyledTitle>
 		</StyledWrapper>
 	);
@@ -44,13 +46,13 @@ const StyledWrapper = styled.div`
 	}
 `;
 
-const StyledImage = styled(Image)<{ smallSrc: string }>`
+const StyledImage = styled(Image)<{ smallsrc: string }>`
 	border-radius: 10px;
 	height: 100px;
 	@media screen and (max-width: 1200px) {
 		border-radius: 50%;
 		transition: 0.5s;
-		content: url(${({ smallSrc }) => smallSrc});
+		content: url(${({ smallsrc }) => smallsrc});
 	}
 `;
 

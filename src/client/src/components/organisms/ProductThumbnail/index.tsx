@@ -34,7 +34,7 @@ const ProductThumbnail: FunctionComponent<ProductThumbnailProps> = (props) => {
 					<ImageArea>
 						{category === "home" ? (
 							<ProductThumbnailImage
-								imgSrc={productInfo.imageUrls as string}
+								imgSrc={productInfo.imageUrls[0]}
 								backgroundColor={productInfo.backgroundColor}
 								isInWishList={isWishState}
 								onHandleWishClick={onHandleWishClick}
@@ -47,12 +47,12 @@ const ProductThumbnail: FunctionComponent<ProductThumbnailProps> = (props) => {
 							/>
 						)}
 					</ImageArea>
-					<InfoArea>
-						<ProductInfo category={category} productInfo={productInfo} />
-						<PriceThumbnail category={category} price={productInfo.lowestAsk} />
-					</InfoArea>
 				</ProductLink>
 			</Link>
+			<InfoArea>
+				<ProductInfo category={category} productInfo={productInfo} />
+				<PriceThumbnail category={category} price={productInfo.lowestAsk} />
+			</InfoArea>
 			{category === "shop" && (
 				<BookmarkArea>
 					<BookmarkContents>

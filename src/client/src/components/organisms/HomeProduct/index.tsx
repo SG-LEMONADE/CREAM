@@ -39,6 +39,7 @@ const HomeProduct: FunctionComponent<HomeProductProps> = (props) => {
 		if (productInfo.length > 4) {
 			setViewProducts(productInfo.slice(viewIndex, viewIndex + 4));
 		} else {
+			setViewProducts(productInfo.slice(viewIndex));
 			setIsEndProduct(true);
 		}
 	}, [productInfo]);
@@ -54,10 +55,17 @@ const HomeProduct: FunctionComponent<HomeProductProps> = (props) => {
 					<ProductImageArea>
 						{viewProducts.map((product) => (
 							<ProductThumbnail
+								key={product.id}
 								category="home"
 								productInfo={product}
-								isWishState={product.wishList.length > 0}
-								onHandleWishClick={onHandleWishClick}
+								isWishState={
+									product.wishList !== null
+										? product.wishList.length > 0
+										: false
+								}
+								onHandleWishClick={() => {
+									onHandleWishClick(product);
+								}}
 							/>
 						))}
 					</ProductImageArea>
@@ -80,10 +88,15 @@ const HomeProduct: FunctionComponent<HomeProductProps> = (props) => {
 
 export default HomeProduct;
 
-const HomeProductWrapper = styled.section``;
+const HomeProductWrapper = styled.section`
+	margin: 100px 0;
+`;
 
 const ProductArea = styled.div`
 	margin-top: 30px;
+	@media screen and (max-width: 1400px) {
+		padding: 0 40px;
+	}
 `;
 
 const ProductsArea = styled.div`
@@ -104,7 +117,7 @@ const ProductImageArea = styled.div`
 	width: 100%;
 	display: grid;
 	grid-template-columns: repeat(4, 1fr);
-	gap: 10px 10px;
+	gap: 50px 10px;
 `;
 
 const ButtonArea = styled.div`

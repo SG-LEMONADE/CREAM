@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useState } from "react";
+import React, { FunctionComponent, useEffect, useState } from "react";
 import Link from "next/link";
 
 import Logo from "components/atoms/Logo";
@@ -7,8 +7,12 @@ import Icon from "components/atoms/Icon";
 
 import colors from "colors/color";
 import styled from "@emotion/styled";
+import Swal from "sweetalert2";
+import { useRouter } from "next/router";
 
 const HeaderMain: FunctionComponent = () => {
+	const router = useRouter();
+
 	return (
 		<HeaderMainWrapper>
 			<Link href={"/"}>
@@ -18,12 +22,22 @@ const HeaderMain: FunctionComponent = () => {
 			</Link>
 			<StyledGNBArea>
 				<HeaderMainItem
-					onClick={() => alert("Coming soon...")}
+					onClick={() => {
+						Swal.fire({
+							position: "top",
+							icon: "question",
+							html: `준비중입니다!`,
+							showConfirmButton: true,
+						});
+					}}
 					children="STYLE"
 				/>
 				<Link href={"/search"}>
 					<a>
-						<HeaderMainItem children="SHOP" />
+						<HeaderMainItem
+							activated={router.pathname.includes("search")}
+							children="SHOP"
+						/>
 					</a>
 				</Link>
 				<Link href={"https://github.com/SG-LEMONADE/CREAM"}>

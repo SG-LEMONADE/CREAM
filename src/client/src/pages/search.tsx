@@ -22,20 +22,28 @@ import { fetcher } from "lib/fetcher";
 import { ProductInfoRes } from "types";
 import { queryStringMaker } from "utils/query";
 
+import { Oval } from "react-loader-spinner";
+
 const Search: FunctionComponent = () => {
 	const router = useRouter();
 
 	const [isOpen, setIsOpen] = useState<boolean>(false);
-	const [searchResult, setSearchResult] = useState<ProductInfoRes[]>([]);
 	const [pickedProductInfo, setPickedProductInfo] = useState<ProductInfoRes>();
 
-	const { data, error, mutate } = useSWR<ProductInfoRes[]>(
+	const {
+		data: searchProducts,
+		error,
+		mutate,
+	} = useSWR<ProductInfoRes[]>(
 		Object.keys(router.query).length > 0
 			? `${
 					process.env.END_POINT_PRODUCT
 			  }/products?cursor=0&perPage=40&${queryStringMaker(router.query)}`
 			: `${process.env.END_POINT_PRODUCT}/products?cursor=0&perPage=40`,
 		fetcher,
+		{
+			revalidateOnFocus: false,
+		},
 	);
 
 	const onHandleClickWish = useCallback(async (obj: ProductInfoRes) => {
@@ -101,9 +109,26 @@ const Search: FunctionComponent = () => {
 		[pickedProductInfo],
 	);
 
-	useEffect(() => {
-		setSearchResult(data);
-	}, [data, pickedProductInfo]);
+	if (!searchProducts) {
+		return (
+			<NavTemplate
+				headerTop={<HeaderTop />}
+				headerMain={<HeaderMain />}
+				footer={<Footer />}
+			>
+				<ShopTemplate isLoading>
+					<Oval
+						ariaLabel="loading-indicator"
+						height={100}
+						width={100}
+						strokeWidth={5}
+						color="black"
+						secondaryColor="white"
+					/>
+				</ShopTemplate>
+			</NavTemplate>
+		);
+	}
 
 	return (
 		<NavTemplate
@@ -112,8 +137,8 @@ const Search: FunctionComponent = () => {
 			footer={<Footer />}
 		>
 			<ShopTemplate>
-				{searchResult &&
-					searchResult.map((obj) => (
+				{searchProducts &&
+					searchProducts.map((obj) => (
 						<ProductThumbnail
 							key={obj.id}
 							category="shop"
