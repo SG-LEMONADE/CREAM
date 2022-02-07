@@ -28,18 +28,28 @@ export interface HomeProductInfoRes {
 	gender: string;
 	highestBid: number;
 	id: number;
-	imageUrls: string;
+	imageUrls: string[];
 	lowestAsk: number;
 	originalName: string;
 	originalPrice: number;
 	premiumPrice: number;
 	releasedDate: string;
-	sizes: string;
+	sizes: string[];
 	styleCode: string;
 	totalSale: number;
 	translatedName: string;
 	wishCnt: number;
 	wishList: string[];
+}
+
+export interface HomeRes {
+	adImageUrl: string[];
+	sections: {
+		header: string;
+		detail: string;
+		imageUrl: string;
+		products: HomeProductInfoRes[];
+	}[];
 }
 
 export interface ShortcutItemRes {

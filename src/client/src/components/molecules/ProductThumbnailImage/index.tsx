@@ -17,16 +17,14 @@ const ProductThumbnailImage: FunctionComponent<ProductThumbnailImageProps> = (
 ) => {
 	const { imgSrc, backgroundColor, isInWishList, onHandleWishClick } = props;
 
-	const [isWish, setIsWish] = useState<boolean>(isInWishList);
-
-	const onClick = () => {
-		setIsWish(!isWish);
+	const onClick = (e) => {
+		e.preventDefault();
 		onHandleWishClick();
 	};
 
 	return (
 		<ProductThumbnailImageWrapper>
-			{isWish ? (
+			{isInWishList ? (
 				<Icon
 					onClick={onClick}
 					name="BookmarkFilled"

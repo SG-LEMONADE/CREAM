@@ -58,7 +58,7 @@ const SearchFilterItem: FunctionComponent<SearchFilterItemProps> = (props) => {
 	);
 
 	useEffect(() => {
-		if (state === "" || state.length === 0) {
+		if (state === "" || (state && state.length === 0)) {
 			setActivateOption([]);
 		} else {
 			typeof state === "object" && setActivateOption([...state]);
@@ -195,7 +195,7 @@ const StyledLi = styled.li`
 	margin: 0;
 	padding: 0;
 	list-style: none;
-	padding-bottom: 5px;
+	padding-bottom: 8px;
 `;
 
 const StyledA = styled.a`
