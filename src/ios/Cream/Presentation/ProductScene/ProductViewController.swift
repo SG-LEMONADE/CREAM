@@ -118,7 +118,7 @@ extension ProductViewController: UICollectionViewDataSource, UICollectionViewDel
                                                                                    withReuseIdentifier: HomeViewCategoryHeaderView.reuseIdentifier,
                                                                                    for: indexPath) as? HomeViewCategoryHeaderView else
             { return UICollectionReusableView() }
-            headerView.configure("\(Int.random(in: 0...100))")
+
             return headerView
         case UICollectionView.elementKindSectionFooter:
             guard let footer = collectionView.dequeueReusableSupplementaryView(ofKind: kind,

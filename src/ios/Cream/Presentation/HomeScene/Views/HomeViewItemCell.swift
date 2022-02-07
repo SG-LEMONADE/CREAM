@@ -71,7 +71,8 @@ extension HomeProductCell: ViewConfiguration {
         
         wishButton.snp.makeConstraints {
             $0.bottom.trailing.equalToSuperview().inset(15)
-            $0.width.height.equalTo(itemView.snp.width).multipliedBy(0.1)
+            $0.height.equalTo(itemView.snp.width).multipliedBy(0.1)
+            $0.width.equalTo(itemView.snp.width).multipliedBy(0.08)
         }
     }
     

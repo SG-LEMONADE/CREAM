@@ -7,15 +7,14 @@
 
 import Foundation
 
-struct HomeData {
+struct HomeInfo {
     let ads: [String]
-    let sections: [SectionInfo]
+    let sections: [Section]
 }
 
 struct SectionInfo {
     let header: String
     let detail: String
-    let imageUrl: String
     let products: [Product]
 }
 

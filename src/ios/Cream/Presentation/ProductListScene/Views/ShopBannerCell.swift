@@ -15,6 +15,7 @@ class ShopBannerCell: UICollectionViewCell {
     
     private lazy var imageView: UIImageView = {
         let imageView = UIImageView(frame: .zero)
+        imageView.contentMode = .scaleAspectFit
         return imageView
     }()
     
@@ -42,7 +43,9 @@ extension ShopBannerCell: ViewConfiguration {
     
     func setupConstraints() {
         imageView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
+            $0.centerX.equalTo(self.snp.centerX)
+//            $0.edges.equalToSuperview()
+            $0.top.bottom.equalToSuperview()
         }
     }
 }

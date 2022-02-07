@@ -15,13 +15,8 @@ final class ProductRepository {
     }
 }
 
+// MARK: Product View Repository Interface
 extension ProductRepository: ProductRepositoryInterface {
-    func fetchHome(completion: @escaping ((Result<HomeData, Error>) -> Void)) -> Cancellable {
-        let task = RepositoryTask()
-        
-        return task
-    }
-    
     func requestProducts(page: Int, category: String?, completion: @escaping ((Result<Products, Error>) -> Void)) -> Cancellable {
         let endpoint = APIEndpoints.loadProducts(page, category: category)
         
@@ -46,6 +41,26 @@ extension ProductRepository: ProductRepositoryInterface {
         let endpoint = APIEndpoints.loadProduct(id)
         
         let task = RepositoryTask()
+        task.networkTask = dataTransferService.request(with: endpoint, completion: { result in
+            switch result {
+            case .success(let response):
+                let product = response.toDomain()
+                completion(.success(product))
+            case .failure(let error):
+                print(error)
+            }
+        })
+        return task
+    }
+}
+
+// MARK: Home View Repository Interface
+extension ProductRepository: HomeListRepositoryInterface {
+    func fetchHome(completion: @escaping ((Result<HomeInfo, Error>) -> Void)) -> Cancellable {
+        let endpoint = APIEndpoints.loadHome()
+        
+        let task = RepositoryTask()
+                
         task.networkTask = dataTransferService.request(with: endpoint, completion: { result in
             switch result {
             case .success(let response):

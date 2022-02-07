@@ -42,9 +42,20 @@ final class NavigateMenuBaseController: UITabBarController {
         var viewController: UIViewController {
             switch self {
             case .home:
-                return HomeViewController()
+                guard let baseURL = URL(string: "http://ec2-13-124-253-180.ap-northeast-2.compute.amazonaws.com:8081")
+                else { fatalError() }
+                
+                let config: NetworkConfigurable = ApiDataNetworkConfig(baseURL: baseURL)
+                let networkService: NetworkService = DefaultNetworkService(config: config)
+                let dataTransferService: DataTransferService = DefaultDataTransferService(with: networkService)
+                let repository: HomeListRepositoryInterface = ProductRepository(dataTransferService: dataTransferService)
+                let usecase: HomeListUseCaseInterface = HomeListUseCase(repository: repository)
+                let viewModel: HomeListViewModel = DefaultHomeListViewModel(usecase)
+                let homeViewController = HomeViewController(viewModel)
+                return homeViewController
+                
             case .shop:
-                guard let baseURL = URL(string: "http://ec2-3-36-85-82.ap-northeast-2.compute.amazonaws.com:8081")
+                guard let baseURL = URL(string: "http://ec2-13-124-253-180.ap-northeast-2.compute.amazonaws.com:8081")
                 else { fatalError() }
                 
                 let config: NetworkConfigurable = ApiDataNetworkConfig(baseURL: baseURL)

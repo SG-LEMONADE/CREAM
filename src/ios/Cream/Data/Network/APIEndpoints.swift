@@ -8,7 +8,13 @@
 import Foundation
 
 struct APIEndpoints {
-
+    // MARK: - Home
+    static func loadHome() -> Endpoint<HomeResponseDTO> {
+        return Endpoint(path: "",
+                        method: .get,
+                        headerParamaters: ["Content-Type":"application/json"])
+    }
+    
     // MARK: - User
     static func confirmUser(with authRequestDTO: AuthRequestDTO) -> Endpoint<AuthResponseDTO> {
         return Endpoint(path: "users/login",

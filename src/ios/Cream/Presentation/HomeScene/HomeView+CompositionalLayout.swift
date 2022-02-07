@@ -22,7 +22,7 @@ extension HomeView {
                 
                 switch section {
                 case .itemList:     return self.configureItemListSection()
-                case .advertise:    return self.configureBannerSection()
+                case .advertise:    return self.configureRepresentationSection()
                 }
             }
         }
@@ -78,6 +78,24 @@ extension HomeView {
                                                         elementKind: UICollectionView.elementKindSectionHeader,
                                                         alignment: .topLeading)
         ]
+        
+        return section
+    }
+    
+    private func configureRepresentationSection() -> NSCollectionLayoutSection {
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
+                                              heightDimension: .fractionalWidth(1))
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        item.contentInsets.bottom = -20
+        
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
+                                               heightDimension: .fractionalWidth(1))
+        
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+        group.contentInsets = .init(top: 0, leading: 0, bottom: 0, trailing: 0)
+        
+        let section = NSCollectionLayoutSection(group: group)
+        section.orthogonalScrollingBehavior = .groupPaging
         
         return section
     }

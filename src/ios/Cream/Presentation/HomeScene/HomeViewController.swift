@@ -7,42 +7,10 @@
 
 import UIKit
 
-class HomeListViewController: BaseDIViewController<HomeViewModel> {
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
-}
-
-extension HomeViewController: FooterScrollDelegate {
-    func didScrollTo(_ page: Int) {
-        delegate?.didScrollTo(page)
-    }
-}
-
-class HomeViewController: UIViewController {
-    
+class HomeViewController: BaseDIViewController<HomeListViewModel> {
     weak var delegate: FooterScrollDelegate?
     
-    private let viewModel = HomeViewModel.init("test")
-    private let banners: [String] = ["homebanner1",
-                                     "homebanner2",
-                                     "homebanner3",
-                                     "homebanner4",
-                                     "homebanner5",
-                                     "homebanner6",
-                                     "homebanner7",
-                                     "homebanner1"]
-    
-    
     private lazy var homeView = HomeView()
-    private var currentIndex: Int = 0
-    
-//    var item: Int = 0 {
-//        didSet {
-//            self.delegate?.didScrollTo(item)
-//        }
-//    }
-    
     
     private func configureNavigation() {
         self.navigationController?.navigationBar.tintColor = .black
@@ -67,12 +35,20 @@ class HomeViewController: UIViewController {
         configureDelegate()
         configureCollectionView()
         configureNavigation()
+        bindViewModel()
+        viewModel.viewDidLoad()
     }
     
     private func configureDelegate() {
         homeView.homeCollectionView.delegate = self
         homeView.homeCollectionView.dataSource = self
         homeView.delegate = self
+    }
+    
+    private func bindViewModel() {
+        viewModel.homeInfo.bind { [weak self] _ in
+            self?.homeView.homeCollectionView.reloadData()
+        }
     }
     
     func configureCollectionView() {
@@ -91,34 +67,10 @@ class HomeViewController: UIViewController {
     }
 }
 
-extension HomeViewController {
-    func bannerTimer() {
-        let _: Timer = Timer.scheduledTimer(withTimeInterval: 2, repeats: true) { (Timer) in
-            self.bannerMove()
-        }
-    }
-
-    func bannerMove() {
-        currentIndex += 1
-        homeView.homeCollectionView.scrollToItem(at: NSIndexPath(item: currentIndex, section: 0) as IndexPath, at: .bottom, animated: true)
-
-        if self.currentIndex == self.banners.count-1 {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.28) {
-                self.scrollTofirstIndex()
-            }
-        }
-    }
-
-    func scrollTofirstIndex() {
-        homeView.homeCollectionView.scrollToItem(at: NSIndexPath(item: 0, section: 0) as IndexPath, at: .top, animated: false)
-        currentIndex = 0
-    }
-}
-
 extension HomeViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if indexPath.section % 2 == 1 {
-            guard let baseURL = URL(string: "http://ec2-3-36-85-82.ap-northeast-2.compute.amazonaws.com:8081")
+            guard let baseURL = URL(string: "http://ec2-13-124-253-180.ap-northeast-2.compute.amazonaws.com:8081")
             else { return }
             
             let config: NetworkConfigurable = ApiDataNetworkConfig(baseURL: baseURL)
@@ -126,7 +78,8 @@ extension HomeViewController: UICollectionViewDelegate {
             let dataTransferService: DataTransferService = DefaultDataTransferService(with: networkService)
             let repository: ProductRepositoryInterface = ProductRepository(dataTransferService: dataTransferService)
             let usecase: ProductUseCaseInterface = ProductUseCase(repository)
-            let viewModel: ProductViewModel = DefaultProductViewModel(usecase: usecase)
+            var viewModel: ProductViewModel = DefaultProductViewModel(usecase: usecase)
+            viewModel.id = self.viewModel.homeInfo.value.sections[indexPath.section/2].products[indexPath.item].id
             let productViewController = ProductViewController(viewModel)
             productViewController.hidesBottomBarWhenPushed = true
             self.navigationController?.pushViewController(productViewController, animated: true)
@@ -136,35 +89,41 @@ extension HomeViewController: UICollectionViewDelegate {
 
 extension HomeViewController: UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 11
+        return viewModel.numberOfSections
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if section == 0 {
-            return banners.count
+            return viewModel.homeInfo.value.ads.count
         }
+        
         if section % 2 == 1 {
-            return 40
+            return viewModel.homeInfo.value.sections[section/2].products.count
         } else {
             return 1
         }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if indexPath.section % 2 == 0 {
+        if indexPath.section == 0 {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ShopBannerCell.reuseIdentifier,
                                                                 for: indexPath) as? ShopBannerCell else
                                                                 { return UICollectionViewCell() }
-            cell.configure(banners[indexPath.item])
+            cell.configure(viewModel.homeInfo.value.ads[indexPath.item])
+            return cell
+        } else if indexPath.section % 2 == 0 {
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ShopBannerCell.reuseIdentifier,
+                                                                for: indexPath) as? ShopBannerCell else
+                                                                { return UICollectionViewCell() }
+            cell.configure(viewModel.homeInfo.value.sections[indexPath.section/2].imageUrl)
+            return cell
+        } else {
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HomeProductCell.reuseIdentifier,
+                                                                for: indexPath) as? HomeProductCell else
+                                                                { return UICollectionViewCell() }
+            cell.configure(viewModel.homeInfo.value.sections[indexPath.section/2].products[indexPath.item])
             return cell
         }
-        
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HomeProductCell.reuseIdentifier,
-                                                            for: indexPath) as? HomeProductCell else
-                                                            { return UICollectionViewCell() }
-        cell.configureTest()
-        
-        return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
@@ -174,7 +133,9 @@ extension HomeViewController: UICollectionViewDataSource {
                                                                                withReuseIdentifier: HomeViewCategoryHeaderView.reuseIdentifier,
                                                                                for: indexPath) as? HomeViewCategoryHeaderView else
             { return UICollectionReusableView() }
-            header.configure("\(Int.random(in: 0...100))")
+            
+            header.configure(headerInfo: viewModel.homeInfo.value.sections[indexPath.section/2].header,
+                             detailInfo: viewModel.homeInfo.value.sections[indexPath.section/2].detail)
             return header
             
         case UICollectionView.elementKindSectionFooter:
@@ -184,7 +145,7 @@ extension HomeViewController: UICollectionViewDataSource {
             { return UICollectionReusableView() }
             
             self.delegate = footer
-            footer.configure(banners.count)
+            footer.configure(viewModel.homeInfo.value.ads.count)
             
             return footer
         default:
@@ -193,3 +154,8 @@ extension HomeViewController: UICollectionViewDataSource {
     }
 }
 
+extension HomeViewController: FooterScrollDelegate {
+    func didScrollTo(_ page: Int) {
+        delegate?.didScrollTo(page)
+    }
+}

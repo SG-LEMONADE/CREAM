@@ -30,7 +30,8 @@ class HomeViewCategoryHeaderView: UICollectionReusableView {
         stackView.alignment = .leading
         stackView.distribution = .equalSpacing
         stackView.axis = .vertical
-        stackView.addArrangedSubviews(titleLabel, detailLabel)
+        stackView.addArrangedSubviews(titleLabel,
+                                      detailLabel)
         return stackView
     }()
     
@@ -46,9 +47,9 @@ class HomeViewCategoryHeaderView: UICollectionReusableView {
 }
 
 extension HomeViewCategoryHeaderView {
-    func configure(_ headerInfo: String) {
-        self.titleLabel.text = "header \(headerInfo)"
-        self.detailLabel.text = "detail \(headerInfo)"
+    func configure(headerInfo: String, detailInfo: String) {
+        self.titleLabel.text = headerInfo
+        self.detailLabel.text = detailInfo
     }
 }
 
@@ -62,7 +63,7 @@ extension HomeViewCategoryHeaderView: ViewConfiguration {
         labelStackView.snp.makeConstraints {
             $0.leading.equalTo(self.snp.leading).offset(10)
             $0.trailing.equalTo(self.snp.trailing).offset(-10)
-            $0.top.equalTo(self.snp.top).offset(20)
+            $0.top.equalTo(self.snp.top).inset(25)
             $0.bottom.equalTo(self.snp.bottom)
         }
     }
