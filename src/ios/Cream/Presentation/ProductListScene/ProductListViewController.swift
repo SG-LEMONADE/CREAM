@@ -34,6 +34,7 @@ class ProductListViewController: BaseDIViewController<ProductListViewModel> {
         setupCollectionView()
         bindViewModel()
         viewModel.viewDidLoad()
+        viewConfigure()
     }
     
     private func setupCollectionView() {
@@ -51,7 +52,7 @@ class ProductListViewController: BaseDIViewController<ProductListViewModel> {
                                     withReuseIdentifier: ShopViewFilterHeaderView.reuseIdentifier)
     }
     
-    override func viewConfigure() {
+    func viewConfigure() {
         let backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)
         backBarButtonItem.tintColor = .systemGray
         
@@ -79,15 +80,13 @@ extension ProductListViewController: UICollectionViewDataSource {
             return viewModel.products.value.count
         }
     }
-    
     func collectionView(_ collectionView: UICollectionView,
                         cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if indexPath.section == 0 {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ShopBannerCell.reuseIdentifier,
                                                                 for: indexPath) as? ShopBannerCell
             else { return UICollectionViewCell() }
-            
-            cell.configure(viewModel.banners[indexPath.item])
+            cell.configureAds(viewModel.banners[indexPath.item])
             return cell
         } else {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ProductListItemCell.reuseIdentifier,

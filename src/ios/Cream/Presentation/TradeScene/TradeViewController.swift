@@ -37,7 +37,7 @@ class TradeViewController: BaseDIViewController<TradeViewModel>, ImageLoadable {
         configure()
     }
     
-    override func viewConfigure() {
+    func viewConfigure() {
         tradeView.sizeListView.dataSource = self
         tradeView.sizeListView.delegate = self
     }
@@ -58,6 +58,7 @@ class TradeViewController: BaseDIViewController<TradeViewModel>, ImageLoadable {
     }    
     
     func configure() {
+        viewConfigure()
         self.tradeView.itemNumberLabel.text = viewModel.product.styleCode
         self.tradeView.itemTitleLabel.text = viewModel.product.originalName
         self.tradeView.itemTranslatedLabel.text = viewModel.product.translatedName

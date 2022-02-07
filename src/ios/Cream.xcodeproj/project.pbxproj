@@ -64,7 +64,6 @@
 		7B5EEE6C27B01AA600990E37 /* HomeView+CompositionalLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B5EEE6B27B01AA600990E37 /* HomeView+CompositionalLayout.swift */; };
 		7B5EEE6E27B01E9A00990E37 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B5EEE6D27B01E9A00990E37 /* HomeView.swift */; };
 		7B8EAA78279FBBB600B07259 /* ProductRepositoryInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B8EAA77279FBBB600B07259 /* ProductRepositoryInterface.swift */; };
-		7B8EAA7D279FC2CD00B07259 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B8EAA7C279FC2CD00B07259 /* BaseViewController.swift */; };
 		7B8EAA7F279FC38300B07259 /* BaseDIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B8EAA7E279FC38300B07259 /* BaseDIViewController.swift */; };
 		7B8EAA8627A0DB4700B07259 /* ValidationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B8EAA8527A0DB4700B07259 /* ValidationHelper.swift */; };
 		7B8EAA8827A17C3000B07259 /* JoinViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B8EAA8727A17C3000B07259 /* JoinViewController.swift */; };
@@ -165,7 +164,6 @@
 		7B5EEE6B27B01AA600990E37 /* HomeView+CompositionalLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HomeView+CompositionalLayout.swift"; sourceTree = "<group>"; };
 		7B5EEE6D27B01E9A00990E37 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		7B8EAA77279FBBB600B07259 /* ProductRepositoryInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductRepositoryInterface.swift; sourceTree = "<group>"; };
-		7B8EAA7C279FC2CD00B07259 /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		7B8EAA7E279FC38300B07259 /* BaseDIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseDIViewController.swift; sourceTree = "<group>"; };
 		7B8EAA8527A0DB4700B07259 /* ValidationHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationHelper.swift; sourceTree = "<group>"; };
 		7B8EAA8727A17C3000B07259 /* JoinViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinViewController.swift; sourceTree = "<group>"; };
@@ -507,7 +505,6 @@
 			children = (
 				7B193C8E2796EC1500B934A3 /* Protocol */,
 				7BB0110A278AE227005E5C9E /* NavigateMenuBaseController.swift */,
-				7B8EAA7C279FC2CD00B07259 /* BaseViewController.swift */,
 				7B8EAA7E279FC38300B07259 /* BaseDIViewController.swift */,
 			);
 			path = Base;
@@ -804,7 +801,6 @@
 				7BF82E1527A54944007E0A79 /* SizeListViewModel.swift in Sources */,
 				7B5EEE6C27B01AA600990E37 /* HomeView+CompositionalLayout.swift in Sources */,
 				7B5EEE5027A95DCB00990E37 /* ImageLoader.swift in Sources */,
-				7B8EAA7D279FC2CD00B07259 /* BaseViewController.swift in Sources */,
 				7BF82E0B27A38BB5007E0A79 /* UserRepository.swift in Sources */,
 				7B8EAA8A27A17C7600B07259 /* JoinView.swift in Sources */,
 				7B8EAAAF27A2601C00B07259 /* AuthResponseDTO+Mapping.swift in Sources */,

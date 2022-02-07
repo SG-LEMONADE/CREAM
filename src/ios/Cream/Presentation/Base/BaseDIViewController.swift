@@ -7,7 +7,7 @@
 
 import UIKit
 
-class BaseDIViewController<T>: BaseViewController {
+class BaseDIViewController<T>: UIViewController {
     var viewModel: T
     
     init(_ viewModel: T) {
