@@ -10,7 +10,7 @@ import UIKit
 // MARK: - ConfigureCollectionView
 extension ProductView {
     enum SectionList: Int {
-        case image, itemInfo, release, delivery, advertise, priceChart, similarItem
+        case image, itemInfo, release, delivery, advertise, priceChart, similarity
     }
     
     func configureCollectionView() {
@@ -38,7 +38,7 @@ extension ProductView {
             case .delivery:     return self.configureDeliverySectionLayout()
             case .advertise:    return self.configureAdvertiseSectionLayout()
             case .priceChart:   return self.configurePriceChartSectionLayout()
-            case .similarItem:  return self.configureSimilarItemSectionLayout()
+            case .similarity:  return self.configureSimilarItemSectionLayout()
             }
         }
     }

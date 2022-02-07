@@ -184,7 +184,7 @@ extension ProductViewController: UICollectionViewDataSource, UICollectionViewDel
                                                                 for: indexPath) as? ShopBannerCell
             else { return UICollectionViewCell() }
             cell.backgroundColor = .red
-            cell.configure("banner1")
+            cell.configureAds("banner_delivery")
             return cell
             
         case 4:
@@ -192,7 +192,7 @@ extension ProductViewController: UICollectionViewDataSource, UICollectionViewDel
                                                                 for: indexPath) as? ShopBannerCell
             else { return UICollectionViewCell() }
             cell.backgroundColor = .blue
-            cell.configure("banner2")
+            cell.configureAds("banner\(Int.random(in: 1...5))")
             return cell
             
         case 6:

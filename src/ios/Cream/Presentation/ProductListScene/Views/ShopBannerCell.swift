@@ -71,13 +71,10 @@ extension ShopBannerCell {
         }
     }
     
-//    func configure(with value: ProductDetail) {
-//        guard let url = URL(string: value) else { return }
-//        sessionTask = loadImage(url: url) { [weak self] (image) in
-//            DispatchQueue.main.async {
-//                self?.imageView.image = image
-//            }
-//        }
-//        self.imageView.backgroundColor = UIColor(rgb: value.backgroundColor.hexToInt)
-//    }
+    func configureAds(_ image: String) {
+        let image = UIImage(named: image)
+        DispatchQueue.main.async {
+            self.imageView.image = image
+        }
+    }
 }
