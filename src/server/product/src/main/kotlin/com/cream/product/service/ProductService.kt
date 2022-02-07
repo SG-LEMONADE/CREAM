@@ -12,7 +12,6 @@ import com.cream.product.error.BaseException
 import com.cream.product.error.ErrorCode
 import com.cream.product.persistence.ProductRepository
 import com.cream.product.persistence.TradeRepository
-import com.fasterxml.jackson.databind.ObjectMapper
 import org.json.JSONArray
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -75,15 +74,16 @@ class ProductService {
         val asksBySizeCount = tradeRepository.findByProductIdWithCount(size, id, RequestType.ASK)
         val bidsBySizeCount = tradeRepository.findByProductIdWithCount(size, id, RequestType.BID)
 
-        val relatedProducts = productRepository.
-        getProducts(0, 6, "total_sale",
-            FilterRequestDTO(
-                brandId = brandId.toString(),
-                collectionId = collectionId.toString(),
-                category = product.category,
-                gender = product.gender
+        val relatedProducts = productRepository
+            .getProducts(
+                0, 6, "total_sale",
+                FilterRequestDTO(
+                    brandId = brandId.toString(),
+                    collectionId = collectionId.toString(),
+                    category = product.category,
+                    gender = product.gender
+                )
             )
-        )
             .filter {
                 // 같은 물건을 추천 할 수 없음
                 it.product.id != product.id

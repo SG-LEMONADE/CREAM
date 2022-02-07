@@ -43,7 +43,7 @@ class TradeService {
             throw BaseException(ErrorCode.INVALID_SIZE_FOR_PRODUCT)
         }
 
-        if (tradeRegisterDTO.requestType == RequestType.BID){
+        if (tradeRegisterDTO.requestType == RequestType.BID) {
             logServiceClient.insertUserLogData(UserLogDTO(userId, productId, 3))
         }
 
