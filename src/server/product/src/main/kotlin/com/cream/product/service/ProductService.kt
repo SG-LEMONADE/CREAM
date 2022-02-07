@@ -52,16 +52,19 @@ class ProductService {
         userId: Long?,
         size: String?
     ): ProductDetailDTO {
-
-        val product: ProductPriceWishDTO
+        val productWithWish: ProductPriceWishDTO
         if (userId == null) {
-            product = productRepository.getProduct(id, size)
+            productWithWish = productRepository.getProduct(id, size)
         } else {
-            product = productRepository.getProductWithWish(userId, id, size)
+            productWithWish = productRepository.getProductWithWish(userId, id, size)
             logServiceClient.insertUserLogData(UserLogDTO(userId, id, 1))
         }
 
-        if (size != null && !ObjectMapper().readValue(product.product.sizes, ArrayList::class.java).contains(size)) {
+        val brandId: Long? = productWithWish.product.brand?.id
+        val collectionId: Long? = productWithWish.product.collection?.id
+        val product = ProductDTO(productWithWish)
+
+        if (size != null && !product.sizes.contains(size)) {
             throw BaseException(ErrorCode.INVALID_SIZE_FOR_PRODUCT)
         }
 
@@ -71,6 +74,23 @@ class ProductService {
         val lastCompletedTrades = tradeRepository.findByProductIdCompleted(id)
         val asksBySizeCount = tradeRepository.findByProductIdWithCount(size, id, RequestType.ASK)
         val bidsBySizeCount = tradeRepository.findByProductIdWithCount(size, id, RequestType.BID)
+
+        val relatedProducts = productRepository.
+        getProducts(0, 6, "total_sale",
+            FilterRequestDTO(
+                brandId = brandId.toString(),
+                collectionId = collectionId.toString(),
+                category = product.category,
+                gender = product.gender
+            )
+        )
+            .filter {
+                // 같은 물건을 추천 할 수 없음
+                it.product.id != product.id
+            }
+            .stream().map {
+                ProductDTO(it)
+            }.toList()
 
         var changePercentage: Float? = null
         var changeValue: Int? = null
@@ -90,7 +110,7 @@ class ProductService {
         }
 
         if (product.premiumPrice != null) {
-            pricePremiumPercentage = (product.premiumPrice / product.product.originalPrice).toFloat()
+            pricePremiumPercentage = (product.premiumPrice / product.originalPrice).toFloat()
         }
 
         askPricesBySize?.forEach {
@@ -101,14 +121,14 @@ class ProductService {
             bidPrices[it.size] = it.lowestAsk
         }
 
-        JSONArray(product.product.sizes)
+        JSONArray(product.sizes)
             .forEach {
                 if (!askPrices.containsKey(it)) askPrices[it as String] = null
                 if (!bidPrices.containsKey(it)) bidPrices[it as String] = null
             }
 
         return ProductDetailDTO(
-            ProductDTO(product),
+            product,
             lastCompletedTrades,
             asksBySizeCount,
             bidsBySizeCount,
@@ -117,7 +137,8 @@ class ProductService {
             changeValue,
             pricePremiumPercentage,
             askPrices,
-            bidPrices
+            bidPrices,
+            relatedProducts
         )
     }
 
