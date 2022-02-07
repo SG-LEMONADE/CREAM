@@ -40,7 +40,7 @@ class HomeService {
                             ProductDTO(it)
                         }.toList()
                 } else {
-                    productRepository.getProducts(0, 16, "total_sale", filter).stream()
+                    productRepository.getProductsWithWish(userId, 0, 16, "total_sale", filter).stream()
                         .map {
                             ProductDTO(it)
                         }.toList()
