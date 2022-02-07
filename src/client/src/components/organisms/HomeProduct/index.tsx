@@ -57,7 +57,7 @@ const HomeProduct: FunctionComponent<HomeProductProps> = (props) => {
 								category="home"
 								productInfo={product}
 								isWishState={product.wishList.length > 0}
-								onHandleWishClick={() => console.log("!")}
+								onHandleWishClick={onHandleWishClick}
 							/>
 						))}
 					</ProductImageArea>
