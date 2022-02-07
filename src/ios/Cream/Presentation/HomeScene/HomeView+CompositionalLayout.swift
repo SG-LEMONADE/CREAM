@@ -53,7 +53,6 @@ extension HomeView {
             let currentPage = Int(max(0, round(contentOffset.x / environment.container.contentSize.width)))
             if currentPage != self.item {
                 self.item = currentPage
-                print(currentPage)
             }
         }
         return section

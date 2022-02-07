@@ -20,11 +20,13 @@ final class HomeProductCell: UICollectionViewCell {
     
     private lazy var wishButton: UIButton = {
         let button = UIButton()
-        button.tintColor = .black
-        button.setImage(UIImage(systemName: "bookmark"), for: .normal)
-        button.setImage(UIImage(systemName: "bookmark.fill"), for: .selected)
-        button.contentHorizontalAlignment = .center
         return button
+    }()
+    
+    private lazy var wishImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = UIImage(named: "bookmark")
+        return imageView
     }()
     
     override init(frame: CGRect) {
@@ -52,8 +54,9 @@ final class HomeProductCell: UICollectionViewCell {
 
 extension HomeProductCell: ViewConfiguration {
     func buildHierarchy() {
+        wishButton.addSubviews(wishImageView)
         itemView.productImageView.addSubviews(wishButton)
-        self.addSubviews(itemView)
+        addSubviews(itemView)
     }
     
     func setupConstraints() {
@@ -62,8 +65,13 @@ extension HomeProductCell: ViewConfiguration {
             $0.bottom.equalTo(self.snp.bottom).offset(-10)
         }
 
+        wishImageView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
+        
         wishButton.snp.makeConstraints {
-            $0.bottom.trailing.equalToSuperview().inset(10)
+            $0.bottom.trailing.equalToSuperview().inset(15)
+            $0.width.height.equalTo(itemView.snp.width).multipliedBy(0.1)
         }
     }
     
