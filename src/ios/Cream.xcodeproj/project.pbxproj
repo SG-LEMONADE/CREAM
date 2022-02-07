@@ -19,7 +19,6 @@
 		7B193CA32798F3B600B934A3 /* ReleaseInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B193CA22798F3B600B934A3 /* ReleaseInfoCell.swift */; };
 		7B193CA52798F4CC00B934A3 /* DebugLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B193CA42798F4CC00B934A3 /* DebugLog.swift */; };
 		7B193CA72799189900B934A3 /* WishButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B193CA62799189900B934A3 /* WishButton.swift */; };
-		7B193CA92799447900B934A3 /* ProductViewModelItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B193CA82799447900B934A3 /* ProductViewModelItem.swift */; };
 		7B193CAB2799B3D900B934A3 /* SizeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B193CAA2799B3D900B934A3 /* SizeButton.swift */; };
 		7B193CAD2799BDEF00B934A3 /* UIColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B193CAC2799BDEF00B934A3 /* UIColor+.swift */; };
 		7B193CAF279A67E900B934A3 /* PageControlFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B193CAE279A67E900B934A3 /* PageControlFooterView.swift */; };
@@ -118,7 +117,6 @@
 		7B193CA22798F3B600B934A3 /* ReleaseInfoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReleaseInfoCell.swift; sourceTree = "<group>"; };
 		7B193CA42798F4CC00B934A3 /* DebugLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugLog.swift; sourceTree = "<group>"; };
 		7B193CA62799189900B934A3 /* WishButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishButton.swift; sourceTree = "<group>"; };
-		7B193CA82799447900B934A3 /* ProductViewModelItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductViewModelItem.swift; sourceTree = "<group>"; };
 		7B193CAA2799B3D900B934A3 /* SizeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SizeButton.swift; sourceTree = "<group>"; };
 		7B193CAC2799BDEF00B934A3 /* UIColor+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+.swift"; sourceTree = "<group>"; };
 		7B193CAE279A67E900B934A3 /* PageControlFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageControlFooterView.swift; sourceTree = "<group>"; };
@@ -259,7 +257,6 @@
 				7B5EEE2A27A5AD8500990E37 /* ProductViewModel.swift */,
 				7B5EEE2C27A5B08B00990E37 /* ProductView.swift */,
 				7B5EEE4827A83A6900990E37 /* ProductView+CompositionalLayout.swift */,
-				7B193CA82799447900B934A3 /* ProductViewModelItem.swift */,
 			);
 			path = ProductScene;
 			sourceTree = "<group>";
@@ -783,7 +780,6 @@
 				7B5EEE3D27A773AE00990E37 /* ProductListViewModel.swift in Sources */,
 				7BF82E1127A5491E007E0A79 /* SizeListViewController.swift in Sources */,
 				7B5EEE7227B10CD800990E37 /* HomeRepositoryInterface.swift in Sources */,
-				7B193CA92799447900B934A3 /* ProductViewModelItem.swift in Sources */,
 				7BB01117278BCA54005E5C9E /* Observable.swift in Sources */,
 				7B8EAA9C27A240F900B07259 /* NetworkConfigurable.swift in Sources */,
 				7BB01115278BC6D1005E5C9E /* BindingTextField.swift in Sources */,

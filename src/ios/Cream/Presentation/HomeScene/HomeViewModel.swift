@@ -43,8 +43,6 @@ protocol HomeListViewModelInput {
 
 protocol HomeListViewModelOutput {
     var homeInfo: Observable<HomeInfo> { get set }
-    var products: Observable<Products> { get set }
-    var banners: Observable<[String]> { get set }
     var numberOfSections: Int { get }
 }
 
@@ -52,8 +50,6 @@ protocol HomeListViewModel: HomeListViewModelInput, HomeListViewModelOutput { }
 
 final class DefaultHomeListViewModel: HomeListViewModel {
     var homeInfo: Observable<HomeInfo> = Observable(.init(ads: [], sections: []))
-    var products: Observable<Products> = Observable([])
-    var banners: Observable<[String]> = Observable([])
     var usecase: HomeListUseCaseInterface
     
     var numberOfSections: Int {

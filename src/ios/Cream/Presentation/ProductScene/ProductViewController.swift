@@ -199,8 +199,7 @@ extension ProductViewController: UICollectionViewDataSource, UICollectionViewDel
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HomeProductCell.reuseIdentifier,
                                                                 for: indexPath) as? HomeProductCell
             else { return UICollectionViewCell() }
-            cell.backgroundColor = .systemGray
-            cell.configureTest()
+            
             return cell
             
         default:

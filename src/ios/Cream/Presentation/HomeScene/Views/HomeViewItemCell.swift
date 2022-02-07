@@ -100,16 +100,6 @@ extension HomeProductCell {
             }
         }
     }
-    
-    func configureTest() {
-        self.itemView.productImageView.image = UIImage(systemName: "bookmark")?
-            .withAlignmentRectInsets(UIEdgeInsets(top: -10, left: -10, bottom: -10, right: -10))
-        self.itemView.productImageView.sizeToFit()
-        self.itemView.titleLabel.text = "Nike"
-        self.itemView.detailLabel.text = "Nike Big Swoosh Full Zip \nJacket Black Sail"
-        self.itemView.priceLabel.text = "269,000원"
-        self.itemView.priceExpressionLabel.text = "즉시 구매가"
-    }
 }
 
 extension HomeProductCell {
