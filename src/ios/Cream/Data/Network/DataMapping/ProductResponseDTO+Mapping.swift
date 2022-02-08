@@ -18,6 +18,7 @@ struct ProductResponseDTO: Decodable {
     let backgroundColor: String?
     let pricePremiumPercentage: Int?
     let askPrices, bidPrices: [String: Int?]
+    let relatedProducts: [ProductInfoResponseDTO]
 }
 
 struct TradeBySizeCountDTO: Decodable {
@@ -96,6 +97,12 @@ extension ProductResponseDTO {
                                    price: $0.price,
                                    size: $0.size))
         }
+        
+        var products: Products = []
+        self.relatedProducts.forEach {
+            products.append($0.toDomain())
+        }
+        
         return .init(imageUrls: product.imageUrls,
                      brandName: product.brandName,
                      originalName: product.originalName,
@@ -119,7 +126,8 @@ extension ProductResponseDTO {
                      lastCompletedTrade: trades,
                      asksBySizeCount: asksSizes,
                      bidsBySizeCount: bidsSizes,
-                     changePercentage: changePercentage)
+                     changePercentage: changePercentage,
+                     relatedProducts: products)
     }
 }
 

@@ -168,7 +168,7 @@ extension ProductView {
     
     private func configureSimilarItemSectionLayout() -> NSCollectionLayoutSection {
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5),
-                                              heightDimension: .fractionalWidth(0.8))
+                                              heightDimension: .fractionalWidth(0.9))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         item.contentInsets = .init(top: 0, leading: 0, bottom: 5, trailing: 5)
         let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.8),
@@ -177,6 +177,13 @@ extension ProductView {
         let section = NSCollectionLayoutSection(group: group)
         section.orthogonalScrollingBehavior = .groupPaging
         section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 5, bottom: 0, trailing: 0)
+        
+        section.boundarySupplementaryItems = [
+            NSCollectionLayoutBoundarySupplementaryItem(layoutSize: .init(widthDimension: .fractionalWidth(1),
+                                                                          heightDimension: .estimated(50)),
+                                                        elementKind: UICollectionView.elementKindSectionHeader,
+                                                        alignment: .topLeading)
+        ]
         
         return section
     }

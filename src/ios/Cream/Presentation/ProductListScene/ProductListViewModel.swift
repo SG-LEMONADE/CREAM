@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Accelerate
 
 protocol ProductListViewModelInput {
     func viewDidLoad()
@@ -30,11 +31,41 @@ final class DefaultListViewModel: ProductListViewModel {
     var products: Observable<Products> = Observable([])
     var error: Observable<String> = Observable("")
     
-    private var page = 1
+    enum FilterCategory: String, CaseIterable {
+        case sneakers
+        case streetwear
+        case accessories
+        case life
+        case electronics
+        
+        var description: String {
+            rawValue
+        }
+        
+        var translatedString: String {
+            switch self {
+            case .sneakers:     return "스니커즈"
+            case .streetwear:   return "의류"
+            case .accessories:  return "패션 잡화"
+            case .life:         return "라이프"
+            case .electronics:  return "테크"
+            }
+        }
+    }
     
-    let categories = ["필터", "럭셔리", " ", "스니커즈", "의류", "패션 잡화", "라이프", "테크"]
-    let categoryFilters = ["sneakers", "", "", "", ""]
+    var page = 1
+    var categories: [String] {
+        var filters = ["필터", "럭셔리", " "]
+        FilterCategory.allCases.forEach { filters.append($0.translatedString) }
+        return filters
+    }
+    
+    let categoryFilters = FilterCategory.allCases.map { $0.description }
+    
     let banners: [String] = ["banner1", "banner2", "banner3", "banner4", "banner5", "banner6"]
+    
+
+    
     
     init(_ usecase: ProductUseCaseInterface) {
         self.usecase = usecase

@@ -7,6 +7,7 @@
 
 import UIKit
 import SnapKit
+import SwiftUI
 
 class HomeViewCategoryHeaderView: UICollectionReusableView {
     static let reuseIdentifier = "\(HomeViewCategoryHeaderView.self)"
@@ -20,7 +21,7 @@ class HomeViewCategoryHeaderView: UICollectionReusableView {
     
     private lazy var detailLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 20)
+        label.font = UIFont.systemFont(ofSize: 16, weight: .bold)
         label.textColor = .systemGray3
         return label
     }()
@@ -44,12 +45,25 @@ class HomeViewCategoryHeaderView: UICollectionReusableView {
         super.init(coder: coder)
         applyViewSettings()
     }
+    
+    override func prepareForReuse() {
+        self.titleLabel.text = nil
+        self.detailLabel.text = nil
+        self.titleLabel.textColor = .black
+        self.detailLabel.textColor = .systemGray3
+    }
 }
 
 extension HomeViewCategoryHeaderView {
     func configure(headerInfo: String, detailInfo: String) {
         self.titleLabel.text = headerInfo
         self.detailLabel.text = detailInfo
+    }
+    
+    func configure(brandInfo: String) {
+        self.titleLabel.text = nil
+        self.detailLabel.text = "\(brandInfo)의 다른 상품"
+        self.detailLabel.textColor = .black
     }
 }
 

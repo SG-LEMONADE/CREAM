@@ -118,7 +118,8 @@ extension ProductViewController: UICollectionViewDataSource, UICollectionViewDel
                                                                                    withReuseIdentifier: HomeViewCategoryHeaderView.reuseIdentifier,
                                                                                    for: indexPath) as? HomeViewCategoryHeaderView
             else { return UICollectionReusableView() }
-
+            
+            header.configure(brandInfo: viewModel.item.value.brandName)
             return header
             
         case UICollectionView.elementKindSectionFooter:
@@ -129,7 +130,6 @@ extension ProductViewController: UICollectionViewDataSource, UICollectionViewDel
             
             self.delegate = footer
             footer.configure(viewModel.numberOfImageUrls)
-            
             return footer
             
         default:
@@ -153,7 +153,7 @@ extension ProductViewController: UICollectionViewDataSource, UICollectionViewDel
         case .release:
             return viewModel.releaseInfo.count
         case .similarity:
-            return 5
+            return viewModel.item.value.relatedProducts.count
         }
     }
     
@@ -206,7 +206,7 @@ extension ProductViewController: UICollectionViewDataSource, UICollectionViewDel
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ShopBannerCell.reuseIdentifier,
                                                                 for: indexPath) as? ShopBannerCell
             else { return UICollectionViewCell() }
-            cell.configure("homeBanner5")
+            
             return cell
             
         case .similarity:
@@ -214,6 +214,7 @@ extension ProductViewController: UICollectionViewDataSource, UICollectionViewDel
                                                                 for: indexPath) as? HomeProductCell
             else { return UICollectionViewCell() }
             
+            cell.configure(viewModel.item.value.relatedProducts[indexPath.item], isRelatedItem: true)
             return cell
         }
     }

@@ -83,7 +83,7 @@ extension HomeProductCell: ViewConfiguration {
 
 // MARK: Cell Configure
 extension HomeProductCell {
-    func configure(_ viewModel: Product) {
+    func configure(_ viewModel: Product, isRelatedItem: Bool = false) {
         self.itemView.tradeLabel.text = viewModel.totalSaleText
         self.itemView.titleLabel.text = viewModel.brandName
         self.itemView.detailLabel.text = viewModel.originalName
@@ -98,6 +98,11 @@ extension HomeProductCell {
             DispatchQueue.main.async {
                 self?.itemView.productImageView.image = image
             }
+        }
+        
+        if isRelatedItem {
+            self.itemView.tradeLabel.text = nil
+            wishButton.isHidden = true
         }
     }
 }

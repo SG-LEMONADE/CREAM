@@ -33,11 +33,13 @@ struct ProductDetail {
     let asksBySizeCount, bidsBySizeCount: [TradeBySizeCount]
     
     let changePercentage: Double?
+    
+    let relatedProducts: [Product]
 }
 
 extension ProductDetail {
     static func create() -> Self {
-        return ProductDetail(imageUrls: [], brandName: "", originalName: "", translatedName: "", pricePremiumPercentage: 0, changeValue: 0, lastSalePrice: 0, pricePremium: 0, backgroundColor: "", styleCode: "", releaseDate: "", color: "", originalPrice: 0, lowestAsk: 0, highestBid: 0, askPrices: [:], bidPrices: [:], wishList: [], wishCount: 0, sizes: [], lastCompletedTrade: [], asksBySizeCount: [], bidsBySizeCount: [], changePercentage: 0)
+        return ProductDetail(imageUrls: [], brandName: "", originalName: "", translatedName: "", pricePremiumPercentage: 0, changeValue: 0, lastSalePrice: 0, pricePremium: 0, backgroundColor: "", styleCode: "", releaseDate: "", color: "", originalPrice: 0, lowestAsk: 0, highestBid: 0, askPrices: [:], bidPrices: [:], wishList: [], wishCount: 0, sizes: [], lastCompletedTrade: [], asksBySizeCount: [], bidsBySizeCount: [], changePercentage: 0, relatedProducts: [])
     }
 }
 
