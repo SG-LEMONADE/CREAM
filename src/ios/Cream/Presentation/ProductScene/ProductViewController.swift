@@ -148,9 +148,9 @@ extension ProductViewController: UICollectionViewDataSource, UICollectionViewDel
         switch section {
         case .image:
             return viewModel.numberOfImageUrls
-        case .release, .advertise, .delivery, .priceChart:
+        case .itemInfo, .advertise, .delivery, .priceChart:
             return 1
-        case .itemInfo:
+        case .release:
             return viewModel.releaseInfo.count
         case .similarity:
             return 5
@@ -158,8 +158,11 @@ extension ProductViewController: UICollectionViewDataSource, UICollectionViewDel
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        switch indexPath.section {
-        case 0:
+        guard let section = ProductView.SectionList(rawValue: indexPath.section)
+        else { return UICollectionViewCell() }
+        
+        switch section {
+        case .image:
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ShopBannerCell.reuseIdentifier,
                                                                 for: indexPath) as? ShopBannerCell
             else { return UICollectionViewCell() }
@@ -169,7 +172,7 @@ extension ProductViewController: UICollectionViewDataSource, UICollectionViewDel
             
             return cell
             
-        case 1:
+        case .itemInfo:
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ItemInfoCell.reuseIdentifier,
                                                                 for: indexPath) as? ItemInfoCell
             else { return UICollectionViewCell() }
@@ -177,40 +180,40 @@ extension ProductViewController: UICollectionViewDataSource, UICollectionViewDel
             cell.delegate = self
             return cell
             
-        case 2:
+        case .release:
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ReleaseInfoCell.reuseIdentifier, for: indexPath) as? ReleaseInfoCell
             else { return UICollectionViewCell() }
             cell.configure(with: viewModel.releaseInfo[indexPath.item])
            return cell
             
-        case 3:
+        case .delivery:
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ShopBannerCell.reuseIdentifier,
                                                                 for: indexPath) as? ShopBannerCell
             else { return UICollectionViewCell() }
-            cell.backgroundColor = .red
-            cell.configureAds("banner_delivery")
+            
+            cell.configureAds("banner_delivery", contentMode: .scaleAspectFit)
             return cell
             
-        case 4:
+        case .advertise:
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ShopBannerCell.reuseIdentifier,
                                                                 for: indexPath) as? ShopBannerCell
             else { return UICollectionViewCell() }
-            cell.backgroundColor = .blue
+            
             cell.configureAds("banner\(Int.random(in: 1...5))")
             return cell
             
-        case 6:
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HomeProductCell.reuseIdentifier,
-                                                                for: indexPath) as? HomeProductCell
-            else { return UICollectionViewCell() }
-            
-            return cell
-            
-        default:
+        case .priceChart:
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ShopBannerCell.reuseIdentifier,
                                                                 for: indexPath) as? ShopBannerCell
             else { return UICollectionViewCell() }
             cell.configure("homeBanner5")
+            return cell
+            
+        case .similarity:
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HomeProductCell.reuseIdentifier,
+                                                                for: indexPath) as? HomeProductCell
+            else { return UICollectionViewCell() }
+            
             return cell
         }
     }

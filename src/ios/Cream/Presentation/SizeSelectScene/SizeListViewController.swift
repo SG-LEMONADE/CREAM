@@ -16,9 +16,16 @@ final class SizeListViewController: BaseDIViewController<SizeListViewModel> {
     private lazy var sizeView = SizeListView()
     
     weak var delegate: SizeSelectDelegate?
+    private var isJoinProcess: Bool = true
     
     override init(_ viewModel: SizeListViewModel) {
         super.init(viewModel)
+    }
+    
+    convenience init(_ viewModel: SizeListViewModel, isJoinProcess: Bool) {
+        self.init(viewModel)
+        self.isJoinProcess = isJoinProcess
+
     }
     
     // MARK: View Life Cycle
@@ -94,17 +101,27 @@ extension SizeListViewController: UICollectionViewDelegateFlowLayout {
 extension SizeListViewController: UICollectionViewDataSource, UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SizeListCell.reuseIdentifier,
-                                                            for: indexPath) as? SizeListCell
-        else { return UICollectionViewCell() }
-        
-//        cell.configure(with: viewModel.sizeList.value[indexPath.item])
-        
-        viewModel.getCellViewModel(at: indexPath) {
-            cell.configure(size: $0)
+        if isJoinProcess {
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SizeListCell.reuseIdentifier,
+                                                                for: indexPath) as? SizeListCell
+            else { return UICollectionViewCell() }
+            
+            viewModel.getCellViewModel(at: indexPath) {
+                cell.configure(size: $0)
+            }
+            
+            return cell
+        } else {
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SizeListCell.reuseIdentifier,
+                                                                for: indexPath) as? SizeListCell
+            else { return UICollectionViewCell() }
+            
+            viewModel.getCellViewModel(at: indexPath) {
+                cell.configure(size: $0)
+            }
+            
+            return cell
         }
-        
-        return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

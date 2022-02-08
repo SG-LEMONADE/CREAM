@@ -50,6 +50,9 @@ class ProductListViewController: BaseDIViewController<ProductListViewModel> {
         productListView.shopCollectionView.register(ShopViewFilterHeaderView.self,
                                     forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
                                     withReuseIdentifier: ShopViewFilterHeaderView.reuseIdentifier)
+        productListView.shopCollectionView.register(SortFilterFooterView.self,
+                                    forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter,
+                                    withReuseIdentifier: SortFilterFooterView.reuseIdentifier)
     }
     
     func viewConfigure() {
@@ -101,21 +104,35 @@ extension ProductListViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView,
                         viewForSupplementaryElementOfKind kind: String,
                         at indexPath: IndexPath) -> UICollectionReusableView {
-        guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind,
-                                                                           withReuseIdentifier: ShopViewFilterHeaderView.reuseIdentifier,
-                                                                           for: indexPath) as? ShopViewFilterHeaderView
-        else { return UICollectionReusableView() }
-        
-        header.delegate = self
-        header.dataSource = self
-        return header
+        switch kind {
+        case UICollectionView.elementKindSectionHeader:
+            guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind,
+                                                                               withReuseIdentifier: ShopViewFilterHeaderView.reuseIdentifier,
+                                                                               for: indexPath) as? ShopViewFilterHeaderView
+            else { return UICollectionReusableView() }
+            
+            header.delegate = self
+            header.dataSource = self
+            return header
+            
+        case UICollectionView.elementKindSectionFooter:
+            guard let footer = collectionView.dequeueReusableSupplementaryView(ofKind: kind,
+                                                                               withReuseIdentifier: SortFilterFooterView.reuseIdentifier,
+                                                                               for: indexPath) as? SortFilterFooterView
+            else { return UICollectionReusableView() }
+            footer.delegate = self
+            return footer
+
+        default:
+            assert(false, "Unexpected element kind")
+        }
     }
 }
 
 extension ProductListViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if indexPath.section == 1 {
-            guard let baseURL = URL(string: "http://ec2-13-124-253-180.ap-northeast-2.compute.amazonaws.com:8081")
+            guard let baseURL = URL(string: "http://1.231.16.189:8081")
             else { return }
         
             let config: NetworkConfigurable = ApiDataNetworkConfig(baseURL: baseURL)
@@ -234,5 +251,11 @@ extension ProductListViewController: ShopViewFilterHeaderViewDataSource {
             cell.isUserInteractionEnabled = false
         }
         return cell
+    }
+}
+
+extension ProductListViewController: SortFilterFooterViewDelegate {
+    func didTapSortButton() {
+        print(#function)
     }
 }

@@ -15,6 +15,7 @@ final class FilterCell: UICollectionViewCell {
         let label = UILabel()
         label.textColor = .black
         label.textAlignment = .center
+        label.font = UIFont.systemFont(ofSize: 13, weight: .bold)
         label.showsExpansionTextWhenTruncated = true
         label.frame.size = label.intrinsicContentSize
         

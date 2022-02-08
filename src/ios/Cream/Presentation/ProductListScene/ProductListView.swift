@@ -40,7 +40,17 @@ extension ProductListView: ViewConfiguration {
 // MARK: - CollectionView Compositional Layout
 extension ProductListView {
     private func createCompositionalLayout() -> UICollectionViewCompositionalLayout {
-        return UICollectionViewCompositionalLayout { (section, env) -> NSCollectionLayoutSection? in
+        let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(55))
+
+        let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize,
+                                                                 elementKind: UICollectionView.elementKindSectionHeader,
+                                                                 alignment: .top)
+        header.pinToVisibleBounds = true
+        
+        let config = UICollectionViewCompositionalLayoutConfiguration()
+        config.boundarySupplementaryItems = [header]
+        
+         let layout = UICollectionViewCompositionalLayout { (section, env) -> NSCollectionLayoutSection? in
             switch section {
             case 0:
                 return self.firstLayoutSection()
@@ -50,6 +60,9 @@ extension ProductListView {
                 return self.thirdLayoutSection()
             }
         }
+        layout.configuration = config
+        
+        return layout
     }
     
     private func firstLayoutSection() -> NSCollectionLayoutSection {
@@ -82,15 +95,15 @@ extension ProductListView {
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
         let section = NSCollectionLayoutSection(group: group)
         
-        section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 5, bottom: 20, trailing: 0)
+        section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 5, bottom: 20, trailing: 0)
         
         let sectionSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
-                                                 heightDimension: .absolute(60))
-        
+                                                 heightDimension: .absolute(40))
+
         let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: sectionSize,
-                                                                 elementKind: UICollectionView.elementKindSectionHeader,
+                                                                 elementKind: UICollectionView.elementKindSectionFooter,
                                                                  alignment: .top)
-        header.pinToVisibleBounds = true
+        header.zIndex = 0
         section.boundarySupplementaryItems = [header]
         return section
     }

@@ -72,7 +72,8 @@ extension ShopBannerCell {
         }
     }
     
-    func configureAds(_ image: String) {
+    func configureAds(_ image: String, contentMode: UIView.ContentMode = UIView.ContentMode.scaleAspectFill) {
+        imageView.contentMode = contentMode
         let image = UIImage(named: image)
         DispatchQueue.main.async {
             self.imageView.image = image
