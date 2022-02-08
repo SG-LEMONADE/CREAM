@@ -20,7 +20,7 @@ interface TradeRepositoryCustom {
     fun findAllByPageAndStatus(userId: Long, offset: Long, limit: Long, requestType: RequestType, tradeStatus: TradeStatus): List<TradeHistoryDTO>
 
     fun findByProductIdWithCount(size: String?, productId: Long, requestType: RequestType): List<TradeBySizeCountDTO>
-    fun findByProductIdCompleted(productId: Long): List<TradeLastCompletedDTO>
+    fun findByProductIdCompleted(productId: Long, size: String?): List<TradeLastCompletedDTO>
 }
 
 interface TradeRepository : JpaRepository<Trade, Long>, TradeRepositoryCustom
@@ -114,7 +114,8 @@ class TradeRepositoryImpl :
     }
 
     override fun findByProductIdCompleted(
-        productId: Long
+        productId: Long,
+        size: String?
     ): List<TradeLastCompletedDTO> {
         return jpaQueryFactory
             .select(
@@ -127,7 +128,8 @@ class TradeRepositoryImpl :
             .from(tradeEntity)
             .where(
                 tradeEntity.tradeStatus.eq(TradeStatus.COMPLETED),
-                tradeEntity.product.id.eq(productId)
+                tradeEntity.product.id.eq(productId),
+                eqSize(size)
             )
             .orderBy(OrderSpecifier(Order.DESC, tradeEntity.updatedAt))
             .limit(5)

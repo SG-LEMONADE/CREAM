@@ -70,7 +70,7 @@ class ProductService {
         val askPricesBySize = productRepository.getProductPricesBySize(id, RequestType.ASK)
         val bidPricesBySize = productRepository.getProductPricesBySize(id, RequestType.BID)
 
-        val lastCompletedTrades = tradeRepository.findByProductIdCompleted(id)
+        val lastCompletedTrades = tradeRepository.findByProductIdCompleted(id, size)
         val asksBySizeCount = tradeRepository.findByProductIdWithCount(size, id, RequestType.ASK)
         val bidsBySizeCount = tradeRepository.findByProductIdWithCount(size, id, RequestType.BID)
 
@@ -79,7 +79,7 @@ class ProductService {
                 0, 6, "total_sale",
                 FilterRequestDTO(
                     brandId = brandId.toString(),
-                    collectionId = collectionId.toString(),
+                    collectionId = collectionId?.toString(),
                     category = product.category,
                     gender = product.gender
                 )
