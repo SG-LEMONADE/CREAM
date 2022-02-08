@@ -2,12 +2,12 @@ import React, { FunctionComponent, useState, useEffect } from "react";
 import ReactDOM from "react-dom";
 
 import styled from "@emotion/styled";
-import { keyframes } from "@emotion/react";
+import { css, keyframes } from "@emotion/react";
 import Icon from "components/atoms/Icon";
 import Button from "components/atoms/Button";
 
 type ModalProps = {
-	category: "wish" | "else";
+	category: "wish" | "else" | "search";
 	show: boolean;
 	onClose: () => void;
 	children: React.ReactNode;
@@ -31,7 +31,7 @@ const Modal: FunctionComponent<ModalProps> = (props) => {
 	}, []);
 
 	const modalContent = show ? (
-		<StyledModalOverlay onClick={onClose}>
+		<StyledModalOverlay onClick={onClose} category={category}>
 			<StyledModal category={category} onClick={(e) => e.stopPropagation()}>
 				<StyledModalHeader>
 					{title && <StyledModalTitle>{title}</StyledModalTitle>}
@@ -68,7 +68,7 @@ const Modal: FunctionComponent<ModalProps> = (props) => {
 	}
 };
 
-const StyledModalOverlay = styled.div`
+const StyledModalOverlay = styled.div<{ category: string }>`
 	position: fixed;
 	top: 0;
 	left: 0;
@@ -76,15 +76,27 @@ const StyledModalOverlay = styled.div`
 	height: 100%;
 	display: flex;
 	justify-content: center;
-	align-items: center;
+	align-items: ${({ category }) =>
+		category === "search" ? `flex-start` : `center`};
 	background-color: rgba(0, 0, 0, 0.5);
-	z-index: 50;
+	z-index: 100;
 `;
 
-const appear = keyframes`
+const appearBelow = keyframes`
   from {
 	opacity: 0;
 	transform: translateY(20px);
+  }
+  to {
+	opacity: 1;
+	transform: translateY(0);
+  }
+`;
+
+const appearAbove = keyframes`
+  from {
+	opacity: 0;
+	transform: translateY(-80px);
   }
   to {
 	opacity: 1;
@@ -101,8 +113,15 @@ const StyledModal = styled.div<{ category: string }>`
 	overflow: auto;
 	display: flex;
 	flex-direction: column;
-	animation: ${appear} 0.8s cubic-bezier(0.77, 0, 0.175, 1) forwards;
+	animation: ${appearBelow} 0.8s cubic-bezier(0.77, 0, 0.175, 1) forwards;
 	z-index: 99;
+	${({ category }) =>
+		category === "search" &&
+		css`
+			width: 40%;
+			animation: ${appearAbove} 1s cubic-bezier(0.77, 0, 0.175, 1) forwards;
+			border-radius: 0 0 16px 16px;
+		`}
 `;
 
 const StyledModalHeader = styled.div`
@@ -129,6 +148,12 @@ const StyledModalBody = styled.div<{ category: string }>`
 	margin-bottom: ${({ category }) => (category === "wish" ? "10px" : "32px")};
 	overflow-x: hidden;
 	overflow-y: auto;
+	${({ category }) =>
+		category === "search" &&
+		css`
+			margin: 0 auto;
+			padding-bottom: 20px;
+		`}
 `;
 
 const ModalButtonArea = styled.div`
