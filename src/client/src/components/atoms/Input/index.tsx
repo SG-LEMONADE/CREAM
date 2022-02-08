@@ -22,6 +22,7 @@ const placeholders = {
 	password: "영문, 숫자, 특수문자 조합 8 ~ 16자",
 	phone: "가입하신 휴대폰 번호",
 	sneakers: "선택하세요",
+	search: "브랜드명, 모델명, 모델번호 등",
 };
 
 const Input: FunctionComponent<InputProps> = (props) => {

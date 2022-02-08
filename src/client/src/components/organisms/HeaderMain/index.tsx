@@ -9,9 +9,14 @@ import colors from "colors/color";
 import styled from "@emotion/styled";
 import Swal from "sweetalert2";
 import { useRouter } from "next/router";
+import Modal from "components/molecules/Modal";
+import Input from "components/atoms/Input";
 
 const HeaderMain: FunctionComponent = () => {
 	const router = useRouter();
+
+	const [isOpen, setIsOpen] = useState<boolean>(false);
+	const [searchInput, setSearchInput] = useState<string>("");
 
 	return (
 		<HeaderMainWrapper>
@@ -35,7 +40,7 @@ const HeaderMain: FunctionComponent = () => {
 				<Link href={"/search"}>
 					<a>
 						<HeaderMainItem
-							activated={router.pathname.includes("search")}
+							activated={router && router.pathname.includes("search")}
 							children="SHOP"
 						/>
 					</a>
@@ -45,7 +50,38 @@ const HeaderMain: FunctionComponent = () => {
 						<HeaderMainItem children="ABOUT" />
 					</a>
 				</Link>
-				<Icon name="Magnifier" style={{ cursor: "pointer" }} />
+				<Icon
+					name="Magnifier"
+					style={{ cursor: "pointer" }}
+					onClick={() => setIsOpen(true)}
+				/>
+				<Modal
+					category="search"
+					show={isOpen}
+					onClose={() => setIsOpen(false)}
+					title="제품 찾기"
+				>
+					<form
+						onSubmit={(e) => {
+							e.preventDefault();
+							router &&
+								router.push({
+									pathname: "search",
+									query: {
+										keyword: `${searchInput}`,
+									},
+								});
+						}}
+					>
+						<Input
+							category="search"
+							content="검색어를 입력하세요 🧐"
+							onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+								setSearchInput(e.target.value)
+							}
+						/>
+					</form>
+				</Modal>
 			</StyledGNBArea>
 		</HeaderMainWrapper>
 	);

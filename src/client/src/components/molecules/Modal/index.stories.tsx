@@ -3,6 +3,7 @@ import { ComponentMeta, ComponentStory } from "@storybook/react";
 import { action } from "@storybook/addon-actions";
 
 import Modal from ".";
+import Input from "components/atoms/Input";
 
 export default {
 	title: "molecules/Modal",
@@ -29,4 +30,12 @@ WishModal.args = {
 	onClose: action("closed"),
 	children: <h4>Test</h4>,
 	title: "Title",
+};
+
+export const SearchModal = Template.bind({});
+SearchModal.args = {
+	category: "search",
+	show: true,
+	children: <Input category="search" content="검색어를 입력하세요" />,
+	title: "제품 찾기",
 };

@@ -19,6 +19,17 @@ export const Default = Template.bind({});
 Default.args = {
 	headerTop: <HeaderTop />,
 	headerMain: <HeaderMain />,
-	children: <h1>Home screen</h1>,
+	children: (
+		<h1
+			style={{
+				display: "flex",
+				margin: "300px auto",
+				justifyContent: "center",
+				alignItems: "center",
+			}}
+		>
+			Home screen
+		</h1>
+	),
 	footer: <Footer />,
 };
