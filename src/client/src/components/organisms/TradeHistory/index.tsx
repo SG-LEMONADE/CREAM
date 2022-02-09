@@ -4,6 +4,7 @@ import CollectionTitle from "components/atoms/CollectionTitle";
 import Icon from "components/atoms/Icon";
 import TradeSummary from "components/molecules/TradeSummary";
 import TradeHistoryItem from "components/molecules/TradeHistoryItem";
+import { TradeHistory } from "types";
 
 import styled from "@emotion/styled";
 import Link from "next/link";
@@ -14,7 +15,7 @@ type TradeHistoryProps = {
 	waiting: number;
 	pending: number;
 	over: number;
-	items: any[];
+	items: TradeHistory[];
 };
 
 const TradeHistory: FunctionComponent<TradeHistoryProps> = (props) => {
@@ -51,11 +52,11 @@ const TradeHistory: FunctionComponent<TradeHistoryProps> = (props) => {
 				{items.length > 0 ? (
 					items.map((item) => (
 						<TradeHistoryItem
-							imgSrc={item.imgSrc}
+							imgSrc={item.imageUrl}
 							backgroundColor={item.backgroundColor}
-							productName={item.productName}
+							productName={item.name}
 							size={item.size}
-							status={item.status}
+							status={item.tradeStatus}
 						/>
 					))
 				) : (

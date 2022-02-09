@@ -67,3 +67,39 @@ export interface SalesOptionsRes {
 	highest_bid: null | number;
 	lowest_100: null | number;
 }
+
+export interface UserInfo {
+	id: number;
+	email: string;
+	name: null | string;
+	adress: null | string;
+	gender: null | string;
+	age: null | number;
+	shoeSize: number;
+	profileImageUrl: string;
+	status: number;
+	passwordChangedDateTime: string;
+	lastLoginDateTime: string;
+	createdAt: string;
+	updatedAt: null | string;
+}
+
+export interface TradeHistoryRes {
+	counter: {
+		totalCnt: number;
+		waitingCnt: number;
+		inProgressCnt: number;
+		finishedCnt: number;
+	};
+	trades: TradeHistory[];
+}
+
+interface TradeHistory {
+	backgroundColor: string;
+	imageUrl: string;
+	name: string;
+	size: string;
+	tradeStatus: string;
+	updateDateTime: string;
+	validationDate: string;
+}
