@@ -7,6 +7,7 @@ export const fetcher = async (url: string) => {
 		},
 	});
 	const data = await res.data;
+	console.log("fetcher로 가져온 데이터는, ");
 	console.log(data);
 	return data;
 };

@@ -47,6 +47,9 @@ const StyledButton = styled.button<{
 	fullWidth: boolean;
 }>`
 	textalign: center;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 	padding: 0 30px;
 	height: 42px;
 	line-height: 40px;

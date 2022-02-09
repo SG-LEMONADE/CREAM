@@ -122,5 +122,6 @@ const ProductImageArea = styled.div`
 
 const ButtonArea = styled.div`
 	margin-top: 60px;
-	text-align: center;
+	display: flex;
+	justify-content: center;
 `;

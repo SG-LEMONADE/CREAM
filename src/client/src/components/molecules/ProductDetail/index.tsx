@@ -2,14 +2,14 @@ import React, { FunctionComponent, useEffect } from "react";
 
 import styled from "@emotion/styled";
 
-type ProductDetail = {
+type ProductDetailProps = {
 	modelNum: string;
-	releasedAt: string;
+	releasedAt: string | null;
 	color: string;
-	price: number;
+	price: number | null;
 };
 
-const ProductDetail: FunctionComponent<ProductDetail> = (props) => {
+const ProductDetail: FunctionComponent<ProductDetailProps> = (props) => {
 	const { modelNum, releasedAt, color, price } = props;
 
 	return (
@@ -23,10 +23,7 @@ const ProductDetail: FunctionComponent<ProductDetail> = (props) => {
 					</StyledModelNum>
 					<StyledDetailBox>
 						<StyledDt>출시일</StyledDt>
-						<StyledDd>
-							{releasedAt.substring(0, 2)}/{releasedAt.substring(2, 4)}/
-							{releasedAt.substring(4)}
-						</StyledDd>
+						<StyledDd>{releasedAt === null ? `-` : `${releasedAt}`}</StyledDd>
 						<StyledDd></StyledDd>
 					</StyledDetailBox>
 					<StyledDetailBox>
@@ -35,7 +32,9 @@ const ProductDetail: FunctionComponent<ProductDetail> = (props) => {
 					</StyledDetailBox>
 					<StyledDetailBox>
 						<StyledDt>발매가</StyledDt>
-						<StyledDd>{price.toLocaleString()}원</StyledDd>
+						<StyledDd>
+							{price === null ? `-` : `${price.toLocaleString()}원`}
+						</StyledDd>
 					</StyledDetailBox>
 				</StyledDl>
 			</DetailWrapper>

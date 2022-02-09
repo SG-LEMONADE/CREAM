@@ -5,6 +5,7 @@ import React, {
 	useState,
 } from "react";
 import useSWR from "swr";
+import { useRouter } from "next/router";
 
 import { fetcher } from "lib/fetcher";
 import Icon from "components/atoms/Icon";
@@ -29,6 +30,7 @@ type SearchFilterBarProps = {
 };
 
 const SearchFilterBar: FunctionComponent<SearchFilterBarProps> = (props) => {
+	const router = useRouter();
 	const {
 		setBrandId,
 		luxaryFilter,
@@ -61,6 +63,7 @@ const SearchFilterBar: FunctionComponent<SearchFilterBarProps> = (props) => {
 		setFilteredCategory("");
 		setFilteredBrand([]);
 		setFilteredGender("");
+		router.push("/search");
 	}, []);
 
 	useEffect(() => {

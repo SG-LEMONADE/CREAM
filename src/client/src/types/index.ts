@@ -52,6 +52,24 @@ export interface HomeRes {
 	}[];
 }
 
+export interface ProductRes {
+	product: ProductInfoRes;
+	lastCompletedTrades: {
+		price: number;
+		size: string;
+		tradeDate: string;
+	}[];
+	asksBySizeCount: any[];
+	bidsBySizeCount: any[];
+	lastSalePrice: null | number;
+	changePercentage: null | number;
+	changeValue: null | number;
+	pricePremiumPercentage: null | number;
+	askPrices: any;
+	bidPrices: any;
+	relatedProducts: ProductInfoRes[];
+}
+
 export interface ShortcutItemRes {
 	link: string;
 	bigImg: string;

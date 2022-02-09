@@ -9,11 +9,12 @@ type BannerProps = {
 	links?: string;
 	bgColor: string;
 	category: "big" | "small";
+	moreHeight?: boolean;
 	readonly src: string;
 };
 
 const BannerImage: FunctionComponent<BannerProps> = (props) => {
-	const { links, bgColor, category, src } = props;
+	const { links, bgColor, category, src, moreHeight } = props;
 	const router = useRouter();
 	return (
 		<StyledBannerWrapper
@@ -23,7 +24,7 @@ const BannerImage: FunctionComponent<BannerProps> = (props) => {
 		>
 			<StyledImage
 				width={category === "small" ? "400%" : "100%"}
-				height="30%"
+				height={moreHeight ? `60%` : `30%`}
 				layout="responsive"
 				category={category}
 				src={src}

@@ -64,6 +64,7 @@ const HeaderMain: FunctionComponent = () => {
 					<form
 						onSubmit={(e) => {
 							e.preventDefault();
+							setIsOpen(false);
 							router &&
 								router.push({
 									pathname: "search",
