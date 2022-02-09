@@ -7,18 +7,27 @@
 
 import Foundation
 
+struct AdImageResponseDTO: Decodable {
+    let imageUrl: String
+    let backgroundColor: String
+}
+
 struct HomeResponseDTO: Decodable {
-    let adImageUrls: [String]
+    let adImageUrls: [AdImageResponseDTO]
     let sections: [SectionResponseDTO]
 }
 
 extension HomeResponseDTO {
     func toDomain() -> HomeInfo {
+        var imageUrls: [String] = []
+        adImageUrls.forEach {
+            imageUrls.append($0.imageUrl)
+        }
         var sectionInfo: [Section] = []
         sections.forEach {
             sectionInfo.append($0.toDomain())
         }
-        return HomeInfo(ads: adImageUrls, sections: sectionInfo)
+        return HomeInfo(ads: imageUrls, sections: sectionInfo)
     }
 }
 
