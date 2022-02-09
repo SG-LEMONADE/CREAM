@@ -8,6 +8,14 @@
 import UIKit
 
 class ProductListView: UIView {
+    
+    lazy var indicatorView: UIActivityIndicatorView = {
+        let indicator = UIActivityIndicatorView()
+        indicator.color = .systemGray
+        indicator.hidesWhenStopped = true
+        return indicator
+    }()
+    
     lazy var shopCollectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: createCompositionalLayout())
         
@@ -27,12 +35,15 @@ class ProductListView: UIView {
 
 extension ProductListView: ViewConfiguration {
     func buildHierarchy() {
-        addSubviews(shopCollectionView)
+        addSubviews(shopCollectionView, indicatorView)
     }
     
     func setupConstraints() {
         shopCollectionView.snp.makeConstraints {
             $0.edges.equalToSuperview()
+        }
+        indicatorView.snp.makeConstraints {
+            $0.center.equalTo(shopCollectionView.snp.center)
         }
     }
 }

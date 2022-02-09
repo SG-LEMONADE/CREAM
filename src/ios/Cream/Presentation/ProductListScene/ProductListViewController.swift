@@ -8,6 +8,10 @@
 import UIKit
 import SnapKit
 
+protocol SortChangeDelegate: AnyObject {
+    func didChangeStandard(to standard: String)
+}
+
 class ProductListViewController: BaseDIViewController<ProductListViewModel> {
 
     private var currentBanner: Int = 0
@@ -19,6 +23,7 @@ class ProductListViewController: BaseDIViewController<ProductListViewModel> {
     private lazy var productListView = ProductListView()
     private var selectedIndexPaths = [IndexPath]()
     
+    weak var delegate: SortChangeDelegate?
     override init(_ viewModel: ProductListViewModel) {
         super.init(viewModel)
     }
@@ -33,6 +38,7 @@ class ProductListViewController: BaseDIViewController<ProductListViewModel> {
         self.navigationController?.navigationBar.backgroundColor = .clear
         setupCollectionView()
         bindViewModel()
+        productListView.indicatorView.startAnimating()
         viewModel.viewDidLoad()
         viewConfigure()
     }
@@ -58,13 +64,20 @@ class ProductListViewController: BaseDIViewController<ProductListViewModel> {
     func viewConfigure() {
         let backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)
         backBarButtonItem.tintColor = .systemGray
-        
         self.navigationItem.backBarButtonItem = backBarButtonItem
     }
     
     func bindViewModel() {
         self.viewModel.products.bind { [weak self] _ in
-            self?.productListView.shopCollectionView.reloadSections(.init(integer: 1))
+            DispatchQueue.main.async {
+                guard let self = self
+                else { return }
+                
+                self.productListView.shopCollectionView.reloadSections(.init(integer: 1))
+                self.delegate?.didChangeStandard(to: self.viewModel.sortStandard.description)
+                self.productListView.indicatorView.stopAnimating()
+                
+            }
         }
     }
 }
@@ -83,6 +96,7 @@ extension ProductListViewController: UICollectionViewDataSource {
             return viewModel.products.value.count
         }
     }
+    
     func collectionView(_ collectionView: UICollectionView,
                         cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if indexPath.section == 0 {
@@ -116,12 +130,14 @@ extension ProductListViewController: UICollectionViewDataSource {
             return header
             
         case UICollectionView.elementKindSectionFooter:
-            guard let footer = collectionView.dequeueReusableSupplementaryView(ofKind: kind,
+            guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind,
                                                                                withReuseIdentifier: SortFilterFooterView.reuseIdentifier,
                                                                                for: indexPath) as? SortFilterFooterView
             else { return UICollectionReusableView() }
-            footer.delegate = self
-            return footer
+            header.delegate = self
+            self.delegate = header
+            
+            return header
 
         default:
             assert(false, "Unexpected element kind")
@@ -180,43 +196,13 @@ extension ProductListViewController: ShopViewFilterHeaderViewDelegate {
             return
         }
         
-        guard let filterCell = collectionView.cellForItem(at: IndexPath(item: 0, section: 0)) as? FilterCell,
-              let selectedCell = collectionView.cellForItem(at: indexPath) as? FilterCell
-        else { return }
-        
-        if let index = selectedIndexPaths.firstIndex(of: indexPath) {
-            collectionView.deselectItem(at: indexPath, animated: true)
-            selectedCell.titleLabel.textColor = .black
-            selectedIndexPaths.remove(at: index)
-        } else if (3 ..< viewModel.categories.count).contains(indexPath.item) {
-        // TODO: category Multi select event 
-//            selectedIndexPaths.forEach {
-//                if $0.item > 2 {
-//                    collectionView.deselectItem(at: $0, animated: true)
-//                    selectedCell.titleLabel.textColor = .black
-//                    selectedIndexPaths.firstIndex(of: $0).flatMap {
-//                        selectedIndexPaths.remove(at: $0)
-//                    }
-//                    
-//                }
-//            }
-            selectedIndexPaths.append(indexPath)
-            selectedCell.titleLabel.textColor = .red
-            
+        if indexPath.item > 2 {
+            productListView.indicatorView.startAnimating()
             viewModel.didTapCategory(indexPath: indexPath)
         }
-        
-        if selectedIndexPaths.isEmpty {
-            filterCell.titleLabel.attributedText = getAttachment(color: .black)
-        } else {
-            filterCell.titleLabel.attributedText = getAttachment(color: .red)
-        }
     }
     
-    func didDeSelectItemAt(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-
-    }
-    
+    // MARK: CHECKLIST 색상 변경
     private func getAttachment(color: UIColor) -> NSAttributedString {
         let attachment = NSTextAttachment()
         attachment.image = UIImage(systemName: "checklist")
@@ -241,7 +227,6 @@ extension ProductListViewController: ShopViewFilterHeaderViewDataSource {
 
             cell.titleLabel.attributedText = attachmentString
             cell.titleLabel.sizeToFit()
-            
         } else {
             cell.configure(viewModel.categories[indexPath.item])
             cell.titleLabel.sizeToFit()
@@ -256,6 +241,16 @@ extension ProductListViewController: ShopViewFilterHeaderViewDataSource {
 
 extension ProductListViewController: SortFilterFooterViewDelegate {
     func didTapSortButton() {
-        print(#function)
+        let viewModel = DefaultSortViewModel()
+        let sortViewController = SortViewController(viewModel)
+        sortViewController.delegate = self
+        sortViewController.modalPresentationStyle = .overCurrentContext
+        self.present(sortViewController, animated: false)
+    }
+}
+
+extension ProductListViewController: SortSelectDelegate {
+    func updateListData(_ standard: String) {
+        viewModel.didSelectSortOrder(standard)
     }
 }

@@ -13,15 +13,16 @@ protocol ProductListViewModelInput {
     func didTapProduct(indexPath: IndexPath)
     func didScroll()
     func didTapCategory(indexPath: IndexPath)
+    func didSelectSortOrder(_ sort: String)
 }
 
 protocol ProductListViewModelOutput {
     var error: Observable<String> { get }
     var products: Observable<Products> { get set }
+    var sortStandard: SortInfo { get set }
 }
 
 protocol ProductListViewModel: ProductListViewModelInput, ProductListViewModelOutput {
-    var usecase: ProductUseCaseInterface { get }
     var categories: [String] { get }
     var banners: [String] { get }
 }
@@ -52,8 +53,11 @@ final class DefaultListViewModel: ProductListViewModel {
             }
         }
     }
+    private var selectedCategory: String?
+    private var cursor = 1
+    private var category: String?
+    var sortStandard: SortInfo = .totalSale
     
-    var page = 1
     var categories: [String] {
         var filters = ["필터", "럭셔리", " "]
         FilterCategory.allCases.forEach { filters.append($0.translatedString) }
@@ -64,15 +68,12 @@ final class DefaultListViewModel: ProductListViewModel {
     
     let banners: [String] = ["banner1", "banner2", "banner3", "banner4", "banner5", "banner6"]
     
-
-    
-    
     init(_ usecase: ProductUseCaseInterface) {
         self.usecase = usecase
     }
     
     func viewDidLoad() {
-        let _ = usecase.fetch(page: page, category: nil) { result in
+        let _ = usecase.fetch(page: cursor, category: nil, sort: nil) { result in
             switch result {
             case .success(let products):
                 self.products.value.append(contentsOf: products)
@@ -83,17 +84,38 @@ final class DefaultListViewModel: ProductListViewModel {
     }
     
     func didTapCategory(indexPath: IndexPath) {
-        print(indexPath)
-        let _ = usecase.fetch(page: page, category: nil) { result in
+        cursor = 1
+        category = categoryFilters[indexPath.item-3]
+        let _ = usecase.fetch(page: cursor,
+                              category: category,
+                              sort: sortStandard.description) { result in
             switch result {
             case .success(let products):
-                self.products.value.removeAll()
-                self.products.value.append(contentsOf: products)
+                self.products.value = products
             case .failure(let error):
                 print(error)
             }
         }
     }
+    
+    func didSelectSortOrder(_ sort: String) {
+        guard let standard = SortInfo(rawValue: sort)
+        else { return }
+        
+        cursor = 1
+        sortStandard = standard
+        let _ = usecase.fetch(page: cursor,
+                              category: category,
+                              sort: sortStandard.description) { result in
+            switch result {
+            case .success(let products):
+                self.products.value = products
+            case .failure(let error):
+                print(error)
+            }
+        }
+    }
+    
     
     func didTapProduct(indexPath: IndexPath) {
          

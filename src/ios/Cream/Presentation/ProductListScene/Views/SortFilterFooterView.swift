@@ -7,6 +7,10 @@
 
 import UIKit
 
+protocol SortFilterFooterViewDelegate: AnyObject {
+    func didTapSortButton()
+}
+
 final class SortFilterFooterView: UICollectionReusableView {
     static let reuseIdentifier = "\(SortFilterFooterView.self)"
     
@@ -25,8 +29,6 @@ final class SortFilterFooterView: UICollectionReusableView {
         button.addTarget(self, action: #selector(didTapSortButton), for: .touchUpInside)
         return button
     }()
-    
-    
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -64,5 +66,16 @@ extension SortFilterFooterView: ViewConfiguration {
     func viewConfigure() {
         backgroundColor = .white
         sortButton.layer.cornerRadius = 10
+    }
+}
+
+// MARK: -
+extension SortFilterFooterView: SortChangeDelegate {
+    func didChangeStandard(to standard: String) {
+        guard let standard = SortInfo(rawValue: standard)?.translatedString
+        else { return }
+        DispatchQueue.main.async { [weak self] in
+            self?.sortButton.setTitle(standard, for: .normal)
+        }
     }
 }

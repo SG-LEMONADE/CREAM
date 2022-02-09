@@ -65,6 +65,9 @@
 		7B5EEE7227B10CD800990E37 /* HomeRepositoryInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B5EEE7127B10CD800990E37 /* HomeRepositoryInterface.swift */; };
 		7B5EEE7427B2062500990E37 /* ProductDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B5EEE7327B2062500990E37 /* ProductDetail.swift */; };
 		7B5EEE7727B2B03F00990E37 /* SortFilterFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B5EEE7627B2B03E00990E37 /* SortFilterFooterView.swift */; };
+		7B5EEE7927B2D36E00990E37 /* SortViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B5EEE7827B2D36D00990E37 /* SortViewController.swift */; };
+		7B5EEE7B27B2D39300990E37 /* SortView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B5EEE7A27B2D39300990E37 /* SortView.swift */; };
+		7B5EEE7D27B2D77A00990E37 /* SortViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B5EEE7C27B2D77A00990E37 /* SortViewModel.swift */; };
 		7B8EAA78279FBBB600B07259 /* ProductRepositoryInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B8EAA77279FBBB600B07259 /* ProductRepositoryInterface.swift */; };
 		7B8EAA7F279FC38300B07259 /* BaseDIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B8EAA7E279FC38300B07259 /* BaseDIViewController.swift */; };
 		7B8EAA8627A0DB4700B07259 /* ValidationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B8EAA8527A0DB4700B07259 /* ValidationHelper.swift */; };
@@ -167,6 +170,9 @@
 		7B5EEE7127B10CD800990E37 /* HomeRepositoryInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeRepositoryInterface.swift; sourceTree = "<group>"; };
 		7B5EEE7327B2062500990E37 /* ProductDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetail.swift; sourceTree = "<group>"; };
 		7B5EEE7627B2B03E00990E37 /* SortFilterFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortFilterFooterView.swift; sourceTree = "<group>"; };
+		7B5EEE7827B2D36D00990E37 /* SortViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortViewController.swift; sourceTree = "<group>"; };
+		7B5EEE7A27B2D39300990E37 /* SortView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortView.swift; sourceTree = "<group>"; };
+		7B5EEE7C27B2D77A00990E37 /* SortViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortViewModel.swift; sourceTree = "<group>"; };
 		7B8EAA77279FBBB600B07259 /* ProductRepositoryInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductRepositoryInterface.swift; sourceTree = "<group>"; };
 		7B8EAA7E279FC38300B07259 /* BaseDIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseDIViewController.swift; sourceTree = "<group>"; };
 		7B8EAA8527A0DB4700B07259 /* ValidationHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationHelper.swift; sourceTree = "<group>"; };
@@ -269,6 +275,9 @@
 				7B5EEE3C27A773AE00990E37 /* ProductListViewModel.swift */,
 				7B5EEE3A27A7713100990E37 /* ProductListView.swift */,
 				7B5EEE6427AEBCD800990E37 /* FilterViewController.swift */,
+				7B5EEE7827B2D36D00990E37 /* SortViewController.swift */,
+				7B5EEE7C27B2D77A00990E37 /* SortViewModel.swift */,
+				7B5EEE7A27B2D39300990E37 /* SortView.swift */,
 			);
 			path = ProductListScene;
 			sourceTree = "<group>";
@@ -761,6 +770,7 @@
 				7B8EAA9027A191A300B07259 /* LoginViewModel.swift in Sources */,
 				7B8EAAAD27A25FC300B07259 /* AuthRequestDTO+Mapping.swift in Sources */,
 				7B36DB0E2789202800D8ACB0 /* AppDelegate.swift in Sources */,
+				7B5EEE7B27B2D39300990E37 /* SortView.swift in Sources */,
 				7B193C832794D3D300B934A3 /* HomeViewItemCell.swift in Sources */,
 				7B193CA72799189900B934A3 /* WishButton.swift in Sources */,
 				7B5EEE2727A58ED800990E37 /* UIStackView+.swift in Sources */,
@@ -788,12 +798,14 @@
 				7B5EEE3F27A80E8B00990E37 /* String+.swift in Sources */,
 				7B5EEE3927A770AA00990E37 /* ProductListViewController.swift in Sources */,
 				7B8EAA7F279FC38300B07259 /* BaseDIViewController.swift in Sources */,
+				7B5EEE7927B2D36E00990E37 /* SortViewController.swift in Sources */,
 				7B193CA52798F4CC00B934A3 /* DebugLog.swift in Sources */,
 				7B5EEE3D27A773AE00990E37 /* ProductListViewModel.swift in Sources */,
 				7BF82E1127A5491E007E0A79 /* SizeListViewController.swift in Sources */,
 				7B5EEE7227B10CD800990E37 /* HomeRepositoryInterface.swift in Sources */,
 				7BB01117278BCA54005E5C9E /* Observable.swift in Sources */,
 				7B8EAA9C27A240F900B07259 /* NetworkConfigurable.swift in Sources */,
+				7B5EEE7D27B2D77A00990E37 /* SortViewModel.swift in Sources */,
 				7BB01115278BC6D1005E5C9E /* BindingTextField.swift in Sources */,
 				7B5EEE5627A9A0B000990E37 /* TradePriceView.swift in Sources */,
 				7BB01121278BD66C005E5C9E /* UIView+.swift in Sources */,

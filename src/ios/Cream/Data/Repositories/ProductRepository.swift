@@ -16,15 +16,14 @@ final class ProductRepository {
 }
 
 // MARK: Product View Repository Interface
-extension ProductRepository: ProductRepositoryInterface {
-    func requestProducts(page: Int, category: String?, completion: @escaping ((Result<Products, Error>) -> Void)) -> Cancellable {
-        let endpoint = APIEndpoints.loadProducts(page, category: category)
+extension ProductRepository: ProductRepositoryInterface {    
+    func requestProducts(page: Int, category: String?, sort: String?, completion: @escaping ((Result<Products, Error>) -> Void)) -> Cancellable {
+        let endpoint = APIEndpoints.loadProducts(page, category: category, sort: sort)
         
         let task = RepositoryTask()
         task.networkTask = dataTransferService.request(with: endpoint) { result in
             switch result {
             case .success(let response):
-                print(response)
                 var result: Products = []
                 response.forEach {
                     result.append($0.toDomain())

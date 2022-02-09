@@ -1,13 +1,14 @@
 //
-//  SizeListView.swift
+//  SortView.swift
 //  Cream
 //
-//  Created by wankikim-MN on 2022/01/29.
+//  Created by wankikim-MN on 2022/02/09.
 //
 
 import UIKit
+import SnapKit
 
-class SizeListView: UIView {
+class SortView: UIView {
     enum Constraint {
         private enum Inset {
             static let left: CGFloat = 2
@@ -23,7 +24,7 @@ class SizeListView: UIView {
     }
     
     let maxDimmedAlpha: CGFloat = 0.4
-    let defaultHeight: CGFloat = UIScreen.main.bounds.size.height * 0.6
+    var defaultHeight: CGFloat = UIScreen.main.bounds.size.height * 0.6
     
     var containerViewHeightConstraint: NSLayoutConstraint?
     var containerViewBottomConstraint: NSLayoutConstraint?
@@ -44,47 +45,24 @@ class SizeListView: UIView {
     }()
     
     // MARK: Container View inner
-    lazy var titleLabel: UILabel = {
-        let label = UILabel()
-        label.text = "사이즈 선택"
-        label.font = .boldSystemFont(ofSize: 20)
-        label.textAlignment = .center
-        return label
-    }()
-    
-    lazy var exitButton: UIButton = {
-        let button = UIButton(frame: .zero)
-        button.setImage(UIImage(systemName: "xmark"), for: .normal)
-        button.tintColor = .black
-        button.setTitleColor(.black, for: .normal)
-        return button
-    }()
-    
-    lazy var bottomSheetNavigationStack: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [titleLabel, exitButton])
-        stackView.axis = .horizontal
-        stackView.alignment = .center
-        return stackView
-    }()
-    
-    lazy var sizeCollectionView: UICollectionView = {
-        let layout = UICollectionViewFlowLayout()
-        layout.minimumInteritemSpacing = Constraint.itemSpace
-        layout.minimumLineSpacing = Constraint.lineSpace
-        layout.scrollDirection = .vertical
-        layout.sectionInset = UIEdgeInsets(top: 5, left: 0, bottom: 5, right: 0)
-        
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        return collectionView
+    lazy var sortTableView: UITableView = {
+        let tv = UITableView()
+        return tv
     }()
     
     lazy var contentStackView: UIStackView = {
         let spacer = UIView()
-        let stackView = UIStackView(arrangedSubviews: [bottomSheetNavigationStack, sizeCollectionView, spacer])
+        let stackView = UIStackView(arrangedSubviews: [sortTableView, spacer])
         stackView.axis = .vertical
         stackView.spacing = 12.0
         return stackView
     }()
+    
+    convenience init(frame: CGRect, defaultHeight: CGFloat) {
+        self.init(frame: frame)
+        self.defaultHeight = defaultHeight
+        applyViewSettings()
+    }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -97,7 +75,7 @@ class SizeListView: UIView {
     }
 }
 
-extension SizeListView: ViewConfiguration {
+extension SortView: ViewConfiguration {
     func buildHierarchy() {
         addSubviews(dimmedView, containerView)
         containerView.addSubviews(contentStackView)
@@ -117,10 +95,6 @@ extension SizeListView: ViewConfiguration {
         
         containerView.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview()
-        }
-        
-        exitButton.snp.makeConstraints {
-            $0.width.height.equalTo(36)
         }
         
         containerViewHeightConstraint = containerView.heightAnchor.constraint(equalToConstant: defaultHeight)
