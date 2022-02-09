@@ -1,6 +1,7 @@
 package com.cream.product.service
 
 import com.cream.product.dto.filterDTO.FilterRequestDTO
+import com.cream.product.dto.homeDTO.HomeAdDTO
 import com.cream.product.dto.homeDTO.HomeDTO
 import com.cream.product.dto.homeDTO.SectionDTO
 import com.cream.product.dto.productDTO.ProductDTO
@@ -26,9 +27,9 @@ class HomeService {
     fun getHomeView(
         userId: Long?
     ): HomeDTO {
-        val imageUrls: List<String> = bannerRepository.findAllByValidIsTrue()
+        val imageUrls: List<HomeAdDTO> = bannerRepository.findAllByValidIsTrue()
             .stream().map {
-                it.imageUrl
+                HomeAdDTO(it.imageUrl, it.backgroundColor)
             }.toList()
 
         val sections: List<SectionDTO> = sectionRepository.findAllByValidIsTrue()
@@ -46,7 +47,7 @@ class HomeService {
                         }.toList()
                 }
 
-                SectionDTO(section.header, section.detail, section.imageUrl, products)
+                SectionDTO(section.header, section.detail, section.imageUrl, section.backgroundColor, products)
             }.toList()
 
         return HomeDTO(imageUrls, sections)

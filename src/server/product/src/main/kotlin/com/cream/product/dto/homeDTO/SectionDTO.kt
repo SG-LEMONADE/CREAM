@@ -6,5 +6,6 @@ data class SectionDTO(
     val header: String,
     val detail: String,
     val imageUrl: String,
+    val backgroundColor: String?,
     val products: List<ProductDTO>
 )

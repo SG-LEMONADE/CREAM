@@ -182,16 +182,18 @@ class ProductRepositoryImpl :
         limit: Long,
     ): List<ProductPriceWishDTO> {
         return jpaQueryFactory.select(
-            Projections.constructor(
-                ProductPriceWishDTO::class.java,
+            QProductPriceWishDTO(
                 productEntity,
-                wishEntity.size,
-                lowestAskQuery(null),
+                Expressions.asString(""),
+                Expressions.`as`(lowestAskQuery(null), "lowestAsk"),
+                Expressions.`as`(highestBidQuery(null), "highestBid"),
+                Expressions.`as`(premiumPriceQuery(null), "premiumPrice")
             )
         ).from(productEntity)
             .join(wishEntity)
             .on(wishEntity.product.id.eq(productEntity.id))
             .where(wishEntity.userId.eq(userId))
+            .orderBy(OrderSpecifier(Order.DESC, wishEntity.id))
             .offset(offset)
             .limit(limit)
             .fetch()

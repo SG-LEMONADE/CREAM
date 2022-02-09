@@ -1,11 +1,13 @@
 package com.cream.product.service
 
 import com.cream.product.client.LogServiceClient
+import com.cream.product.constant.RequestTradeStatus
 import com.cream.product.constant.RequestType
 import com.cream.product.constant.TradeStatus
 import com.cream.product.dto.UserLogDTO
 import com.cream.product.dto.filterDTO.PageDTO
-import com.cream.product.dto.tradeDTO.TradeHistoryDTO
+import com.cream.product.dto.tradeDTO.MyPageTradeListDTO
+import com.cream.product.dto.tradeDTO.TradeHistoryCounterDTO
 import com.cream.product.dto.tradeDTO.TradeRegisterDTO
 import com.cream.product.error.BaseException
 import com.cream.product.error.ErrorCode
@@ -54,9 +56,35 @@ class TradeService {
         userId: Long,
         pageDTO: PageDTO,
         requestType: RequestType,
-        tradeStatus: TradeStatus
-    ): List<TradeHistoryDTO> {
-        return tradeRepository.findAllByPageAndStatus(userId, pageDTO.offset(), pageDTO.limit(), requestType, tradeStatus)
+        tradeStatus: RequestTradeStatus
+    ): MyPageTradeListDTO {
+        val trades = tradeRepository.findAllByPageAndStatus(userId, pageDTO.offset(), pageDTO.limit(), requestType, tradeStatus)
+        val counters = tradeRepository.findCountsByTradeStatus(userId, requestType)
+
+        var totalCnt = 0
+        var waitingCnt = 0
+        var inProgress = 0
+        var finishedCnt = 0
+
+        counters.forEach {
+            val cnt = it.counter.toInt()
+            totalCnt += cnt
+            when (it.tradeStatus) {
+                (TradeStatus.WAITING) -> waitingCnt += cnt
+                (TradeStatus.IN_PROGRESS) -> inProgress += cnt
+                else -> finishedCnt += cnt
+            }
+        }
+
+        return MyPageTradeListDTO(
+            TradeHistoryCounterDTO(
+                totalCnt,
+                waitingCnt,
+                inProgress,
+                finishedCnt
+            ),
+            trades
+        )
     }
 
     @Transactional

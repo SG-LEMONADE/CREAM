@@ -7,6 +7,8 @@ import java.time.LocalDateTime
 data class TradeHistoryDTO @QueryProjection constructor(
     val name: String,
     val size: String,
+    val imageUrl: String,
+    val backgroundColor: String,
     val tradeStatus: TradeStatus,
     val updateDateTime: LocalDateTime?,
     val validationDate: LocalDateTime

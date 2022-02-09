@@ -15,6 +15,8 @@ import com.cream.product.persistence.TradeRepository
 import org.json.JSONArray
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import java.lang.Integer.min
+import kotlin.Int.Companion.MAX_VALUE
 import kotlin.streams.toList
 
 @Service
@@ -113,8 +115,16 @@ class ProductService {
             pricePremiumPercentage = (product.premiumPrice / product.originalPrice).toFloat()
         }
 
+        var lowestPrice = MAX_VALUE
         askPricesBySize?.forEach {
             askPrices[it.size] = it.lowestAsk
+            lowestPrice = min(lowestPrice, it.lowestAsk)
+        }
+
+        if (lowestPrice == MAX_VALUE) {
+            askPrices["모든 사이즈"] = null
+        } else {
+            askPrices["모든 사이즈"] = lowestPrice
         }
 
         bidPricesBySize?.forEach {

@@ -20,6 +20,9 @@ class Section(
     var imageUrl: String,
 
     @Column
+    var backgroundColor: String,
+
+    @Column
     var filterInfo: String,
 
     @Column
