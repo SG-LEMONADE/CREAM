@@ -4,7 +4,7 @@ import styled from "@emotion/styled";
 import Icon from "components/atoms/Icon";
 
 type ProductRecentPriceProps = {
-	category: "increase" | "decrease";
+	category: "increase" | "decrease" | "null";
 	amount: number;
 	percentage: number;
 	price: number;
@@ -20,32 +20,43 @@ const ProductRecentPrice: FunctionComponent<ProductRecentPriceProps> = (
 				<StyledSpan>최근 거래가</StyledSpan>
 			</StyledTitle>
 			<StyledPriceArea>
-				<StyledPrice>{price.toLocaleString()}원</StyledPrice>
-				<StyledPriceVariation category={category}>
-					{category === "increase" ? (
-						<Icon
-							name="CaretUp"
-							style={{
-								width: "15px",
-								height: "15px",
-								marginRight: "5px",
-								color: "f15746",
-							}}
-						/>
-					) : (
-						<Icon
-							name="CaretDown"
-							style={{
-								width: "15px",
-								height: "15px",
-								marginRight: "5px",
-								color: "31b46e",
-							}}
-						/>
-					)}
-					{amount.toLocaleString()}원
-					{category === "increase" ? `(+${percentage}%)` : `(-${percentage}%)`}
-				</StyledPriceVariation>
+				{category !== "null" ? (
+					<>
+						<StyledPrice>{price.toLocaleString()}원</StyledPrice>
+						<StyledPriceVariation category={category}>
+							{category === "increase" ? (
+								<Icon
+									name="CaretUp"
+									style={{
+										width: "15px",
+										height: "15px",
+										marginRight: "5px",
+										color: "f15746",
+									}}
+								/>
+							) : (
+								<Icon
+									name="CaretDown"
+									style={{
+										width: "15px",
+										height: "15px",
+										marginRight: "5px",
+										color: "31b46e",
+									}}
+								/>
+							)}
+							{amount.toLocaleString()}원
+							{category === "increase"
+								? `(+${percentage}%)`
+								: `(-${percentage}%)`}
+						</StyledPriceVariation>
+					</>
+				) : (
+					<>
+						<StyledPrice>-</StyledPrice>
+						<div style={{ fontSize: "13px" }}>-</div>
+					</>
+				)}
 			</StyledPriceArea>
 		</ProductRecentPriceWrapper>
 	);

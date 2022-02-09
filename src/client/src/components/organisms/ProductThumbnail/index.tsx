@@ -11,10 +11,10 @@ import { HomeProductInfoRes, ProductInfoRes } from "types";
 import styled from "@emotion/styled";
 
 type ProductThumbnailProps = {
-	category: "home" | "shop" | "products";
+	category: "home" | "shop" | "product";
 	productInfo: ProductInfoRes | HomeProductInfoRes;
 	isWishState?: boolean;
-	onHandleWishClick: (
+	onHandleWishClick?: (
 		selectedProduct?: ProductInfoRes | HomeProductInfoRes,
 	) => void;
 };

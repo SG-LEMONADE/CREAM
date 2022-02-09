@@ -4,8 +4,8 @@ import styled from "@emotion/styled";
 
 type KnobProps = {
 	category: "buy" | "sell";
-	productId: string;
-	price: number;
+	productId: number;
+	price: number | null;
 	style?: CSSProperties;
 };
 
@@ -21,7 +21,9 @@ const Knob: FunctionComponent<KnobProps> = (props) => {
 			<StyledCategory>{category === "buy" ? `구매` : `판매`}</StyledCategory>
 			<StyledPriceWrapper>
 				<StyledSpan>
-					<StyledPrice>{price.toLocaleString()}원</StyledPrice>
+					<StyledPrice>
+						{price === null ? `- 원` : `${price.toLocaleString()}원`}
+					</StyledPrice>
 					<StyledDesc>즉시판매가</StyledDesc>
 				</StyledSpan>
 			</StyledPriceWrapper>

@@ -21,7 +21,6 @@ const StyledProductNameKor = styled.p<{ category: string }>`
 	overflow: hidden;
 	text-overflow: ellipsis;
 	display: -webkit-box;
-	-webkit-line-clamp: 2;
-	-webkit-box-orient: vertical;
+	padding-top: ${({ category }) => category === "product" && "8px"};
 	font-size: ${({ category }) => (category === "product" ? `14px` : `12px`)};
 `;

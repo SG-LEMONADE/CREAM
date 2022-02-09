@@ -27,7 +27,7 @@ const StyledProductName = styled.p<{ category: string }>`
 		category === "product" &&
 		css`
 			margin-bottom: 4px;
-			font-size: 18px;
+			font-size: 16px;
 			letter-spacing: -0.09px;
 			font-weight: 400;
 		`}
