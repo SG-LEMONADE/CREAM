@@ -14,9 +14,10 @@ type FloaterProps = {
 	productNameKor: string;
 	isWishProduct: boolean;
 	wishes: number;
-	productId: string;
+	productId: number;
 	buyPrice: number;
 	sellPrice: number;
+	onClick: () => void;
 };
 
 const Floater: FunctionComponent<FloaterProps> = (props) => {
@@ -30,13 +31,12 @@ const Floater: FunctionComponent<FloaterProps> = (props) => {
 		productId,
 		buyPrice,
 		sellPrice,
+		onClick,
 	} = props;
 
-	const [isWished, setIsWished] = useState<boolean>(isWishProduct);
-
 	const onClickWish = () => {
-		setIsWished(!isWished);
 		// FIX ME - api call will be added.
+		onClick();
 	};
 
 	return (
@@ -60,7 +60,7 @@ const Floater: FunctionComponent<FloaterProps> = (props) => {
 						category="primary"
 						onClick={onClickWish}
 					>
-						{isWished ? (
+						{isWishProduct ? (
 							<Icon
 								style={{ width: "20px", height: "20px" }}
 								name="BookmarkFilled"

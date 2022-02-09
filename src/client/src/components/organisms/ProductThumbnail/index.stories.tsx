@@ -23,8 +23,9 @@ Home.args = {
 		gender: "unisex",
 		highestBid: 1,
 		id: 1,
-		imageUrls:
+		imageUrls: [
 			"https://kream-phinf.pstatic.net/MjAyMjAxMDNfMjQ2/MDAxNjQxMTk0MTU4OTAz.iFlWZXvdVdxBfXDPR0WzCjLc016PYLPkRNoWNJX-Dcog.ZtfkW_G4T1wdsSPjLfA7HeoV5Fy2NOg0nq4BH5cldUAg.PNG/a_463faa3f82be472484727d084992bf62.png?type=m",
+		],
 		lowestAsk: 1,
 		originalName: "Polo Ralph Lauren Cable Knit Cotton Sweater Grey",
 		originalPrice: 200000,

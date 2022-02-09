@@ -8,14 +8,15 @@ import Shortcuts from "components/molecules/Shortcuts";
 
 type HomeTemplateProps = {
 	isLoading?: boolean;
+	ads?: { backgroundColor: string; imageUrl: string }[];
 	children: React.ReactNode;
 };
 
 const bigList = [
 	<BannerImage
-		bgColor="rgb(249, 249, 249)"
+		bgColor="#f6f6ee"
 		category="big"
-		src="https://kream-phinf.pstatic.net/MjAyMDExMjNfMjU0/MDAxNjA2MTAxMjMwOTg2.Lru1_LSFReeOGavo_Nv5iHAHEQDrgcRVuUDO_VwQbL0g.if4WbmNvghR7rUXR_MxttP9QrAVnboaK1IAxnaF0d6kg.JPEG/p_e1a64ddc68fe4c16b7e2390ee5daa6f4.jpg?type=m_2560"
+		src="https://kream-phinf.pstatic.net/MjAyMjAxMjhfMjk0/MDAxNjQzMzM5MjYzODU1.cdlMQx38vTgTq7Gv7x6aUUtInzvEE_dzkyl4nNA2NwYg.W771A2Ma7g0bdKe9V_vTjBAbVDorcXhpqJp4bP2Aemsg.PNG/a_84e730df26b0461a958b47a868a6e047.png?type=m_2560"
 	/>,
 	<BannerImage
 		bgColor="rgb(63, 122, 119)"
@@ -25,11 +26,23 @@ const bigList = [
 ];
 
 const HomeTemplate: FunctionComponent<HomeTemplateProps> = (props) => {
-	const { children, isLoading = false } = props;
+	const { children, ads, isLoading = false } = props;
 
 	return (
 		<HomeTemplateWrapper>
-			<Slider images={bigList} />
+			<Slider
+				images={
+					ads
+						? ads.map((ad) => (
+								<BannerImage
+									bgColor={ad.backgroundColor}
+									category="big"
+									src={ad.imageUrl}
+								/>
+						  ))
+						: bigList
+				}
+			/>
 			<ShortcutCollection>
 				<Shortcuts />
 			</ShortcutCollection>

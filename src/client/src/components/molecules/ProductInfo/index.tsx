@@ -8,7 +8,7 @@ import ProductNameKor from "components/atoms/ProductNameKor";
 import styled from "@emotion/styled";
 
 type ProductInfoProps = {
-	category: "home" | "shop" | "products";
+	category: "home" | "shop" | "product";
 	productInfo: ProductInfoRes | HomeProductInfoRes;
 };
 

@@ -5,7 +5,7 @@ import styled from "@emotion/styled";
 import { css } from "@emotion/react";
 
 type BrandProps = {
-	category: "home" | "products" | "shop";
+	category: "home" | "product" | "shop";
 	children: React.ReactNode;
 	productId?: string;
 };
@@ -42,7 +42,6 @@ const StyledBrand = styled.p<{ category: string }>`
 	${({ category }) =>
 		category === "product" &&
 		css`
-			border-bottom: 2px solid #222;
 			line-height: 19px;
 			font-size: 18px;
 			font-weight: 800;
@@ -68,9 +67,12 @@ const StyledA = styled.a<{ category: string }>`
 	${({ category }) =>
 		category === "product" &&
 		css`
-			border-bottom: 2px solid #222;
+			padding-bottom: 18px;
+			border-bottom-style: solid;
+			border-bottom-width: 3.1px;
+			width: fit-content;
 			line-height: 19px;
-			font-size: 18px;
+			font-size: 16px;
 			font-weight: 800;
 		`}
 `;

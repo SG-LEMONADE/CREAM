@@ -17,7 +17,7 @@ Home.args = {
 	category: "home",
 	productInfo: {
 		id: "1",
-		name: "Jordan 1 Retro High OG Black Mocha",
+		originalName: "Jordan 1 Retro High OG Black Mocha",
 		translatedName: "조던 1 레트로 하이 OG 블랙 모카",
 		originalPrice: 230000,
 		color: "red",
@@ -39,7 +39,7 @@ Shop.args = {
 	category: "shop",
 	productInfo: {
 		id: "1",
-		name: "Jordan 1 Retro High OG Black Mocha",
+		originalName: "Jordan 1 Retro High OG Black Mocha",
 		translatedName: "조던 1 레트로 하이 OG 블랙 모카",
 		originalPrice: 230000,
 		color: "red",
@@ -61,7 +61,7 @@ Product.args = {
 	category: "product",
 	productInfo: {
 		id: "1",
-		name: "Jordan 1 Retro High OG Black Mocha",
+		originalName: "Jordan 1 Retro High OG Black Mocha",
 		translatedName: "조던 1 레트로 하이 OG 블랙 모카",
 		originalPrice: 230000,
 		color: "red",

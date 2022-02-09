@@ -1,6 +1,5 @@
 import React, { FunctionComponent } from "react";
 
-import { SalesOptionsRes } from "types";
 import ProductSizeSelect from "components/atoms/ProductSizeSelect";
 
 import styled from "@emotion/styled";
@@ -9,33 +8,34 @@ type ProductSizeSelectGridProps = {
 	category: "wish" | "price" | "sizeOnly";
 	activeSizeOption?: string | string[];
 	onClick: (size: string) => void;
-	datas?: SalesOptionsRes[] | string[];
+	datas?: string[];
+	pricePerSize?: any;
 };
 
 const ProductSizeSelectGrid: FunctionComponent<ProductSizeSelectGridProps> = (
 	props,
 ) => {
-	const { category, activeSizeOption, onClick, datas } = props;
+	const { category, activeSizeOption, onClick, datas, pricePerSize } = props;
 
 	return (
 		<StyledGridWrapper>
 			{category === "price" &&
 				datas.map((data) =>
-					data.option === activeSizeOption ? (
+					data === activeSizeOption ? (
 						<ProductSizeSelect
-							key={data.option}
+							key={data}
 							category="buy"
-							size={data.option}
-							price={data.lowest_normal}
+							size={data}
+							price={pricePerSize[data]}
 							onClick={onClick}
 							active
 						/>
 					) : (
 						<ProductSizeSelect
-							key={data.option}
+							key={data}
 							category="buy"
-							size={data.option}
-							price={data.lowest_normal}
+							size={data}
+							price={pricePerSize[data]}
 							onClick={onClick}
 						/>
 					),

@@ -128,13 +128,13 @@ const Home: FunctionComponent = () => {
 			headerMain={<HeaderMain />}
 			footer={<Footer />}
 		>
-			<HomeTemplate>
+			<HomeTemplate ads={homeData && homeData.adImageUrls}>
 				{homeData &&
 					homeData.sections.map((product) => (
 						<HomeProduct
 							key={product.header}
 							imageUrl={product.imageUrl}
-							bgColor="#eee"
+							bgColor={product.backgroundColor}
 							header={product.header}
 							detail={product.detail}
 							productInfo={product.products}

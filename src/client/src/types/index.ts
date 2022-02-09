@@ -43,13 +43,35 @@ export interface HomeProductInfoRes {
 }
 
 export interface HomeRes {
-	adImageUrl: string[];
+	adImageUrls: {
+		backgroundColor: string;
+		imageUrl: string;
+	}[];
 	sections: {
-		header: string;
+		backgroundColor: string;
 		detail: string;
+		header: string;
 		imageUrl: string;
 		products: HomeProductInfoRes[];
 	}[];
+}
+
+export interface ProductRes {
+	product: ProductInfoRes;
+	lastCompletedTrades: {
+		price: number;
+		size: string;
+		tradeDate: string;
+	}[];
+	asksBySizeCount: any[];
+	bidsBySizeCount: any[];
+	lastSalePrice: null | number;
+	changePercentage: null | number;
+	changeValue: null | number;
+	pricePremiumPercentage: null | number;
+	askPrices: any;
+	bidPrices: any;
+	relatedProducts: ProductInfoRes[];
 }
 
 export interface ShortcutItemRes {
