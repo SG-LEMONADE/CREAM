@@ -94,7 +94,7 @@ export interface TradeHistoryRes {
 	trades: TradeHistory[];
 }
 
-interface TradeHistory {
+export interface TradeHistory {
 	backgroundColor: string;
 	imageUrl: string;
 	name: string;
