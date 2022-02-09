@@ -95,6 +95,8 @@ const ProductTemplate: FunctionComponent<ProductTemplateProps> = (props) => {
 	}, []);
 
 	const onPostWish = useCallback(async (size: string) => {
+		const activatedSize = router.query.size;
+
 		try {
 			const res = await axios.post(
 				`${process.env.END_POINT_PRODUCT}/wish/${productInfo.product.id}/${size}`,
@@ -112,7 +114,9 @@ const ProductTemplate: FunctionComponent<ProductTemplateProps> = (props) => {
 				);
 			} else {
 				mutate(
-					`${process.env.END_POINT_PRODUCT}/products/${productInfo.product.id}`,
+					activatedSize
+						? `${process.env.END_POINT_PRODUCT}/products/${productInfo.product.id}/${activatedSize}`
+						: `${process.env.END_POINT_PRODUCT}/products/${productInfo.product.id}`,
 				);
 			}
 		} catch (err) {
@@ -269,13 +273,25 @@ const ProductTemplate: FunctionComponent<ProductTemplateProps> = (props) => {
 			>
 				<ProductSizeSelectGrid
 					category="price"
-					datas={Object.keys(productInfo.askPrices)}
+					datas={
+						productInfo.product.sizes.includes("ONE SIZE")
+							? productInfo.product.sizes
+							: Object.keys(productInfo.askPrices)
+					}
 					pricePerSize={productInfo.askPrices}
 					onClick={(size) => {
 						setActivatedSize(size);
 						mutate(
 							`${process.env.END_POINT_PRODUCT}/products/${productInfo.product.id}/${size}`,
 						);
+						size !== "모든 사이즈" &&
+							size !== "ONE SIZE" &&
+							router.push({
+								pathname: `/products/${productInfo.product.id}/`,
+								query: {
+									size: `${size}`,
+								},
+							});
 						setIsOpenPriceModal(false);
 					}}
 					activeSizeOption={activatedSize}
@@ -339,6 +355,12 @@ const ProductTemplateWrapper = styled.div`
 	margin: 0;
 	padding: 0;
 	padding-top: 100px;
+`;
+
+export const ProductTemplateLoading = styled.div`
+	padding: 500px 0;
+	display: flex;
+	justify-content: center;
 `;
 
 const ProductArea = styled.div`

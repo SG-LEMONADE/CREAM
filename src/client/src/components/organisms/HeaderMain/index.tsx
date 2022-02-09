@@ -1,16 +1,16 @@
 import React, { FunctionComponent, useEffect, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 import Logo from "components/atoms/Logo";
 import HeaderMainItem from "components/atoms/HeaderMainItem";
 import Icon from "components/atoms/Icon";
-
-import colors from "colors/color";
-import styled from "@emotion/styled";
-import Swal from "sweetalert2";
-import { useRouter } from "next/router";
-import Modal from "components/molecules/Modal";
 import Input from "components/atoms/Input";
+import Modal from "components/molecules/Modal";
+import Swal from "sweetalert2";
+
+import styled from "@emotion/styled";
+import colors from "colors/color";
 
 const HeaderMain: FunctionComponent = () => {
 	const router = useRouter();
@@ -67,7 +67,7 @@ const HeaderMain: FunctionComponent = () => {
 							setIsOpen(false);
 							router &&
 								router.push({
-									pathname: "search",
+									pathname: "/search",
 									query: {
 										keyword: `${searchInput}`,
 									},
