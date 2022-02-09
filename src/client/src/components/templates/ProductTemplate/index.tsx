@@ -269,9 +269,15 @@ const ProductTemplate: FunctionComponent<ProductTemplateProps> = (props) => {
 			>
 				<ProductSizeSelectGrid
 					category="price"
-					datas={productInfo.product.sizes}
+					datas={Object.keys(productInfo.askPrices)}
 					pricePerSize={productInfo.askPrices}
-					onClick={(size) => setActivatedSize(size)}
+					onClick={(size) => {
+						setActivatedSize(size);
+						mutate(
+							`${process.env.END_POINT_PRODUCT}/products/${productInfo.product.id}/${size}`,
+						);
+						setIsOpenPriceModal(false);
+					}}
 					activeSizeOption={activatedSize}
 				/>
 			</Modal>

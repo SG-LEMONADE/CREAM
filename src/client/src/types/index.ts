@@ -43,10 +43,14 @@ export interface HomeProductInfoRes {
 }
 
 export interface HomeRes {
-	adImageUrl: string[];
+	adImageUrls: {
+		backgroundColor: string;
+		imageUrl: string;
+	}[];
 	sections: {
-		header: string;
+		backgroundColor: string;
 		detail: string;
+		header: string;
 		imageUrl: string;
 		products: HomeProductInfoRes[];
 	}[];

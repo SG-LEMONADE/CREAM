@@ -10,7 +10,7 @@ import ProductTemplate from "components/templates/ProductTemplate";
 import { fetcher } from "lib/fetcher";
 import { ProductRes } from "types";
 
-const Product = () => {
+const Product: FunctionComponent = () => {
 	const router = useRouter();
 	const { id } = router.query;
 
@@ -29,9 +29,20 @@ const Product = () => {
 		},
 	);
 
+	const { data: productInfoPerSize } = useSWR<ProductRes>(
+		selectedSize !== "모든 사이즈" &&
+			selectedSize !== "ONE SIZE" &&
+			selectedSize !== ""
+			? `${process.env.END_POINT_PRODUCT}/products/${id}/${selectedSize}`
+			: null,
+		fetcher,
+	);
+
 	useEffect(() => {
-		if (productInfo) {
-			setSelectedSize(productInfo.product.sizes[0]);
+		if (productInfo && Object.keys(productInfo.askPrices).length > 1) {
+			setSelectedSize("모든 사이즈");
+		} else if (productInfo) {
+			setSelectedSize("ONE SIZE");
 		}
 	}, [productInfo]);
 
@@ -63,5 +74,13 @@ const Product = () => {
 		</NavTemplate>
 	);
 };
+
+// export async function getStaticProps(context) {
+// 	const id = context.params.id;
+// 	const { data: productInfo } = useSWR<ProductRes>(
+// 		`${process.env.END_POINT_PRODUCT}/products/${id}`,fetcher
+// 	);
+// 	return
+// }
 
 export default Product;

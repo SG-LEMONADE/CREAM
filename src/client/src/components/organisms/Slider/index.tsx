@@ -79,7 +79,7 @@ const Slider: FunctionComponent<SliderProps> = (props) => {
 				<StyledSlider {...productProperties}>
 					{images.map((Image, index) => (
 						<div key={index} className="each-slide">
-							<>{Image}</>
+							<>{Image !== null && Image}</>
 						</div>
 					))}
 				</StyledSlider>
