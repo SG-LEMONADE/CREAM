@@ -193,9 +193,10 @@ class ProductRepositoryImpl :
             .join(wishEntity)
             .on(wishEntity.product.id.eq(productEntity.id))
             .where(wishEntity.userId.eq(userId))
-            .orderBy(OrderSpecifier(Order.DESC, wishEntity.id))
+            .groupBy(productEntity.id)
             .offset(offset)
             .limit(limit)
+            .orderBy(OrderSpecifier(Order.DESC, wishEntity.id.min()))
             .fetch()
     }
 
