@@ -5,13 +5,12 @@ import com.cream.product.constant.RequestType
 import com.cream.product.dto.UserLogDTO
 import com.cream.product.dto.filterDTO.FilterRequestDTO
 import com.cream.product.dto.filterDTO.PageDTO
-import com.cream.product.dto.productDTO.ProductDTO
-import com.cream.product.dto.productDTO.ProductDetailDTO
-import com.cream.product.dto.productDTO.ProductPriceWishDTO
+import com.cream.product.dto.productDTO.*
 import com.cream.product.error.BaseException
 import com.cream.product.error.ErrorCode
 import com.cream.product.persistence.ProductRepository
 import com.cream.product.persistence.TradeRepository
+import com.cream.product.persistence.WishRepository
 import org.json.JSONArray
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -27,6 +26,9 @@ class ProductService {
 
     @Autowired
     lateinit var productRepository: ProductRepository
+
+    @Autowired
+    lateinit var wishRepository: WishRepository
 
     @Autowired
     lateinit var logServiceClient: LogServiceClient
@@ -155,10 +157,9 @@ class ProductService {
     fun findProductByWish(
         page: PageDTO,
         userId: Long
-    ): List<ProductDTO> {
-        return productRepository.getProductsByWish(userId, page.offset(), page.limit()).stream()
-            .map {
-                ProductDTO(it)
-            }.toList()
+    ): WishList {
+        val products = productRepository.getProductsByWish(userId, page.offset(), page.limit())
+        val totalCount = wishRepository.getWishCount(userId)
+        return WishList(totalCount, products)
     }
 }
