@@ -37,7 +37,9 @@ const StyledLi = styled.li`
 	list-style: none;
 `;
 
-const StyledA = styled.a`
+const StyledA = styled.p`
+	margin: 0;
+	padding: 0;
 	line-height: 18px;
 	font-size: 15px;
 	letter-spacing: -0.15px;

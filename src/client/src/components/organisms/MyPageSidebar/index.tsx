@@ -49,11 +49,7 @@ const MyPageSidebar: FunctionComponent = () => {
 
 export default MyPageSidebar;
 
-const MyPageSidebarWrapper = styled.div`
-	float: left;
-	width: 180px;
-	margin-left: 20px;
-`;
+const MyPageSidebarWrapper = styled.div``;
 
 const StyledTitleA = styled.a`
 	text-decoration: none;

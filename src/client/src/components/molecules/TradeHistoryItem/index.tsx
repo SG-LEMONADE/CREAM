@@ -8,7 +8,7 @@ type TradeHistoryItemProps = {
 	backgroundColor: string;
 	productName: string;
 	size: string;
-	status?: number;
+	status: string;
 	wishedPrice?: number;
 	expiredDate?: string;
 };
@@ -19,15 +19,15 @@ const TradeHistoryItem: FunctionComponent<TradeHistoryItemProps> = (props) => {
 		backgroundColor,
 		productName,
 		size,
-		status = -1,
+		status,
 		wishedPrice,
 		expiredDate,
 	} = props;
 
 	const StatusCode = {
-		0: "입찰 중",
-		1: "진행 중",
-		2: "종료",
+		WAITING: "입찰 중",
+		IN_PROGRESS: "진행 중",
+		FINISHED: "종료",
 	};
 
 	return (
@@ -41,7 +41,7 @@ const TradeHistoryItem: FunctionComponent<TradeHistoryItemProps> = (props) => {
 				/>
 			</HistoryProductArea>
 			<HistoryStatusArea>
-				{status >= 0 && (
+				{status && (
 					<StatusBlock>
 						<StautsText>{StatusCode[status]}</StautsText>
 					</StatusBlock>

@@ -94,7 +94,7 @@ const HeaderTop: FunctionComponent = () => {
 			{!islogin ? (
 				<Link href={"/login"}>
 					<a>
-						<HeaderTopItem>관심상품</HeaderTopItem>
+						<HeaderTopItem>마이페이지</HeaderTopItem>
 					</a>
 				</Link>
 			) : (
