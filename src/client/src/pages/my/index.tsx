@@ -10,6 +10,7 @@ import MyPageTemplate from "components/templates/MyPageTemplate";
 import UserMemberShip from "components/organisms/UserMembership";
 import TradeHistory from "components/organisms/TradeHistory";
 import { UserInfo, TradeHistoryRes, ProductInfoRes } from "types";
+import ProductGrid from "components/organisms/ProductGrid";
 
 const MyPage: FunctionComponent = () => {
 	const { data: userData } = useSWR<UserInfo>(
@@ -38,7 +39,7 @@ const MyPage: FunctionComponent = () => {
 			headerMain={<HeaderMain />}
 			footer={<Footer />}
 		>
-			<MyPageTemplate wishProducts={wishProducts}>
+			<MyPageTemplate>
 				{userData && (
 					<UserMemberShip
 						imgSrc={userData.profileImageUrl}
@@ -46,7 +47,7 @@ const MyPage: FunctionComponent = () => {
 						userEmail={userData.email}
 					/>
 				)}
-				{askHistory && (
+				{/* FIX ME {askHistory && (
 					<TradeHistory
 						category="buy"
 						total={askHistory.counter.totalCnt}
@@ -55,7 +56,7 @@ const MyPage: FunctionComponent = () => {
 						over={askHistory.counter.finishedCnt}
 						items={askHistory.trades}
 					/>
-				)}
+				)} */}
 				{bidHistory && (
 					<TradeHistory
 						category="sell"
@@ -66,6 +67,7 @@ const MyPage: FunctionComponent = () => {
 						items={bidHistory.trades}
 					/>
 				)}
+				{wishProducts && <ProductGrid products={wishProducts} />}
 			</MyPageTemplate>
 		</NavTemplate>
 	);

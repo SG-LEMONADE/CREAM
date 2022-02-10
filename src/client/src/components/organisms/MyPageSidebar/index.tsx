@@ -1,11 +1,18 @@
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, useEffect, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 import MyPageSiderbarItem from "components/atoms/MyPageSidebarItem";
 
 import styled from "@emotion/styled";
 
 const MyPageSidebar: FunctionComponent = () => {
+	const router = useRouter();
+
+	const [activatedMenu] = useState<string>(
+		router.pathname.length > 4 ? router.pathname.slice(4) : "",
+	);
+
 	return (
 		<MyPageSidebarWrapper>
 			<Link href={"/my"} passHref>
@@ -18,17 +25,32 @@ const MyPageSidebar: FunctionComponent = () => {
 					<MyPageSiderbarItem category="subtitle">쇼핑 정보</MyPageSiderbarItem>
 					<Link href={"/my/buying"} passHref>
 						<StyledTitleA>
-							<MyPageSiderbarItem category="menu">구매 내역</MyPageSiderbarItem>{" "}
+							<MyPageSiderbarItem
+								activated={activatedMenu === "buying"}
+								category="menu"
+							>
+								구매 내역
+							</MyPageSiderbarItem>
 						</StyledTitleA>
 					</Link>
 					<Link href={"/my/selling"} passHref>
 						<StyledTitleA>
-							<MyPageSiderbarItem category="menu">판매 내역</MyPageSiderbarItem>
+							<MyPageSiderbarItem
+								category="menu"
+								activated={activatedMenu === "selling"}
+							>
+								판매 내역
+							</MyPageSiderbarItem>
 						</StyledTitleA>
 					</Link>
 					<Link href={"/my/wish"} passHref>
 						<StyledTitleA>
-							<MyPageSiderbarItem category="menu">관심 상품</MyPageSiderbarItem>
+							<MyPageSiderbarItem
+								category="menu"
+								activated={activatedMenu === "wish"}
+							>
+								관심 상품
+							</MyPageSiderbarItem>
 						</StyledTitleA>
 					</Link>
 				</StyledMenuArea>
@@ -36,7 +58,10 @@ const MyPageSidebar: FunctionComponent = () => {
 					<MyPageSiderbarItem category="subtitle">내 정보</MyPageSiderbarItem>
 					<Link href={"/my/profile"} passHref>
 						<StyledTitleA>
-							<MyPageSiderbarItem category="menu">
+							<MyPageSiderbarItem
+								category="menu"
+								activated={activatedMenu === "profile"}
+							>
 								프로필 정보
 							</MyPageSiderbarItem>
 						</StyledTitleA>

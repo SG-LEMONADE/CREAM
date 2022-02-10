@@ -4,19 +4,20 @@ import styled from "@emotion/styled";
 
 type MyPageSiderbarItemProps = {
 	category: "subtitle" | "menu";
+	activated?: boolean;
 	children: React.ReactNode;
 };
 
 const MyPageSiderbarItem: FunctionComponent<MyPageSiderbarItemProps> = (
 	props,
 ) => {
-	const { category, children } = props;
+	const { category, activated = false, children } = props;
 
 	return category === "subtitle" ? (
 		<StyledStrong>{children}</StyledStrong>
 	) : (
 		<StyledLi>
-			<StyledA>{children}</StyledA>
+			<StyledA activated={activated}>{children}</StyledA>
 		</StyledLi>
 	);
 };
@@ -37,11 +38,13 @@ const StyledLi = styled.li`
 	list-style: none;
 `;
 
-const StyledA = styled.p`
+const StyledA = styled.p<{ activated: boolean }>`
 	margin: 0;
 	padding: 0;
+	padding-top: 5px;
 	line-height: 18px;
 	font-size: 15px;
 	letter-spacing: -0.15px;
-	color: rgba(34, 34, 34, 0.5);
+	color: ${({ activated }) => (activated ? `#222` : `rgba(34, 34, 34, 0.5)`)};
+	font-weight: ${({ activated }) => activated && `700`};
 `;

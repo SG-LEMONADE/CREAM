@@ -81,15 +81,6 @@ export interface ShortcutItemRes {
 	title: string;
 }
 
-export interface SalesOptionsRes {
-	lowest_95: null | string;
-	option: string;
-	lowest_ask: null | number;
-	lowest_normal: null | number;
-	highest_bid: null | number;
-	lowest_100: null | number;
-}
-
 export interface UserInfo {
 	id: number;
 	email: string;
