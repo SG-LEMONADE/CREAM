@@ -8,108 +8,26 @@
 import UIKit
 import SnapKit
 
-class HomeViewItemCell: UICollectionViewCell {
-    static let reuseIdentifier = "\(HomeViewItemCell.self)"
+final class HomeProductCell: UICollectionViewCell {
+    static let reuseIdentifier = "\(HomeProductCell.self)"
     
-    private lazy var productImageView: UIImageView = {
-        let imageView = UIImageView(frame: .zero)
-        imageView.contentMode = .scaleToFill
-        imageView.backgroundColor = .white
-        return imageView
-    }()
+    var sessionTask: URLSessionDataTask?
     
-    private lazy var titleLabel: UILabel  = {
-        let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 13, weight: .bold)
-        label.textColor = .black
-        return label
-    }()
-    
-    private lazy var detailLabel: UILabel  = {
-        let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 13, weight: .bold)
-        label.textColor = .systemGray4
-        label.numberOfLines = 0
-        return label
-    }()
-    
-    private lazy var priceLabel: UILabel  = {
-        let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 13, weight: .bold)
-        label.textColor = .black
-        return label
-    }()
-    
-    private lazy var priceExpressionLabel: UILabel  = {
-        let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 13, weight: .bold)
-        label.textColor = .systemGray4
-        return label
+    private lazy var itemView: BaseItemView = {
+        let itemView = BaseItemView()
+        return itemView
     }()
     
     private lazy var wishButton: UIButton = {
         let button = UIButton()
-        
-        button.setImage(UIImage(systemName: "bookmark"), for: .normal)
-        button.setImage(UIImage(systemName: "bookmark.fill"), for: .selected)
-        button.setTitle("1,234", for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 10, weight: .black)
-        button.titleLabel?.textColor = .systemGray4
-        
         return button
     }()
     
-    private lazy var socialButton: UIButton = {
-        let button = UIButton()
-        button.titleLabel?.textAlignment = .left
-        button.setImage(UIImage(systemName: "bookmark"), for: .normal)
-        button.setImage(UIImage(systemName: "bookmark.fill"), for: .selected)
-        button.setTitle("4,321", for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 10, weight: .black)
-        button.titleLabel?.textColor = .systemGray4
-        button.isHidden = true
-        return button
+    private lazy var wishImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = UIImage(named: "bookmark")
+        return imageView
     }()
-    
-    private lazy var productStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [titleLabel,
-                                                       detailLabel])
-        stackView.axis = .vertical
-        stackView.distribution = .equalSpacing
-        stackView.alignment = .leading
-        
-        return stackView
-    }()
-    
-    private lazy var priceStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [priceLabel,
-                                                       priceExpressionLabel])
-        stackView.axis = .vertical
-        stackView.distribution = .equalSpacing
-        stackView.alignment = .leading
-        
-        return stackView
-    }()
-    
-    private lazy var wishStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [wishButton,
-                                                       socialButton])
-        stackView.axis = .horizontal
-        stackView.spacing = 10
-        stackView.alignment = .leading
-        
-        return stackView
-    }()
-    
-    private lazy var containerStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [productStackView,
-                                                       priceStackView])
-        stackView.axis = .vertical
-        stackView.distribution = .equalSpacing
-        
-        return stackView
-    }()
-    
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -120,45 +38,86 @@ class HomeViewItemCell: UICollectionViewCell {
         super.init(coder: coder)
         applyViewSettings()
     }
+    
+    override func prepareForReuse() {
+        sessionTask?.cancel()
+        
+        self.itemView.productImageView.image = nil
+        self.itemView.titleLabel.text = nil
+        self.itemView.tradeLabel.text = nil
+        self.itemView.detailLabel.text = nil
+        self.wishButton.setTitle(nil, for: .normal)
+        self.itemView.priceLabel.text = nil
+        self.itemView.priceExpressionLabel.text = nil
+    }
 }
 
-extension HomeViewItemCell: ViewConfiguration {
+extension HomeProductCell: ViewConfiguration {
     func buildHierarchy() {
-        self.addSubviews(productImageView,
-                         containerStackView,
-                         wishButton)
+        wishButton.addSubviews(wishImageView)
+        itemView.productImageView.addSubviews(wishButton)
+        addSubviews(itemView)
     }
     
     func setupConstraints() {
-        productImageView.snp.makeConstraints {
-            $0.top.bottom.equalTo(self.snp.top)
-            $0.width.height.equalTo(self.snp.width)
-            $0.leading.equalTo(self.snp.leading)
-            $0.trailing.equalTo(self.snp.trailing)
-            $0.bottom.equalTo(containerStackView.snp.top).offset(-5)
-        }
-        containerStackView.snp.makeConstraints {
-            $0.leading.equalTo(self.snp.leading).offset(10)
-            $0.trailing.equalTo(self.snp.trailing).offset(-10)
-            $0.bottom.equalTo(wishButton.snp.top).offset(-10)
-        }
-        wishButton.snp.makeConstraints {
-            $0.leading.equalTo(containerStackView.snp.leading)
-            $0.width.equalTo(containerStackView.snp.width).multipliedBy(0.3)
+        itemView.snp.makeConstraints {
+            $0.leading.trailing.top.equalToSuperview()
             $0.bottom.equalTo(self.snp.bottom).offset(-10)
+        }
+
+        wishImageView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
+        
+        wishButton.snp.makeConstraints {
+            $0.bottom.trailing.equalToSuperview().inset(15)
+            $0.height.equalTo(itemView.snp.width).multipliedBy(0.1)
+            $0.width.equalTo(itemView.snp.width).multipliedBy(0.08)
+        }
+    }
+    
+    func viewConfigure() {
+        itemView.productImageView.isUserInteractionEnabled = true
+    }
+}
+
+// MARK: Cell Configure
+extension HomeProductCell {
+    func configure(_ viewModel: Product, isRelatedItem: Bool = false) {
+        self.itemView.tradeLabel.text = viewModel.totalSaleText
+        self.itemView.titleLabel.text = viewModel.brandName
+        self.itemView.detailLabel.text = viewModel.originalName
+        self.itemView.priceLabel.text = viewModel.price
+        self.itemView.priceExpressionLabel.text = "즉시 구매가"
+        self.itemView.productImageView.backgroundColor = .init(rgb: viewModel.backgroundColor.hexToInt ?? 0)
+        guard let urlString = viewModel.imageUrls.first,
+              let url = URL(string: urlString)
+        else { return }
+        
+        sessionTask = loadImage(url: url) { [weak self] (image) in
+            DispatchQueue.main.async {
+                self?.itemView.productImageView.image = image
+            }
+        }
+        
+        if isRelatedItem {
+            self.itemView.tradeLabel.text = nil
+            wishButton.isHidden = true
         }
     }
 }
 
-extension HomeViewItemCell {
-    func configureTest() {
+extension HomeProductCell {
+    func loadImage(url: URL, completion: @escaping (UIImage?) -> Void) -> URLSessionDataTask {
         
-        self.productImageView.image = UIImage(systemName: "bookmark")?
-            .withAlignmentRectInsets(UIEdgeInsets(top: -10, left: -10, bottom: -10, right: -10))
-        self.productImageView.sizeToFit()
-        self.titleLabel.text = "Nike"
-        self.detailLabel.text = "Nike Big Swoosh Full Zip \nJacket Black Sail"
-        self.priceLabel.text = "269,000원"
-        self.priceExpressionLabel.text = "즉시 구매가"
+        let task = URLSession.shared.dataTask(with: url) { data, _, _ in
+            guard let data = data
+            else { return }
+            
+            let image = UIImage(data: data)
+            completion(image)
+        }
+        task.resume()
+        return task
     }
 }

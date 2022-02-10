@@ -8,7 +8,6 @@
 import UIKit
 
 class SizeListView: UIView {
-    
     enum Constraint {
         private enum Inset {
             static let left: CGFloat = 2
@@ -126,7 +125,6 @@ extension SizeListView: ViewConfiguration {
         
         containerViewHeightConstraint = containerView.heightAnchor.constraint(equalToConstant: defaultHeight)
         containerViewBottomConstraint = containerView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: defaultHeight)
-        
         containerViewHeightConstraint?.isActive = true
         containerViewBottomConstraint?.isActive = true
     }

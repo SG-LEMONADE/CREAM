@@ -13,12 +13,14 @@ protocol ProductViewModelInput {
     func didTapWishButton()
     func didTapBuyButton()
     func didTapSellButton()
+    var id: Int { get set }
 }
 
 protocol ProductViewModelOutput {
     var item: Observable<ProductDetail> { get set }
-    var count: Int { get }
+    var numberOfImageUrls: Int { get }
     var releaseInfo: [(String, String)] { get }
+    var numberOfSections: Int { get }
 }
 
 protocol ProductViewModel: ProductViewModelInput, ProductViewModelOutput {
@@ -27,11 +29,7 @@ protocol ProductViewModel: ProductViewModelInput, ProductViewModelOutput {
 
 final class DefaultProductViewModel: ProductViewModel {
     var usecase: ProductUseCaseInterface
-    
     var item: Observable<ProductDetail> = Observable(ProductDetail.create())
-
-    let imageUrls: [String] = ["mock_shoe1", "mock_shoe2", "mock_shoe3"]
-    
     var releaseInfo: [(String, String)] {
         var info = [(String, String)]()
         info.append(("모델 번호", item.value.styleCode))
@@ -41,18 +39,23 @@ final class DefaultProductViewModel: ProductViewModel {
         
         return info
     }
-    private var page: Int = 1
-    
-    var count: Int {
-        return imageUrls.count
+    var id: Int = 0
+    var numberOfImageUrls: Int {
+        return item.value.imageUrls.count
     }
+    
+    var numberOfSections: Int {
+        return ProductView.SectionList.allCases.count
+    }
+    
+    private var page: Int = 1
     
     init(usecase: ProductUseCaseInterface) {
         self.usecase = usecase
     }
     
     func viewDidLoad() {
-        usecase.fetchItemById(2351) { result in
+        let _ = usecase.fetchItemById(id) { result in
             switch result {
             case .success(let product):
                 self.item.value = product

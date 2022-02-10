@@ -2,171 +2,118 @@
 //  ProductListViewController.swift
 //  Cream
 //
-//  Created by wankikim-MN on 2022/01/15.
+//  Created by wankikim-MN on 2022/01/31.
 //
 
 import UIKit
 import SnapKit
 
-class ProductListViewController: UIViewController {
+protocol SortChangeDelegate: AnyObject {
+    func didChangeStandard(to standard: String)
+}
 
-    private var currentBanner: Int = 0
-    private var viewModel = ProductListViewModel()
+extension ProductListViewController: UISearchBarDelegate {
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        _ = viewModel.viewDidLoad()
+    }
+    
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        guard let text = searchBar.text else {
+            return
+        }
+        
+        _ = viewModel.didSearch(with: text)
+    }
+}
+
+class ProductListViewController: BaseDIViewController<ProductListViewModel> {
     
     enum Constraint {
         static let verticalInset: CGFloat = 20
         static let horizontalInset: CGFloat = 20
     }
-    
-    private lazy var shopCollectionView: UICollectionView = {
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: createCompositionalLayout())
+    private var currentBanner: Int = 0
+    private var selectedIndexPaths = [IndexPath]()
+    private lazy var productListView = ProductListView()
         
-        return collectionView
-    }()
+    weak var delegate: SortChangeDelegate?
+    override init(_ viewModel: ProductListViewModel) {
+        super.init(viewModel)
+    }
+    
+    // MARK: View Life Cycle
+    override func loadView() {
+        self.view = productListView
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.navigationBar.backgroundColor = .clear
-        applyViewSettings()
         setupCollectionView()
+        setupSearchController()
+        bindViewModel()
+        productListView.indicatorView.startAnimating()
+        viewModel.viewDidLoad()
+        viewConfigure()
+    }
+    
+    private func setupSearchController() {
+        let searchController = UISearchController(searchResultsController: nil)
+        searchController.searchBar.delegate = self
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.placeholder = "브랜드명, 모델명, 모델번호 등"
+        searchController.searchBar.searchTextField.font = UIFont.systemFont(ofSize: 13)
+        searchController.searchBar.setValue("취소", forKey: "cancelButtonText")
+        searchController.searchBar.tintColor = .black
+        
+        self.navigationItem.searchController = searchController
+        
+        self.definesPresentationContext = true
+        
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFit
+        let image = UIImage(named: "cream_loco")
+        imageView.image = image
+        navigationItem.titleView = imageView
     }
     
     private func setupCollectionView() {
-        self.shopCollectionView.dataSource = self
-        self.shopCollectionView.delegate = self
+        productListView.shopCollectionView.dataSource = self
+        productListView.shopCollectionView.delegate = self
         
-        shopCollectionView.register(ShopBannerCell.self,
+        productListView.shopCollectionView.register(ShopBannerCell.self,
                                     forCellWithReuseIdentifier: ShopBannerCell.reuseIdentifier)
-        shopCollectionView.register(SizeListCell.self,
+        productListView.shopCollectionView.register(SizeListCell.self,
                                     forCellWithReuseIdentifier: SizeListCell.reuseIdentifier)
-        shopCollectionView.register(HomeViewItemCell.self,
-                                    forCellWithReuseIdentifier: HomeViewItemCell.reuseIdentifier)
-        shopCollectionView.register(ShopViewFilterHeaderView.self,
+        productListView.shopCollectionView.register(ProductListItemCell.self,
+                                    forCellWithReuseIdentifier: ProductListItemCell.reuseIdentifier)
+        productListView.shopCollectionView.register(ShopViewFilterHeaderView.self,
                                     forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
                                     withReuseIdentifier: ShopViewFilterHeaderView.reuseIdentifier)
-    }
-    
-    private func createCompositionalLayout() -> UICollectionViewCompositionalLayout {
-        return UICollectionViewCompositionalLayout { (section, env) -> NSCollectionLayoutSection? in
-            switch section {
-            case 0:
-                return self.firstLayoutSection()
-            case 1:
-                return self.secondLayoutSection()
-            default:
-                return self.thirdLayoutSection()
-            }
-        }
-    }
-    
-    private func firstLayoutSection() -> NSCollectionLayoutSection {
-        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
-                                              heightDimension: .fractionalWidth(0.256))
-        let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        item.contentInsets.bottom = 0
-        
-        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
-                                               heightDimension: .fractionalWidth(0.256))
-        
-        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
-        
-        group.contentInsets = .init(top: 0, leading: 0, bottom: 0, trailing: 0)
-        
-        let section = NSCollectionLayoutSection(group: group)
-        section.orthogonalScrollingBehavior = .groupPaging
-        
-        return section
-    }
-    
-    private func secondLayoutSection() -> NSCollectionLayoutSection {
-        
-        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5),
-                                              heightDimension: .fractionalHeight(0.58))
-        let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        item.contentInsets = .init(top: 0, leading: 0, bottom: 5, trailing: 5)
-        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
-                                               heightDimension: .estimated(580))
-        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
-        let section = NSCollectionLayoutSection(group: group)
-        
-        section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 0, bottom: 20, trailing: 0)
-        
-        let sectionSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
-                                                 heightDimension: .absolute(60))
-        
-        let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: sectionSize,
-                                                                 elementKind: UICollectionView.elementKindSectionHeader,
-                                                                 alignment: .top)
-        header.pinToVisibleBounds = true
-        section.boundarySupplementaryItems = [header]
-        return section
-    }
-    
-    private func thirdLayoutSection() -> NSCollectionLayoutSection {
-        
-        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
-                                              heightDimension: .fractionalHeight(1))
-        
-        let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        item.contentInsets.bottom = 15
-        
-        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.8),
-                                               heightDimension: .fractionalWidth(0.35))
-        
-        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
-        group.contentInsets = .init(top: 0, leading: 15, bottom: 0, trailing: 2)
-        
-        let section = NSCollectionLayoutSection(group: group)
-        
-        section.orthogonalScrollingBehavior = .continuous
-        
-        return section
-    }
-}
-
-extension ProductListViewController {
-    func bannerTimer() {
-        let _: Timer = Timer.scheduledTimer(withTimeInterval: 2, repeats: true) { (Timer) in
-            self.bannerMove()
-        }
-    }
-    
-    func bannerMove() {
-        currentBanner += 1
-        shopCollectionView.scrollToItem(at: NSIndexPath(item: currentBanner, section: 0) as IndexPath, at: .bottom, animated: true)
-        
-        if self.currentBanner == viewModel.banners.count-1 {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.28) {
-                self.scrollTofirstIndex()
-            }
-        }
-    }
-    
-    func scrollTofirstIndex() {
-        shopCollectionView.scrollToItem(at: NSIndexPath(item: 0, section: 0) as IndexPath, at: .top, animated: false)
-        currentBanner = 0
-    }
-}
-
-extension ProductListViewController: ViewConfiguration {
-    func buildHierarchy() {
-        view.addSubviews(shopCollectionView)
-    }
-    
-    func setupConstraints() {
-        shopCollectionView.snp.makeConstraints {
-            $0.top.equalTo(view)
-            $0.bottom.equalTo(view)
-            $0.leading.equalTo(view)
-            $0.trailing.equalTo(view)
-        }
+        productListView.shopCollectionView.register(SortFilterFooterView.self,
+                                    forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter,
+                                    withReuseIdentifier: SortFilterFooterView.reuseIdentifier)
     }
     
     func viewConfigure() {
         let backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)
         backBarButtonItem.tintColor = .systemGray
-        
         self.navigationItem.backBarButtonItem = backBarButtonItem
+    }
+    
+    func bindViewModel() {
+        self.viewModel.products.bind { [weak self] _ in
+            DispatchQueue.main.async {
+                guard let self = self
+                else { return }
+                
+                self.productListView.shopCollectionView.reloadSections(.init(integer: 1))
+                self.delegate?.didChangeStandard(to: self.viewModel.sortStandard.description)
+                self.productListView.indicatorView.stopAnimating()
+                
+            }
+        }
     }
 }
 
@@ -181,7 +128,7 @@ extension ProductListViewController: UICollectionViewDataSource {
         case 0:
             return viewModel.banners.count
         default:
-            return 50
+            return viewModel.products.value.count
         }
     }
     
@@ -191,16 +138,14 @@ extension ProductListViewController: UICollectionViewDataSource {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ShopBannerCell.reuseIdentifier,
                                                                 for: indexPath) as? ShopBannerCell
             else { return UICollectionViewCell() }
-            
-            cell.configure(viewModel.banners[indexPath.item])
-            
+            cell.configureAds(viewModel.banners[indexPath.item])
             return cell
         } else {
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HomeViewItemCell.reuseIdentifier,
-                                                                for: indexPath) as? HomeViewItemCell
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ProductListItemCell.reuseIdentifier,
+                                                                for: indexPath) as? ProductListItemCell
             else { return UICollectionViewCell() }
-            cell.configureTest()
             
+            cell.configure(viewModel.products.value[indexPath.item])
             return cell
         }
     }
@@ -208,28 +153,46 @@ extension ProductListViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView,
                         viewForSupplementaryElementOfKind kind: String,
                         at indexPath: IndexPath) -> UICollectionReusableView {
-        guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind,
-                                                                           withReuseIdentifier: ShopViewFilterHeaderView.reuseIdentifier,
-                                                                           for: indexPath) as? ShopViewFilterHeaderView else
-                                                                           { return UICollectionReusableView() }
-        header.delegate = self
-        header.dataSource = self
-        return header
+        switch kind {
+        case UICollectionView.elementKindSectionHeader:
+            guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind,
+                                                                               withReuseIdentifier: ShopViewFilterHeaderView.reuseIdentifier,
+                                                                               for: indexPath) as? ShopViewFilterHeaderView
+            else { return UICollectionReusableView() }
+            
+            header.delegate = self
+            header.dataSource = self
+            return header
+            
+        case UICollectionView.elementKindSectionFooter:
+            guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind,
+                                                                               withReuseIdentifier: SortFilterFooterView.reuseIdentifier,
+                                                                               for: indexPath) as? SortFilterFooterView
+            else { return UICollectionReusableView() }
+            header.delegate = self
+            self.delegate = header
+            
+            return header
+
+        default:
+            assert(false, "Unexpected element kind")
+        }
     }
 }
 
 extension ProductListViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if indexPath.section == 1 {
-            guard let baseURL = URL(string: "http://ec2-3-35-137-187.ap-northeast-2.compute.amazonaws.com:8081")
+            guard let baseURL = URL(string: "http://1.231.16.189:8081")
             else { return }
-            
+        
             let config: NetworkConfigurable = ApiDataNetworkConfig(baseURL: baseURL)
             let networkService: NetworkService = DefaultNetworkService(config: config)
             let dataTransferService: DataTransferService = DefaultDataTransferService(with: networkService)
             let repository: ProductRepositoryInterface = ProductRepository(dataTransferService: dataTransferService)
             let usecase: ProductUseCaseInterface = ProductUseCase(repository)
-            let viewModel: ProductViewModel = DefaultProductViewModel(usecase: usecase)
+            var viewModel: ProductViewModel = DefaultProductViewModel(usecase: usecase)
+            viewModel.id = self.viewModel.products.value[indexPath.item].id 
             let productViewController = ProductViewController(viewModel)
             
             productViewController.hidesBottomBarWhenPushed = true
@@ -255,12 +218,31 @@ extension ProductListViewController: ShopViewFilterHeaderViewDelegate {
         if indexPath.item == 2 {
             cellWidth = 2
         }
-        
         return CGSize(width: cellWidth, height: cellHeight)
     }
     
     func didSelectItemAt(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print(viewModel.categories[indexPath.item])
+        if indexPath.item == .zero {
+            // TODO: FilterUseCase 구성
+            let filterViewModel: FilterViewModel = DefaultFilterViewModel(FilterUseCase())
+            let filterViewController = FilterViewController(filterViewModel)
+            let navigationController = UINavigationController(rootViewController: filterViewController)
+            self.present(navigationController, animated: true)
+            return
+        }
+        
+        if indexPath.item > 2 {
+            productListView.indicatorView.startAnimating()
+            viewModel.didTapCategory(indexPath: indexPath)
+        }
+    }
+    
+    // MARK: CHECKLIST 색상 변경
+    private func getAttachment(color: UIColor) -> NSAttributedString {
+        let attachment = NSTextAttachment()
+        attachment.image = UIImage(systemName: "checklist")
+        attachment.image = attachment.image?.withTintColor(color)
+        return NSAttributedString(attachment: attachment)
     }
 }
 
@@ -280,7 +262,6 @@ extension ProductListViewController: ShopViewFilterHeaderViewDataSource {
 
             cell.titleLabel.attributedText = attachmentString
             cell.titleLabel.sizeToFit()
-            
         } else {
             cell.configure(viewModel.categories[indexPath.item])
             cell.titleLabel.sizeToFit()
@@ -290,5 +271,22 @@ extension ProductListViewController: ShopViewFilterHeaderViewDataSource {
             cell.isUserInteractionEnabled = false
         }
         return cell
+    }
+}
+
+extension ProductListViewController: SortFilterFooterViewDelegate {
+    func didTapSortButton() {
+        let viewModel = DefaultSortViewModel()
+        let sortViewController = SortViewController(viewModel)
+        sortViewController.delegate = self
+        
+        sortViewController.modalPresentationStyle = .overFullScreen
+        self.present(sortViewController, animated: false)
+    }
+}
+
+extension ProductListViewController: SortSelectDelegate {
+    func updateListData(_ standard: String) {
+        viewModel.didSelectSortOrder(standard)
     }
 }

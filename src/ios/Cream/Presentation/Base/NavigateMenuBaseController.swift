@@ -42,9 +42,30 @@ final class NavigateMenuBaseController: UITabBarController {
         var viewController: UIViewController {
             switch self {
             case .home:
-                return HomeViewController()
+                guard let baseURL = URL(string: "http://1.231.16.189:8081")
+                else { fatalError() }
+                
+                let config: NetworkConfigurable = ApiDataNetworkConfig(baseURL: baseURL)
+                let networkService: NetworkService = DefaultNetworkService(config: config)
+                let dataTransferService: DataTransferService = DefaultDataTransferService(with: networkService)
+                let repository: HomeListRepositoryInterface = ProductRepository(dataTransferService: dataTransferService)
+                let usecase: HomeListUseCaseInterface = HomeListUseCase(repository: repository)
+                let viewModel: HomeListViewModel = DefaultHomeListViewModel(usecase)
+                let homeViewController = HomeViewController(viewModel)
+                return homeViewController
+                
             case .shop:
-                return ProductListViewController()
+                guard let baseURL = URL(string: "http://1.231.16.189:8081")
+                else { fatalError() }
+                
+                let config: NetworkConfigurable = ApiDataNetworkConfig(baseURL: baseURL)
+                let networkService: NetworkService = DefaultNetworkService(config: config)
+                let dataTransferService: DataTransferService = DefaultDataTransferService(with: networkService)
+                let repository: ProductRepositoryInterface = ProductRepository(dataTransferService: dataTransferService)
+                let usecase: ProductUseCaseInterface = ProductUseCase(repository)
+                let viewModel: ProductListViewModel = DefaultListViewModel(usecase)
+                let listViewController = ProductListViewController(viewModel)
+                return listViewController
             case .my:
                 return MyPageViewController()
             }

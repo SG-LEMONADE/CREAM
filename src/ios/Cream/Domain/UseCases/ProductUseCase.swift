@@ -8,7 +8,11 @@
 import Foundation
 
 protocol ProductUseCaseInterface {
-    func fetch(page: Int, completion: @escaping ((Result<Products, Error>) -> Void)) -> Cancellable
+    func fetch(page: Int,
+               searchWord: String?,
+               category: String?,
+               sort: String?,
+               completion: @escaping ((Result<Products, Error>) -> Void)) -> Cancellable
     func fetchItemById(_ id: Int, completion: @escaping ((Result<ProductDetail, Error>) -> Void)) -> Cancellable
 }
 
@@ -23,10 +27,22 @@ final class ProductUseCase {
 extension ProductUseCase: ProductUseCaseInterface {
     // TODO: 목록 요청
     @discardableResult
-    func fetch(page: Int, completion: @escaping ((Result<Products, Error>) -> Void)) -> Cancellable {
-        let task = RepositoryTask()
-        
-        return task
+    func fetch(page: Int,
+               searchWord: String?,
+               category: String?,
+               sort: String?,
+               completion: @escaping ((Result<Products, Error>) -> Void)) -> Cancellable {
+        repository.requestProducts(page: page,
+                                   searchWord: searchWord,
+                                   category: category,
+                                   sort: sort) { result in
+            switch result {
+            case .success(let products):
+                completion(.success(products))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
     }
     
     // TODO: 특정 Product 요청
@@ -37,7 +53,7 @@ extension ProductUseCase: ProductUseCaseInterface {
             case .success(let product):
                 completion(.success(product))
             case .failure(let error):
-                print(error)
+                completion(.failure(error))
             }
         }
     }

@@ -7,12 +7,12 @@
 
 import Foundation
 
-protocol HomeListViewModelInterface {
-    var products: Observable<[Product]> { get }
-    func fetch()
+protocol HomeListRepositoryInterface {
+    func fetchHome(completion: @escaping ((Result<HomeInfo, Error>) -> Void)) -> Cancellable
 }
+
 protocol HomeListUseCaseInterface {
-    func fetch()
+    func fetchHome(completion: @escaping ((Result<HomeInfo, Error>) -> Void)) -> Cancellable
 }
 
 final class HomeListUseCase {
@@ -23,47 +23,59 @@ final class HomeListUseCase {
     }
 }
 
-protocol HomeListRepositoryInterface {
-    func fetch()
-}
-
-final class HomeListViewModel: HomeListViewModelInterface {
-    private let usecase: HomeListUseCaseInterface
-    private(set) var products: Observable<[Product]>
-    
-    init(usecase: HomeListUseCaseInterface) {
-        self.usecase = usecase
-        self.products = Observable([])
-    }
-    
-    func fetch() {
-         
-    }
-}
-
-
-protocol HomeViewModelDelegate: AnyObject {
-    func didStartFetchingMessage()
-    func didFinishFetchingMessage(_ message: String)
-}
-
-class HomeViewModel {
-
-    private let test: String
-    
-    weak var delegate: HomeViewModelDelegate?
-    
-    init(_ test: String) {
-        self.test = test
-    }
-    
-    func fetchMessage() {
-        delegate?.didStartFetchingMessage()
-        DispatchQueue.global().asyncAfter(deadline: .now() + 2.0) {
-            let message = "Hello there"
-            DispatchQueue.main.async {
-                self.delegate?.didFinishFetchingMessage(message)
+extension HomeListUseCase: HomeListUseCaseInterface {
+    func fetchHome(completion: @escaping ((Result<HomeInfo, Error>) -> Void)) -> Cancellable {
+        repository.fetchHome { result in
+            switch result {
+            case .success(let homedata):
+                completion(.success(homedata))
+            case .failure(let error):
+                completion(.failure(error))
             }
         }
+    }
+}
+
+protocol HomeListViewModelInput {
+    func viewDidLoad()
+    func didTapProduct(indexPath: IndexPath)
+}
+
+protocol HomeListViewModelOutput {
+    var homeInfo: Observable<HomeInfo> { get set }
+    var numberOfSections: Int { get }
+}
+
+protocol HomeListViewModel: HomeListViewModelInput, HomeListViewModelOutput { }
+
+final class DefaultHomeListViewModel: HomeListViewModel {
+    var homeInfo: Observable<HomeInfo> = Observable(.init(ads: [], sections: []))
+    var usecase: HomeListUseCaseInterface
+    
+    var numberOfSections: Int {
+        return homeInfo.value.sections.count * 2
+    }
+    
+    var numberOfItems: Int {
+        homeInfo.value.sections[0].products.count
+    }
+    
+    init(_ usecase: HomeListUseCaseInterface) {
+        self.usecase = usecase
+    }
+    
+    func viewDidLoad() {
+        _ = usecase.fetchHome { result in
+            switch result {
+            case .success(let homeInfo):
+                self.homeInfo.value = homeInfo
+            case .failure(let error):
+                print(error)
+            }
+        }
+    }
+    
+    func didTapProduct(indexPath: IndexPath) {
+        // TODO: CollectionView Click Event 발생 시
     }
 }

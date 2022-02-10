@@ -15,16 +15,28 @@ final class ProductRepository {
     }
 }
 
-extension ProductRepository: ProductRepositoryInterface {
-    func fetchHome(completion: @escaping ((Result<HomeData, Error>) -> Void)) -> Cancellable {
-        let task = RepositoryTask()
+// MARK: Product View Repository Interface
+extension ProductRepository: ProductRepositoryInterface {    
+    func requestProducts(page: Int,
+                         searchWord: String?,
+                         category: String?,
+                         sort: String?,
+                         completion: @escaping ((Result<Products, Error>) -> Void)) -> Cancellable {
+        let endpoint = APIEndpoints.loadProducts(page, searchWord: searchWord, category: category, sort: sort)
         
-        return task
-    }
-    
-    func requestProducts(page: Int, completion: @escaping ((Result<Products, Error>) -> Void)) -> Cancellable {
         let task = RepositoryTask()
-        
+        task.networkTask = dataTransferService.request(with: endpoint) { result in
+            switch result {
+            case .success(let response):
+                var result: Products = []
+                response.forEach {
+                    result.append($0.toDomain())
+                }
+                completion(.success(result))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
         return task
     }
     
@@ -32,6 +44,34 @@ extension ProductRepository: ProductRepositoryInterface {
         let endpoint = APIEndpoints.loadProduct(id)
         
         let task = RepositoryTask()
+        task.networkTask = dataTransferService.request(with: endpoint, completion: { result in
+            switch result {
+            case .success(let response):
+                let product = response.toDomain()
+                completion(.success(product))
+            case .failure(let error):
+                print(error)
+            }
+        })
+        return task
+    }
+    
+    func addWishList(id: Int, size: String, completion: @escaping ((Result<Void, Error>) -> Void)) -> Cancellable {
+        let endpoint = APIEndpoints.addToWishList(id: id, size: size)
+        
+        let task = RepositoryTask()
+        
+        return task
+    }
+}
+
+// MARK: Home View Repository Interface
+extension ProductRepository: HomeListRepositoryInterface {
+    func fetchHome(completion: @escaping ((Result<HomeInfo, Error>) -> Void)) -> Cancellable {
+        let endpoint = APIEndpoints.loadHome()
+        
+        let task = RepositoryTask()
+                
         task.networkTask = dataTransferService.request(with: endpoint, completion: { result in
             switch result {
             case .success(let response):

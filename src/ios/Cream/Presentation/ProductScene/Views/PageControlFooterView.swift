@@ -58,7 +58,6 @@ extension PageControlFooterView: ViewConfiguration {
     }
 }
 
-
 extension PageControlFooterView: FooterScrollDelegate {
     func didScrollTo(_ page: Int) {
         DispatchQueue.main.async {

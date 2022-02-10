@@ -8,7 +8,6 @@
 import Foundation
 
 protocol JoinViewModelProperty {
-    var usecase: UserUseCaseInterface { get }
     var emailMessage: Observable<String> { get set }
     var passwordMessage: Observable<String> { get set }
     var shoeSize: Observable<Int> { get set }

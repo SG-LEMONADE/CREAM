@@ -72,6 +72,10 @@ extension ShopViewFilterHeaderView: UICollectionViewDelegate, UICollectionViewDe
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         delegate?.didSelectItemAt(collectionView, didSelectItemAt: indexPath)
     }
+    
+    func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
+        return indexPath.item == 2 ? false : true
+    }
 }
 
 // MARK: - ViewConfiguration
@@ -82,5 +86,13 @@ extension ShopViewFilterHeaderView: ViewConfiguration {
 
     func buildHierarchy() {
         addSubviews(filterCollectionView)
+    }
+    func viewConfigure() {
+        self.clipsToBounds = false
+        self.layer.masksToBounds = false
+        self.layer.shadowColor = UIColor.systemGray2.cgColor
+        self.layer.shadowOpacity = 0.5
+        self.layer.shadowRadius = 1.5
+        self.layer.shadowOffset = CGSize(width: 0.0, height: 2.5)
     }
 }

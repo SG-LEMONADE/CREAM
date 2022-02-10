@@ -15,6 +15,7 @@ class ShopBannerCell: UICollectionViewCell {
     
     private lazy var imageView: UIImageView = {
         let imageView = UIImageView(frame: .zero)
+        imageView.contentMode = .scaleAspectFill
         return imageView
     }()
     
@@ -50,7 +51,6 @@ extension ShopBannerCell: ViewConfiguration {
 // MARK: Configure Cell
 extension ShopBannerCell {
     func loadImage(url: URL, completion: @escaping (UIImage?) -> Void) -> URLSessionDataTask {
-        
         let task = URLSession.shared.dataTask(with: url) { data, Response, error in
             guard let data = data
             else { return }
@@ -59,6 +59,7 @@ extension ShopBannerCell {
             completion(image)
         }
         task.resume()
+        
         return task
     }
     
@@ -68,6 +69,14 @@ extension ShopBannerCell {
             DispatchQueue.main.async {
                 self?.imageView.image = image
             }
+        }
+    }
+    
+    func configureAds(_ image: String, contentMode: UIView.ContentMode = UIView.ContentMode.scaleAspectFill) {
+        imageView.contentMode = contentMode
+        let image = UIImage(named: image)
+        DispatchQueue.main.async {
+            self.imageView.image = image
         }
     }
 }

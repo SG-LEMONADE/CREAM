@@ -7,18 +7,25 @@
 
 import UIKit
 
-protocol SizeSelectDelegate: NSObject {
+protocol SizeSelectDelegate: AnyObject {
     func configureShoesSize(_ size: Int)
 }
 
 final class SizeListViewController: BaseDIViewController<SizeListViewModel> {
     
     private lazy var sizeView = SizeListView()
+    private var isJoinProcess: Bool = true
     
     weak var delegate: SizeSelectDelegate?
     
     override init(_ viewModel: SizeListViewModel) {
         super.init(viewModel)
+    }
+    
+    convenience init(_ viewModel: SizeListViewModel,
+                     isJoinProcess: Bool) {
+        self.init(viewModel)
+        self.isJoinProcess = isJoinProcess
     }
     
     // MARK: View Life Cycle
@@ -29,7 +36,6 @@ final class SizeListViewController: BaseDIViewController<SizeListViewModel> {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureCollectionView()
-        bindViewModel()
         configureUserActions()
     }
     
@@ -81,49 +87,54 @@ final class SizeListViewController: BaseDIViewController<SizeListViewModel> {
             self.dismiss(animated: true)
         }
     }
-    
-    func bindViewModel() {
-        viewModel.reloadCollectionViewClosure = { [weak self] () in
-            DispatchQueue.main.async {
-                self?.sizeView.sizeCollectionView.reloadData()
-            }
-        }
-    }
 }
-
 // MARK: CollectionView Layout & CollectionView Cell Configuration
 extension SizeListViewController: UICollectionViewDelegateFlowLayout {
-
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let cellLayout = CGSize(width: (collectionView.bounds.size.width - 2 * SizeListView.Constraint.GridWidthSpacing) / 3,
+        let cellLayout = CGSize(width: (collectionView.bounds.size.width - (viewModel.numberOfColumns - 1) * SizeListView.Constraint.GridWidthSpacing) / viewModel.numberOfColumns,
                                 height: ((collectionView.bounds.size.width - SizeListView.Constraint.GridHeightSpacing) / 3) * 0.35)
         return cellLayout
     }
 }
 
-extension SizeListViewController: UICollectionViewDataSource, UICollectionViewDelegate {
+// MARK: - UICollectionViewDataSource
+extension SizeListViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SizeListCell.reuseIdentifier,
-                                                            for: indexPath) as? SizeListCell
-        else { return UICollectionViewCell() }
-        
-        viewModel.getCellViewModel(at: indexPath) {
-            cell.configure(with: $0)
+        if isJoinProcess {
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SizeListCell.reuseIdentifier,
+                                                                for: indexPath) as? SizeListCell
+            else { return UICollectionViewCell() }
+            
+            viewModel.getCellViewModel(at: indexPath) {
+                cell.configure(size: $0)
+            }
+            return cell
+        } else {
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SizeListCell.reuseIdentifier,
+                                                                for: indexPath) as? SizeListCell
+            else { return UICollectionViewCell() }
+            
+            viewModel.getCellViewModel(at: indexPath) {
+                cell.configure(size: $0)
+            }
+            return cell
         }
-        
-        return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return viewModel.numberOfCells
     }
+}
 
+extension SizeListViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         self.viewModel.didSelectSize(at: indexPath) { [weak self] sizeString in
             guard let self = self,
                   let size = Int(sizeString)
             else { return }
+            
             self.delegate?.configureShoesSize(size)
             UIView.animate(withDuration: 0.3) {
                 self.sizeView.containerViewBottomConstraint?.constant = self.sizeView.defaultHeight

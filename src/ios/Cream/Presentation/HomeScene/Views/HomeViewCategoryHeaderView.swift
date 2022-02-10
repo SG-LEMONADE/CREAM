@@ -7,6 +7,7 @@
 
 import UIKit
 import SnapKit
+import SwiftUI
 
 class HomeViewCategoryHeaderView: UICollectionReusableView {
     static let reuseIdentifier = "\(HomeViewCategoryHeaderView.self)"
@@ -20,7 +21,7 @@ class HomeViewCategoryHeaderView: UICollectionReusableView {
     
     private lazy var detailLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 20)
+        label.font = UIFont.systemFont(ofSize: 16, weight: .bold)
         label.textColor = .systemGray3
         return label
     }()
@@ -30,27 +31,39 @@ class HomeViewCategoryHeaderView: UICollectionReusableView {
         stackView.alignment = .leading
         stackView.distribution = .equalSpacing
         stackView.axis = .vertical
-        stackView.addArrangedSubviews(titleLabel, detailLabel)
+        stackView.addArrangedSubviews(titleLabel,
+                                      detailLabel)
         return stackView
     }()
     
-
     override init(frame: CGRect) {
         super.init(frame: frame)
         applyViewSettings()
-        
     }
 
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         applyViewSettings()
     }
+    
+    override func prepareForReuse() {
+        self.titleLabel.text = nil
+        self.detailLabel.text = nil
+        self.titleLabel.textColor = .black
+        self.detailLabel.textColor = .systemGray3
+    }
 }
 
 extension HomeViewCategoryHeaderView {
-    func configure(_ headerInfo: String) {
-        self.titleLabel.text = "header \(headerInfo)"
-        self.detailLabel.text = "detail \(headerInfo)"
+    func configure(headerInfo: String, detailInfo: String) {
+        self.titleLabel.text = headerInfo
+        self.detailLabel.text = detailInfo
+    }
+    
+    func configure(brandInfo: String) {
+        self.titleLabel.text = nil
+        self.detailLabel.text = "\(brandInfo)의 다른 상품"
+        self.detailLabel.textColor = .black
     }
 }
 
@@ -64,7 +77,7 @@ extension HomeViewCategoryHeaderView: ViewConfiguration {
         labelStackView.snp.makeConstraints {
             $0.leading.equalTo(self.snp.leading).offset(10)
             $0.trailing.equalTo(self.snp.trailing).offset(-10)
-            $0.top.equalTo(self.snp.top).offset(20)
+            $0.top.equalTo(self.snp.top).inset(25)
             $0.bottom.equalTo(self.snp.bottom)
         }
     }

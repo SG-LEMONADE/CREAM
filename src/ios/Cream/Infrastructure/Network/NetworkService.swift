@@ -70,6 +70,12 @@ public protocol NetworkSessionManager {
                  completion: @escaping CompletionHandler) -> NetworkCancellable
 }
 
+//public class MockNetworkSessionManager: NetworkSessionManager {
+//    public func request(_ request: URLRequest, completion: @escaping CompletionHandler) -> NetworkCancellable {
+//        <#code#>
+//    }
+//}
+
 public class DefaultNetworkSessionManager: NetworkSessionManager {
     public init() {}
     public func request(_ request: URLRequest,

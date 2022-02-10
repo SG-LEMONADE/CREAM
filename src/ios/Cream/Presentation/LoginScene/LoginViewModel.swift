@@ -18,7 +18,6 @@ class RepositoryTask: Cancellable {
 }
 
 protocol LoginViewModelProperty {
-    var usecase: UserUseCaseInterface { get }
     var emailMessage: Observable<String> { get set }
     var passwordMessage: Observable<String> { get set }
     var isLoginAvailable: Observable<Bool> { get set }

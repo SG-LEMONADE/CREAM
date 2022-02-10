@@ -8,7 +8,13 @@
 import Foundation
 
 struct APIEndpoints {
-
+    // MARK: - Home
+    static func loadHome() -> Endpoint<HomeResponseDTO> {
+        return Endpoint(path: "",
+                        method: .get,
+                        headerParamaters: ["Content-Type":"application/json"])
+    }
+    
     // MARK: - User
     static func confirmUser(with authRequestDTO: AuthRequestDTO) -> Endpoint<AuthResponseDTO> {
         return Endpoint(path: "users/login",
@@ -32,4 +38,34 @@ struct APIEndpoints {
                         headerParamaters: ["Content-Type":"application/json"])
     }
     
+    static func loadProducts(_ page: Int,
+                             searchWord: String?,
+                             category: String?,
+                             sort: String?) -> Endpoint<[ProductInfoResponseDTO]> {
+        var queryParameters: [String: Any] = ["cursor": page,
+                                              "perPage": 20]
+        _ = searchWord.flatMap {
+            queryParameters.updateValue($0, forKey: "keyword")
+        }
+        _ = category.flatMap {
+            queryParameters.updateValue($0, forKey: "category")
+        }
+        _ = sort.flatMap {
+            queryParameters.updateValue($0, forKey: "sort")
+        }
+        
+        return Endpoint(path: "products",
+                        method: .get,
+                        headerParamaters: ["Content-Type":"application/json"],
+                        queryParameters: queryParameters)
+    }
+    
+    static func addToWishList(id: Int, size: String) -> Endpoint<Void> {
+        let queryParameters: [String: Any] = ["id": id,
+                                              "size": size]
+        return Endpoint(path: "wish",
+                        method: .post,
+                        headerParamaters: ["Content-Type":"application/json"],
+                        queryParameters: queryParameters)
+    }
 }
