@@ -12,17 +12,31 @@ protocol SortChangeDelegate: AnyObject {
     func didChangeStandard(to standard: String)
 }
 
-class ProductListViewController: BaseDIViewController<ProductListViewModel> {
+extension ProductListViewController: UISearchBarDelegate {
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        _ = viewModel.viewDidLoad()
+    }
+    
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        guard let text = searchBar.text else {
+            return
+        }
+        
+        _ = viewModel.didSearch(with: text)
+    }
+}
 
-    private var currentBanner: Int = 0
+class ProductListViewController: BaseDIViewController<ProductListViewModel> {
+    
     enum Constraint {
         static let verticalInset: CGFloat = 20
         static let horizontalInset: CGFloat = 20
     }
-    
-    private lazy var productListView = ProductListView()
+    private var currentBanner: Int = 0
     private var selectedIndexPaths = [IndexPath]()
-    
+    private lazy var productListView = ProductListView()
+        
     weak var delegate: SortChangeDelegate?
     override init(_ viewModel: ProductListViewModel) {
         super.init(viewModel)
@@ -37,10 +51,31 @@ class ProductListViewController: BaseDIViewController<ProductListViewModel> {
         super.viewDidLoad()
         self.navigationController?.navigationBar.backgroundColor = .clear
         setupCollectionView()
+        setupSearchController()
         bindViewModel()
         productListView.indicatorView.startAnimating()
         viewModel.viewDidLoad()
         viewConfigure()
+    }
+    
+    private func setupSearchController() {
+        let searchController = UISearchController(searchResultsController: nil)
+        searchController.searchBar.delegate = self
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.placeholder = "브랜드명, 모델명, 모델번호 등"
+        searchController.searchBar.searchTextField.font = UIFont.systemFont(ofSize: 13)
+        searchController.searchBar.setValue("취소", forKey: "cancelButtonText")
+        searchController.searchBar.tintColor = .black
+        
+        self.navigationItem.searchController = searchController
+        
+        self.definesPresentationContext = true
+        
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFit
+        let image = UIImage(named: "cream_loco")
+        imageView.image = image
+        navigationItem.titleView = imageView
     }
     
     private func setupCollectionView() {
@@ -244,7 +279,8 @@ extension ProductListViewController: SortFilterFooterViewDelegate {
         let viewModel = DefaultSortViewModel()
         let sortViewController = SortViewController(viewModel)
         sortViewController.delegate = self
-        sortViewController.modalPresentationStyle = .overCurrentContext
+        
+        sortViewController.modalPresentationStyle = .overFullScreen
         self.present(sortViewController, animated: false)
     }
 }

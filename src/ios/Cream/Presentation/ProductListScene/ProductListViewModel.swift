@@ -14,6 +14,7 @@ protocol ProductListViewModelInput {
     func didScroll()
     func didTapCategory(indexPath: IndexPath)
     func didSelectSortOrder(_ sort: String)
+    func didSearch(with text: String)
 }
 
 protocol ProductListViewModelOutput {
@@ -56,27 +57,31 @@ final class DefaultListViewModel: ProductListViewModel {
     private var selectedCategory: String?
     private var cursor = 1
     private var category: String?
-    var sortStandard: SortInfo = .totalSale
+    private var searchWord: String?
     
+    var sortStandard: SortInfo = .totalSale
+    let banners: [String] = ["banner1", "banner2", "banner3", "banner4", "banner5", "banner6"]
+    let categoryFilters = FilterCategory.allCases.map { $0.description }
     var categories: [String] {
         var filters = ["필터", "럭셔리", " "]
         FilterCategory.allCases.forEach { filters.append($0.translatedString) }
         return filters
     }
     
-    let categoryFilters = FilterCategory.allCases.map { $0.description }
-    
-    let banners: [String] = ["banner1", "banner2", "banner3", "banner4", "banner5", "banner6"]
-    
+    // MARK: Init
     init(_ usecase: ProductUseCaseInterface) {
         self.usecase = usecase
     }
     
     func viewDidLoad() {
-        let _ = usecase.fetch(page: cursor, category: nil, sort: nil) { result in
+        searchWord = nil
+        let _ = usecase.fetch(page: cursor,
+                              searchWord: searchWord,
+                              category: category,
+                              sort: sortStandard.description) { result in
             switch result {
             case .success(let products):
-                self.products.value.append(contentsOf: products)
+                self.products.value = products
             case .failure(let error):
                 print(error)
             }
@@ -84,9 +89,10 @@ final class DefaultListViewModel: ProductListViewModel {
     }
     
     func didTapCategory(indexPath: IndexPath) {
-        cursor = 1
+        cursor = .one
         category = categoryFilters[indexPath.item-3]
         let _ = usecase.fetch(page: cursor,
+                              searchWord: searchWord,
                               category: category,
                               sort: sortStandard.description) { result in
             switch result {
@@ -102,9 +108,10 @@ final class DefaultListViewModel: ProductListViewModel {
         guard let standard = SortInfo(rawValue: sort)
         else { return }
         
-        cursor = 1
+        cursor = .one
         sortStandard = standard
         let _ = usecase.fetch(page: cursor,
+                              searchWord: searchWord,
                               category: category,
                               sort: sortStandard.description) { result in
             switch result {
@@ -116,9 +123,25 @@ final class DefaultListViewModel: ProductListViewModel {
         }
     }
     
+    func didSearch(with text: String) {
+        cursor = .one
+        searchWord = text
+        
+        let _ = usecase.fetch(page: cursor,
+                              searchWord: searchWord,
+                              category: category,
+                              sort: sortStandard.description) { result in
+            switch result {
+            case .success(let products):
+                self.products.value = products
+            case .failure(let error):
+                print(error)
+            }
+        }
+    }
     
     func didTapProduct(indexPath: IndexPath) {
-         
+        
     }
     
     func didScroll() {

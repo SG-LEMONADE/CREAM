@@ -17,7 +17,7 @@ protocol SortViewModelOutput {
 protocol SortViewModel: SortViewModelInput, SortViewModelOutput { }
 
 final class DefaultSortViewModel: SortViewModel {
-    private let defaultCellHeight: Double = 70.0
+    private let defaultCellHeight: Double = 60.0
     var filters: [SortInfo] = SortInfo.allCases
     
     var heightInfo: Double {

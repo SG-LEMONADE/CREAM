@@ -8,49 +8,6 @@
 import UIKit
 import SnapKit
 
-typealias Filters = [Filter]
-
-struct Filter {
-    
-}
-
-
-// MARK: - UseCase
-protocol FilterUseCaseInterface {
-    func fetch(category: String?, collections: [String: Any]?, completion: @escaping (Result<Filters, Error>) -> Void)
-}
-
-final class FilterUseCase: FilterUseCaseInterface {
-    func fetch(category: String?, collections: [String: Any]?, completion: @escaping (Result<Filters, Error>) -> Void) {
-        
-    }
-}
-
-// MARK: - ViewModel
-protocol FilterViewModelInput {
-    func viewDidLoad()
-}
-
-protocol FilterViewModelOutput {
-    var products: Observable<Products> { get set }
-}
-
-protocol FilterViewModel: FilterViewModelInput, FilterViewModelOutput { }
-
-final class DefaultFilterViewModel: FilterViewModel {
-    var products: Observable<Products> = Observable([])
-    var filter: Observable<[String]> = Observable([])
-    var usecase: FilterUseCaseInterface
-    
-    init(_ usecase: FilterUseCaseInterface) {
-        self.usecase = usecase
-    }
-    
-    func viewDidLoad() {
-        // TODO: Load FilterCases
-    }
-}
-
 class FilterViewController: BaseDIViewController<FilterViewModel> {
     private lazy var filterView = FilterView()
     
@@ -118,55 +75,5 @@ extension FilterViewController: UITableViewDataSource {
         cell.contentConfiguration = content
         
         return cell
-    }
-}
-
-final class FilterView: UIView {
-    lazy var filterTableView: UITableView = {
-        let tv = UITableView()
-        return tv
-    }()
-    
-    lazy var searchButton: UIButton = {
-        let button = UIButton()
-        button.backgroundColor = .black
-        button.contentHorizontalAlignment = .center
-        button.setTitle("결과보기", for: .normal)
-        button.layer.cornerRadius = 15
-        return button
-    }()
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        applyViewSettings()
-    }
-
-    @available(*, unavailable)
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-}
-
-extension FilterView: ViewConfiguration {
-    func buildHierarchy() {
-        addSubviews(filterTableView, searchButton)
-    }
-    
-    func setupConstraints() {
-        filterTableView.snp.makeConstraints {
-            $0.top.leading.trailing.equalToSuperview().inset(10)
-            $0.bottom.equalTo(searchButton.snp.top).offset(10)
-        }
-        
-        searchButton.snp.makeConstraints {
-            $0.height.equalTo(60)
-            $0.leading.equalTo(self.snp.leading).inset(10)
-            $0.trailing.equalTo(self.snp.trailing).inset(10)
-            $0.bottom.equalTo(self.safeAreaLayoutGuide.snp.bottom)
-        }
-    }
-    
-    func viewConfigure() {
-        backgroundColor = .white
     }
 }

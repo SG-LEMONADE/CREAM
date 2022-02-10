@@ -68,6 +68,9 @@
 		7B5EEE7927B2D36E00990E37 /* SortViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B5EEE7827B2D36D00990E37 /* SortViewController.swift */; };
 		7B5EEE7B27B2D39300990E37 /* SortView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B5EEE7A27B2D39300990E37 /* SortView.swift */; };
 		7B5EEE7D27B2D77A00990E37 /* SortViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B5EEE7C27B2D77A00990E37 /* SortViewModel.swift */; };
+		7B5EEE7F27B404FF00990E37 /* FilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B5EEE7E27B404FE00990E37 /* FilterView.swift */; };
+		7B5EEE8127B4052500990E37 /* FilterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B5EEE8027B4052500990E37 /* FilterViewModel.swift */; };
+		7B5EEE8327B4236600990E37 /* Int+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B5EEE8227B4236500990E37 /* Int+.swift */; };
 		7B8EAA78279FBBB600B07259 /* ProductRepositoryInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B8EAA77279FBBB600B07259 /* ProductRepositoryInterface.swift */; };
 		7B8EAA7F279FC38300B07259 /* BaseDIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B8EAA7E279FC38300B07259 /* BaseDIViewController.swift */; };
 		7B8EAA8627A0DB4700B07259 /* ValidationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B8EAA8527A0DB4700B07259 /* ValidationHelper.swift */; };
@@ -173,6 +176,9 @@
 		7B5EEE7827B2D36D00990E37 /* SortViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortViewController.swift; sourceTree = "<group>"; };
 		7B5EEE7A27B2D39300990E37 /* SortView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortView.swift; sourceTree = "<group>"; };
 		7B5EEE7C27B2D77A00990E37 /* SortViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortViewModel.swift; sourceTree = "<group>"; };
+		7B5EEE7E27B404FE00990E37 /* FilterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterView.swift; sourceTree = "<group>"; };
+		7B5EEE8027B4052500990E37 /* FilterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterViewModel.swift; sourceTree = "<group>"; };
+		7B5EEE8227B4236500990E37 /* Int+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+.swift"; sourceTree = "<group>"; };
 		7B8EAA77279FBBB600B07259 /* ProductRepositoryInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductRepositoryInterface.swift; sourceTree = "<group>"; };
 		7B8EAA7E279FC38300B07259 /* BaseDIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseDIViewController.swift; sourceTree = "<group>"; };
 		7B8EAA8527A0DB4700B07259 /* ValidationHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationHelper.swift; sourceTree = "<group>"; };
@@ -275,6 +281,8 @@
 				7B5EEE3C27A773AE00990E37 /* ProductListViewModel.swift */,
 				7B5EEE3A27A7713100990E37 /* ProductListView.swift */,
 				7B5EEE6427AEBCD800990E37 /* FilterViewController.swift */,
+				7B5EEE8027B4052500990E37 /* FilterViewModel.swift */,
+				7B5EEE7E27B404FE00990E37 /* FilterView.swift */,
 				7B5EEE7827B2D36D00990E37 /* SortViewController.swift */,
 				7B5EEE7C27B2D77A00990E37 /* SortViewModel.swift */,
 				7B5EEE7A27B2D39300990E37 /* SortView.swift */,
@@ -557,6 +565,7 @@
 				7B193CB2279BE1A000B934A3 /* CALayer+.swift */,
 				7B5EEE3E27A80E8B00990E37 /* String+.swift */,
 				7B5EEE5E27ACBFA300990E37 /* UITextField+.swift */,
+				7B5EEE8227B4236500990E37 /* Int+.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -747,6 +756,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7B5EEE7F27B404FF00990E37 /* FilterView.swift in Sources */,
 				7B5EEE5F27ACBFA300990E37 /* UITextField+.swift in Sources */,
 				7B8EAAA227A2414300B07259 /* DataTransferService.swift in Sources */,
 				7B8EAA8E27A1919600B07259 /* LoginViewController.swift in Sources */,
@@ -784,6 +794,7 @@
 				7B5EEE4527A8390C00990E37 /* TradeViewModel.swift in Sources */,
 				7B5EEE3727A6C6B000990E37 /* Product.swift in Sources */,
 				7B54D708279045F400214664 /* TradeButton.swift in Sources */,
+				7B5EEE8127B4052500990E37 /* FilterViewModel.swift in Sources */,
 				7B5EEE2227A58A4400990E37 /* UserUseCase.swift in Sources */,
 				7BB0110B278AE227005E5C9E /* NavigateMenuBaseController.swift in Sources */,
 				7B193CAF279A67E900B934A3 /* PageControlFooterView.swift in Sources */,
@@ -828,6 +839,7 @@
 				7BF82E0227A2CD18007E0A79 /* JoinRequestDTO+Mapping.swift in Sources */,
 				7BF82E1527A54944007E0A79 /* SizeListViewModel.swift in Sources */,
 				7B5EEE6C27B01AA600990E37 /* HomeView+CompositionalLayout.swift in Sources */,
+				7B5EEE8327B4236600990E37 /* Int+.swift in Sources */,
 				7B5EEE5027A95DCB00990E37 /* ImageLoader.swift in Sources */,
 				7BF82E0B27A38BB5007E0A79 /* UserRepository.swift in Sources */,
 				7B8EAA8A27A17C7600B07259 /* JoinView.swift in Sources */,

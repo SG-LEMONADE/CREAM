@@ -17,8 +17,12 @@ final class ProductRepository {
 
 // MARK: Product View Repository Interface
 extension ProductRepository: ProductRepositoryInterface {    
-    func requestProducts(page: Int, category: String?, sort: String?, completion: @escaping ((Result<Products, Error>) -> Void)) -> Cancellable {
-        let endpoint = APIEndpoints.loadProducts(page, category: category, sort: sort)
+    func requestProducts(page: Int,
+                         searchWord: String?,
+                         category: String?,
+                         sort: String?,
+                         completion: @escaping ((Result<Products, Error>) -> Void)) -> Cancellable {
+        let endpoint = APIEndpoints.loadProducts(page, searchWord: searchWord, category: category, sort: sort)
         
         let task = RepositoryTask()
         task.networkTask = dataTransferService.request(with: endpoint) { result in

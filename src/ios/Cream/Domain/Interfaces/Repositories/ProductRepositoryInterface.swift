@@ -9,6 +9,7 @@ import Foundation
 
 protocol ProductRepositoryInterface {
     func requestProducts(page: Int,
+                         searchWord: String?,
                          category: String?,
                          sort: String?,
                          completion: @escaping ((Result<Products, Error>) -> Void)) -> Cancellable

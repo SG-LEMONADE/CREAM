@@ -24,7 +24,7 @@ class SortView: UIView {
     }
     
     let maxDimmedAlpha: CGFloat = 0.4
-    var defaultHeight: CGFloat = UIScreen.main.bounds.size.height * 0.6
+    var defaultHeight: CGFloat = 0
     
     var containerViewHeightConstraint: NSLayoutConstraint?
     var containerViewBottomConstraint: NSLayoutConstraint?
@@ -66,7 +66,6 @@ class SortView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        applyViewSettings()
     }
     
     @available(*, unavailable)
