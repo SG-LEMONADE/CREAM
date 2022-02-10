@@ -31,7 +31,6 @@ const Product: FunctionComponent = () => {
 	);
 
 	useEffect(() => {
-		console.log("productInfo가 바뀌었습니다######");
 		if (
 			productInfo &&
 			!Object.keys(productInfo.askPrices).includes("ONE SIZE")

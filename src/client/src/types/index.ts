@@ -113,10 +113,10 @@ export interface TradeHistoryRes {
 		inProgressCnt: number;
 		finishedCnt: number;
 	};
-	trades: TradeHistory[];
+	trades: TradeHistoryItemRes[];
 }
 
-export interface TradeHistory {
+export interface TradeHistoryItemRes {
 	backgroundColor: string;
 	imageUrl: string;
 	name: string;

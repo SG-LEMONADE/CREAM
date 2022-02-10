@@ -9,7 +9,7 @@ import NavTemplate from "components/templates/NavTemplate";
 import MyPageTemplate from "components/templates/MyPageTemplate";
 import UserMemberShip from "components/organisms/UserMembership";
 import TradeHistory from "components/organisms/TradeHistory";
-import { UserInfo, TradeHistoryRes } from "types";
+import { UserInfo, TradeHistoryRes, ProductInfoRes } from "types";
 
 const MyPage: FunctionComponent = () => {
 	const { data: userData } = useSWR<UserInfo>(
@@ -27,13 +27,18 @@ const MyPage: FunctionComponent = () => {
 		fetcher,
 	);
 
+	const { data: wishProducts } = useSWR<ProductInfoRes[]>(
+		`${process.env.END_POINT_PRODUCT}/products/wishes?cursor=0&perPage=4`,
+		fetcher,
+	);
+
 	return (
 		<NavTemplate
 			headerTop={<HeaderTop />}
 			headerMain={<HeaderMain />}
 			footer={<Footer />}
 		>
-			<MyPageTemplate>
+			<MyPageTemplate wishProducts={wishProducts}>
 				{userData && (
 					<UserMemberShip
 						imgSrc={userData.profileImageUrl}
@@ -53,7 +58,7 @@ const MyPage: FunctionComponent = () => {
 				)}
 				{bidHistory && (
 					<TradeHistory
-						category="buy"
+						category="sell"
 						total={bidHistory.counter.totalCnt}
 						waiting={bidHistory.counter.waitingCnt}
 						pending={bidHistory.counter.inProgressCnt}
