@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftKeychainWrapper
 
 final class NavigateMenuBaseController: UITabBarController {
     internal enum InnerViewType: String, CustomStringConvertible, CaseIterable {
@@ -107,10 +108,13 @@ extension NavigateMenuBaseController: UITabBarControllerDelegate {
     
     
     func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
-        let isLogout = true
+
+        if let accessToken = KeychainWrapper.standard.string(forKey: "accessToken") {
+            return true
+        }
         
         if let naviVC = viewController as? UINavigationController,
-           (naviVC.viewControllers.first as? MyPageViewController != nil) && isLogout {
+           (naviVC.viewControllers.first as? MyPageViewController != nil) {
             guard let baseURL = URL(string: "http://ec2-13-125-85-156.ap-northeast-2.compute.amazonaws.com:8081")
             else { fatalError() }
         

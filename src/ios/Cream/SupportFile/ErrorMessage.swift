@@ -7,8 +7,8 @@
 
 import Foundation
 
-struct ErrorMessage: Decodable {
+public struct ErrorMessage: Decodable {
     let status: Int
-    let cod: Int
+    let code: Int
     let message: String
 }

@@ -20,6 +20,13 @@ public enum NetworkError: Error {
 extension NetworkError {
     public var isNotFoundError: Bool { return hasStatusCode(404) }
 
+    public var errorData: Data? {
+        switch self {
+        case let .error(_, data):
+            return data
+        default: return nil
+        }
+    }
     public func hasStatusCode(_ codeError: Int) -> Bool {
         switch self {
         case let .error(code, _):
@@ -70,12 +77,6 @@ public protocol NetworkSessionManager {
                  completion: @escaping CompletionHandler) -> NetworkCancellable
 }
 
-//public class MockNetworkSessionManager: NetworkSessionManager {
-//    public func request(_ request: URLRequest, completion: @escaping CompletionHandler) -> NetworkCancellable {
-//        <#code#>
-//    }
-//}
-
 public class DefaultNetworkSessionManager: NetworkSessionManager {
     public init() {}
     public func request(_ request: URLRequest,
@@ -115,7 +116,7 @@ public final class DefaultNetworkService {
             } else {
                 var error: NetworkError
                 error = .error(statusCode: response.statusCode, data: data)
-                print(String(data: data!, encoding: .utf8))
+                
                 completion(.failure(error))
             }
         }

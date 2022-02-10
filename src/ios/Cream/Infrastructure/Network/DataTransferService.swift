@@ -14,17 +14,35 @@ public enum DataTransferError: Error {
     case parsing(Error)
     case networkFailure(NetworkError)
     case resolvedNetworkFailure(Error)
+    case appInnerError(ErrorMessage)
 }
 
+extension DataTransferError {
+    var errorMessage: ErrorMessage? {
+        switch self {
+        case .appInnerError(let message):
+            return message
+        default:
+            return nil
+        }
+    }
+}
 /// Request에서 error응답을 받은 경우의 처리하는 protocol
 public protocol DataTransferErrorResolver {
     func resolve(error: NetworkError) -> Error
+    func decode(error: NetworkError) -> ErrorMessage?
 }
 
 public class DefaultDataTransferErrorResolver: DataTransferErrorResolver {
     public init() { }
     public func resolve(error: NetworkError) -> Error {
         return error
+    }
+    public func decode(error: NetworkError) -> ErrorMessage? {
+        guard let data = error.errorData
+        else { return nil }
+        
+        return try? JSONResponseDecoder().decode(data) as ErrorMessage?
     }
 }
 
@@ -43,7 +61,7 @@ public class JSONResponseDecoder: ResponseDecoder {
 
 public class RawDataResponseDecoder: ResponseDecoder {
     public init() { }
-
+    
     enum CodingKeys: String, CodingKey {
         case `default` = ""
     }
@@ -63,7 +81,7 @@ public protocol DataTransferErrorLogger {
 
 public final class DefaultDataTransferErrorLogger: DataTransferErrorLogger {
     public init() { }
-
+    
     public func log(error: Error) {
         printIfDebug("-------------")
         printIfDebug("\(error)")
@@ -74,7 +92,7 @@ public final class DefaultDataTransferErrorLogger: DataTransferErrorLogger {
 
 public protocol DataTransferService {
     typealias CompletionHandler<T> = (Result<T, DataTransferError>) -> Void
-
+    
     @discardableResult
     func request<T: Decodable, E: ResponseRequestable>(with endpoint: E,
                                                        completion: @escaping CompletionHandler<T>) -> NetworkCancellable? where E.Response == T
@@ -84,11 +102,11 @@ public protocol DataTransferService {
 }
 
 public final class DefaultDataTransferService {
-
+    
     private let networkService: NetworkService
     private let errorResolver: DataTransferErrorResolver
     private let errorLogger: DataTransferErrorLogger
-
+    
     public init(with networkService: NetworkService,
                 errorResolver: DataTransferErrorResolver = DefaultDataTransferErrorResolver(),
                 errorLogger: DataTransferErrorLogger = DefaultDataTransferErrorLogger()) {
@@ -114,7 +132,7 @@ extension DefaultDataTransferService: DataTransferService {
             }
         }
     }
-
+    
     public func request<E>(with endpoint: E, completion: @escaping CompletionHandler<Void>) -> NetworkCancellable? where E : ResponseRequestable, E.Response == Void {
         return self.networkService.request(endpoint: endpoint) { result in
             switch result {
@@ -127,7 +145,7 @@ extension DefaultDataTransferService: DataTransferService {
             }
         }
     }
-
+    
     // MARK: - Private
     private func decode<T: Decodable>(data: Data?, decoder: ResponseDecoder) -> Result<T, DataTransferError> {
         do {
@@ -139,10 +157,14 @@ extension DefaultDataTransferService: DataTransferService {
             return .failure(.parsing(error))
         }
     }
-
+    
     private func resolve(networkError error: NetworkError) -> DataTransferError {
-        let resolvedError = self.errorResolver.resolve(error: error)
-        return resolvedError is NetworkError ? .networkFailure(error) : .resolvedNetworkFailure(resolvedError)
+        guard let message = self.errorResolver.decode(error: error)
+        else {
+            let resolvedError = self.errorResolver.resolve(error: error)
+            return resolvedError is NetworkError ? .networkFailure(error) : .resolvedNetworkFailure(resolvedError)
+        }
+        return .appInnerError(message)
     }
 }
 

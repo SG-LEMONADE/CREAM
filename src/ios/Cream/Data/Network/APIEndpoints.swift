@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftKeychainWrapper
 
 struct APIEndpoints {
     // MARK: - Home
@@ -28,6 +29,35 @@ struct APIEndpoints {
                         method: .post,
                         headerParamaters: ["Content-Type":"application/json"],
                         bodyParamatersEncodable: joinRequestDTO)
+    }
+    
+    static func verifyToken() -> Endpoint<Void> {
+        var headerParameters: [String: String] = ["Content-Type":"application/json"]
+        
+        _ = KeychainWrapper.standard.string(forKey: "accessToken")
+            .map { "Bearer-\($0)" }
+            .flatMap { headerParameters.updateValue($0, forKey: "Authorization") }
+        
+        return Endpoint(path: "users/validate",
+                        method: .post,
+                        headerParamaters: headerParameters)
+    }
+    
+    static func reissueToken() -> Endpoint<AuthResponseDTO> {
+        var bodyParameters: [String: Any] = [:]
+        
+        _ = KeychainWrapper.standard.string(forKey: "accessToken")
+            .map { "Bearer-\($0)" }
+            .flatMap { bodyParameters.updateValue($0, forKey: "accessToken") }
+        
+        _ = KeychainWrapper.standard.string(forKey: "refreshToken")
+            .map { "Bearer-\($0)" }
+            .flatMap { bodyParameters.updateValue($0, forKey: "refresgToken") }
+        
+        return Endpoint(path: "users/refresh",
+                        method: .post,
+                        headerParamaters: ["Content-Type":"application/json"],
+                        bodyParamaters: bodyParameters)
     }
     
     // MARK: - Product

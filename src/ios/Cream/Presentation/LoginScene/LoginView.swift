@@ -57,7 +57,7 @@ class LoginView: UIView {
         let passwordField = BindingTextField()
         passwordField.placeholder = ViewMessage.passwordPlaceholder.description
         passwordField.font?.withSize(15)
-
+        
         return passwordField
     }()
     
@@ -126,11 +126,18 @@ class LoginView: UIView {
         return stackView
     }()
     
+    lazy var indicatorView: UIActivityIndicatorView = {
+        let indicator = UIActivityIndicatorView()
+        indicator.color = .systemGray
+        indicator.hidesWhenStopped = true
+        return indicator
+    }()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         applyViewSettings()
     }
-
+    
     @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -141,14 +148,15 @@ class LoginView: UIView {
 extension LoginView: ViewConfiguration {
     func buildHierarchy() {
         addSubviews(loginImageView,
-                         emailLabel,
-                         emailTextField,
-                         emailErrorLabel,
-                         passwordLabel,
-                         passwordTextField,
-                         passwordErrorLabel,
-                         loginButton,
-                         userStackView)
+                    emailLabel,
+                    emailTextField,
+                    emailErrorLabel,
+                    passwordLabel,
+                    passwordTextField,
+                    passwordErrorLabel,
+                    loginButton,
+                    userStackView,
+                    indicatorView)
         
         userStackView.addArrangedSubviews(joinButton,
                                           findIDButton,
@@ -224,6 +232,10 @@ extension LoginView: ViewConfiguration {
         joinButton.snp.makeConstraints {
             $0.width.equalTo(findIDButton.snp.width)
             $0.width.equalTo(findPasswordButton.snp.width)
+        }
+        
+        indicatorView.snp.makeConstraints {
+            $0.center.equalTo(self.snp.center)
         }
     }
     

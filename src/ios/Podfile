@@ -9,5 +9,6 @@ target 'Cream' do
   pod 'Charts'
   pod 'ChartsRealm'
   pod 'SwiftKeychainWrapper'
+  pod 'Toast-Swift', '~> 5.0.1'
 
 end

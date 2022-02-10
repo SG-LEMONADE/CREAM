@@ -15,4 +15,7 @@ protocol UserRepositoryInterface {
              password: String,
              shoesize: Int,
              completion: @escaping (Result<User, Error>) -> Void) -> Cancellable
+    
+    func verifyToken(completion: @escaping (Result<Void, Error>) -> Void) -> Cancellable
+    func reissueToken(completion: @escaping (Result<Auth, Error>) -> Void) -> Cancellable
 }

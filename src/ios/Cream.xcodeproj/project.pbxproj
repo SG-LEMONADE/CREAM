@@ -71,6 +71,7 @@
 		7B5EEE7F27B404FF00990E37 /* FilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B5EEE7E27B404FE00990E37 /* FilterView.swift */; };
 		7B5EEE8127B4052500990E37 /* FilterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B5EEE8027B4052500990E37 /* FilterViewModel.swift */; };
 		7B5EEE8327B4236600990E37 /* Int+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B5EEE8227B4236500990E37 /* Int+.swift */; };
+		7B5EEE8527B55E8000990E37 /* Integrator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B5EEE8427B55E7F00990E37 /* Integrator.swift */; };
 		7B8EAA78279FBBB600B07259 /* ProductRepositoryInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B8EAA77279FBBB600B07259 /* ProductRepositoryInterface.swift */; };
 		7B8EAA7F279FC38300B07259 /* BaseDIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B8EAA7E279FC38300B07259 /* BaseDIViewController.swift */; };
 		7B8EAA8627A0DB4700B07259 /* ValidationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B8EAA8527A0DB4700B07259 /* ValidationHelper.swift */; };
@@ -179,6 +180,7 @@
 		7B5EEE7E27B404FE00990E37 /* FilterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterView.swift; sourceTree = "<group>"; };
 		7B5EEE8027B4052500990E37 /* FilterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterViewModel.swift; sourceTree = "<group>"; };
 		7B5EEE8227B4236500990E37 /* Int+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+.swift"; sourceTree = "<group>"; };
+		7B5EEE8427B55E7F00990E37 /* Integrator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Integrator.swift; sourceTree = "<group>"; };
 		7B8EAA77279FBBB600B07259 /* ProductRepositoryInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductRepositoryInterface.swift; sourceTree = "<group>"; };
 		7B8EAA7E279FC38300B07259 /* BaseDIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseDIViewController.swift; sourceTree = "<group>"; };
 		7B8EAA8527A0DB4700B07259 /* ValidationHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationHelper.swift; sourceTree = "<group>"; };
@@ -515,6 +517,7 @@
 			children = (
 				7B36DB0D2789202800D8ACB0 /* AppDelegate.swift */,
 				7B36DB0F2789202800D8ACB0 /* SceneDelegate.swift */,
+				7B5EEE8427B55E7F00990E37 /* Integrator.swift */,
 			);
 			path = Application;
 			sourceTree = "<group>";
@@ -534,8 +537,8 @@
 			children = (
 				7B5EEE7527B2065D00990E37 /* Views */,
 				7B193C8E2796EC1500B934A3 /* Protocol */,
-				7BB0110A278AE227005E5C9E /* NavigateMenuBaseController.swift */,
 				7B8EAA7E279FC38300B07259 /* BaseDIViewController.swift */,
+				7BB0110A278AE227005E5C9E /* NavigateMenuBaseController.swift */,
 			);
 			path = Base;
 			sourceTree = "<group>";
@@ -792,6 +795,7 @@
 				7B8EAA9227A191AA00B07259 /* LoginView.swift in Sources */,
 				7B193C8D2796B6A900B934A3 /* ShopBannerCell.swift in Sources */,
 				7B5EEE4527A8390C00990E37 /* TradeViewModel.swift in Sources */,
+				7B5EEE8527B55E8000990E37 /* Integrator.swift in Sources */,
 				7B5EEE3727A6C6B000990E37 /* Product.swift in Sources */,
 				7B54D708279045F400214664 /* TradeButton.swift in Sources */,
 				7B5EEE8127B4052500990E37 /* FilterViewModel.swift in Sources */,

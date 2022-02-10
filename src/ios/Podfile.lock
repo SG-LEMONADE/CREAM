@@ -11,11 +11,13 @@ PODS:
   - RealmSwift (3.18.0):
     - Realm (= 3.18.0)
   - SwiftKeychainWrapper (4.0.1)
+  - Toast-Swift (5.0.1)
 
 DEPENDENCIES:
   - Charts
   - ChartsRealm
   - SwiftKeychainWrapper
+  - Toast-Swift (~> 5.0.1)
 
 SPEC REPOS:
   trunk:
@@ -24,6 +26,7 @@ SPEC REPOS:
     - Realm
     - RealmSwift
     - SwiftKeychainWrapper
+    - Toast-Swift
 
 SPEC CHECKSUMS:
   Charts: 74c9f256eaf0460c0c416522d1cf8c634ea6b286
@@ -31,7 +34,8 @@ SPEC CHECKSUMS:
   Realm: 7b3d04740facf45e958a514b466a32b04f1113d6
   RealmSwift: c817b5f374668cf08f649afb05f55d92a787649c
   SwiftKeychainWrapper: 807ba1d63c33a7d0613288512399cd1eda1e470c
+  Toast-Swift: 9b6a70f28b3bf0b96c40d46c0c4b9d6639846711
 
-PODFILE CHECKSUM: 3f570a2be2e20e7516828dcb0a7f556906fbe346
+PODFILE CHECKSUM: 85f4bd919f2a77d48924e8e3c9a6d323b398a234
 
 COCOAPODS: 1.11.2

@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import SwiftKeychainWrapper
+import Toast_Swift
 
 final class LoginViewController: BaseDIViewController<LoginViewModel> {
     
@@ -16,7 +18,7 @@ final class LoginViewController: BaseDIViewController<LoginViewModel> {
     }
     
     override func loadView() {
-        self.view = loginView
+        view = loginView
     }
     
     override func viewDidLoad() {
@@ -27,6 +29,7 @@ final class LoginViewController: BaseDIViewController<LoginViewModel> {
         bindViewModel()
         configureActions()
         setupNavigationBarItem()
+        setupTextField()
     }
     
     func bindViewModel() {
@@ -38,7 +41,7 @@ final class LoginViewController: BaseDIViewController<LoginViewModel> {
             self?.viewModel.validatePassword(password)
         }
         
-        self.viewModel.emailMessage.bind { [weak self] message in
+        viewModel.emailMessage.bind { [weak self] message in
             self?.loginView.emailErrorLabel.text = message
             self?.loginView.emailErrorLabel.isHidden = false
             if ValidationHelper.State(rawValue: message) == .valid {
@@ -50,7 +53,7 @@ final class LoginViewController: BaseDIViewController<LoginViewModel> {
             }
         }
         
-        self.viewModel.passwordMessage.bind { [weak self] message in
+        viewModel.passwordMessage.bind { [weak self] message in
             self?.loginView.passwordErrorLabel.text = message
             self?.loginView.passwordErrorLabel.isHidden = false
             if ValidationHelper.State(rawValue: message) == .valid {
@@ -82,6 +85,11 @@ final class LoginViewController: BaseDIViewController<LoginViewModel> {
         loginView.findPasswordButton.addTarget(self, action: #selector(didTapFindPasswordButton), for: .touchUpInside)
     }
     
+    private func setupTextField() {
+        loginView.emailTextField.delegate = self
+        loginView.passwordTextField.delegate = self
+    }
+    
     private func setupNavigationBarItem() {
         let navigationItem = UIBarButtonItem(image: UIImage(systemName: "xmark"),
                                              style: .plain,
@@ -94,20 +102,37 @@ final class LoginViewController: BaseDIViewController<LoginViewModel> {
     
     @objc
     func closeUserModal() {
-        self.dismiss(animated: true, completion: nil)
+        dismiss(animated: true, completion: nil)
     }
 }
 
 extension LoginViewController {
     @objc
     private func didTapLoginButton() {
+        loginView.indicatorView.startAnimating()
         guard let email = loginView.emailTextField.text,
               let password = loginView.passwordTextField.text else {
                   return
               }
-        print("\(email) \(password)")
+        
         self.viewModel.confirmUser(email: email, password: password) { result in
-            print("Hi")
+            DispatchQueue.main.async { [weak self] in
+                self?.loginView.indicatorView.stopAnimating()
+            }
+            switch result {
+            case .success(_):
+                self.dismiss(animated: true, completion: nil)
+            case .failure(let error):
+                if error == .userNotAccepted {
+                    DispatchQueue.main.async { [weak self] in
+                        self?.view.makeToast("이메일 또는 비밀번호를 확인해주세요.", duration: 1.5, position: .top)
+                    }
+                } else if error == .networkUnconnected {
+                    DispatchQueue.main.async { [weak self] in
+                        self?.view.makeToast("서버 문제로 로그인에 실패했습니다.", duration: 1.5, position: .top)
+                    }
+                }
+            }
         }
     }
     
@@ -123,7 +148,7 @@ extension LoginViewController {
         let usecase: UserUseCaseInterface = UserUseCase(repository)
         let viewModel: JoinViewModel = DefaultJoinViewModel(usecase: usecase)
         let nextVC = JoinViewController(viewModel)
-        self.navigationController?.pushViewController(nextVC, animated: true)
+        navigationController?.pushViewController(nextVC, animated: true)
     }
     
     @objc
@@ -138,7 +163,7 @@ extension LoginViewController {
         let usecase: UserUseCaseInterface = UserUseCase(repository)
         let viewModel: JoinViewModel = DefaultJoinViewModel(usecase: usecase)
         let nextVC = JoinViewController(viewModel)
-        self.navigationController?.pushViewController(nextVC, animated: true)
+        navigationController?.pushViewController(nextVC, animated: true)
     }
     
     @objc
@@ -156,15 +181,23 @@ extension LoginViewController {
         self.navigationController?.pushViewController(nextVC, animated: true)
     }
     
-    
-    
     @objc
     func keyboardWillShow(_ sender: Notification) {
-        self.view.frame.origin.y = -150
+        view.frame.origin.y = -150
     }
     
     @objc
     func keyboardWillHide(_ sender: Notification) {
-        self.view.frame.origin.y = 0
+        view.frame.origin.y = 0
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        view.endEditing(true)
+    }
+}
+
+extension LoginViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
     }
 }
