@@ -10,7 +10,7 @@ const MyPageSidebar: FunctionComponent = () => {
 	const router = useRouter();
 
 	const [activatedMenu] = useState<string>(
-		router.pathname.length > 4 ? router.pathname.slice(4) : "",
+		router && router.pathname.length > 4 ? router.pathname.slice(4) : "",
 	);
 
 	return (

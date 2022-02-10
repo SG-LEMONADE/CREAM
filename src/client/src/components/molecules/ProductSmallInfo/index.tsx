@@ -63,6 +63,7 @@ const ProductInfoArea = styled.div`
 	flex-direction: column;
 	justify-content: center;
 	flex: 1;
+	max-width: 80%;
 `;
 
 const StlyledSize = styled.p`
@@ -80,7 +81,7 @@ const StyledSpan = styled.span`
 `;
 
 const StyledProductName = styled.p`
-	white-space: normal;
+	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	line-height: 18px;

@@ -22,9 +22,11 @@ const Knob: FunctionComponent<KnobProps> = (props) => {
 			<StyledPriceWrapper>
 				<StyledSpan>
 					<StyledPrice>
-						{price === null ? `- 원` : `${price.toLocaleString()}원`}
+						{price === null ? `-` : `${price.toLocaleString()}원`}
 					</StyledPrice>
-					<StyledDesc>즉시판매가</StyledDesc>
+					<StyledDesc>
+						{category === "buy" ? `즉시 구매가` : `즉시 판매가`}
+					</StyledDesc>
 				</StyledSpan>
 			</StyledPriceWrapper>
 		</StyledKnobWrapper>
@@ -46,7 +48,7 @@ const StyledKnobWrapper = styled.a<{ category: string }>`
 		category === "buy" ? "#ef6153" : "#41b979"};
 	text-decoration: none;
 	height: 60px;
-	min-width: 150px;
+	min-width: 170px;
 `;
 
 const Divider = styled.div`
