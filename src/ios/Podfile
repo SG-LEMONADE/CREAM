@@ -8,5 +8,6 @@ target 'Cream' do
   # Pods for Cream
   pod 'Charts'
   pod 'ChartsRealm'
+  pod 'SwiftKeychainWrapper'
 
 end

@@ -10,10 +10,12 @@ PODS:
   - Realm/Headers (3.18.0)
   - RealmSwift (3.18.0):
     - Realm (= 3.18.0)
+  - SwiftKeychainWrapper (4.0.1)
 
 DEPENDENCIES:
   - Charts
   - ChartsRealm
+  - SwiftKeychainWrapper
 
 SPEC REPOS:
   trunk:
@@ -21,13 +23,15 @@ SPEC REPOS:
     - ChartsRealm
     - Realm
     - RealmSwift
+    - SwiftKeychainWrapper
 
 SPEC CHECKSUMS:
   Charts: 74c9f256eaf0460c0c416522d1cf8c634ea6b286
   ChartsRealm: 2ae8bf478211a94b3b6dd20738db0b9b132eb66b
   Realm: 7b3d04740facf45e958a514b466a32b04f1113d6
   RealmSwift: c817b5f374668cf08f649afb05f55d92a787649c
+  SwiftKeychainWrapper: 807ba1d63c33a7d0613288512399cd1eda1e470c
 
-PODFILE CHECKSUM: 9ac1758c2d28af1697b103a8713902adf9a26b3d
+PODFILE CHECKSUM: 3f570a2be2e20e7516828dcb0a7f556906fbe346
 
 COCOAPODS: 1.11.2
