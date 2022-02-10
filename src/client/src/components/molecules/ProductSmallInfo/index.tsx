@@ -41,6 +41,7 @@ export default ProductSmallInfo;
 const ProductArea = styled.div`
 	padding-right: 40px;
 	display: flex;
+	align-items: center;
 `;
 
 const ProductThumb = styled.div<{ backgroundColor: string }>`

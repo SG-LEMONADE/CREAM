@@ -8,7 +8,7 @@ type TradeHistoryItemProps = {
 	backgroundColor: string;
 	productName: string;
 	size: string;
-	status: string;
+	status?: string;
 	wishedPrice?: number;
 	expiredDate?: string;
 };
@@ -53,10 +53,7 @@ const TradeHistoryItem: FunctionComponent<TradeHistoryItemProps> = (props) => {
 				)}
 				{expiredDate && (
 					<StatusBlock>
-						<StautsText>{`${expiredDate.slice(0, 4)} / ${expiredDate.slice(
-							4,
-							6,
-						)} / ${expiredDate.slice(6)}`}</StautsText>
+						<StautsText>{expiredDate.slice(0, 10)}</StautsText>
 					</StatusBlock>
 				)}
 			</HistoryStatusArea>
@@ -76,6 +73,7 @@ const TradeHistoryItemItemWrapper = styled.div`
 const HistoryProductArea = styled.div`
 	display: flex;
 	cursor: pointer;
+	max-width: 80%;
 `;
 
 const HistoryStatusArea = styled.div`
