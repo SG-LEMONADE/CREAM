@@ -74,7 +74,7 @@ class UserController {
         return ResponseEntity.ok(userService.logOut(token))
     }
 
-    @PutMapping("/{id}")
+    @PatchMapping("/{id}")
     fun update(
         @PathVariable id: Long,
         @RequestBody updatedUser: UpdateUserDTO

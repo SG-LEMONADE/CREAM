@@ -9,7 +9,7 @@ data class ResponseUserDTO(
     val email: String,
     val name: String?,
     val address: String?,
-    val gender: Boolean?,
+    val gender: String?,
     val age: Int?,
     val shoeSize: Int,
     val profileImageUrl: String?,

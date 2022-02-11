@@ -128,17 +128,14 @@ class UserService {
     ): ResponseUserDTO {
         val user = userRepository.findById(userId).orElseThrow()
 
-        if (!passwordEncoder.matches(user.password, userUpdateDTO.password)) {
+        if (userUpdateDTO.password != null && !passwordEncoder.matches(user.password, userUpdateDTO.password)) {
+            user.password = passwordEncoder.encode(userUpdateDTO.password)
             user.passwordChangedDatetime = LocalDateTime.now()
         }
-        user.email = userUpdateDTO.email
-        user.password = passwordEncoder.encode(userUpdateDTO.password)
-        user.name = userUpdateDTO.name
-        user.address = userUpdateDTO.address
-        user.shoeSize = userUpdateDTO.shoeSize
-        user.age = userUpdateDTO.age
-        user.gender = userUpdateDTO.gender
-        user.profileImageUrl = userUpdateDTO.profileImageUrl
+        if (userUpdateDTO.address != null) user.address = userUpdateDTO.address
+        if (userUpdateDTO.shoeSize != null) user.shoeSize = userUpdateDTO.shoeSize
+        if (userUpdateDTO.profileImageUrl != null) user.profileImageUrl = userUpdateDTO.profileImageUrl
+
         user.updatedAt = LocalDateTime.now()
         return ResponseUserDTO(userRepository.save(user))
     }
