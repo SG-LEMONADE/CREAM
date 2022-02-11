@@ -201,6 +201,8 @@ class ProductRepositoryImpl :
             .where(wishEntity.userId.eq(userId))
             .groupBy(wishEntity.size, wishEntity.product.id)
             .orderBy(OrderSpecifier(Order.DESC, wishEntity.id.min()))
+            .offset(offset)
+            .limit(limit)
             .fetch()
     }
 
