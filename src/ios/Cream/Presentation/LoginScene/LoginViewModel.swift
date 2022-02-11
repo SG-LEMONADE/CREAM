@@ -71,8 +71,8 @@ final class DefaultLoginViewModel: LoginViewModel {
         let _ = usecase.confirm(userEmail: email, userPassword: password) { result in
             switch result {
             case .success(let user):
-                KeychainWrapper.standard.set(user.accessToken, forKey: "accessToken")
-                KeychainWrapper.standard.set(user.refreshToken, forKey: "refreshToken")
+                KeychainWrapper.standard.set(user.accessToken, forKey: KeychainWrapper.Key.accessToken)
+                KeychainWrapper.standard.set(user.refreshToken, forKey: KeychainWrapper.Key.refreshToken)
                 completion(.success(true))
             case .failure(let error):
                 guard let error = error as? DataTransferError,

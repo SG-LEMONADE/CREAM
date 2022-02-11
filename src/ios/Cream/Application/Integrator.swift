@@ -20,10 +20,8 @@ class Integrator: NSObject {
     
     private override init() {
         super.init()
-        
         integrators = [authIntegrator]
     }
-    
 }
 
 extension Integrator: Integratorable {
@@ -31,7 +29,6 @@ extension Integrator: Integratorable {
         integrators.forEach { $0.didFinishLaunching(withOptions: launchOptions) }
     }
 }
-
 
 class AuthIntegrator: Integratorable {
     private let usecase: UserUseCaseInterface = AuthIntegrator.configureAuthInfoTransferService()
@@ -55,11 +52,11 @@ class AuthIntegrator: Integratorable {
         usecase.reissuanceToken { result in
             switch result {
             case .success(let auth):
-                KeychainWrapper.standard.set(auth.accessToken, forKey: "accessToken")
-                KeychainWrapper.standard.set(auth.refreshToken, forKey: "refreshToken")
+                KeychainWrapper.standard.set(auth.accessToken, forKey: KeychainWrapper.Key.accessToken)
+                KeychainWrapper.standard.set(auth.refreshToken, forKey: KeychainWrapper.Key.refreshToken)
             case .failure(_):
-                KeychainWrapper.standard.remove(forKey: "accessToken")
-                KeychainWrapper.standard.remove(forKey: "refreshToken")
+                KeychainWrapper.standard.removeObject(forKey: "accessToken")
+                KeychainWrapper.standard.removeObject(forKey: "refreshToken")
             }
         }
     }
@@ -67,7 +64,7 @@ class AuthIntegrator: Integratorable {
     private static func configureAuthInfoTransferService() -> UserUseCaseInterface {
         guard let baseURL = URL(string: "http://ec2-13-125-85-156.ap-northeast-2.compute.amazonaws.com:8081")
         else { fatalError() }
-    
+        
         let config: NetworkConfigurable = ApiDataNetworkConfig(baseURL: baseURL)
         let networkService: NetworkService = DefaultNetworkService(config: config)
         let dataTransferService: DataTransferService = DefaultDataTransferService(with: networkService)

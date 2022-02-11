@@ -97,7 +97,6 @@ final class LoginViewController: BaseDIViewController<LoginViewModel> {
                                              action: #selector(closeUserModal))
         navigationItem.tintColor = .black
         self.navigationItem.rightBarButtonItem = navigationItem
-        
     }
     
     @objc

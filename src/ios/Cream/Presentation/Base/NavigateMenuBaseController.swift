@@ -66,9 +66,13 @@ final class NavigateMenuBaseController: UITabBarController {
                 let usecase: ProductUseCaseInterface = ProductUseCase(repository)
                 let viewModel: ProductListViewModel = DefaultListViewModel(usecase)
                 let listViewController = ProductListViewController(viewModel)
+                
                 return listViewController
             case .my:
-                return MyPageViewController()
+                let viewModel: MyPageViewModel = DefaultMyPageViewModel()
+                let mypageViewController = MyPageViewController(viewModel)
+                
+                return mypageViewController
             }
         }
     }
@@ -83,6 +87,7 @@ final class NavigateMenuBaseController: UITabBarController {
     
     private func setupTabBarColor() {
         tabBar.barTintColor = .white
+        tabBar.tintColor = .black
         tabBar.isTranslucent = false
     }
     
@@ -109,7 +114,7 @@ extension NavigateMenuBaseController: UITabBarControllerDelegate {
     
     func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
 
-        if let accessToken = KeychainWrapper.standard.string(forKey: "accessToken") {
+        if let accessToken = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.accessToken) {
             return true
         }
         

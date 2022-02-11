@@ -103,9 +103,10 @@ extension SortViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell()
         var content = cell.defaultContentConfiguration()
+        content.textProperties.color = .black
         content.text = viewModel.filters[indexPath.row].translatedString
         cell.contentConfiguration = content
-        
+        print(viewModel.filters[indexPath.row])
         return cell
     }
 }

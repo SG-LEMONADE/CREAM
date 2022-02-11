@@ -71,7 +71,7 @@ enum TradeType: String, CustomStringConvertible {
     
     var color: UIColor {
         if self == .buy {
-            return UIColor(rgb: 0xEF6253)
+            return UIColor(rgb: 0xEF6253) 
         } else {
             return UIColor(rgb: 0x41B979)
         }

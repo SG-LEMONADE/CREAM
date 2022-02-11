@@ -34,9 +34,11 @@ struct APIEndpoints {
     static func verifyToken() -> Endpoint<Void> {
         var headerParameters: [String: String] = ["Content-Type":"application/json"]
         
-        _ = KeychainWrapper.standard.string(forKey: "accessToken")
+        _ = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.accessToken)
             .map { "Bearer-\($0)" }
-            .flatMap { headerParameters.updateValue($0, forKey: "Authorization") }
+            .flatMap {
+                headerParameters.updateValue($0, forKey: "Authorization")
+            }
         
         return Endpoint(path: "users/validate",
                         method: .post,
@@ -46,13 +48,17 @@ struct APIEndpoints {
     static func reissueToken() -> Endpoint<AuthResponseDTO> {
         var bodyParameters: [String: Any] = [:]
         
-        _ = KeychainWrapper.standard.string(forKey: "accessToken")
-            .map { "Bearer-\($0)" }
-            .flatMap { bodyParameters.updateValue($0, forKey: "accessToken") }
+        _ = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.accessToken)
+            .map { "Bearer-\($0)"}
+            .flatMap {
+                bodyParameters.updateValue($0, forKey: KeychainWrapper.Key.accessToken)
+            }
         
-        _ = KeychainWrapper.standard.string(forKey: "refreshToken")
+        _ = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.refreshToken)
             .map { "Bearer-\($0)" }
-            .flatMap { bodyParameters.updateValue($0, forKey: "refresgToken") }
+            .flatMap {
+                bodyParameters.updateValue($0, forKey: KeychainWrapper.Key.refreshToken)
+            }
         
         return Endpoint(path: "users/refresh",
                         method: .post,
