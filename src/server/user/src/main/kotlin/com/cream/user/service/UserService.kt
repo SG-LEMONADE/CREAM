@@ -128,7 +128,9 @@ class UserService {
     ): ResponseUserDTO {
         val user = userRepository.findById(userId).orElseThrow()
 
-        if (userUpdateDTO.password != null && !passwordEncoder.matches(user.password, userUpdateDTO.password)) {
+        if (userUpdateDTO.password != null) {
+            if (passwordEncoder.matches(user.password, userUpdateDTO.password))
+                throw UserCustomException(ErrorCode.USER_NEW_PASSWORD_SAME_AS_OLD)
             user.password = passwordEncoder.encode(userUpdateDTO.password)
             user.passwordChangedDatetime = LocalDateTime.now()
         }
