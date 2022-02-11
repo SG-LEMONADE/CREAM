@@ -7,12 +7,12 @@ import ProductInfo from "components/molecules/ProductInfo";
 import PriceThumbnail from "components/atoms/PriceThumbnail";
 import Icon from "components/atoms/Icon";
 
-import { HomeProductInfoRes, ProductInfoRes } from "types";
+import { HomeProductInfoRes, ProductInfoRes, WishProductsRes } from "types";
 import styled from "@emotion/styled";
 
 type ProductThumbnailProps = {
 	category: "home" | "shop" | "product";
-	productInfo: ProductInfoRes | HomeProductInfoRes;
+	productInfo: ProductInfoRes | (HomeProductInfoRes & WishProductsRes);
 	isWishState?: boolean;
 	onHandleWishClick?: (
 		selectedProduct?: ProductInfoRes | HomeProductInfoRes,

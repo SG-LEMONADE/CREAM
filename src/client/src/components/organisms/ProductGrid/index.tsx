@@ -3,12 +3,12 @@ import Link from "next/link";
 
 import ProductThumbnail from "components/organisms/ProductThumbnail";
 import Icon from "components/atoms/Icon";
-import { ProductInfoRes } from "types";
+import { ProductInfoRes, WishProductsRes } from "types";
 
 import styled from "@emotion/styled";
 
 type ProductGridProps = {
-	products?: ProductInfoRes[];
+	products?: ProductInfoRes[] | WishProductsRes[];
 };
 
 const ProductGrid: FunctionComponent<ProductGridProps> = (props) => {
@@ -33,7 +33,7 @@ const ProductGrid: FunctionComponent<ProductGridProps> = (props) => {
 					products.length > 0 &&
 					products.map((product) => (
 						<ProductThumbnail
-							key={product.id}
+							key={`${product.id}/${product.size}`}
 							category="product"
 							productInfo={product}
 						/>

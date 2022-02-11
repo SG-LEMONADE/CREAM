@@ -1,7 +1,13 @@
-import React, { FunctionComponent, useCallback, useState } from "react";
+import React, {
+	FunctionComponent,
+	useCallback,
+	useContext,
+	useState,
+} from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import axios from "axios";
+import UserContext from "context/user";
 
 import Logo from "components/atoms/Logo";
 import Input from "components/atoms/Input";
@@ -13,6 +19,8 @@ import styled from "@emotion/styled";
 
 const LoginForm: FunctionComponent = () => {
 	const router = useRouter();
+
+	const { setUser } = useContext(UserContext);
 
 	const [email, setEmail] = useState<string>("");
 	const [password, setPassword] = useState<string>("");
@@ -45,6 +53,7 @@ const LoginForm: FunctionComponent = () => {
 			const data = await res.data;
 			setToken("accessToken", data.accessToken);
 			setToken("refreshToken", data.refreshToken);
+			setUser({ id: data.userId });
 			router.back();
 		} catch (err) {
 			const errResponse = err.response.data;

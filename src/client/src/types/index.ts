@@ -20,6 +20,16 @@ export interface ProductInfoRes {
 	premiumPrice: null;
 }
 
+export interface WishProductsRes {
+	backgroundColor: string;
+	brandName: string;
+	id: number;
+	imageUrls: string[];
+	lowestAsk: number;
+	originalName: string;
+	size: string;
+}
+
 export interface HomeProductInfoRes {
 	backgroundColor: string;
 	brandName: string;
@@ -74,6 +84,11 @@ export interface ProductRes {
 	relatedProducts: ProductInfoRes[];
 }
 
+export interface GetProductWishRes {
+	count: number;
+	products: WishProductsRes[];
+}
+
 export interface ShortcutItemRes {
 	link: string;
 	bigImg: string;
@@ -85,7 +100,7 @@ export interface UserInfo {
 	id: number;
 	email: string;
 	name: null | string;
-	adress: null | string;
+	address: null | string;
 	gender: null | string;
 	age: null | number;
 	shoeSize: number;
@@ -109,7 +124,7 @@ export interface TradeHistoryRes {
 
 export interface TradeHistoryItemRes {
 	backgroundColor: string;
-	imageUrl: string;
+	imageUrl: string[];
 	name: string;
 	size: string;
 	tradeStatus: string;
