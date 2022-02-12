@@ -12,6 +12,11 @@ type ProductSizeSelectProps = {
 	onClick?: (size: string) => void;
 };
 
+const text = {
+	buy: "구매",
+	sell: "판매",
+};
+
 const ProductSizeSelect: FunctionComponent<ProductSizeSelectProps> = (
 	props,
 ) => {
@@ -31,7 +36,7 @@ const ProductSizeSelect: FunctionComponent<ProductSizeSelectProps> = (
 							{price !== null ? (
 								`${price.toLocaleString()}원`
 							) : (
-								<NonPrice>구매 입찰</NonPrice>
+								<NonPrice>{`${text[category]}`} 입찰</NonPrice>
 							)}
 						</PriceSpan>
 					)}
