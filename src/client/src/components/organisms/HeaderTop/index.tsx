@@ -1,27 +1,42 @@
 import React, {
 	FunctionComponent,
 	useCallback,
+	useContext,
 	useEffect,
 	useState,
 } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import axios from "axios";
+import useSWR from "swr";
 
-import { validateUser } from "utils/user";
 import HeaderTopItem from "components/atoms/HeaderTopItem";
-import Swal from "sweetalert2";
-
-import styled from "@emotion/styled";
-import colors from "colors/color";
+import { UserInfo } from "types";
+import { fetcherWithToken } from "lib/fetcher";
 import { getToken } from "utils/token";
+import colors from "colors/color";
+import UserContext from "context/user";
+
+import Swal from "sweetalert2";
+import styled from "@emotion/styled";
 
 const HeaderTop: FunctionComponent = () => {
 	const router = useRouter();
 
+	const { setUser } = useContext(UserContext);
+
+	const { data: myInfo } = useSWR<UserInfo>(
+		`${process.env.END_POINT_USER}/users/me`,
+		fetcherWithToken,
+		{
+			focusThrottleInterval: 60000,
+			errorRetryInterval: 60000,
+		},
+	);
+
 	const [islogin, setIsLogin] = useState<boolean>(false);
 
-	const onLogout = async () => {
+	const onLogout = useCallback(async () => {
 		const token = getToken("accessToken");
 		try {
 			const res = await axios.post(
@@ -50,26 +65,16 @@ const HeaderTop: FunctionComponent = () => {
 			console.log(e.response);
 		}
 		router.push("/");
-	};
-
-	const getCurrentUser = useCallback(async () => {
-		try {
-			const res = await validateUser();
-			if (res) {
-				// Got current user well.
-				setIsLogin(true);
-			} else {
-				setIsLogin(false);
-			}
-			// will add userContext
-		} catch (e) {
-			setIsLogin(false);
-		}
 	}, []);
 
 	useEffect(() => {
-		getCurrentUser();
-	}, [getCurrentUser]);
+		if (myInfo) {
+			setIsLogin(true);
+			setUser({ id: myInfo.id });
+		} else {
+			setIsLogin(false);
+		}
+	}, [myInfo]);
 
 	return (
 		<HeaderTopWrapper>

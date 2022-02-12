@@ -30,10 +30,15 @@ const TradeDetail: FunctionComponent<TradeDetailProps> = (props) => {
 				filter={filter}
 				onClick={onClick}
 			/>
+			<StyledBar>
+				<StyledTextLeft>제품</StyledTextLeft>
+				<StyledText>만료일</StyledText>
+			</StyledBar>
 			{items.length > 0 ? (
 				items.map((item) => (
 					<TradeHistoryItem
-						imgSrc={item.imageUrl}
+						key={item.imageUrl[0]}
+						imgSrc={item.imageUrl[0]}
 						backgroundColor={item.backgroundColor}
 						productName={item.name}
 						size={item.size}
@@ -54,6 +59,36 @@ const TradeDetail: FunctionComponent<TradeDetailProps> = (props) => {
 export default TradeDetail;
 
 const TradeDetailWrapper = styled.section``;
+
+const StyledBar = styled.div`
+	display: flex;
+	padding: 10px;
+	align-items: center;
+	justify-content: space-between;
+	border-bottom: 1px solid #ebebeb;
+`;
+
+const StyledTextLeft = styled.p`
+	margin: 0;
+	padding: 0;
+	position: relative;
+	display: inline-block;
+	font-size: 13px;
+	letter-spacing: -0.07px;
+	line-height: 24px;
+	padding-left: 5vw;
+`;
+
+const StyledText = styled.p`
+	margin: 0;
+	padding: 0;
+	position: relative;
+	padding-right: 16px;
+	display: inline-block;
+	font-size: 13px;
+	letter-spacing: -0.07px;
+	line-height: 24px;
+`;
 
 export const StyledH3 = styled.h3`
 	line-height: 29px;

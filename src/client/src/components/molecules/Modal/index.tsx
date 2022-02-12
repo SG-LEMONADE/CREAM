@@ -35,16 +35,18 @@ const Modal: FunctionComponent<ModalProps> = (props) => {
 			<StyledModal category={category} onClick={(e) => e.stopPropagation()}>
 				<StyledModalHeader>
 					{title && <StyledModalTitle>{title}</StyledModalTitle>}
-					<Icon
-						name="Close"
-						style={{
-							position: "absolute",
-							width: "24px",
-							height: "24px",
-							cursor: "pointer",
-						}}
-						onClick={onHandleCloseClick}
-					/>
+					{title && (
+						<Icon
+							name="Close"
+							style={{
+								position: "absolute",
+								width: "24px",
+								height: "24px",
+								cursor: "pointer",
+							}}
+							onClick={onHandleCloseClick}
+						/>
+					)}
 				</StyledModalHeader>
 				<StyledModalBody category={category}>{children}</StyledModalBody>
 				{category === "wish" && (

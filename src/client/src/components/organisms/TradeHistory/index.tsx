@@ -52,7 +52,8 @@ const TradeHistory: FunctionComponent<TradeHistoryProps> = (props) => {
 				{items.length > 0 ? (
 					items.map((item) => (
 						<TradeHistoryItem
-							imgSrc={item.imageUrl}
+							key={item.imageUrl[0]}
+							imgSrc={item.imageUrl[0]}
 							backgroundColor={item.backgroundColor}
 							productName={item.name}
 							size={item.size}
@@ -71,7 +72,10 @@ const TradeHistory: FunctionComponent<TradeHistoryProps> = (props) => {
 
 export default TradeHistory;
 
-const TradeHistoryWrapper = styled.section``;
+const TradeHistoryWrapper = styled.section`
+	margin-top: 60px;
+	padding-bottom: 30px;
+`;
 
 const TradeHistoryTitle = styled.div`
 	margin-top: 42px;

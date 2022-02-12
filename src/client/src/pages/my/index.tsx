@@ -9,7 +9,7 @@ import NavTemplate from "components/templates/NavTemplate";
 import MyPageTemplate from "components/templates/MyPageTemplate";
 import UserMemberShip from "components/organisms/UserMembership";
 import TradeHistory from "components/organisms/TradeHistory";
-import { UserInfo, TradeHistoryRes, ProductInfoRes } from "types";
+import { UserInfo, TradeHistoryRes, GetProductWishRes } from "types";
 import ProductGrid from "components/organisms/ProductGrid";
 
 const MyPage: FunctionComponent = () => {
@@ -28,7 +28,7 @@ const MyPage: FunctionComponent = () => {
 		fetcher,
 	);
 
-	const { data: wishProducts } = useSWR<ProductInfoRes[]>(
+	const { data: wishProducts } = useSWR<GetProductWishRes>(
 		`${process.env.END_POINT_PRODUCT}/products/wishes?cursor=0&perPage=4`,
 		fetcher,
 	);
@@ -47,7 +47,7 @@ const MyPage: FunctionComponent = () => {
 						userEmail={userData.email}
 					/>
 				)}
-				{/* FIX ME {askHistory && (
+				{askHistory && (
 					<TradeHistory
 						category="buy"
 						total={askHistory.counter.totalCnt}
@@ -56,7 +56,7 @@ const MyPage: FunctionComponent = () => {
 						over={askHistory.counter.finishedCnt}
 						items={askHistory.trades}
 					/>
-				)} */}
+				)}
 				{bidHistory && (
 					<TradeHistory
 						category="sell"
@@ -67,7 +67,7 @@ const MyPage: FunctionComponent = () => {
 						items={bidHistory.trades}
 					/>
 				)}
-				{wishProducts && <ProductGrid products={wishProducts} />}
+				{wishProducts && <ProductGrid products={wishProducts.products} />}
 			</MyPageTemplate>
 		</NavTemplate>
 	);

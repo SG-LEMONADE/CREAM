@@ -80,6 +80,7 @@ const StyledP = styled.p`
 	letter-spacing: -0.06px;
 	color: rgba(34, 34, 34, 0.8);
 	text-decoration: underline;
+	cursor: pointer;
 `;
 
 export const StyledTitle = styled.div`

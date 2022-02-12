@@ -34,9 +34,7 @@ const MyTradeBuying: FunctionComponent = () => {
 						finished={TradeInfo.counter.finishedCnt}
 						filter={filter}
 						onClick={setFilter}
-						// FIX ME
-						// items={TradeInfo.trades}
-						items={[]}
+						items={TradeInfo.trades}
 					/>
 				)}
 			</MyPageTemplate>

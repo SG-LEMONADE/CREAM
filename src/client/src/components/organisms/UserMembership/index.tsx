@@ -15,7 +15,12 @@ const UserMemberShip: FunctionComponent<UserMemberShipProps> = (props) => {
 	return (
 		<UserMemberShipWrapper>
 			<UserDetailWrapper>
-				<UserDetail imgSrc={imgSrc} userName={userName} userEmail={userEmail} />
+				<UserDetail
+					category="get"
+					imgSrc={imgSrc}
+					userName={userName}
+					userEmail={userEmail}
+				/>
 			</UserDetailWrapper>
 			<MemberShipDetailWrapper>
 				<StyledA>

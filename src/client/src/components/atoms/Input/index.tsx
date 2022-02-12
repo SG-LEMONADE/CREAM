@@ -23,6 +23,7 @@ const placeholders = {
 	phone: "가입하신 휴대폰 번호",
 	sneakers: "선택하세요",
 	search: "브랜드명, 모델명, 모델번호 등",
+	name: "고객님의 이름",
 };
 
 const Input: FunctionComponent<InputProps> = (props) => {

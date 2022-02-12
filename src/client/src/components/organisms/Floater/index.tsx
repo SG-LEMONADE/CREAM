@@ -35,7 +35,6 @@ const Floater: FunctionComponent<FloaterProps> = (props) => {
 	} = props;
 
 	const onClickWish = () => {
-		// FIX ME - api call will be added.
 		onClick();
 	};
 

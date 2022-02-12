@@ -12,10 +12,11 @@ import ProductWish, {
 	StyledH3,
 } from "components/organisms/ProductWish";
 import { fetcher } from "lib/fetcher";
-import { ProductInfoRes } from "types";
+import { GetProductWishRes } from "types";
+import Swal from "sweetalert2";
 
 const MyTradeBuying: FunctionComponent = () => {
-	const { data: wishProducts, mutate } = useSWR<ProductInfoRes[]>(
+	const { data: wishProducts, mutate } = useSWR<GetProductWishRes>(
 		`${process.env.END_POINT_PRODUCT}/products/wishes?cursor=0&perPage=10`,
 		fetcher,
 	);
@@ -38,6 +39,13 @@ const MyTradeBuying: FunctionComponent = () => {
 				);
 			} else {
 				mutate();
+				Swal.fire({
+					position: "top",
+					icon: "success",
+					html: `삭제되었습니다.`,
+					showConfirmButton: false,
+					timer: 2000,
+				});
 			}
 		} catch (e) {
 			console.error(e);
@@ -56,17 +64,16 @@ const MyTradeBuying: FunctionComponent = () => {
 					<StyledH3>관심 상품</StyledH3>
 				</StyledTitle>
 				{wishProducts &&
-					wishProducts.map((product) => (
+					wishProducts.products.map((product) => (
 						<ProductWish
-							key={product.id}
+							key={`${product.id}/${product.size}`}
 							id={product.id}
 							lowestAsk={product.lowestAsk}
 							imgSrc={product.imageUrls[0]}
 							backgroundColor={product.backgroundColor}
 							productName={product.originalName}
-							// FIX ME
-							size={product.wishList !== null && product.wishList[0]}
-							onDeleteWish={() => onDeleteWish(product.id, product.wishList[0])}
+							size={product.size}
+							onDeleteWish={() => onDeleteWish(product.id, product.size)}
 						/>
 					))}
 			</MyPageTemplate>
