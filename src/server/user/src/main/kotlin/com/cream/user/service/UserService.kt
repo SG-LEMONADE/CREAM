@@ -81,14 +81,9 @@ class UserService {
         tokenDTO: TokenDTO
     ): TokenDTO {
         // 둘다 Bearer 앞에 와야합니다.
-        val accessToken: String = tokenDTO.accessToken
         val refreshToken: String = tokenDTO.refreshToken
 
         val userId = tokenProvider.validateAndGetUserId(refreshToken)
-        if (tokenProvider.validateAndGetUserId(accessToken) != userId) {
-            // 엑세스 토큰과 리프레시 토큰이 다른 사람일때
-            throw UserCustomException(ErrorCode.REFRESH_TOKEN_NOT_VALID)
-        }
 
         val stringValueOperation = redisTemplate.opsForValue()
         val storedToken: String? = stringValueOperation.get("refresh-$userId")
@@ -120,7 +115,6 @@ class UserService {
 
         redisTemplate.delete(email)
     }
-
 
     fun update(
         userId: Long,
