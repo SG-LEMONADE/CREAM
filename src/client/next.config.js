@@ -5,8 +5,7 @@ module.exports = withImages({
 		domains: ["kream-phinf.pstatic.net"],
 	},
 	env: {
-		END_POINT_USER:
-			"http://ec2-13-125-85-156.ap-northeast-2.compute.amazonaws.com:8081",
+		END_POINT_USER: "http://1.231.16.189:8080",
 		END_POINT_PRODUCT: "http://1.231.16.189:8081",
 		ERROR_code: {
 			"-18": "중복된 이메일입니다!",
