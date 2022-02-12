@@ -6,82 +6,11 @@
 //
 
 import UIKit
-import SwiftKeychainWrapper
-
-protocol SettingViewModelInput {
-    func didTapLogoutButton(completion: @escaping (Result<Void, Error>) -> Void)
-}
-protocol SettingViewModelOutput {
-    var numberOfSections: Int { get }
-    var sectionTitles: [String] { get set }
-    var sectionInfo: [[String]] { get set }
-}
-protocol SettingViewModel: SettingViewModelInput, SettingViewModelOutput { }
-
-final class DefaultSettingViewModel: SettingViewModel {
-    var sectionTitles: [String] = ["일반", "정보"]
-    var sectionInfo: [[String]] = [["로그인 정보", "주소록"], ["로그아웃"]]
-    let usecase: UserUseCaseInterface
-    
-    init(_ usecase: UserUseCaseInterface) {
-        self.usecase = usecase
-    }
-    var numberOfSections: Int {
-        return 2
-    }
-    
-    func didTapLogoutButton(completion: @escaping (Result<Void, Error>) -> Void) {
-        usecase.removeToken { result in
-            switch result {
-            case .success(let void):
-                KeychainWrapper.standard.removeObject(forKey: KeychainWrapper.Key.accessToken)
-                KeychainWrapper.standard.removeObject(forKey: KeychainWrapper.Key.refreshToken)
-                completion(.success(void))
-            case .failure(let error):
-                completion(.failure(error))
-            }
-        }
-    }
-}
-
-class SettingView: UIView {
-    lazy var settingTableView: UITableView = {
-        let tableView = UITableView(frame: .zero, style: .grouped)
-        return tableView
-    }()
-    
-    // MARK: Init
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        applyViewSettings()
-    }
-
-    @available(*, unavailable)
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-}
-
-extension SettingView: ViewConfiguration {
-    func buildHierarchy() {
-        addSubviews(settingTableView)
-    }
-    
-    func setupConstraints() {
-        settingTableView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
-        }
-    }
-    func viewConfigure() {
-        settingTableView.backgroundColor = .white
-    }
-}
-
 
 class SettingViewController: BaseDIViewController<SettingViewModel> {
-    
     private lazy var settingView = SettingView()
     
+    // MARK: View Life Cycle
     override func loadView() {
         self.view = settingView
     }
@@ -98,7 +27,7 @@ class SettingViewController: BaseDIViewController<SettingViewModel> {
     }
     
     func setupNavigationBarItem() {
-        self.title = "설정"
+        title = "설정"
         let navigationItem = UIBarButtonItem(image: UIImage(systemName: "chevron.backward"),
                                              style: .plain,
                                              target: self,
@@ -109,7 +38,7 @@ class SettingViewController: BaseDIViewController<SettingViewModel> {
     
     @objc
     func popToPrevViewController() {
-        self.navigationController?.popViewController(animated: true)
+        navigationController?.popViewController(animated: true)
     }
 }
 
@@ -143,10 +72,12 @@ extension SettingViewController: UITableViewDelegate {
         tableView.deselectRow(at: indexPath, animated: true)
         
         if indexPath.section == .one {
-            let actionSheetViewController = UIAlertController(title: "로그아웃 하시겠습니까?", message: nil, preferredStyle: .actionSheet)
-            
-            actionSheetViewController.addAction(.init(title: "로그아웃", style: .destructive, handler: { [weak self] _ in
-                
+            let actionSheetViewController = UIAlertController(title: "로그아웃 하시겠습니까?",
+                                                              message: nil,
+                                                              preferredStyle: .actionSheet)
+            actionSheetViewController.addAction(.init(title: "로그아웃",
+                                                      style: .destructive,
+                                                      handler: { [weak self] _ in
                 self?.viewModel.didTapLogoutButton { [weak self] result in
                     switch result {
                     case .success(_):

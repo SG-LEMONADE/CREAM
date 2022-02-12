@@ -82,6 +82,8 @@
 		7B5EEE9627B768F200990E37 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B5EEE9527B768F100990E37 /* SettingViewController.swift */; };
 		7B5EEE9827B7BEFA00990E37 /* ErrorList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B5EEE9727B7BEF900990E37 /* ErrorList.swift */; };
 		7B5EEE9C27B7DCCF00990E37 /* UICollectionView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B5EEE9B27B7DCCF00990E37 /* UICollectionView+.swift */; };
+		7B5EEE9E27B7E45B00990E37 /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B5EEE9D27B7E45B00990E37 /* SettingView.swift */; };
+		7B5EEEA027B7E48100990E37 /* SettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B5EEE9F27B7E48100990E37 /* SettingViewModel.swift */; };
 		7B8EAA78279FBBB600B07259 /* ProductRepositoryInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B8EAA77279FBBB600B07259 /* ProductRepositoryInterface.swift */; };
 		7B8EAA7F279FC38300B07259 /* BaseDIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B8EAA7E279FC38300B07259 /* BaseDIViewController.swift */; };
 		7B8EAA8627A0DB4700B07259 /* ValidationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B8EAA8527A0DB4700B07259 /* ValidationHelper.swift */; };
@@ -201,6 +203,8 @@
 		7B5EEE9527B768F100990E37 /* SettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
 		7B5EEE9727B7BEF900990E37 /* ErrorList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorList.swift; sourceTree = "<group>"; };
 		7B5EEE9B27B7DCCF00990E37 /* UICollectionView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionView+.swift"; sourceTree = "<group>"; };
+		7B5EEE9D27B7E45B00990E37 /* SettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
+		7B5EEE9F27B7E48100990E37 /* SettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewModel.swift; sourceTree = "<group>"; };
 		7B8EAA77279FBBB600B07259 /* ProductRepositoryInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductRepositoryInterface.swift; sourceTree = "<group>"; };
 		7B8EAA7E279FC38300B07259 /* BaseDIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseDIViewController.swift; sourceTree = "<group>"; };
 		7B8EAA8527A0DB4700B07259 /* ValidationHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationHelper.swift; sourceTree = "<group>"; };
@@ -333,6 +337,8 @@
 				7B5EEE8627B561FA00990E37 /* MyPageViewModel.swift */,
 				7B5EEE8827B5620400990E37 /* MyPageView.swift */,
 				7B5EEE9527B768F100990E37 /* SettingViewController.swift */,
+				7B5EEE9F27B7E48100990E37 /* SettingViewModel.swift */,
+				7B5EEE9D27B7E45B00990E37 /* SettingView.swift */,
 			);
 			path = MyPageScene;
 			sourceTree = "<group>";
@@ -854,6 +860,7 @@
 				7B8EAA8627A0DB4700B07259 /* ValidationHelper.swift in Sources */,
 				7B193CAB2799B3D900B934A3 /* SizeButton.swift in Sources */,
 				7B5EEE3F27A80E8B00990E37 /* String+.swift in Sources */,
+				7B5EEEA027B7E48100990E37 /* SettingViewModel.swift in Sources */,
 				7B5EEE3927A770AA00990E37 /* ProductListViewController.swift in Sources */,
 				7B8EAA7F279FC38300B07259 /* BaseDIViewController.swift in Sources */,
 				7B5EEE7927B2D36E00990E37 /* SortViewController.swift in Sources */,
@@ -863,6 +870,7 @@
 				7B5EEE7227B10CD800990E37 /* HomeRepositoryInterface.swift in Sources */,
 				7BB01117278BCA54005E5C9E /* Observable.swift in Sources */,
 				7B8EAA9C27A240F900B07259 /* NetworkConfigurable.swift in Sources */,
+				7B5EEE9E27B7E45B00990E37 /* SettingView.swift in Sources */,
 				7B5EEE7D27B2D77A00990E37 /* SortViewModel.swift in Sources */,
 				7BB01115278BC6D1005E5C9E /* BindingTextField.swift in Sources */,
 				7B5EEE5627A9A0B000990E37 /* TradePriceView.swift in Sources */,

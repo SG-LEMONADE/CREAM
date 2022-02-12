@@ -6,13 +6,12 @@
 //
 
 import UIKit
-import SnapKit
 import Toast_Swift
 
 class MyPageViewController: BaseDIViewController<MyPageViewModel> {
-    
     private lazy var myPageView = MyPageView()
     
+    // MARK: View Life Cycle
     override func loadView() {
         self.view = myPageView
     }
