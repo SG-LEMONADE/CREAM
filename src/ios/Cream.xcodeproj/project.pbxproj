@@ -84,6 +84,7 @@
 		7B5EEE9C27B7DCCF00990E37 /* UICollectionView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B5EEE9B27B7DCCF00990E37 /* UICollectionView+.swift */; };
 		7B5EEE9E27B7E45B00990E37 /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B5EEE9D27B7E45B00990E37 /* SettingView.swift */; };
 		7B5EEEA027B7E48100990E37 /* SettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B5EEE9F27B7E48100990E37 /* SettingViewModel.swift */; };
+		7B5EEEA227B8013200990E37 /* FilterResponseDTO+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B5EEEA127B8013200990E37 /* FilterResponseDTO+Mapping.swift */; };
 		7B8EAA78279FBBB600B07259 /* ProductRepositoryInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B8EAA77279FBBB600B07259 /* ProductRepositoryInterface.swift */; };
 		7B8EAA7F279FC38300B07259 /* BaseDIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B8EAA7E279FC38300B07259 /* BaseDIViewController.swift */; };
 		7B8EAA8627A0DB4700B07259 /* ValidationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B8EAA8527A0DB4700B07259 /* ValidationHelper.swift */; };
@@ -205,6 +206,7 @@
 		7B5EEE9B27B7DCCF00990E37 /* UICollectionView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionView+.swift"; sourceTree = "<group>"; };
 		7B5EEE9D27B7E45B00990E37 /* SettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
 		7B5EEE9F27B7E48100990E37 /* SettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewModel.swift; sourceTree = "<group>"; };
+		7B5EEEA127B8013200990E37 /* FilterResponseDTO+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FilterResponseDTO+Mapping.swift"; sourceTree = "<group>"; };
 		7B8EAA77279FBBB600B07259 /* ProductRepositoryInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductRepositoryInterface.swift; sourceTree = "<group>"; };
 		7B8EAA7E279FC38300B07259 /* BaseDIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseDIViewController.swift; sourceTree = "<group>"; };
 		7B8EAA8527A0DB4700B07259 /* ValidationHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationHelper.swift; sourceTree = "<group>"; };
@@ -537,6 +539,7 @@
 				7BF82E0327A2CD2B007E0A79 /* JoinResponseDTO+Mapping.swift */,
 				7B5EEE2E27A69ADA00990E37 /* ProductResponseDTO+Mapping.swift */,
 				7B5EEE6F27B0F25500990E37 /* HomeResponseDTO+Mapping.swift */,
+				7B5EEEA127B8013200990E37 /* FilterResponseDTO+Mapping.swift */,
 			);
 			path = DataMapping;
 			sourceTree = "<group>";
@@ -825,6 +828,7 @@
 				7B5EEE4927A83A6900990E37 /* ProductView+CompositionalLayout.swift in Sources */,
 				7B5EEE5D27ABDC9B00990E37 /* ProcessViewController.swift in Sources */,
 				7BF82E0E27A3CCB9007E0A79 /* Cancellable.swift in Sources */,
+				7B5EEEA227B8013200990E37 /* FilterResponseDTO+Mapping.swift in Sources */,
 				7B5EEE3327A6B01900990E37 /* ProductUseCase.swift in Sources */,
 				7B8EAA9027A191A300B07259 /* LoginViewModel.swift in Sources */,
 				7B8EAAAD27A25FC300B07259 /* AuthRequestDTO+Mapping.swift in Sources */,

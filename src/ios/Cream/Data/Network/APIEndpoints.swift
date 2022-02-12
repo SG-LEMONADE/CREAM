@@ -9,14 +9,14 @@ import Foundation
 import SwiftKeychainWrapper
 
 struct APIEndpoints {
-    // MARK: - Home
+    // MARK: - Home API
     static func loadHome() -> Endpoint<HomeResponseDTO> {
         return Endpoint(path: "",
                         method: .get,
                         headerParamaters: ["Content-Type":"application/json"])
     }
     
-    // MARK: - User
+    // MARK: - User API
     static func confirmUser(with authRequestDTO: AuthRequestDTO) -> Endpoint<AuthResponseDTO> {
         return Endpoint(path: "users/login",
                         method: .post,
@@ -80,7 +80,7 @@ struct APIEndpoints {
                         bodyParamaters: bodyParameters)
     }
     
-    // MARK: - Product
+    // MARK: - Product API
     static func loadProduct(_ id: Int) -> Endpoint<ProductResponseDTO> {
         // TODO: AccessToken이 있다면, header에 해당 값 넣기
         return Endpoint(path: "products/\(id)",

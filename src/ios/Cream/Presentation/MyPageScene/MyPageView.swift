@@ -7,7 +7,7 @@
 
 import UIKit
 
-class MyPageView: UIView {
+final class MyPageView: UIView {
     lazy var userTableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .grouped)
         return tableView

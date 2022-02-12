@@ -7,6 +7,7 @@
 
 import Foundation
 
+// MARK: - JoinRequestDTO
 struct JoinRequestDTO: Encodable {
     let email: String
     let password: String

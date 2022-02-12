@@ -7,6 +7,7 @@
 
 import Foundation
 
+// MARK: - JoinResponseDTO
 struct JoinResponseDTO: Decodable {
     let email: String
     let name: String?
