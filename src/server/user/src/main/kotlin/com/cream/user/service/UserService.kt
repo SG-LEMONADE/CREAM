@@ -131,6 +131,7 @@ class UserService {
         if (userUpdateDTO.address != null) user.address = userUpdateDTO.address
         if (userUpdateDTO.shoeSize != null) user.shoeSize = userUpdateDTO.shoeSize
         if (userUpdateDTO.profileImageUrl != null) user.profileImageUrl = userUpdateDTO.profileImageUrl
+        if (userUpdateDTO.name != null) user.name = userUpdateDTO.name
 
         user.updatedAt = LocalDateTime.now()
         return ResponseUserDTO(userRepository.save(user))
