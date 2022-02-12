@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ProductListView: UIView {
+final class ProductListView: UIView {
     
     lazy var indicatorView: UIActivityIndicatorView = {
         let indicator = UIActivityIndicatorView()

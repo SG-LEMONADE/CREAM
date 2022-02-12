@@ -34,9 +34,9 @@ final class ProductListItemCell: UICollectionViewCell {
         applyViewSettings()
     }
     
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        applyViewSettings()
+        fatalError("init(coder:) has not been implemented")
     }
     
     override func prepareForReuse() {
@@ -52,6 +52,7 @@ final class ProductListItemCell: UICollectionViewCell {
     }
 }
 
+// MARK: - ViewConfiguration
 extension ProductListItemCell: ViewConfiguration {
     func buildHierarchy() {
         self.addSubviews(itemView,
@@ -71,7 +72,7 @@ extension ProductListItemCell: ViewConfiguration {
     }
 }
 
-// MARK: Cell Configure
+// MARK: - Cell Configure
 extension ProductListItemCell {
     func configure(_ viewModel: Product) {
         self.itemView.tradeLabel.text = viewModel.totalSaleText
@@ -95,7 +96,6 @@ extension ProductListItemCell {
 
 extension ProductListItemCell {
     func loadImage(url: URL, completion: @escaping (UIImage?) -> Void) -> URLSessionDataTask {
-        
         let task = URLSession.shared.dataTask(with: url) { data, _, _ in
             guard let data = data
             else { return }

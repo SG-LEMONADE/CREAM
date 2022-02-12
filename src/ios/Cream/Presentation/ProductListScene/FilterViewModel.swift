@@ -20,8 +20,6 @@ final class FilterUseCase: FilterUseCaseInterface {
     func fetch(category: String?, collections: [String: Any]?, completion: @escaping (Result<Filters, Error>) -> Void) {
         
     }
-    
-    
 }
 
 // MARK: - ViewModel

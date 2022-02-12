@@ -12,50 +12,32 @@ protocol SortChangeDelegate: AnyObject {
     func didChangeStandard(to standard: String)
 }
 
-extension ProductListViewController: UISearchBarDelegate {
-    
-    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        _ = viewModel.viewDidLoad()
-    }
-    
-    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-        guard let text = searchBar.text else {
-            return
-        }
-        
-        _ = viewModel.didSearch(with: text)
-    }
-}
-
-class ProductListViewController: BaseDIViewController<ProductListViewModel> {
-    
+final class ProductListViewController: BaseDIViewController<ProductListViewModel> {
     enum Constraint {
         static let verticalInset: CGFloat = 20
         static let horizontalInset: CGFloat = 20
     }
+    
     private var currentBanner: Int = 0
     private var selectedIndexPaths = [IndexPath]()
     private lazy var productListView = ProductListView()
         
     weak var delegate: SortChangeDelegate?
-    override init(_ viewModel: ProductListViewModel) {
-        super.init(viewModel)
-    }
     
     // MARK: View Life Cycle
     override func loadView() {
-        self.view = productListView
+        view = productListView
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationController?.navigationBar.backgroundColor = .clear
         setupCollectionView()
         setupSearchController()
+        setupNavigationBarItem()
         bindViewModel()
         productListView.indicatorView.startAnimating()
         viewModel.viewDidLoad()
-        viewConfigure()
+        
     }
     
     private func setupSearchController() {
@@ -67,9 +49,8 @@ class ProductListViewController: BaseDIViewController<ProductListViewModel> {
         searchController.searchBar.setValue("취소", forKey: "cancelButtonText")
         searchController.searchBar.tintColor = .black
         
-        self.navigationItem.searchController = searchController
-        
-        self.definesPresentationContext = true
+        navigationItem.searchController = searchController
+        definesPresentationContext = true
         
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
@@ -96,13 +77,14 @@ class ProductListViewController: BaseDIViewController<ProductListViewModel> {
                                     withReuseIdentifier: SortFilterFooterView.reuseIdentifier)
     }
     
-    func viewConfigure() {
+    private func setupNavigationBarItem() {
         let backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)
         backBarButtonItem.tintColor = .systemGray
-        self.navigationItem.backBarButtonItem = backBarButtonItem
+        navigationItem.backBarButtonItem = backBarButtonItem
+        navigationController?.navigationBar.backgroundColor = .clear
     }
     
-    func bindViewModel() {
+    private func bindViewModel() {
         self.viewModel.products.bind { [weak self] _ in
             DispatchQueue.main.async {
                 guard let self = self
@@ -111,7 +93,6 @@ class ProductListViewController: BaseDIViewController<ProductListViewModel> {
                 self.productListView.shopCollectionView.reloadSections(.init(integer: 1))
                 self.delegate?.didChangeStandard(to: self.viewModel.sortStandard.description)
                 self.productListView.indicatorView.stopAnimating()
-                
             }
         }
     }
@@ -208,6 +189,19 @@ extension ProductListViewController: UICollectionViewDelegate {
     }
 }
 
+extension ProductListViewController: UISearchBarDelegate {
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        _ = viewModel.viewDidLoad()
+    }
+    
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        guard let text = searchBar.text else {
+            return
+        }
+        _ = viewModel.didSearch(with: text)
+    }
+}
+
 extension ProductListViewController: ShopViewFilterHeaderViewDelegate {
     func setupSizeForItemAt(_ collectionView: UICollectionView,
                             layout collectionViewLayout: UICollectionViewLayout,
@@ -288,7 +282,7 @@ extension ProductListViewController: SortFilterFooterViewDelegate {
         sortViewController.delegate = self
         
         sortViewController.modalPresentationStyle = .overFullScreen
-        self.present(sortViewController, animated: false)
+        present(sortViewController, animated: false)
     }
 }
 

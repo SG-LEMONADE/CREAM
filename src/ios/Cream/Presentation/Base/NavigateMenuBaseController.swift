@@ -13,7 +13,7 @@ final class NavigateMenuBaseController: UITabBarController {
         case home, shop, my
         
         var description: String {
-            self.rawValue
+            rawValue
         }
         
         var symbol: String {
@@ -28,7 +28,7 @@ final class NavigateMenuBaseController: UITabBarController {
         }
         
         var title: String {
-            self.description.uppercased()
+            description.uppercased()
         }
         
         var image: UIImage? {
@@ -98,13 +98,13 @@ final class NavigateMenuBaseController: UITabBarController {
             rootNavigationViewController.tabBarItem = configureTabBarItem(config: tab)
             tabBarViewControllers.append(rootNavigationViewController)
         }
-        self.viewControllers = tabBarViewControllers
+        viewControllers = tabBarViewControllers
     }
 }
 
 extension NavigateMenuBaseController: UITabBarControllerDelegate {
     private func configureDelegate() {
-        self.delegate = self
+        delegate = self
     }
     
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
@@ -114,7 +114,6 @@ extension NavigateMenuBaseController: UITabBarControllerDelegate {
     
     
     func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
-
         if let accessToken = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.accessToken) {
             return true
         }

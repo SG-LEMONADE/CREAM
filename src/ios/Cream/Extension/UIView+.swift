@@ -7,7 +7,7 @@
 
 import UIKit
 
-// MARK: Add Subviews with translatesAutoresizingMaskIntoConstraints=false
+// MARK: - Add Subviews with translatesAutoresizingMaskIntoConstraints=false
 extension UIView {
     func addSubviews(_ views: UIView...) {
         views.forEach {
@@ -17,7 +17,7 @@ extension UIView {
     }
 }
 
-// MARK: Add Shadow to UIView
+// MARK: - Add Shadow to UIView
 extension UIView {
     enum VerticalLocation {
         case bottom

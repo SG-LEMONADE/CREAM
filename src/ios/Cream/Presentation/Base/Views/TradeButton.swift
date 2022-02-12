@@ -106,13 +106,14 @@ final class TradeButton: UIButton {
         applyViewSettings()
     }
     
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
-        fatalError()
+        fatalError("init(coder:) has not been implemented")
     }
     
     private lazy var typeLabel: UILabel = {
         let label = UILabel()
-        label.text = self.tradeType.description
+        label.text = tradeType.description
         label.textColor = .white
         return label
     }()
@@ -122,10 +123,10 @@ final class TradeButton: UIButton {
         label.font = UIFont.systemFont(ofSize: 13, weight: .bold)
         label.textAlignment = .left
         label.textColor = .white
-        if let price = self.price {
+        if let price = price {
             label.text = "\(price)원"
         } else {
-            label.text = "\(self.tradeType.description) 입찰"
+            label.text = "\(tradeType.description) 입찰"
         }
         
         return label
@@ -134,7 +135,7 @@ final class TradeButton: UIButton {
     private lazy var detailLabel: UILabel = {
         let label = UILabel()
         label.textColor = UIColor(rgb: 0xfce1e0)
-        label.text = self.tradeType.labelText
+        label.text = tradeType.labelText
         label.font = UIFont.systemFont(ofSize: 13)
         label.textAlignment = .left
         
@@ -154,7 +155,7 @@ final class TradeButton: UIButton {
 
 extension TradeButton: ViewConfiguration {
     func buildHierarchy() {
-        self.addSubviews(typeLabel, infoStackView)
+        addSubviews(typeLabel, infoStackView)
     }
     
     func setupConstraints() {
@@ -173,14 +174,14 @@ extension TradeButton: ViewConfiguration {
     }
     
     func viewConfigure() {
-        self.backgroundColor = self.tradeType.color
-        self.layer.cornerRadius = 10
+        backgroundColor = tradeType.color
+        layer.cornerRadius = 10
     }
 }
 
 extension TradeButton {
     func setPrice(_ price: Int?) {
-        if let price = self.price {
+        if let price = price {
             DispatchQueue.main.async {
                 self.priceLabel.text = "\(price.priceFormat)원"
             }

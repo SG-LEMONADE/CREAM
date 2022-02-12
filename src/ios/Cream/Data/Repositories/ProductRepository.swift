@@ -8,7 +8,7 @@
 import Foundation
 
 final class ProductRepository {
-    private var dataTransferService: DataTransferService
+    private let dataTransferService: DataTransferService
 
     init(dataTransferService: DataTransferService) {
         self.dataTransferService = dataTransferService

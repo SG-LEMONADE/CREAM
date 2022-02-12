@@ -62,7 +62,7 @@
 		7B5EEE6C27B01AA600990E37 /* HomeView+CompositionalLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B5EEE6B27B01AA600990E37 /* HomeView+CompositionalLayout.swift */; };
 		7B5EEE6E27B01E9A00990E37 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B5EEE6D27B01E9A00990E37 /* HomeView.swift */; };
 		7B5EEE7027B0F25500990E37 /* HomeResponseDTO+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B5EEE6F27B0F25500990E37 /* HomeResponseDTO+Mapping.swift */; };
-		7B5EEE7227B10CD800990E37 /* HomeRepositoryInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B5EEE7127B10CD800990E37 /* HomeRepositoryInterface.swift */; };
+		7B5EEE7227B10CD800990E37 /* HomeListRepositoryInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B5EEE7127B10CD800990E37 /* HomeListRepositoryInterface.swift */; };
 		7B5EEE7427B2062500990E37 /* ProductDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B5EEE7327B2062500990E37 /* ProductDetail.swift */; };
 		7B5EEE7727B2B03F00990E37 /* SortFilterFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B5EEE7627B2B03E00990E37 /* SortFilterFooterView.swift */; };
 		7B5EEE7927B2D36E00990E37 /* SortViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B5EEE7827B2D36D00990E37 /* SortViewController.swift */; };
@@ -85,6 +85,7 @@
 		7B5EEE9E27B7E45B00990E37 /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B5EEE9D27B7E45B00990E37 /* SettingView.swift */; };
 		7B5EEEA027B7E48100990E37 /* SettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B5EEE9F27B7E48100990E37 /* SettingViewModel.swift */; };
 		7B5EEEA227B8013200990E37 /* FilterResponseDTO+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B5EEEA127B8013200990E37 /* FilterResponseDTO+Mapping.swift */; };
+		7B5EEEA427B80F4800990E37 /* HomeListUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B5EEEA327B80F4800990E37 /* HomeListUseCase.swift */; };
 		7B8EAA78279FBBB600B07259 /* ProductRepositoryInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B8EAA77279FBBB600B07259 /* ProductRepositoryInterface.swift */; };
 		7B8EAA7F279FC38300B07259 /* BaseDIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B8EAA7E279FC38300B07259 /* BaseDIViewController.swift */; };
 		7B8EAA8627A0DB4700B07259 /* ValidationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B8EAA8527A0DB4700B07259 /* ValidationHelper.swift */; };
@@ -184,7 +185,7 @@
 		7B5EEE6B27B01AA600990E37 /* HomeView+CompositionalLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HomeView+CompositionalLayout.swift"; sourceTree = "<group>"; };
 		7B5EEE6D27B01E9A00990E37 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		7B5EEE6F27B0F25500990E37 /* HomeResponseDTO+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HomeResponseDTO+Mapping.swift"; sourceTree = "<group>"; };
-		7B5EEE7127B10CD800990E37 /* HomeRepositoryInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeRepositoryInterface.swift; sourceTree = "<group>"; };
+		7B5EEE7127B10CD800990E37 /* HomeListRepositoryInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeListRepositoryInterface.swift; sourceTree = "<group>"; };
 		7B5EEE7327B2062500990E37 /* ProductDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetail.swift; sourceTree = "<group>"; };
 		7B5EEE7627B2B03E00990E37 /* SortFilterFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortFilterFooterView.swift; sourceTree = "<group>"; };
 		7B5EEE7827B2D36D00990E37 /* SortViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortViewController.swift; sourceTree = "<group>"; };
@@ -207,6 +208,7 @@
 		7B5EEE9D27B7E45B00990E37 /* SettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
 		7B5EEE9F27B7E48100990E37 /* SettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewModel.swift; sourceTree = "<group>"; };
 		7B5EEEA127B8013200990E37 /* FilterResponseDTO+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FilterResponseDTO+Mapping.swift"; sourceTree = "<group>"; };
+		7B5EEEA327B80F4800990E37 /* HomeListUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeListUseCase.swift; sourceTree = "<group>"; };
 		7B8EAA77279FBBB600B07259 /* ProductRepositoryInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductRepositoryInterface.swift; sourceTree = "<group>"; };
 		7B8EAA7E279FC38300B07259 /* BaseDIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseDIViewController.swift; sourceTree = "<group>"; };
 		7B8EAA8527A0DB4700B07259 /* ValidationHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationHelper.swift; sourceTree = "<group>"; };
@@ -508,6 +510,7 @@
 			children = (
 				7B5EEE2127A58A4400990E37 /* UserUseCase.swift */,
 				7B5EEE3227A6B01900990E37 /* ProductUseCase.swift */,
+				7B5EEEA327B80F4800990E37 /* HomeListUseCase.swift */,
 			);
 			path = UseCases;
 			sourceTree = "<group>";
@@ -633,7 +636,7 @@
 			children = (
 				7B5EEE2327A58A9C00990E37 /* UserRepositoryInterface.swift */,
 				7B8EAA77279FBBB600B07259 /* ProductRepositoryInterface.swift */,
-				7B5EEE7127B10CD800990E37 /* HomeRepositoryInterface.swift */,
+				7B5EEE7127B10CD800990E37 /* HomeListRepositoryInterface.swift */,
 			);
 			path = Repositories;
 			sourceTree = "<group>";
@@ -871,7 +874,7 @@
 				7B193CA52798F4CC00B934A3 /* DebugLog.swift in Sources */,
 				7B5EEE3D27A773AE00990E37 /* ProductListViewModel.swift in Sources */,
 				7BF82E1127A5491E007E0A79 /* SizeListViewController.swift in Sources */,
-				7B5EEE7227B10CD800990E37 /* HomeRepositoryInterface.swift in Sources */,
+				7B5EEE7227B10CD800990E37 /* HomeListRepositoryInterface.swift in Sources */,
 				7BB01117278BCA54005E5C9E /* Observable.swift in Sources */,
 				7B8EAA9C27A240F900B07259 /* NetworkConfigurable.swift in Sources */,
 				7B5EEE9E27B7E45B00990E37 /* SettingView.swift in Sources */,
@@ -908,6 +911,7 @@
 				7B8EAAAF27A2601C00B07259 /* AuthResponseDTO+Mapping.swift in Sources */,
 				7B193CB3279BE1A000B934A3 /* CALayer+.swift in Sources */,
 				7B8EAAAA27A25ED800B07259 /* APIEndpoints.swift in Sources */,
+				7B5EEEA427B80F4800990E37 /* HomeListUseCase.swift in Sources */,
 				7BF82E0427A2CD2B007E0A79 /* JoinResponseDTO+Mapping.swift in Sources */,
 				7B5EEE2927A5AD7A00990E37 /* ProductViewController.swift in Sources */,
 				7B5EEE9027B607C800990E37 /* TradeHistoryCell.swift in Sources */,

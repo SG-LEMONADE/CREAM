@@ -97,15 +97,14 @@ class BaseItemView: UIView {
 extension BaseItemView: ViewConfiguration {
     func buildHierarchy() {
         productImageView.addSubviews(tradeLabel)
-        self.addSubviews(productImageView,
-                         containerStackView)
+        addSubviews(productImageView,
+                    containerStackView)
     }
     
     func setupConstraints() {
         tradeLabel.snp.makeConstraints {
             $0.top.trailing.equalToSuperview().inset(10)
         }
-        
         productImageView.snp.makeConstraints {
             $0.top.bottom.equalTo(self.snp.top)
             $0.width.height.equalTo(self.snp.width)

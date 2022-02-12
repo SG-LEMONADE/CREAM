@@ -13,13 +13,14 @@ class FilterViewController: BaseDIViewController<FilterViewModel> {
     
     // MARK: - View Life Cycle
     override func loadView() {
-        self.view = filterView
+        view = filterView
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTableView()
         setupNavigationBarItem()
+        viewModel.viewDidLoad()
     }
 
     private func setupTableView() {
@@ -37,19 +38,19 @@ class FilterViewController: BaseDIViewController<FilterViewModel> {
                                           style: .plain,
                                           target: self,
                                           action: #selector(didTapClearButton))
-        self.title = "필터"
-        self.navigationController?.navigationBar.tintColor = .black
-        self.navigationItem.leftBarButtonItem = closeButton
-        self.navigationItem.rightBarButtonItem = clearButton
+        title = "필터"
+        navigationController?.navigationBar.tintColor = .black
+        navigationItem.leftBarButtonItem = closeButton
+        navigationItem.rightBarButtonItem = clearButton
     }
     
     @objc
-    func didTapCloseButton() {
-        self.dismiss(animated: true, completion: nil)
+    private func didTapCloseButton() {
+        dismiss(animated: true, completion: nil)
     }
     
     @objc
-    func didTapClearButton() {
+    private func didTapClearButton() {
         print(#function)
     }
 }

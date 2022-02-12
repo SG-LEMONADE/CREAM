@@ -35,13 +35,13 @@ final class SortFilterFooterView: UICollectionReusableView {
         applyViewSettings()
     }
     
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        applyViewSettings()
+        fatalError("init(coder:) has not been implemented")
     }
     
     @objc
-    func didTapSortButton() {
+    private func didTapSortButton() {
         delegate?.didTapSortButton()
     }
 }
@@ -69,7 +69,7 @@ extension SortFilterFooterView: ViewConfiguration {
     }
 }
 
-// MARK: -
+// MARK: - SortChangeDelegate
 extension SortFilterFooterView: SortChangeDelegate {
     func didChangeStandard(to standard: String) {
         guard let standard = SortInfo(rawValue: standard)?.translatedString

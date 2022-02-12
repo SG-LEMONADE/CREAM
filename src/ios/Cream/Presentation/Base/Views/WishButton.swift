@@ -28,23 +28,21 @@ final class WishButton: UIButton {
         applyViewSettings()
     }
     
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        applyViewSettings()
+        fatalError("init(coder:) has not been implemented")
     }
 }
 
 extension WishButton: ViewConfiguration {
     func buildHierarchy() {
-        self.addSubviews(upperImageView, wishCountLabel)
+        addSubviews(upperImageView, wishCountLabel)
     }
     
     func setupConstraints() {
         upperImageView.snp.makeConstraints {
             $0.top.equalTo(self.snp.top)
             $0.centerX.equalTo(self.snp.centerX)
-//            $0.leading.equalTo(self.snp.leading)
-//            $0.trailing.equalTo(self.snp.trailing)
             $0.bottom.equalTo(wishCountLabel.snp.top)
             $0.width.equalTo(upperImageView.snp.height)
             $0.height.equalTo(wishCountLabel.snp.height).multipliedBy(0.7)

@@ -41,29 +41,29 @@ class HomeViewCategoryHeaderView: UICollectionReusableView {
         applyViewSettings()
     }
 
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        applyViewSettings()
+        fatalError("init(coder:) has not been implemented")
     }
     
     override func prepareForReuse() {
-        self.titleLabel.text = nil
-        self.detailLabel.text = nil
-        self.titleLabel.textColor = .black
-        self.detailLabel.textColor = .systemGray3
+        titleLabel.text = nil
+        detailLabel.text = nil
+        titleLabel.textColor = .black
+        detailLabel.textColor = .systemGray3
     }
 }
 
 extension HomeViewCategoryHeaderView {
     func configure(headerInfo: String, detailInfo: String) {
-        self.titleLabel.text = headerInfo
-        self.detailLabel.text = detailInfo
+        titleLabel.text = headerInfo
+        detailLabel.text = detailInfo
     }
     
     func configure(brandInfo: String) {
-        self.titleLabel.text = nil
-        self.detailLabel.text = "\(brandInfo)의 다른 상품"
-        self.detailLabel.textColor = .black
+        titleLabel.text = nil
+        detailLabel.text = "\(brandInfo)의 다른 상품"
+        detailLabel.textColor = .black
     }
 }
 
