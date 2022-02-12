@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Toast_Swift
 
 final class JoinViewController: BaseDIViewController<JoinViewModel> {
 
@@ -21,15 +22,33 @@ final class JoinViewController: BaseDIViewController<JoinViewModel> {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationItem.title = "회원가입"
-        self.navigationController?.navigationBar.backgroundColor = .clear
-        self.navigationController?.navigationBar.prefersLargeTitles = true
         bindViewModel()
         configureActions()
         setupNavigationBarItem()
+        setupTextField()
     }
     
-    func bindViewModel() {
+    func setupNavigationBarItem() {
+        let navigationItem = UIBarButtonItem(image: UIImage(systemName: "chevron.backward"),
+                                             style: .plain,
+                                             target: self,
+                                             action: #selector(didTapCloseButton))
+        navigationItem.tintColor = .black
+        self.navigationItem.leftBarButtonItem = navigationItem
+    }
+    
+    private func setupNavigation() {
+        self.navigationItem.title = "회원가입"
+        self.navigationController?.navigationBar.backgroundColor = .clear
+        self.navigationController?.navigationBar.prefersLargeTitles = true
+    }
+    
+    private func setupTextField() {
+        joinView.emailTextField.delegate = self
+        joinView.passwordTextField.delegate = self
+    }
+    
+    private func bindViewModel() {
         joinView.emailTextField.bind { [weak self] email in
             self?.viewModel.validateEmail(email)
         }
@@ -38,7 +57,7 @@ final class JoinViewController: BaseDIViewController<JoinViewModel> {
             self?.viewModel.validatePassword(password)
         }
         
-        self.viewModel.emailMessage.bind { [weak self]  message in
+        viewModel.emailMessage.bind { [weak self]  message in
             self?.joinView.emailErrorLabel.text = message
             self?.joinView.emailErrorLabel.isHidden = false
             if ValidationHelper.State(rawValue: message) == .valid {
@@ -50,7 +69,7 @@ final class JoinViewController: BaseDIViewController<JoinViewModel> {
             }
         }
         
-        self.viewModel.passwordMessage.bind { [weak self] message in
+        viewModel.passwordMessage.bind { [weak self] message in
             self?.joinView.passwordErrorLabel.text = message
             self?.joinView.passwordErrorLabel.isHidden = false
             if ValidationHelper.State(rawValue: message) == .valid {
@@ -62,11 +81,11 @@ final class JoinViewController: BaseDIViewController<JoinViewModel> {
             }
         }
         
-        self.viewModel.shoeSize.bind { [weak self] size in
+        viewModel.shoeSize.bind { [weak self] size in
             self?.joinView.sneakersSizeButton.setTitle("\(size)", for: .normal)
         }
         
-        self.viewModel.isJoinAvailable.bind { [weak self] value in
+        viewModel.isJoinAvailable.bind { [weak self] value in
             if value == true {
                 self?.joinView.signupButton.isEnabled = true
                 self?.joinView.signupButton.backgroundColor = .black
@@ -84,15 +103,6 @@ final class JoinViewController: BaseDIViewController<JoinViewModel> {
         joinView.sneakersSizeButton.addTarget(self,
                                               action: #selector(didSelectSneakersSize),
                                               for: .touchUpInside)
-    }
-    
-    func setupNavigationBarItem() {
-        let navigationItem = UIBarButtonItem(image: UIImage(systemName: "chevron.backward"),
-                                             style: .plain,
-                                             target: self,
-                                             action: #selector(didTapCloseButton))
-        navigationItem.tintColor = .black
-        self.navigationItem.leftBarButtonItem = navigationItem
     }
 }
 
@@ -132,13 +142,28 @@ extension JoinViewController {
                     self?.present(alertController, animated: true, completion: nil)
                 }
             case .failure(let error):
-                DispatchQueue.main.async {
-                    let alertController = UIAlertController(title: "에러 발생", message: "\(error.localizedDescription)", preferredStyle: .alert)
-                    alertController.addAction(UIAlertAction(title: "확인", style: .default))
-                    self?.present(alertController, animated: true, completion: nil)
+                if error == .duplicatedEmail {
+                    DispatchQueue.main.async { [weak self] in
+                        self?.view.makeToast("이미 사용중인 이메일입니다.", duration: 1.5, position:.center)
+                    }
+                } else if error == .networkUnconnected {
+                    DispatchQueue.main.async { [weak self] in
+                        self?.view.makeToast("서버 문제로 회원가입에 실패했습니다.\n 개발자에게 문의해주세요.", duration: 1.5, position: .center)
+                    }
                 }
             }
         }
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        view.endEditing(true)
+    }
+}
+
+// MARK: UITextFieldDelegate
+extension JoinViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
     }
 }
 
@@ -148,5 +173,3 @@ extension JoinViewController: SizeSelectDelegate {
         self.viewModel.shoeSize.value = size
     }
 }
-
-

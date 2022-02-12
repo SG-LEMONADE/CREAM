@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import SwiftKeychainWrapper
 import Toast_Swift
 
 final class LoginViewController: BaseDIViewController<LoginViewModel> {
@@ -23,13 +22,30 @@ final class LoginViewController: BaseDIViewController<LoginViewModel> {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
         bindViewModel()
         configureActions()
         setupNavigationBarItem()
         setupTextField()
+        setupKeyboardNotification()
+    }
+    
+    private func setupTextField() {
+        loginView.emailTextField.delegate = self
+        loginView.passwordTextField.delegate = self
+    }
+    
+    private func setupNavigationBarItem() {
+        let navigationItem = UIBarButtonItem(image: UIImage(systemName: "xmark"),
+                                             style: .plain,
+                                             target: self,
+                                             action: #selector(closeUserModal))
+        navigationItem.tintColor = .black
+        self.navigationItem.rightBarButtonItem = navigationItem
+    }
+    
+    private func setupKeyboardNotification() {
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     func bindViewModel() {
@@ -65,7 +81,7 @@ final class LoginViewController: BaseDIViewController<LoginViewModel> {
             }
         }
         
-        self.viewModel.isLoginAvailable.bind { [weak self] value in
+        viewModel.isLoginAvailable.bind { [weak self] value in
             if value == true {
                 self?.loginView.loginButton.isEnabled = true
                 self?.loginView.loginButton.backgroundColor = .black
@@ -80,32 +96,21 @@ final class LoginViewController: BaseDIViewController<LoginViewModel> {
         loginView.loginButton.addTarget(self,
                                         action: #selector(didTapLoginButton),
                                         for: .touchUpInside)
-        loginView.joinButton.addTarget(self, action: #selector(didTapJoinButton), for: .touchUpInside)
-        loginView.findIDButton.addTarget(self, action: #selector(didTapFindIDButton), for: .touchUpInside)
-        loginView.findPasswordButton.addTarget(self, action: #selector(didTapFindPasswordButton), for: .touchUpInside)
-    }
-    
-    private func setupTextField() {
-        loginView.emailTextField.delegate = self
-        loginView.passwordTextField.delegate = self
-    }
-    
-    private func setupNavigationBarItem() {
-        let navigationItem = UIBarButtonItem(image: UIImage(systemName: "xmark"),
-                                             style: .plain,
-                                             target: self,
-                                             action: #selector(closeUserModal))
-        navigationItem.tintColor = .black
-        self.navigationItem.rightBarButtonItem = navigationItem
-    }
-    
-    @objc
-    func closeUserModal() {
-        dismiss(animated: true, completion: nil)
+        loginView.joinButton.addTarget(self,
+                                       action: #selector(didTapJoinButton),
+                                       for: .touchUpInside)
+        loginView.findIDButton.addTarget(self,
+                                         action: #selector(didTapFindIDButton),
+                                         for: .touchUpInside)
+        loginView.findPasswordButton.addTarget(self,
+                                               action: #selector(didTapFindPasswordButton),
+                                               for: .touchUpInside)
     }
 }
 
+// MARK: - UserActions
 extension LoginViewController {
+    
     @objc
     private func didTapLoginButton() {
         loginView.indicatorView.startAnimating()
@@ -122,14 +127,8 @@ extension LoginViewController {
             case .success(_):
                 self.dismiss(animated: true, completion: nil)
             case .failure(let error):
-                if error == .userNotAccepted {
-                    DispatchQueue.main.async { [weak self] in
-                        self?.view.makeToast("이메일 또는 비밀번호를 확인해주세요.", duration: 1.5, position: .top)
-                    }
-                } else if error == .networkUnconnected {
-                    DispatchQueue.main.async { [weak self] in
-                        self?.view.makeToast("서버 문제로 로그인에 실패했습니다.", duration: 1.5, position: .top)
-                    }
+                DispatchQueue.main.async { [weak self] in
+                    self?.view.makeToast(error.userMessage, duration: 1.5, position:.center)
                 }
             }
         }
@@ -137,47 +136,41 @@ extension LoginViewController {
     
     @objc
     private func didTapJoinButton() {
-        guard let baseURL = URL(string: "http://ec2-13-125-85-156.ap-northeast-2.compute.amazonaws.com:8081")
+        guard let baseURL = URL(string: "http://1.231.16.189:8080")
         else { fatalError() }
     
-        let config: NetworkConfigurable = ApiDataNetworkConfig(baseURL: baseURL)
-        let networkService: NetworkService = DefaultNetworkService(config: config)
-        let dataTransferService: DataTransferService = DefaultDataTransferService(with: networkService)
-        let repository: UserRepositoryInterface = UserRepository(dataTransferService: dataTransferService)
-        let usecase: UserUseCaseInterface = UserUseCase(repository)
-        let viewModel: JoinViewModel = DefaultJoinViewModel(usecase: usecase)
-        let nextVC = JoinViewController(viewModel)
-        navigationController?.pushViewController(nextVC, animated: true)
+        let config: NetworkConfigurable                 = ApiDataNetworkConfig(baseURL: baseURL)
+        let networkService: NetworkService              = DefaultNetworkService(config: config)
+        let dataTransferService: DataTransferService    = DefaultDataTransferService(with: networkService)
+        let repository: UserRepositoryInterface         = UserRepository(dataTransferService: dataTransferService)
+        let usecase: UserUseCaseInterface               = UserUseCase(repository)
+        let viewModel: JoinViewModel                    = DefaultJoinViewModel(usecase: usecase)
+        let joinViewController: JoinViewController      = JoinViewController(viewModel)
+        
+        navigationController?.pushViewController(joinViewController, animated: true)
     }
     
     @objc
     private func didTapFindIDButton() {
-        guard let baseURL = URL(string: "http://ec2-13-125-85-156.ap-northeast-2.compute.amazonaws.com:8081")
-        else { fatalError() }
-    
-        let config: NetworkConfigurable = ApiDataNetworkConfig(baseURL: baseURL)
-        let networkService: NetworkService = DefaultNetworkService(config: config)
-        let dataTransferService: DataTransferService = DefaultDataTransferService(with: networkService)
-        let repository: UserRepositoryInterface = UserRepository(dataTransferService: dataTransferService)
-        let usecase: UserUseCaseInterface = UserUseCase(repository)
-        let viewModel: JoinViewModel = DefaultJoinViewModel(usecase: usecase)
-        let nextVC = JoinViewController(viewModel)
-        navigationController?.pushViewController(nextVC, animated: true)
+        DispatchQueue.main.async { [weak self] in
+            self?.view.makeToast("해당 기능은 아직 구현되지 않았어요!",
+                                 duration: 1.5,
+                                 position: .top)
+        }
     }
     
     @objc
     private func didTapFindPasswordButton() {
-        guard let baseURL = URL(string: "http://ec2-13-125-85-156.ap-northeast-2.compute.amazonaws.com:8081")
-        else { fatalError() }
+        DispatchQueue.main.async { [weak self] in
+            self?.view.makeToast("해당 기능은 아직 구현되지 않았어요!",
+                                 duration: 1.5,
+                                 position: .top)
+        }
+    }
     
-        let config: NetworkConfigurable = ApiDataNetworkConfig(baseURL: baseURL)
-        let networkService: NetworkService = DefaultNetworkService(config: config)
-        let dataTransferService: DataTransferService = DefaultDataTransferService(with: networkService)
-        let repository: UserRepositoryInterface = UserRepository(dataTransferService: dataTransferService)
-        let usecase: UserUseCaseInterface = UserUseCase(repository)
-        let viewModel: JoinViewModel = DefaultJoinViewModel(usecase: usecase)
-        let nextVC = JoinViewController(viewModel)
-        self.navigationController?.pushViewController(nextVC, animated: true)
+    @objc
+    func closeUserModal() {
+        dismiss(animated: true, completion: nil)
     }
     
     @objc
@@ -195,6 +188,7 @@ extension LoginViewController {
     }
 }
 
+// MARK: UITextFieldDelegate
 extension LoginViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()

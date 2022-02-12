@@ -113,7 +113,6 @@ public class Endpoint<R>: ResponseRequestable {
     }
 }
 
-/// Dictionary형을 queryString형태로 변형
 private extension Dictionary {
     var queryString: String {
         return self.map { "\($0.key)=\($0.value)" }
@@ -122,7 +121,6 @@ private extension Dictionary {
     }
 }
 
-/// Encodable인 struct형을 딕셔너리 형태로 변형
 private extension Encodable {
     func toDictionary() throws -> [String: Any]? {
         let data = try JSONEncoder().encode(self)

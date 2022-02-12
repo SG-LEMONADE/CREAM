@@ -25,7 +25,7 @@ protocol JoinViewModelOutput {
 }
 
 protocol JoinViewModel: JoinViewModelProperty, JoinViewModelValidatable {
-    func addUser(email: String, password: String, shoesize: Int, completion: @escaping (Result<User, Error>) -> ())
+    func addUser(email: String, password: String, shoesize: Int, completion: @escaping (Result<User, UserError>) -> ())
 }
 
 final class DefaultJoinViewModel: JoinViewModel {
@@ -61,7 +61,7 @@ final class DefaultJoinViewModel: JoinViewModel {
         isJoinAvailable.value = (passwordMessage.value == "" && emailMessage.value == "")
     }
     
-    func addUser(email: String, password: String, shoesize: Int, completion: @escaping (Result<User, Error>) -> Void) {
+    func addUser(email: String, password: String, shoesize: Int, completion: @escaping (Result<User, UserError>) -> Void) {
         let _ = usecase.add(userEmail: email, userPassword: password, shoeSize: shoesize) { result in
             switch result {
             case .success(let user):

@@ -70,6 +70,21 @@ extension UserRepository: UserRepositoryInterface {
         return task
     }
     
+    func removeToken(completion: @escaping (Result<Void, Error>) -> Void) -> Cancellable {
+        let endpoint = APIEndpoints.removeToken()
+        
+        let task = RepositoryTask()
+        task.networkTask = dataTransferService.request(with: endpoint, completion: { result in
+            switch result {
+            case .success(let response):
+                completion(.success(response))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        })
+        return task
+    }
+    
     func reissueToken(completion: @escaping (Result<Auth, Error>) -> Void) -> Cancellable {
         let endpoint = APIEndpoints.reissueToken()
         

@@ -79,6 +79,9 @@
 		7B5EEE9027B607C800990E37 /* TradeHistoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B5EEE8F27B607C800990E37 /* TradeHistoryCell.swift */; };
 		7B5EEE9227B64D8500990E37 /* CompanyInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B5EEE9127B64D8500990E37 /* CompanyInfoCell.swift */; };
 		7B5EEE9427B6B90D00990E37 /* WishItemHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B5EEE9327B6B90C00990E37 /* WishItemHeaderView.swift */; };
+		7B5EEE9627B768F200990E37 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B5EEE9527B768F100990E37 /* SettingViewController.swift */; };
+		7B5EEE9827B7BEFA00990E37 /* ErrorList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B5EEE9727B7BEF900990E37 /* ErrorList.swift */; };
+		7B5EEE9C27B7DCCF00990E37 /* UICollectionView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B5EEE9B27B7DCCF00990E37 /* UICollectionView+.swift */; };
 		7B8EAA78279FBBB600B07259 /* ProductRepositoryInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B8EAA77279FBBB600B07259 /* ProductRepositoryInterface.swift */; };
 		7B8EAA7F279FC38300B07259 /* BaseDIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B8EAA7E279FC38300B07259 /* BaseDIViewController.swift */; };
 		7B8EAA8627A0DB4700B07259 /* ValidationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B8EAA8527A0DB4700B07259 /* ValidationHelper.swift */; };
@@ -195,6 +198,9 @@
 		7B5EEE8F27B607C800990E37 /* TradeHistoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradeHistoryCell.swift; sourceTree = "<group>"; };
 		7B5EEE9127B64D8500990E37 /* CompanyInfoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompanyInfoCell.swift; sourceTree = "<group>"; };
 		7B5EEE9327B6B90C00990E37 /* WishItemHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishItemHeaderView.swift; sourceTree = "<group>"; };
+		7B5EEE9527B768F100990E37 /* SettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
+		7B5EEE9727B7BEF900990E37 /* ErrorList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorList.swift; sourceTree = "<group>"; };
+		7B5EEE9B27B7DCCF00990E37 /* UICollectionView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionView+.swift"; sourceTree = "<group>"; };
 		7B8EAA77279FBBB600B07259 /* ProductRepositoryInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductRepositoryInterface.swift; sourceTree = "<group>"; };
 		7B8EAA7E279FC38300B07259 /* BaseDIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseDIViewController.swift; sourceTree = "<group>"; };
 		7B8EAA8527A0DB4700B07259 /* ValidationHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationHelper.swift; sourceTree = "<group>"; };
@@ -265,6 +271,7 @@
 				7B8EAA8527A0DB4700B07259 /* ValidationHelper.swift */,
 				7BF82E1827A56C8B007E0A79 /* ErrorMessage.swift */,
 				7B5EEE4F27A95DCB00990E37 /* ImageLoader.swift */,
+				7B5EEE9727B7BEF900990E37 /* ErrorList.swift */,
 			);
 			path = SupportFile;
 			sourceTree = "<group>";
@@ -325,6 +332,7 @@
 				7B3566862792420300C45A68 /* MyPageViewController.swift */,
 				7B5EEE8627B561FA00990E37 /* MyPageViewModel.swift */,
 				7B5EEE8827B5620400990E37 /* MyPageView.swift */,
+				7B5EEE9527B768F100990E37 /* SettingViewController.swift */,
 			);
 			path = MyPageScene;
 			sourceTree = "<group>";
@@ -592,6 +600,7 @@
 			children = (
 				7BB01120278BD66C005E5C9E /* UIView+.swift */,
 				7B5EEE2627A58ED800990E37 /* UIStackView+.swift */,
+				7B5EEE9B27B7DCCF00990E37 /* UICollectionView+.swift */,
 				7B193CAC2799BDEF00B934A3 /* UIColor+.swift */,
 				7B193CB2279BE1A000B934A3 /* CALayer+.swift */,
 				7B5EEE3E27A80E8B00990E37 /* String+.swift */,
@@ -793,6 +802,7 @@
 				7B8EAAA227A2414300B07259 /* DataTransferService.swift in Sources */,
 				7B8EAA8E27A1919600B07259 /* LoginViewController.swift in Sources */,
 				7B5EEE6A27B0103500990E37 /* ProductListItemCell.swift in Sources */,
+				7B5EEE9627B768F200990E37 /* SettingViewController.swift in Sources */,
 				7B5EEE2D27A5B08B00990E37 /* ProductView.swift in Sources */,
 				7B193C952797900E00B934A3 /* HomeViewModel.swift in Sources */,
 				7B8EAA8827A17C3000B07259 /* JoinViewController.swift in Sources */,
@@ -813,6 +823,7 @@
 				7B8EAA9027A191A300B07259 /* LoginViewModel.swift in Sources */,
 				7B8EAAAD27A25FC300B07259 /* AuthRequestDTO+Mapping.swift in Sources */,
 				7B36DB0E2789202800D8ACB0 /* AppDelegate.swift in Sources */,
+				7B5EEE9C27B7DCCF00990E37 /* UICollectionView+.swift in Sources */,
 				7B5EEE7B27B2D39300990E37 /* SortView.swift in Sources */,
 				7B193C832794D3D300B934A3 /* HomeViewItemCell.swift in Sources */,
 				7B193CA72799189900B934A3 /* WishButton.swift in Sources */,
@@ -825,6 +836,7 @@
 				7B8EAA9227A191AA00B07259 /* LoginView.swift in Sources */,
 				7B193C8D2796B6A900B934A3 /* ShopBannerCell.swift in Sources */,
 				7B5EEE4527A8390C00990E37 /* TradeViewModel.swift in Sources */,
+				7B5EEE9827B7BEFA00990E37 /* ErrorList.swift in Sources */,
 				7B5EEE8527B55E8000990E37 /* Integrator.swift in Sources */,
 				7B5EEE3727A6C6B000990E37 /* Product.swift in Sources */,
 				7B54D708279045F400214664 /* TradeButton.swift in Sources */,

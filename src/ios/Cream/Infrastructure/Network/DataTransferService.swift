@@ -27,7 +27,7 @@ extension DataTransferError {
         }
     }
 }
-/// Request에서 error응답을 받은 경우의 처리하는 protocol
+
 public protocol DataTransferErrorResolver {
     func resolve(error: NetworkError) -> Error
     func decode(error: NetworkError) -> ErrorMessage?
@@ -46,7 +46,6 @@ public class DefaultDataTransferErrorResolver: DataTransferErrorResolver {
     }
 }
 
-/// 언아카이빙: Response로 온 Data형을 struct형으로 변경하는 protocol
 public protocol ResponseDecoder {
     func decode<T: Decodable>(_ data: Data) throws -> T
 }

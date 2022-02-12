@@ -128,6 +128,13 @@ extension ProductListViewController: UICollectionViewDataSource {
         case 0:
             return viewModel.banners.count
         default:
+            if (self.viewModel.products.value.count == 0) {
+                productListView.shopCollectionView.setEmptyMessage("검색 결과가 없습니다.")
+                productListView.shopCollectionView.isScrollEnabled = false
+            } else {
+                productListView.shopCollectionView.restore()
+                productListView.shopCollectionView.isScrollEnabled = true
+            }
             return viewModel.products.value.count
         }
     }

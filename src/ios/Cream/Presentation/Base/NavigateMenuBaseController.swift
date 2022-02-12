@@ -87,6 +87,7 @@ final class NavigateMenuBaseController: UITabBarController {
     
     private func setupTabBarColor() {
         tabBar.barTintColor = .white
+        tabBar.backgroundColor = .white
         tabBar.tintColor = .black
         tabBar.isTranslucent = false
     }
@@ -120,7 +121,7 @@ extension NavigateMenuBaseController: UITabBarControllerDelegate {
         
         if let naviVC = viewController as? UINavigationController,
            (naviVC.viewControllers.first as? MyPageViewController != nil) {
-            guard let baseURL = URL(string: "http://ec2-13-125-85-156.ap-northeast-2.compute.amazonaws.com:8081")
+            guard let baseURL = URL(string: "http://1.231.16.189:8080")
             else { fatalError() }
         
             let config: NetworkConfigurable = ApiDataNetworkConfig(baseURL: baseURL)

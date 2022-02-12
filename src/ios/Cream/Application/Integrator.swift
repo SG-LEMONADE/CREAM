@@ -55,14 +55,14 @@ class AuthIntegrator: Integratorable {
                 KeychainWrapper.standard.set(auth.accessToken, forKey: KeychainWrapper.Key.accessToken)
                 KeychainWrapper.standard.set(auth.refreshToken, forKey: KeychainWrapper.Key.refreshToken)
             case .failure(_):
-                KeychainWrapper.standard.removeObject(forKey: "accessToken")
-                KeychainWrapper.standard.removeObject(forKey: "refreshToken")
+                KeychainWrapper.standard.removeObject(forKey: KeychainWrapper.Key.accessToken)
+                KeychainWrapper.standard.removeObject(forKey: KeychainWrapper.Key.refreshToken)
             }
         }
     }
     
     private static func configureAuthInfoTransferService() -> UserUseCaseInterface {
-        guard let baseURL = URL(string: "http://ec2-13-125-85-156.ap-northeast-2.compute.amazonaws.com:8081")
+        guard let baseURL = URL(string: "http://1.231.16.189:8080")
         else { fatalError() }
         
         let config: NetworkConfigurable = ApiDataNetworkConfig(baseURL: baseURL)

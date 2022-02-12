@@ -25,7 +25,7 @@ struct APIEndpoints {
     }
     
     static func addUser(with joinRequestDTO: JoinRequestDTO) -> Endpoint<JoinResponseDTO> {
-        return Endpoint(path: "users/signup",
+        return Endpoint(path: "users/join",
                         method: .post,
                         headerParamaters: ["Content-Type":"application/json"],
                         bodyParamatersEncodable: joinRequestDTO)
@@ -41,6 +41,20 @@ struct APIEndpoints {
             }
         
         return Endpoint(path: "users/validate",
+                        method: .post,
+                        headerParamaters: headerParameters)
+    }
+    
+    static func removeToken() -> Endpoint<Void> {
+        var headerParameters: [String: String] = ["Content-Type":"application/json"]
+        
+        _ = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.accessToken)
+            .map { "Bearer-\($0)" }
+            .flatMap {
+                headerParameters.updateValue($0, forKey: "Authorization")
+            }
+        
+        return Endpoint(path: "users/logout",
                         method: .post,
                         headerParamaters: headerParameters)
     }

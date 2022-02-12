@@ -7,6 +7,7 @@
 
 import UIKit
 import SnapKit
+import Toast_Swift
 
 class MyPageViewController: BaseDIViewController<MyPageViewModel> {
     
@@ -50,7 +51,18 @@ class MyPageViewController: BaseDIViewController<MyPageViewModel> {
     }
     
     @objc func pushToSettingViewController() {
-        // TODO: pushToSettingViewController
+        guard let baseURL = URL(string: "http://1.231.16.189:8080")
+        else { fatalError() }
+    
+        let config                  = ApiDataNetworkConfig(baseURL: baseURL)
+        let networkService          = DefaultNetworkService(config: config)
+        let dataTransferService     = DefaultDataTransferService(with: networkService)
+        let repository              = UserRepository(dataTransferService: dataTransferService)
+        let usecase                 = UserUseCase(repository)
+        let viewModel               = DefaultSettingViewModel(usecase)
+        let settingViewController   = SettingViewController(viewModel)
+        
+        self.navigationController?.pushViewController(settingViewController, animated: true)
     }
 }
 
@@ -142,39 +154,59 @@ extension MyPageViewController: UITableViewDelegate {
 
 extension MyPageViewController: ProfileReviseDelegate {
     func moveToProfileScene() {
-        print(#function)
+        DispatchQueue.main.async { [weak self] in
+            self?.view.makeToast("준비 중입니다.", duration: 1.5, position: .center)
+        }
     }
 }
 
 // TODO: No Implement functions
 extension MyPageViewController {
     func didTapWishList() {
-        print(#function)
+        DispatchQueue.main.async { [weak self] in
+            self?.view.makeToast("준비 중입니다.", duration: 1.5, position: .center)
+        }
     }
     
     func didTapBuyHistoryButton() {
-        print(#function)
+        DispatchQueue.main.async { [weak self] in
+            self?.view.makeToast("준비 중입니다.", duration: 1.5, position: .center)
+        }
     }
     func didTapSellHistoryButton() {
-        print(#function)
+        DispatchQueue.main.async { [weak self] in
+            self?.view.makeToast("준비 중입니다.", duration: 1.5, position: .center)
+        }
     }
     
     func didTapNoticeButton() {
-        print(#function)
+        DispatchQueue.main.async { [weak self] in
+            self?.view.makeToast("준비 중입니다.", duration: 1.5, position: .center)
+        }
     }
     func didTapStandardButton() {
-        print(#function)
+        DispatchQueue.main.async { [weak self] in
+            self?.view.makeToast("준비 중입니다.", duration: 1.5, position: .center)
+        }
     }
     func didTapPenaltyButton() {
-        print(#function)
+        DispatchQueue.main.async { [weak self] in
+            self?.view.makeToast("준비 중입니다.", duration: 1.5, position: .center)
+        }
     }
     func didTapPolicyButton() {
-        print(#function)
+        DispatchQueue.main.async { [weak self] in
+            self?.view.makeToast("준비 중입니다.", duration: 1.5, position: .center)
+        }
     }
     func didTapShowRoomButton() {
-        print(#function)
+        DispatchQueue.main.async { [weak self] in
+            self?.view.makeToast("준비 중입니다.", duration: 1.5, position: .center)
+        }
     }
     func didTapOfflineCSButton() {
-        print(#function)
+        DispatchQueue.main.async { [weak self] in
+            self?.view.makeToast("준비 중입니다.", duration: 1.5, position: .center)
+        }
     }
 }
