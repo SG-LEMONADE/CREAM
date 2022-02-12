@@ -33,7 +33,7 @@ const HeaderTop: FunctionComponent = () => {
 					},
 				},
 			);
-			if (res.data === "") {
+			if (res.status === 200) {
 				// user logout OK.
 				window.localStorage.removeItem("creamAccessToken");
 				window.localStorage.removeItem("creamRefreshToken");
