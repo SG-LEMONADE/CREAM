@@ -94,5 +94,7 @@ const StyledButton = styled.button<{
 			&:hover:enabled {
 				transition: 0.5s;
 			}
+			height: 55px;
+			font-size: 16px;
 		`}
 `;

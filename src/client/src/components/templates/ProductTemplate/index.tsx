@@ -273,6 +273,7 @@ const ProductTemplate: FunctionComponent<ProductTemplateProps> = (props) => {
 			>
 				<ProductSizeSelectGrid
 					category="price"
+					subCategory="buy"
 					datas={
 						productInfo.product.sizes.includes("ONE SIZE")
 							? productInfo.product.sizes

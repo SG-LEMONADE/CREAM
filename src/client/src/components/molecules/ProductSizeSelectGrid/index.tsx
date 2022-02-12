@@ -6,6 +6,7 @@ import styled from "@emotion/styled";
 
 type ProductSizeSelectGridProps = {
 	category: "wish" | "price" | "sizeOnly";
+	subCategory?: "buy" | "sell";
 	activeSizeOption?: string | string[];
 	onClick: (size: string) => void;
 	datas?: string[];
@@ -15,7 +16,14 @@ type ProductSizeSelectGridProps = {
 const ProductSizeSelectGrid: FunctionComponent<ProductSizeSelectGridProps> = (
 	props,
 ) => {
-	const { category, activeSizeOption, onClick, datas, pricePerSize } = props;
+	const {
+		category,
+		subCategory,
+		activeSizeOption,
+		onClick,
+		datas,
+		pricePerSize,
+	} = props;
 
 	return (
 		<StyledGridWrapper>
@@ -24,7 +32,7 @@ const ProductSizeSelectGrid: FunctionComponent<ProductSizeSelectGridProps> = (
 					data === activeSizeOption ? (
 						<ProductSizeSelect
 							key={data}
-							category="buy"
+							category={subCategory}
 							size={data}
 							price={pricePerSize[data]}
 							onClick={onClick}
@@ -33,7 +41,7 @@ const ProductSizeSelectGrid: FunctionComponent<ProductSizeSelectGridProps> = (
 					) : (
 						<ProductSizeSelect
 							key={data}
-							category="buy"
+							category={subCategory}
 							size={data}
 							price={pricePerSize[data]}
 							onClick={onClick}

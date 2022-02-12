@@ -29,3 +29,13 @@ Size.args = {
 	productName: "Nike NRG Solo Swoosh Fleece Hoodie Dark Grey Heather - Asia",
 	size: "L",
 };
+
+export const Transaction = Template.bind({});
+Transaction.args = {
+	imgSrc:
+		"https://kream-phinf.pstatic.net/MjAyMjAxMTFfMTgz/MDAxNjQxODk0OTEwNDkz.yjpQl2LYd3NjYlowBnIAwCgqsvRkjiyRMIOUHqKas7Ug.nBYnJxoNrMke_rg09-HX3X_LB3Tp3o_53lALlvFBSmAg.PNG/a_4d5c1b5f5165488bbb39597002611df3.png?type=m",
+	backgroundColor: "rgb(235, 240, 245)",
+	styleCode: "DH7568-002",
+	productName: "Nike Air Force 1 '07 LV8 Athletic Club Black Dark Sulfur",
+	productNameKor: "나이키 에어포스 1 '07 LV8 애슬레틱 클럽 블랙 다크 설퍼",
+};
