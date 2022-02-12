@@ -2,20 +2,22 @@ import React, {
 	FunctionComponent,
 	useCallback,
 	useContext,
-	useEffect,
 	useState,
 } from "react";
 import { useSWRConfig } from "swr";
-import axios from "axios";
-import UserContext from "context/user";
+import { useRouter } from "next/router";
 import DaumPostcode, { Address } from "react-daum-postcode";
+import UserContext from "context/user";
 
 import Button from "components/atoms/Button";
 import Modal from "components/molecules/Modal";
 import ProductSizeSelectGrid from "components/molecules/ProductSizeSelectGrid";
 import Input from "components/atoms/Input";
+import { validatePwdFormat } from "utils/validate";
+import { onPatchUserInfo } from "utils/patch";
 
 import styled from "@emotion/styled";
+import Swal from "sweetalert2";
 
 type ProfileEditProps = {
 	email: string;
@@ -33,7 +35,6 @@ const Post: FunctionComponent<PostProps> = (props) => {
 	const { setIsOpenKakao, cb } = props;
 
 	const onCompletePost = (data: Address) => {
-		console.log(data.address);
 		cb(data.address);
 		setIsOpenKakao(false);
 	};
@@ -46,6 +47,7 @@ const Post: FunctionComponent<PostProps> = (props) => {
 };
 
 const ProfileEdit: FunctionComponent<ProfileEditProps> = (props) => {
+	const router = useRouter();
 	const { user } = useContext(UserContext);
 
 	const { mutate } = useSWRConfig();
@@ -58,7 +60,7 @@ const ProfileEdit: FunctionComponent<ProfileEditProps> = (props) => {
 	const [isOpenPwdInput, setIsOpenPwdInput] = useState<boolean>(false);
 
 	const [newPwd, setNewPwd] = useState<string>("");
-	const [newAddress, setNewAddress] = useState<string>("");
+	const [newName, setNewName] = useState<string>("");
 	const [newShoeSize, setNewShoeSize] = useState<string>(shoeSize);
 
 	const trimEmail = useCallback(
@@ -72,21 +74,74 @@ const ProfileEdit: FunctionComponent<ProfileEditProps> = (props) => {
 		[email],
 	);
 
-	const putUserInfo = useCallback(async (address: string) => {
-		try {
-			// const res = await axios.put(`/users/id`, {
-			// 	address: address,
-			// 	age: 0,
-			// 	email: email,
-			// 	gender: true,
-			// 	name: name,
-			// 	password: "string",
-			// 	profileImageUrl: "string",
-			// 	shoeSize: 0,
-			// });
-			// const data = res.data;
-		} catch (e) {
-			console.error(e);
+	const onPatchPwd = useCallback(async () => {
+		const id = user.id;
+		const res = await onPatchUserInfo(id, { password: newPwd });
+		if (res) {
+			mutate(`${process.env.END_POINT_USER}/users/me`);
+			setIsOpenPwdInput(false);
+			Swal.fire({
+				position: "top",
+				icon: "success",
+				html: `비밀번호가 변경되었습니다!`,
+				showConfirmButton: true,
+				timer: 2000,
+			});
+		} else {
+			router.push("/login");
+		}
+	}, [newPwd]);
+
+	const onPatchName = useCallback(async () => {
+		const id = user.id;
+		const res = await onPatchUserInfo(id, { name: newName });
+		if (res) {
+			mutate(`${process.env.END_POINT_USER}/users/me`);
+			setIsOpenNameInput(false);
+			Swal.fire({
+				position: "top",
+				icon: "success",
+				html: `이름이 변경되었습니다!`,
+				showConfirmButton: true,
+				timer: 2000,
+			});
+		} else {
+			router.push("/login");
+		}
+	}, [newName]);
+
+	const onPatchAddress = useCallback(async (address: string) => {
+		const id = user.id;
+		const res = await onPatchUserInfo(id, { address: address });
+		if (res) {
+			mutate(`${process.env.END_POINT_USER}/users/me`);
+			Swal.fire({
+				position: "top",
+				icon: "success",
+				html: `주소가 변경되었습니다!`,
+				showConfirmButton: true,
+				timer: 2000,
+			});
+		} else {
+			router.push("/login");
+		}
+	}, []);
+
+	const onPatchShoeSize = useCallback(async (shoeSize: string) => {
+		const id = user.id;
+		const res = await onPatchUserInfo(id, { shoeSize: shoeSize });
+		if (res) {
+			mutate(`${process.env.END_POINT_USER}/users/me`);
+			setIsOpen(false);
+			Swal.fire({
+				position: "top",
+				icon: "success",
+				html: `신발 사이즈가 변경되었습니다!`,
+				showConfirmButton: true,
+				timer: 2000,
+			});
+		} else {
+			router.push("/login");
 		}
 	}, []);
 
@@ -108,7 +163,14 @@ const ProfileEdit: FunctionComponent<ProfileEditProps> = (props) => {
 					{isOpenPwdInput ? (
 						<>
 							<NewInputWrapper>
-								<Input category="password" content="새로운 비밀번호" />
+								<Input
+									category="password"
+									content="새로운 비밀번호"
+									onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+										setNewPwd(e.target.value);
+									}}
+									error={newPwd.length > 0 && !validatePwdFormat(newPwd)}
+								/>
 							</NewInputWrapper>
 							<ChangeButtonWrapper>
 								<Button
@@ -118,7 +180,7 @@ const ProfileEdit: FunctionComponent<ProfileEditProps> = (props) => {
 									취소
 								</Button>
 								<Button
-									onClick={() => console.log(user)}
+									onClick={onPatchPwd}
 									style={{ marginLeft: "10px" }}
 									category="primary"
 								>
@@ -148,7 +210,13 @@ const ProfileEdit: FunctionComponent<ProfileEditProps> = (props) => {
 					{isOpenNameInput ? (
 						<>
 							<NewInputWrapper>
-								<Input category="name" content="새로운 이름" />
+								<Input
+									onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+										setNewName(e.target.value);
+									}}
+									category="name"
+									content="새로운 이름"
+								/>
 							</NewInputWrapper>
 							<ChangeButtonWrapper>
 								<Button
@@ -157,7 +225,11 @@ const ProfileEdit: FunctionComponent<ProfileEditProps> = (props) => {
 								>
 									취소
 								</Button>
-								<Button style={{ marginLeft: "10px" }} category="primary">
+								<Button
+									onClick={onPatchName}
+									style={{ marginLeft: "10px" }}
+									category="primary"
+								>
 									확인
 								</Button>
 							</ChangeButtonWrapper>
@@ -210,7 +282,8 @@ const ProfileEdit: FunctionComponent<ProfileEditProps> = (props) => {
 					category="sizeOnly"
 					onClick={(size) => {
 						setNewShoeSize(size);
-						// FIX ME - 회원 정보 수정 api
+						console.log(size);
+						onPatchShoeSize(size);
 					}}
 				/>
 			</Modal>
@@ -219,7 +292,7 @@ const ProfileEdit: FunctionComponent<ProfileEditProps> = (props) => {
 				onClose={() => setIsOpenKakao(false)}
 				show={isOpenKakao}
 			>
-				<Post setIsOpenKakao={setIsOpenKakao} cb={putUserInfo}></Post>
+				<Post setIsOpenKakao={setIsOpenKakao} cb={onPatchAddress}></Post>
 			</Modal>
 		</ProfileEditWrapper>
 	);

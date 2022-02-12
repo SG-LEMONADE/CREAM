@@ -74,6 +74,7 @@ export default TradeHistory;
 
 const TradeHistoryWrapper = styled.section`
 	margin-top: 60px;
+	padding-bottom: 30px;
 `;
 
 const TradeHistoryTitle = styled.div`

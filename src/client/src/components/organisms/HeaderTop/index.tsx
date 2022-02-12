@@ -28,7 +28,10 @@ const HeaderTop: FunctionComponent = () => {
 	const { data: myInfo } = useSWR<UserInfo>(
 		`${process.env.END_POINT_USER}/users/me`,
 		fetcherWithToken,
-		{ focusThrottleInterval: 60000 },
+		{
+			focusThrottleInterval: 60000,
+			errorRetryInterval: 60000,
+		},
 	);
 
 	const [islogin, setIsLogin] = useState<boolean>(false);
