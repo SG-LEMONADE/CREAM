@@ -58,7 +58,7 @@
 
 <br />
 
-<p align='center'><img src="https://user-images.githubusercontent.com/52649378/153613713-58fe7972-b8ce-4304-9657-dd9ba0197b5f.gif" /></p>
+<p align='center'><img src="https://user-images.githubusercontent.com/52649378/153701586-5d3f7ba7-fd9b-407e-ad2d-3a8b4c051cef.gif" /></p>
 
 - 기본적인 홈 화면 구현.
 
@@ -74,7 +74,7 @@
 
 <br />
 
-<p align='center'><img src="https://user-images.githubusercontent.com/52649378/153614684-6b94a7f8-ba34-4ae0-9fd1-c46d5013db0d.gif" /></p>
+<p align='center'><img src="https://user-images.githubusercontent.com/52649378/153701382-fe1dfc8d-c2f8-4ae4-bfea-de6b579e05a0.gif" /></p>
 
 <br />
 
@@ -82,7 +82,7 @@
 
 <br />
 
-<p align='center'><img src="https://user-images.githubusercontent.com/52649378/153616390-7cc8af6f-0f62-480a-b9cc-5f3e38072726.gif" /></p>
+<p align='center'><img src="https://user-images.githubusercontent.com/52649378/153701283-7cf440b8-9c55-4d09-b25a-8a9922a5f0ac.gif" /></p>
 
 - 로그인 상태라면 해당 제품을 찜 할 수 있음.
 
@@ -98,7 +98,7 @@
 
 <br />
 
-<p align='center'><img src="https://user-images.githubusercontent.com/52649378/153616978-b670d860-c339-4bb6-a4ea-778736620a2c.gif"/></p>
+<p align='center'><img src="https://user-images.githubusercontent.com/52649378/153702462-b6dab30d-ce53-41a7-91b3-b78711fcca99.gif" /></p>
 
 - 홈 화면 내 브랜드 클릭시 해당 브랜드를 키워드로 검색.
 
@@ -110,7 +110,7 @@
 
 #### 기본
 
-<p align='center'><img src="https://user-images.githubusercontent.com/52649378/153637885-a215ec02-87c8-40ad-888d-95bc315974bd.gif"/></p>
+<p align='center'><img src="https://user-images.githubusercontent.com/52649378/153701772-b6a2f882-ac55-438e-bc45-0ea085da5760.gif"/></p>
 
 <br />
 
@@ -122,7 +122,7 @@
 
 <br />
 
-<p align='center'><img src="https://user-images.githubusercontent.com/52649378/153640809-b1283ba8-25dd-4925-8234-4c7ccb606162.gif" /></p>
+<p align='center'><img src="https://user-images.githubusercontent.com/52649378/153702417-7b290c13-f704-4ed5-ac1b-e4a9dbf9d3f1.gif" /></p>
 
 <br />
 
@@ -166,20 +166,84 @@
 
 <br />
 
+### 마이 프로필
+
+<br />
+
+#### 기본
+
+<br />
+
+<p align='center'><img src="https://user-images.githubusercontent.com/52649378/153699896-25264afc-3821-4c3f-9815-ab7a0c509681.gif" /></p>
+
+<br />
+
+- 내 기본 정보, 구매 내역, 판매 내역, 관심상품을 한눈에 볼수 있게 구성.
+
+- 좌측 사이드바에 메뉴를 통해 상세 내역 확인 가능.
+
+<br />
+
+#### 구매 내역, 판매 내역, 관심 목록 상세
+
+<br />
+
+<p align='center'><img src="https://user-images.githubusercontent.com/52649378/153699872-3dc98905-c950-4814-8b2a-4d280d565b04.gif" /></p>
+
+<br />
+
+- 구매 / 판매 내역 상세 페이지 내부 - 입찰 대기중 / 진행 중 / 완료 별 필터링 기능
+
+- 찜 목록 확인 가능, 삭제 기능 구현.
+
+<br />
+
+#### 내 정보 수정
+
+<br />
+
+<p align='center'><img src="https://user-images.githubusercontent.com/52649378/153699397-2f048dce-bfa9-4039-b7bc-88acec8c7de9.gif" /></p>
+
+<br />
+
+- 내 정보 수정 페이지 구성.
+
+- 비밀번호 및 닉네임 수정, 그리고 주소 추가 및 신발 사이즈 변경 기능 구현.
+
+<br />
+
+---
+
+## 설계 및 구현, 폴더구조
+
+<br />
+
+### Atomic Design Pattern 적용.
+
 <p align='center'><img src="" /></p>
+
+<br />
+
+<br />
+
 <p align='center'><img src="" /></p>
+
+<br />
+
+<br />
+
 <p align='center'><img src="" /></p>
+
+<br />
+
+<br />
+
 <p align='center'><img src="" /></p>
+
+<br />
+
+<br />
+
 <p align='center'><img src="" /></p>
-<p align='center'><img src="" /></p>
-<p align='center'><img src="" /></p>
-<p align='center'><img src="" /></p>
-<p align='center'><img src="" /></p>
-<p align='center'><img src="" /></p>
-<p align='center'><img src="" /></p>
-<p align='center'><img src="" /></p>
-<p align='center'><img src="" /></p>
-<p align='center'><img src="" /></p>
-<p align='center'><img src="" /></p>
-<p align='center'><img src="" /></p>
-<p align='center'><img src="" /></p>
+
+<br />
