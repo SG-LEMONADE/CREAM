@@ -59,17 +59,32 @@ final class NavigateMenuBaseController: UITabBarController {
                 guard let baseURL = URL(string: "http://1.231.16.189:8081")
                 else { fatalError() }
                 
-                let config: NetworkConfigurable = ApiDataNetworkConfig(baseURL: baseURL)
-                let networkService: NetworkService = DefaultNetworkService(config: config)
-                let dataTransferService: DataTransferService = DefaultDataTransferService(with: networkService)
-                let repository: ProductRepositoryInterface = ProductRepository(dataTransferService: dataTransferService)
-                let usecase: ProductUseCaseInterface = ProductUseCase(repository)
-                let viewModel: ProductListViewModelInterface = ProductListViewModel(usecase)
-                let listViewController = ProductListViewController(viewModel)
+                let config: NetworkConfigurable                             = ApiDataNetworkConfig(baseURL: baseURL)
+                let networkService: NetworkService                          = DefaultNetworkService(config: config)
+                let dataTransferService: DataTransferService                = DefaultDataTransferService(with: networkService)
+                let repository: ProductRepositoryInterface                  = ProductRepository(dataTransferService: dataTransferService)
+                let usecase: ProductUseCaseInterface                        = ProductUseCase(repository)
+                let viewModel: ProductListViewModelInterface                = ProductListViewModel(usecase)
+                let productListViewController: ProductListViewController    = ProductListViewController(viewModel)
                 
-                return listViewController
+                return productListViewController
             case .my:
-                let viewModel: MyPageViewModel = MyPageViewModel()
+                guard let tradeBaseURL = URL(string: "http://1.231.16.189:8081"),
+                      let userBaseURL = URL(string: "http://1.231.16.189:8080")
+                else { fatalError() }
+                let userConfig: NetworkConfigurable                     = ApiDataNetworkConfig(baseURL: userBaseURL)
+                let userNetworkService: NetworkService                  = DefaultNetworkService(config: userConfig)
+                let userDataTransferService: DataTransferService        = DefaultDataTransferService(with: userNetworkService)
+                
+                let tradeConfig: NetworkConfigurable                     = ApiDataNetworkConfig(baseURL: tradeBaseURL)
+                let tradeNetworkService: NetworkService                  = DefaultNetworkService(config: tradeConfig)
+                let tradeDatatransferService: DataTransferService        = DefaultDataTransferService(with: tradeNetworkService)
+                
+                let tradeRepository: TradeRepositoryInterface           = ProductRepository(dataTransferService: tradeDatatransferService)
+                let userRepository: UserRepositoryInterface             = UserRepository(dataTransferService: userDataTransferService)
+                let usecase: MyPageUseCaseInterface                     = MyPageUseCase(userRepository: userRepository,
+                                                                                        tradeRepository: tradeRepository)
+                let viewModel: MyPageViewModel = MyPageViewModel(usecase)
                 let mypageViewController = MyPageViewController(viewModel)
                 
                 return mypageViewController

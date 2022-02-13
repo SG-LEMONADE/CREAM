@@ -59,6 +59,20 @@ struct APIEndpoints {
                         headerParamaters: headerParameters)
     }
     
+    static func fetchUserInfo() -> Endpoint<UserResponseDTO> {
+        var headerParameters: [String: String] = ["Content-Type":"application/json"]
+        
+        _ = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.accessToken)
+            .map { "Bearer-\($0)" }
+            .flatMap {
+                headerParameters.updateValue($0, forKey: "Authorization")
+            }
+        
+        return Endpoint(path: "users/me",
+                        method: .get,
+                        headerParamaters: headerParameters)
+    }
+    
     static func reissueToken() -> Endpoint<AuthResponseDTO> {
         var bodyParameters: [String: Any] = [:]
         
@@ -124,5 +138,25 @@ struct APIEndpoints {
         return Endpoint(path: "filters",
                         method: .get,
                         headerParamaters: ["Content-Type":"application/json"])
+    }
+    
+    // MARK: - Trade API
+    static func fetchTradeInfo(type: TradeType) -> Endpoint<TradeResponseDTO> {
+        let queryParameters: [String: Any] = ["cursor": 0,
+                                              "perPage": 20,
+                                              "requestType": type.requestString,
+                                              "tradeStatus": "ALL"]
+        var headerParameters: [String: String] = ["Content-Type":"application/json"]
+        
+        _ = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.accessToken)
+            .map { "Bearer-\($0)" }
+            .flatMap {
+                headerParameters.updateValue($0, forKey: "Authorization")
+            }
+        
+        return Endpoint(path: "trades",
+                        method: .post,
+                        headerParamaters: headerParameters,
+                        queryParameters: queryParameters)
     }
 }

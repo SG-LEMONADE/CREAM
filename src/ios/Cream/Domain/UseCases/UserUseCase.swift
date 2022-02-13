@@ -20,6 +20,7 @@ protocol UserUseCaseInterface {
     func removeToken(completion: @escaping (Result<Void, UserError>) -> Void)
     func verifyToken(completion: @escaping (Result<Void, UserError>) -> Void)
     func reissuanceToken(completion: @escaping (Result<Auth, UserError>) -> Void)
+    func fetchUserInfo(completion: @escaping (Result<User, UserError>) -> Void)
 }
 
 final class UserUseCase: UserUseCaseInterface {
@@ -145,6 +146,28 @@ final class UserUseCase: UserUseCaseInterface {
                 else { return }
                 
                 switch errorMessage.code {
+                case ErrorList.INTERNAL_SERVER_ERROR:
+                    completion(.failure(.networkUnconnected))
+                default:
+                    completion(.failure(.unknownError(error)))
+                }
+            }
+        }
+    }
+    
+    func fetchUserInfo(completion: @escaping (Result<User, UserError>) -> Void) {
+        _ = repository.fetchUserInfo { result in
+            switch result {
+            case .success(let result):
+                completion(.success(result))
+            case .failure(let error):
+                guard let decodedError = error as? DataTransferError,
+                      let errorMessage = decodedError.errorMessage
+                else { return }
+                
+                switch errorMessage.code {
+                case ErrorList.INVALID_INPUT_VALUE:
+                    completion(.failure(.authInvalid))
                 case ErrorList.INTERNAL_SERVER_ERROR:
                     completion(.failure(.networkUnconnected))
                 default:

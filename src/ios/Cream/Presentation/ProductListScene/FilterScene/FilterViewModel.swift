@@ -7,42 +7,6 @@
 
 import Foundation
 
-protocol FilterRepositoryInterface {
-    func fetchFilter(completion: @escaping ((Result<Filter, Error>) -> Void)) -> Cancellable
-}
-
-
-// MARK: - UseCase
-protocol FilterUseCaseInterface {
-    func fetch(category: String?, collections: [String: Any]?, completion: @escaping (Result<Filter, Error>) -> Void)
-    func fetchFilter(completion: @escaping (Result<Filter, Error>) -> Void)
-}
-
-final class FilterUseCase {
-    private let repository: FilterRepositoryInterface
-    
-    init(_ repository: FilterRepositoryInterface) {
-        self.repository = repository
-    }
-}
-
-extension FilterUseCase: FilterUseCaseInterface {
-    func fetch(category: String?, collections: [String: Any]?, completion: @escaping (Result<Filter, Error>) -> Void) {
-        
-    }
-    
-    func fetchFilter(completion: @escaping (Result<Filter, Error>) -> Void) {
-        _ = repository.fetchFilter { result in
-            switch result {
-            case .success(let filter):
-                completion(.success(filter))
-            case .failure(let error):
-                completion(.failure(error))
-            }
-        }
-    }
-}
-
 // MARK: - ViewModel
 protocol FilterViewModelInput {
     func viewDidLoad()

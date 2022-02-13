@@ -99,4 +99,19 @@ extension UserRepository: UserRepositoryInterface {
         })
         return task
     }
+    
+    func fetchUserInfo(completion: @escaping (Result<User, Error>) -> Void) -> Cancellable {
+        let endpoint = APIEndpoints.fetchUserInfo()
+        
+        let task = RepositoryTask()
+        task.networkTask = dataTransferService.request(with: endpoint, completion: { result in
+            switch result {
+            case .success(let response):
+                completion(.success(response.toDomain()))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        })
+        return task
+    }
 }

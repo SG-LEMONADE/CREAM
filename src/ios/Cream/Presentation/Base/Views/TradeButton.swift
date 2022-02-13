@@ -86,6 +86,15 @@ enum TradeType: String, CustomStringConvertible {
         }
     }
     
+    var requestString: String {
+        switch self {
+        case .buy:
+            return "ASK"
+        case .sell:
+            return "BID"
+        }
+    }
+    
     var navigationTitle: String {
         return self.description+"하기"
     }

@@ -19,4 +19,5 @@ protocol UserRepositoryInterface {
     func removeToken(completion: @escaping (Result<Void, Error>) -> Void) -> Cancellable
     func verifyToken(completion: @escaping (Result<Void, Error>) -> Void) -> Cancellable
     func reissueToken(completion: @escaping (Result<Auth, Error>) -> Void) -> Cancellable
+    func fetchUserInfo(completion: @escaping (Result<User, Error>) -> Void) -> Cancellable
 }

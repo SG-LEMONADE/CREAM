@@ -30,6 +30,7 @@ enum ErrorList {
 
 // MARK: - User Error
 enum UserError: Error {
+    case authInvalid
     case userNotAccepted
     case duplicatedEmail
     case networkUnconnected
@@ -43,6 +44,7 @@ enum UserError: Error {
         case .networkUnconnected:   return "서버 문제로 로그인에 실패했습니다.\n 개발자에게 문의해주세요."
         case .needEmailVerified:    return "이메일 인증이 필요합니다.\n인증을 진행해주세요."
         case .unknownError(_):      return "알수없는 에러 발생.\n 개발자에게 문의해주세요."
+        case .authInvalid:          return "로그아웃 후, 다시 로그인해주세요."
         }
     }
 }
