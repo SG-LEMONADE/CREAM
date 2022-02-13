@@ -49,13 +49,14 @@ class ProductRepositoryImpl :
         sort: String?,
         filter: FilterRequestDTO
     ): List<ProductPriceWishDTO> {
+        // 비 로그인시 상품 목록 반환
         return jpaQueryFactory.select(
             QProductPriceWishDTO(
                 productEntity,
-                Expressions.asString(""),
-                Expressions.`as`(lowestAskQuery(null), "lowestAsk"),
-                Expressions.`as`(highestBidQuery(null), "highestBid"),
-                Expressions.`as`(premiumPriceQuery(null), "premiumPrice")
+                Expressions.asString(""), // 비로그인 했기에 찜 목록은 null 값이 들어갑니다.
+                Expressions.`as`(lowestAskQuery(null), "lowestAsk"), // 최저 판매 가격
+                Expressions.`as`(highestBidQuery(null), "highestBid"), // 최고 구매 가격
+                Expressions.`as`(premiumPriceQuery(null), "premiumPrice") // 직전 거래 가격과 상품 발매 가격의 차
             )
         ).from(productEntity)
             .where(
@@ -83,9 +84,11 @@ class ProductRepositoryImpl :
         sort: String?,
         filter: FilterRequestDTO
     ): List<ProductPriceWishDTO> {
+        // 로그인 시 상품 목록 + 내 사이즈 별 찜 여부 반환
         return jpaQueryFactory.select(
             QProductPriceWishDTO(
                 productEntity,
+                // 유저가 찜 한 사이즈들을 종합해 "230,240" 문자열 형식으로 반환 합니다.
                 Expressions.stringTemplate("group_concat({0})", wishEntity.size),
                 Expressions.`as`(lowestAskQuery(null), "lowestAsk"),
                 Expressions.`as`(highestBidQuery(null), "highestBid"),
@@ -118,13 +121,14 @@ class ProductRepositoryImpl :
         productId: Long,
         size: String?
     ): ProductPriceWishDTO {
+        // 비 로그인 시에 상품 하나의 정보
         return jpaQueryFactory.select(
             QProductPriceWishDTO(
                 productEntity,
                 Expressions.asString(""),
-                lowestAskQuery(size),
-                highestBidQuery(size),
-                premiumPriceQuery(size)
+                lowestAskQuery(size), // 최저 판매 가격 - 리스트와 다르게 조건문에서 사용될 일이 없기 때문에 as를 사용하지 않았습니다.
+                highestBidQuery(size), // 최고 구매 가격
+                premiumPriceQuery(size) // 직전 거래 가격과 상품 발매 가격차
             )
         ).from(productEntity)
             .where(productEntity.id.eq(productId))
@@ -136,9 +140,11 @@ class ProductRepositoryImpl :
         productId: Long,
         size: String?
     ): ProductPriceWishDTO {
+        // 로그인 시에 상품의 어떤 사이즈를 찜했는지 같이 문자열 형태로 반환해 줍니다.
         return jpaQueryFactory.select(
             QProductPriceWishDTO(
                 productEntity,
+                //  ex) "270,280,300"
                 Expressions.stringTemplate("group_concat({0})", wishEntity.size),
                 lowestAskQuery(size),
                 highestBidQuery(size),
@@ -158,6 +164,7 @@ class ProductRepositoryImpl :
         productId: Long,
         requestType: RequestType
     ): MutableList<ProductPriceBySizeDTO>? {
+        // 상품의 최저, 최고 가격들을 사이즈별로 반환해 줍니다.
         return jpaQueryFactory.select(
             Projections.constructor(
                 ProductPriceBySizeDTO::class.java,
@@ -181,6 +188,7 @@ class ProductRepositoryImpl :
         offset: Long,
         limit: Long,
     ): List<WishedProductDTO> {
+        // 찜한 상품들의 정보를 반환합니다.
         return jpaQueryFactory.select(
             QWishedProductDTO(
                 wishEntity.product.id,
@@ -206,10 +214,12 @@ class ProductRepositoryImpl :
             .fetch()
     }
 
-    val lowestAsk: NumberPath<Int> = Expressions.numberPath(Int::class.java, "lowestAsk")
-    val premiumPrice: NumberPath<Int> = Expressions.numberPath(Int::class.java, "premiumPrice")
-    val highestBid: NumberPath<Int> = Expressions.numberPath(Int::class.java, "highestBid")
+    // alias 로 사용해 주기 위해 먼저 선언해줍니다.
+    val lowestAsk: NumberPath<Int> = Expressions.numberPath(Int::class.java, "lowestAsk") // 최저 판매가
+    val premiumPrice: NumberPath<Int> = Expressions.numberPath(Int::class.java, "premiumPrice") // 직전 거래 - 상품 발매 가격
+    val highestBid: NumberPath<Int> = Expressions.numberPath(Int::class.java, "highestBid")// 최고 구매가
 
+    // 아래는 가격 정보를 위한 스칼라 서브쿼리와 검색 필터를 위한 함수들입니다.
     private fun lowestAskQuery(
         size: String?
     ): JPQLQuery<Int> {
@@ -271,12 +281,14 @@ class ProductRepositoryImpl :
     }
 
     private fun inBrandId(brandId: String?): BooleanExpression? {
+        // 브랜드 id 검색
         return if (brandId.isNullOrBlank()) null else productEntity.brand.id.`in`(
             brandId.split(",").map { it.toLong() }
         )
     }
 
     private fun inCollectionId(collectionId: String?): BooleanExpression? {
+        // collection id 검색
         return if (collectionId.isNullOrBlank()) null else productEntity.collection.id.`in`(
             collectionId.split(",").map { it.toLong() }
         )
@@ -299,6 +311,7 @@ class ProductRepositoryImpl :
     }
 
     private fun getOrder(sort: String?): OrderSpecifier<*> {
+        // 순서를 결정합니다.
         val defaultOrder = OrderSpecifier(Order.DESC, productEntity.totalSale)
         when (sort) {
             ("released_date") -> {
