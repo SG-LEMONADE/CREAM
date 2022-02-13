@@ -152,10 +152,12 @@ MVC 패턴에서 ViewController가 컨트롤러의 역할을 할때와는 달리
 
     View와 ViewModel간의 의존 관계에 대해 View ViewModel에 대한 분리 과정에서 의존성을 줄이고자 하는 선택을 하고 싶었다.
 </br>
+
 2. **분리한 구조에 맞춰 의존성 주입 방식을 활용했다.**
     생성자를 통해 의존성을 주입했기 때문에 init() 의 매개변수를 통해 요구되는 의존성을 파악할 수 있도록 했다.
     따라서 viewModel을 테스트하기 위해 UseCaseInterface를 채택한 MockUseCase을 주입해 UseCase가 원하는 동작을 하도록 설정한다면 ViewModel이 독립적으로 테스트가 가능하다.
-</br>    
+</br>   
+ 
 3. **모든 View는 ViewModel을 가지도록 하기 위해, 제네릭을 활용한 [DIViewController.swift](https://github.com/SG-LEMONADE/CREAM/blob/develop/src/ios/Cream/Presentation/Base/DIViewController.swift)를 선언하고, 이를 상속하도록 구성함.**
 
 
