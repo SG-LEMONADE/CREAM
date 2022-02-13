@@ -275,7 +275,7 @@ const ProfileEdit: FunctionComponent<ProfileEditProps> = (props) => {
 				category="wish"
 				onClose={() => setIsOpen(false)}
 				show={isOpen}
-				title="관심 상품 추가"
+				title="사이즈를 선택해주세요."
 			>
 				<ProductSizeSelectGrid
 					activeSizeOption={newShoeSize}
