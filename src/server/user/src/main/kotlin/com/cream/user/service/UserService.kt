@@ -34,15 +34,18 @@ class UserService {
 
     var passwordEncoder: PasswordEncoder = BCryptPasswordEncoder()
 
-    fun create(userDTO: RegisterUserDTO): ResponseUserDTO {
+    fun create(
+        userDTO: RegisterUserDTO
+    ): ResponseUserDTO {
+        // 유저 생성
         val user = userDTO.toEntity(passwordEncoder)
-        if (user.email == "") {
-            throw UserCustomException(ErrorCode.INVALID_INPUT_VALUE)
-        }
+
         val email: String = user.email
         if (userRepository.existsByEmail(email)) {
+            // 중복되는 이메일이 있을 경우
             throw UserCustomException(ErrorCode.DUPLICATED_USER_EMAIL)
         }
+
         mailSender.sendEmail(email, 0, redisTemplate)
         return ResponseUserDTO(userRepository.save(user))
     }
@@ -50,6 +53,7 @@ class UserService {
     fun getValidationToken(
         userDTO: LoginDTO
     ): TokenDTO {
+        // 유저 로그인 시 토큰 값 반환
         val user: User = getByCredentials(userDTO.email, userDTO.password, passwordEncoder)
 
         when (user.status) {
@@ -69,8 +73,11 @@ class UserService {
 
         val token: String = tokenProvider.create(user)
         val refreshToken: String = tokenProvider.create(user, isRefresh = true)
+
+        // 리프레시 토큰 redis 저장
         val stringValueOperation = redisTemplate.opsForValue()
         stringValueOperation.set("refresh-${user.id}", refreshToken, 7, TimeUnit.DAYS)
+
         user.lastLoginDatetime = LocalDateTime.now()
         userRepository.save(user)
 
@@ -80,13 +87,14 @@ class UserService {
     fun refreshToken(
         tokenDTO: TokenDTO
     ): TokenDTO {
-        // 둘다 Bearer 앞에 와야합니다.
+        // "Bearer "가 토큰 값 앞에 와야합니다.
         val refreshToken: String = tokenDTO.refreshToken
 
         val userId = tokenProvider.validateAndGetUserId(refreshToken)
 
         val stringValueOperation = redisTemplate.opsForValue()
         val storedToken: String? = stringValueOperation.get("refresh-$userId")
+        //refresh token 유효성 확인
         if (storedToken == null || storedToken != refreshToken.substring(7)) {
             throw UserCustomException(ErrorCode.REFRESH_TOKEN_EXPIRED)
         }
@@ -95,6 +103,7 @@ class UserService {
         val newAccessToken = tokenProvider.create(user)
         val newRefreshToken = tokenProvider.create(user, isRefresh = true)
 
+        // refresh token 업데이트
         stringValueOperation.set("refresh-$userId", newRefreshToken, 7, TimeUnit.DAYS)
         return TokenDTO(userId, newAccessToken, newRefreshToken)
     }
@@ -104,6 +113,7 @@ class UserService {
         email: String,
         hash: String
     ) {
+        // 유저 이메일 인증 hash 값 확인
         val stringValueOperation = redisTemplate.opsForValue()
         val storedHash: String? = stringValueOperation.get(email)
         if (storedHash == null || storedHash != hash) {
@@ -120,10 +130,13 @@ class UserService {
         userId: Long,
         userUpdateDTO: UpdateUserDTO,
     ): ResponseUserDTO {
+        // 유저 업데이트
         val user = userRepository.findById(userId).orElseThrow()
 
         if (userUpdateDTO.password != null) {
+            // 비밀번호 변경 시
             if (passwordEncoder.matches(user.password, userUpdateDTO.password))
+                // 전에 사용했던 비밀번호와 같을 때 변경 불가
                 throw UserCustomException(ErrorCode.USER_NEW_PASSWORD_SAME_AS_OLD)
             user.password = passwordEncoder.encode(userUpdateDTO.password)
             user.passwordChangedDatetime = LocalDateTime.now()
@@ -137,7 +150,23 @@ class UserService {
         return ResponseUserDTO(userRepository.save(user))
     }
 
-    fun getByCredentials(
+    fun getMe(
+        token: String
+    ): ResponseUserDTO {
+        // 내 정보 반환
+        val userId = tokenProvider.validateAndGetUserId(token)
+        return ResponseUserDTO(userRepository.getById(userId))
+    }
+
+    fun logout(
+        token: String
+    ) {
+        val userId = tokenProvider.validateAndGetUserId(token)
+        // 로그아웃 시 refresh token 삭제
+        redisTemplate.delete("refresh-$userId")
+    }
+
+    private fun getByCredentials(
         email: String,
         password: String,
         encoder: PasswordEncoder
@@ -145,19 +174,5 @@ class UserService {
         val user = userRepository.findOneByEmail(email) ?: throw UserCustomException(ErrorCode.USER_EMAIL_NOT_FOUND)
         if (encoder.matches(password, user.password)) return user
         else throw UserCustomException(ErrorCode.USER_PASSWORD_NOT_MATCH)
-    }
-
-    fun getMe(
-        token: String
-    ): ResponseUserDTO {
-        val userId = tokenProvider.validateAndGetUserId(token)
-        return ResponseUserDTO(userRepository.getById(userId))
-    }
-
-    fun logOut(
-        token: String
-    ) {
-        val userId = tokenProvider.validateAndGetUserId(token)
-        redisTemplate.delete("refresh-$userId")
     }
 }

@@ -68,10 +68,10 @@ class UserController {
     }
 
     @PostMapping("/logout")
-    fun logOut(
+    fun logout(
         @RequestHeader("Authorization") token: String
     ): ResponseEntity<Unit> {
-        return ResponseEntity.ok(userService.logOut(token))
+        return ResponseEntity.ok(userService.logout(token))
     }
 
     @PatchMapping("/{id}")
