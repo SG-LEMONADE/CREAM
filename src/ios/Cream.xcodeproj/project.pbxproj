@@ -120,10 +120,7 @@
 		7BB01117278BCA54005E5C9E /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BB01116278BCA54005E5C9E /* Observable.swift */; };
 		7BB01121278BD66C005E5C9E /* UIView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BB01120278BD66C005E5C9E /* UIView+.swift */; };
 		7BDA400D278978500093E75F /* BetterSegmentedControl in Frameworks */ = {isa = PBXBuildFile; productRef = 7BDA400C278978500093E75F /* BetterSegmentedControl */; };
-		7BDA40132789793B0093E75F /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 7BDA40122789793B0093E75F /* Alamofire */; };
-		7BDA4016278979AB0093E75F /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 7BDA4015278979AB0093E75F /* Kingfisher */; };
 		7BDA4019278A9BF70093E75F /* BSImagePicker in Frameworks */ = {isa = PBXBuildFile; productRef = 7BDA4018278A9BF70093E75F /* BSImagePicker */; };
-		7BDA4021278A9D540093E75F /* SwipeCellKit in Frameworks */ = {isa = PBXBuildFile; productRef = 7BDA4020278A9D540093E75F /* SwipeCellKit */; };
 		7BF82E0227A2CD18007E0A79 /* JoinRequestDTO+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BF82E0127A2CD17007E0A79 /* JoinRequestDTO+Mapping.swift */; };
 		7BF82E0427A2CD2B007E0A79 /* JoinResponseDTO+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BF82E0327A2CD2B007E0A79 /* JoinResponseDTO+Mapping.swift */; };
 		7BF82E0627A38558007E0A79 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BF82E0527A38558007E0A79 /* User.swift */; };
@@ -269,12 +266,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7BDA4016278979AB0093E75F /* Kingfisher in Frameworks */,
 				7BDA400D278978500093E75F /* BetterSegmentedControl in Frameworks */,
-				7BDA40132789793B0093E75F /* Alamofire in Frameworks */,
 				7BDA4019278A9BF70093E75F /* BSImagePicker in Frameworks */,
 				7BB0110F278BBBAC005E5C9E /* SnapKit in Frameworks */,
-				7BDA4021278A9D540093E75F /* SwipeCellKit in Frameworks */,
 				3AA6865D5E6AC36E76D7F9E1 /* Pods_Cream.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -761,10 +755,7 @@
 			name = Cream;
 			packageProductDependencies = (
 				7BDA400C278978500093E75F /* BetterSegmentedControl */,
-				7BDA40122789793B0093E75F /* Alamofire */,
-				7BDA4015278979AB0093E75F /* Kingfisher */,
 				7BDA4018278A9BF70093E75F /* BSImagePicker */,
-				7BDA4020278A9D540093E75F /* SwipeCellKit */,
 				7BB0110E278BBBAC005E5C9E /* SnapKit */,
 			);
 			productName = Cream;
@@ -797,10 +788,7 @@
 			mainGroup = 7B36DB012789202800D8ACB0;
 			packageReferences = (
 				7BDA400B278978500093E75F /* XCRemoteSwiftPackageReference "BetterSegmentedControl" */,
-				7BDA40112789793B0093E75F /* XCRemoteSwiftPackageReference "Alamofire" */,
-				7BDA4014278979AB0093E75F /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				7BDA4017278A9BF70093E75F /* XCRemoteSwiftPackageReference "BSImagePicker" */,
-				7BDA401F278A9D540093E75F /* XCRemoteSwiftPackageReference "SwipeCellKit" */,
 				7BB0110D278BBBAB005E5C9E /* XCRemoteSwiftPackageReference "SnapKit" */,
 			);
 			productRefGroup = 7B36DB0B2789202800D8ACB0 /* Products */;
@@ -1218,36 +1206,12 @@
 				minimumVersion = 2.0.0;
 			};
 		};
-		7BDA40112789793B0093E75F /* XCRemoteSwiftPackageReference "Alamofire" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
-			requirement = {
-				branch = master;
-				kind = branch;
-			};
-		};
-		7BDA4014278979AB0093E75F /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/onevcat/Kingfisher.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 7.0.0;
-			};
-		};
 		7BDA4017278A9BF70093E75F /* XCRemoteSwiftPackageReference "BSImagePicker" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/mikaoj/BSImagePicker.git";
 			requirement = {
 				branch = master;
 				kind = branch;
-			};
-		};
-		7BDA401F278A9D540093E75F /* XCRemoteSwiftPackageReference "SwipeCellKit" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/idiel/SwipeCellKit.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 2.0.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -1263,25 +1227,10 @@
 			package = 7BDA400B278978500093E75F /* XCRemoteSwiftPackageReference "BetterSegmentedControl" */;
 			productName = BetterSegmentedControl;
 		};
-		7BDA40122789793B0093E75F /* Alamofire */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 7BDA40112789793B0093E75F /* XCRemoteSwiftPackageReference "Alamofire" */;
-			productName = Alamofire;
-		};
-		7BDA4015278979AB0093E75F /* Kingfisher */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 7BDA4014278979AB0093E75F /* XCRemoteSwiftPackageReference "Kingfisher" */;
-			productName = Kingfisher;
-		};
 		7BDA4018278A9BF70093E75F /* BSImagePicker */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 7BDA4017278A9BF70093E75F /* XCRemoteSwiftPackageReference "BSImagePicker" */;
 			productName = BSImagePicker;
-		};
-		7BDA4020278A9D540093E75F /* SwipeCellKit */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 7BDA401F278A9D540093E75F /* XCRemoteSwiftPackageReference "SwipeCellKit" */;
-			productName = SwipeCellKit;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
