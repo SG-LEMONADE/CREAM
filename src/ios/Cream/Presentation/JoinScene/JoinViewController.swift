@@ -8,13 +8,9 @@
 import UIKit
 import Toast_Swift
 
-final class JoinViewController: BaseDIViewController<JoinViewModel> {
+final class JoinViewController: DIViewController<JoinViewModelInterface> {
 
     private lazy var joinView = JoinView()
-    
-    override init(_ viewModel: JoinViewModel) {
-        super.init(viewModel)
-    }
     
     override func loadView() {
         self.view = joinView
@@ -116,7 +112,7 @@ extension JoinViewController {
     
     @objc
     func didSelectSneakersSize() {
-        let sizeListViewModel: SizeListViewModel = DefaultSizeListViewModel()
+        let sizeListViewModel: SizeListViewModel = SizeListViewModel()
         let sizeListViewController = SizeListViewController(sizeListViewModel)
         sizeListViewController.delegate = self
         sizeListViewController.modalPresentationStyle = .overCurrentContext

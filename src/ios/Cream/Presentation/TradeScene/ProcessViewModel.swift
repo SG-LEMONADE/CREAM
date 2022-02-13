@@ -15,11 +15,11 @@ protocol ProcessViewModelOutput {
     
 }
 
-protocol ProcessViewModel: ProcessViewModelInput, ProcessViewModelOutput {
+protocol ProcessViewModelInterface: ProcessViewModelInput, ProcessViewModelOutput {
     
 }
 
-final class DefaultProcessViewModel: ProcessViewModel {
+final class ProcessViewModel: ProcessViewModelInterface {
     func viewDidLoad() {
          
     }

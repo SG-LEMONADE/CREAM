@@ -20,9 +20,9 @@ protocol SizeListViewModelOutput {
     func getCellViewModel(at indexPath: IndexPath, completion: @escaping (String) -> Void)
 }
 
-protocol SizeListViewModel: SizeListViewModelInput, SizeListViewModelOutput { }
+protocol SizeListViewModelInterface: SizeListViewModelInput, SizeListViewModelOutput { }
 
-final class DefaultSizeListViewModel: SizeListViewModel {
+final class SizeListViewModel: SizeListViewModelInterface {
     var size: Observable<String> = Observable("")
     var sizeList: Observable<[String]> = Observable([])
     

@@ -11,7 +11,7 @@ protocol FooterScrollDelegate: AnyObject {
     func didScrollTo(_ page: Int)
 }
 
-class ProductViewController: BaseDIViewController<ProductViewModel> {
+class ProductViewController: DIViewController<ProductViewModelInterface> {
     // MARK: Properties
     weak var delegate: FooterScrollDelegate?
     
@@ -23,10 +23,6 @@ class ProductViewController: BaseDIViewController<ProductViewModel> {
     
     private lazy var productView = ProductView()
     
-    // MARK: Init
-    override init(_ viewModel: ProductViewModel) {
-        super.init(viewModel)
-    }
     
     // MARK: View Life Cycle
     override func loadView() {
@@ -60,7 +56,7 @@ class ProductViewController: BaseDIViewController<ProductViewModel> {
 
 extension ProductViewController: TradeDelegate {
     func moveFocusToProcessScene() {
-        let processViewController = ProcessViewController(DefaultProcessViewModel())
+        let processViewController = ProcessViewController(ProcessViewModel())
         let navigationController = UINavigationController(rootViewController: processViewController)
         navigationController.modalPresentationStyle = .fullScreen
         self.present(navigationController, animated: true, completion: nil)
@@ -90,7 +86,7 @@ extension ProductViewController {
     
     @objc
     func didTapBuyButton() {
-        let tradeViewController = TradeViewController(DefaultTradeViewModel(tradeType: .buy,
+        let tradeViewController = TradeViewController(TradeViewModel(tradeType: .buy,
                                                                             viewModel.item.value))
         let navigationController = UINavigationController(rootViewController: tradeViewController)
         tradeViewController.delegate = self
@@ -99,7 +95,7 @@ extension ProductViewController {
     
     @objc
     func didTapSellButton() {
-        let tradeViewController = TradeViewController(DefaultTradeViewModel(tradeType: .sell,
+        let tradeViewController = TradeViewController(TradeViewModel(tradeType: .sell,
                                                                             viewModel.item.value))
         let navigationController = UINavigationController(rootViewController: tradeViewController)
         self.present(navigationController, animated: true)
@@ -223,7 +219,7 @@ extension ProductViewController: UICollectionViewDataSource, UICollectionViewDel
 extension ProductViewController: ItemInfoCellDelegate {
     // TODO: Button Tap 이후, 상품에 해당하는 사이즈 가져오기
     func didTapSizeButton() {
-        let sizeListViewController = SizeListViewController(DefaultSizeListViewModel(viewModel.item.value.sizes))
+        let sizeListViewController = SizeListViewController(SizeListViewModel(viewModel.item.value.sizes))
         sizeListViewController.modalPresentationStyle = .overCurrentContext
         self.present(sizeListViewController, animated: false)
     }

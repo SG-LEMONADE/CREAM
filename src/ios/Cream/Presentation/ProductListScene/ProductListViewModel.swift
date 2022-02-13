@@ -23,12 +23,12 @@ protocol ProductListViewModelOutput {
     var sortStandard: SortInfo { get set }
 }
 
-protocol ProductListViewModel: ProductListViewModelInput, ProductListViewModelOutput {
+protocol ProductListViewModelInterface: ProductListViewModelInput, ProductListViewModelOutput {
     var categories: [String] { get }
     var banners: [String] { get }
 }
 
-final class DefaultListViewModel: ProductListViewModel {
+final class ProductListViewModel: ProductListViewModelInterface {
     var usecase: ProductUseCaseInterface
     var products: Observable<Products> = Observable([])
     var error: Observable<String> = Observable("")

@@ -11,7 +11,7 @@ protocol SortSelectDelegate: AnyObject {
     func updateListData(_ standard: String)
 }
 
-final class SortViewController: BaseDIViewController<SortViewModel> {
+final class SortViewController: DIViewController<SortViewModelInterface> {
     
     private lazy var sortView = SortView(frame: .zero,
                                          defaultHeight: viewModel.heightInfo)
@@ -112,7 +112,6 @@ extension SortViewController: UITableViewDataSource {
         content.textProperties.color = .black
         content.text = viewModel.filters[indexPath.row].translatedString
         cell.contentConfiguration = content
-        print(viewModel.filters[indexPath.row])
         return cell
     }
 }

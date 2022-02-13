@@ -64,12 +64,12 @@ final class NavigateMenuBaseController: UITabBarController {
                 let dataTransferService: DataTransferService = DefaultDataTransferService(with: networkService)
                 let repository: ProductRepositoryInterface = ProductRepository(dataTransferService: dataTransferService)
                 let usecase: ProductUseCaseInterface = ProductUseCase(repository)
-                let viewModel: ProductListViewModel = DefaultListViewModel(usecase)
+                let viewModel: ProductListViewModelInterface = ProductListViewModel(usecase)
                 let listViewController = ProductListViewController(viewModel)
                 
                 return listViewController
             case .my:
-                let viewModel: MyPageViewModel = DefaultMyPageViewModel()
+                let viewModel: MyPageViewModel = MyPageViewModel()
                 let mypageViewController = MyPageViewController(viewModel)
                 
                 return mypageViewController
@@ -123,14 +123,14 @@ extension NavigateMenuBaseController: UITabBarControllerDelegate {
             guard let baseURL = URL(string: "http://1.231.16.189:8080")
             else { fatalError() }
         
-            let config: NetworkConfigurable = ApiDataNetworkConfig(baseURL: baseURL)
-            let networkService: NetworkService = DefaultNetworkService(config: config)
-            let dataTransferService: DataTransferService = DefaultDataTransferService(with: networkService)
-            let repository: UserRepositoryInterface = UserRepository(dataTransferService: dataTransferService)
-            let usecase: UserUseCaseInterface = UserUseCase(repository)
-            let viewModel: LoginViewModel = DefaultLoginViewModel(usecase: usecase)
-            let loginViewController = LoginViewController(viewModel)
-            let navigationViewController = UINavigationController(rootViewController: loginViewController)
+            let config: NetworkConfigurable                 = ApiDataNetworkConfig(baseURL: baseURL)
+            let networkService: NetworkService              = DefaultNetworkService(config: config)
+            let dataTransferService: DataTransferService    = DefaultDataTransferService(with: networkService)
+            let repository: UserRepositoryInterface         = UserRepository(dataTransferService: dataTransferService)
+            let usecase: UserUseCaseInterface               = UserUseCase(repository)
+            let viewModel: LoginViewModel                   = LoginViewModel(usecase: usecase)
+            let loginViewController                         = LoginViewController(viewModel)
+            let navigationViewController                    = UINavigationController(rootViewController: loginViewController)
             
             navigationViewController.modalPresentationStyle = .fullScreen
             tabBarController.present(navigationViewController, animated: true, completion: nil)

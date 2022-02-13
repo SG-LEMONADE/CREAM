@@ -12,17 +12,13 @@ protocol TradeDelegate: AnyObject {
     func moveFocusToProcessScene()
 }
 
-class TradeViewController: BaseDIViewController<TradeViewModel>, ImageLoadable {
+class TradeViewController: DIViewController<TradeViewModelInterface>, ImageLoadable {
 
     // MARK: Property
     var session: URLSessionDataTask?
     weak var delegate: TradeDelegate?
     
     private lazy var tradeView = TradeView()
-    
-    override init(_ viewModel: TradeViewModel) {
-        super.init(viewModel)
-    }
     
     // MARK: View Life Cycle
     override func loadView() {

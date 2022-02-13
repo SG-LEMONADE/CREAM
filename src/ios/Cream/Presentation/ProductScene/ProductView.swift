@@ -60,6 +60,6 @@ extension ProductView: ViewConfiguration {
     
     func viewConfigure() {
         self.backgroundColor = .white
-        configureCollectionView()
+        registerCollectionViewCell()
     }
 }

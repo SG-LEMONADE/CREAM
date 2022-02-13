@@ -23,12 +23,10 @@ protocol ProductViewModelOutput {
     var numberOfSections: Int { get }
 }
 
-protocol ProductViewModel: ProductViewModelInput, ProductViewModelOutput {
-    var usecase: ProductUseCaseInterface { get set }
-}
+protocol ProductViewModelInterface: ProductViewModelInput, ProductViewModelOutput { }
 
-final class DefaultProductViewModel: ProductViewModel {
-    var usecase: ProductUseCaseInterface
+final class DefaultProductViewModel: ProductViewModelInterface {
+    private let usecase: ProductUseCaseInterface
     var item: Observable<ProductDetail> = Observable(ProductDetail.create())
     var releaseInfo: [(String, String)] {
         var info = [(String, String)]()

@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ProcessViewController: BaseDIViewController<ProcessViewModel> {
+class ProcessViewController: DIViewController<ProcessViewModelInterface> {
     private lazy var processView = ProcessView()
     
     override func loadView() {

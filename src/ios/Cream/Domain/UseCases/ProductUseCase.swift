@@ -17,7 +17,7 @@ protocol ProductUseCaseInterface {
 }
 
 final class ProductUseCase {
-    var repository: ProductRepositoryInterface
+    private let repository: ProductRepositoryInterface
     
     init(_ repository: ProductRepositoryInterface) {
         self.repository = repository

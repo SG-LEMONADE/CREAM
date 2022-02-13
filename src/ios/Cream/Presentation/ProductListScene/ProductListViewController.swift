@@ -12,7 +12,7 @@ protocol SortChangeDelegate: AnyObject {
     func didChangeStandard(to standard: String)
 }
 
-final class ProductListViewController: BaseDIViewController<ProductListViewModel> {
+final class ProductListViewController: DIViewController<ProductListViewModelInterface> {
     enum Constraint {
         static let verticalInset: CGFloat = 20
         static let horizontalInset: CGFloat = 20
@@ -174,12 +174,12 @@ extension ProductListViewController: UICollectionViewDelegate {
             guard let baseURL = URL(string: "http://1.231.16.189:8081")
             else { return }
         
-            let config: NetworkConfigurable = ApiDataNetworkConfig(baseURL: baseURL)
-            let networkService: NetworkService = DefaultNetworkService(config: config)
+            let config: NetworkConfigurable              = ApiDataNetworkConfig(baseURL: baseURL)
+            let networkService: NetworkService           = DefaultNetworkService(config: config)
             let dataTransferService: DataTransferService = DefaultDataTransferService(with: networkService)
-            let repository: ProductRepositoryInterface = ProductRepository(dataTransferService: dataTransferService)
-            let usecase: ProductUseCaseInterface = ProductUseCase(repository)
-            var viewModel: ProductViewModel = DefaultProductViewModel(usecase: usecase)
+            let repository: ProductRepositoryInterface   = ProductRepository(dataTransferService: dataTransferService)
+            let usecase: ProductUseCaseInterface         = ProductUseCase(repository)
+            var viewModel: ProductViewModelInterface     = DefaultProductViewModel(usecase: usecase)
             viewModel.id = self.viewModel.products.value[indexPath.item].id 
             let productViewController = ProductViewController(viewModel)
             
@@ -225,7 +225,15 @@ extension ProductListViewController: ShopViewFilterHeaderViewDelegate {
     func didSelectItemAt(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if indexPath.item == .zero {
             // TODO: FilterUseCase 구성
-            let filterViewModel: FilterViewModel = DefaultFilterViewModel(FilterUseCase())
+            guard let baseURL = URL(string: "http://1.231.16.189:8081")
+            else { fatalError() }
+            
+            let config               = ApiDataNetworkConfig(baseURL: baseURL)
+            let networkService       = DefaultNetworkService(config: config)
+            let dataTranferService   = DefaultDataTransferService(with: networkService)
+            let repository           = ProductRepository(dataTransferService: dataTranferService)
+            let usecase              = FilterUseCase(repository)
+            let filterViewModel      = FilterViewModel(usecase)
             let filterViewController = FilterViewController(filterViewModel)
             let navigationController = UINavigationController(rootViewController: filterViewController)
             self.present(navigationController, animated: true)
@@ -277,7 +285,7 @@ extension ProductListViewController: ShopViewFilterHeaderViewDataSource {
 
 extension ProductListViewController: SortFilterFooterViewDelegate {
     func didTapSortButton() {
-        let viewModel = DefaultSortViewModel()
+        let viewModel = SortViewModel()
         let sortViewController = SortViewController(viewModel)
         sortViewController.delegate = self
         

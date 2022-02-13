@@ -13,7 +13,6 @@ protocol TradeViewModelInput {
     func didTapSizeCell(indexPath: IndexPath)
     func didTapTradeButton()
 }
-
 protocol TradeViewModelOutput {
     var selectSize: Observable<(size: String, price: String?)> { get set }
     var sizes: Observable<[String]> { get set }
@@ -22,9 +21,9 @@ protocol TradeViewModelOutput {
     func willTransferToPayScene()
 }
 
-protocol TradeViewModel: TradeViewModelInput, TradeViewModelOutput { }
+protocol TradeViewModelInterface: TradeViewModelInput, TradeViewModelOutput { }
 
-final class DefaultTradeViewModel: TradeViewModel {
+final class TradeViewModel: TradeViewModelInterface {
     
     var tradeType: TradeType
     var product: ProductDetail
@@ -57,7 +56,7 @@ final class DefaultTradeViewModel: TradeViewModel {
     }
 }
 
-extension DefaultTradeViewModel {
+extension TradeViewModel {
     var numberOfCells: Int {
         return product.sizes.count
     }

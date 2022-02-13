@@ -18,23 +18,22 @@ class RepositoryTask: Cancellable {
     }
 }
 
-protocol LoginViewModelProperty {
+protocol LoginViewModelInput {
+    func validateEmail(_ email: String)
+    func validatePassword(_ password: String)
+    func confirmUser(email: String, password: String, completion: @escaping (Result<Bool, UserError>) -> Void)
+}
+
+protocol LoginViewModelOutput {
     var emailMessage: Observable<String> { get set }
     var passwordMessage: Observable<String> { get set }
     var isLoginAvailable: Observable<Bool> { get set }
 }
 
-protocol LoginViewModelValidatable {
-    func validateEmail(_ email: String)
-    func validatePassword(_ password: String)
-}
+protocol LoginViewModelInterface: LoginViewModelInput, LoginViewModelOutput { }
 
-protocol LoginViewModel: LoginViewModelProperty, LoginViewModelValidatable {
-    func confirmUser(email: String, password: String, completion: @escaping (Result<Bool, UserError>) -> Void)
-}
-
-final class DefaultLoginViewModel: LoginViewModel {
-    var usecase: UserUseCaseInterface
+final class LoginViewModel: LoginViewModelInterface {
+    private let usecase: UserUseCaseInterface
     var emailMessage: Observable<String> = Observable(" ")
     var passwordMessage: Observable<String> = Observable(" ")
     var isLoginAvailable: Observable<Bool> = Observable(false)

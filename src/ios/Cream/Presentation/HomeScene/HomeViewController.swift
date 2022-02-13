@@ -7,7 +7,7 @@
 
 import UIKit
 
-class HomeViewController: BaseDIViewController<HomeListViewModel> {
+class HomeViewController: DIViewController<HomeListViewModel> {
     weak var delegate: FooterScrollDelegate?
     
     private lazy var homeView = HomeView()
@@ -77,14 +77,15 @@ extension HomeViewController: UICollectionViewDelegate {
             guard let baseURL = URL(string: "http://1.231.16.189:8081")
             else { return }
             
-            let config: NetworkConfigurable = ApiDataNetworkConfig(baseURL: baseURL)
-            let networkService: NetworkService = DefaultNetworkService(config: config)
-            let dataTransferService: DataTransferService = DefaultDataTransferService(with: networkService)
-            let repository: ProductRepositoryInterface = ProductRepository(dataTransferService: dataTransferService)
-            let usecase: ProductUseCaseInterface = ProductUseCase(repository)
-            var viewModel: ProductViewModel = DefaultProductViewModel(usecase: usecase)
+            let config: NetworkConfigurable                 = ApiDataNetworkConfig(baseURL: baseURL)
+            let networkService: NetworkService              = DefaultNetworkService(config: config)
+            let dataTransferService: DataTransferService    = DefaultDataTransferService(with: networkService)
+            let repository: ProductRepositoryInterface      = ProductRepository(dataTransferService: dataTransferService)
+            let usecase: ProductUseCaseInterface            = ProductUseCase(repository)
+            var viewModel: ProductViewModelInterface        = DefaultProductViewModel(usecase: usecase)
             viewModel.id = self.viewModel.homeInfo.value.sections[indexPath.section/2].products[indexPath.item].id
-            let productViewController = ProductViewController(viewModel)
+            let productViewController                       = ProductViewController(viewModel)
+            
             productViewController.hidesBottomBarWhenPushed = true
             self.navigationController?.pushViewController(productViewController, animated: true)
         }

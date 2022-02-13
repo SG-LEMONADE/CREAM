@@ -49,7 +49,7 @@ extension FilterView: ViewConfiguration {
             $0.height.equalTo(60)
             $0.leading.equalTo(self.snp.leading).inset(10)
             $0.trailing.equalTo(self.snp.trailing).inset(10)
-            $0.bottom.equalTo(self.safeAreaLayoutGuide.snp.bottom)
+            $0.bottom.equalTo(self.safeAreaLayoutGuide.snp.bottom).inset(10)
         }
     }
     

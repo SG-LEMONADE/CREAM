@@ -14,9 +14,9 @@ protocol MyPageViewModelOutput {
     var userInfo: Observable<User> { get set }
     var numberOfSections: Int { get }
 }
-protocol MyPageViewModel: MyPageViewModelInput, MyPageViewModelOutput { }
+protocol MyPageViewModelInterface: MyPageViewModelInput, MyPageViewModelOutput { }
 
-final class DefaultMyPageViewModel: MyPageViewModel {
+final class MyPageViewModel: MyPageViewModelInterface {
     
     var userInfo: Observable<User> = Observable(User(email: "", name: "", address: "", gender: 1, age: "", shoeSize: 280, profileImageUrl: "", lastLoginDateTime: " "))
     var numberOfSections: Int { return 3 }

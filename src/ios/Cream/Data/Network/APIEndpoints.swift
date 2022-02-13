@@ -118,4 +118,11 @@ struct APIEndpoints {
                         headerParamaters: ["Content-Type":"application/json"],
                         queryParameters: queryParameters)
     }
+    
+    // MARK: - Filter API
+    static func loadFilter() -> Endpoint<FilterResponseDTO> {
+        return Endpoint(path: "filters",
+                        method: .get,
+                        headerParamaters: ["Content-Type":"application/json"])
+    }
 }

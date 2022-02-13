@@ -8,13 +8,9 @@
 import UIKit
 import Toast_Swift
 
-final class LoginViewController: BaseDIViewController<LoginViewModel> {
+final class LoginViewController: DIViewController<LoginViewModelInterface> {
     
     private lazy var loginView = LoginView()
-    
-    override init(_ viewModel: LoginViewModel) {
-        super.init(viewModel)
-    }
     
     override func loadView() {
         view = loginView
@@ -144,7 +140,7 @@ extension LoginViewController {
         let dataTransferService: DataTransferService    = DefaultDataTransferService(with: networkService)
         let repository: UserRepositoryInterface         = UserRepository(dataTransferService: dataTransferService)
         let usecase: UserUseCaseInterface               = UserUseCase(repository)
-        let viewModel: JoinViewModel                    = DefaultJoinViewModel(usecase: usecase)
+        let viewModel: JoinViewModel                    = JoinViewModel(usecase: usecase)
         let joinViewController: JoinViewController      = JoinViewController(viewModel)
         
         navigationController?.pushViewController(joinViewController, animated: true)

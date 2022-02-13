@@ -50,7 +50,7 @@ extension ProductRepository: ProductRepositoryInterface {
                 let product = response.toDomain()
                 completion(.success(product))
             case .failure(let error):
-                print(error)
+                completion(.failure(error))
             }
         })
         return task
@@ -78,7 +78,26 @@ extension ProductRepository: HomeListRepositoryInterface {
                 let product = response.toDomain()
                 completion(.success(product))
             case .failure(let error):
-                print(error)
+                completion(.failure(error))
+            }
+        })
+        return task
+    }
+}
+
+extension ProductRepository: FilterRepositoryInterface {
+    func fetchFilter(completion: @escaping ((Result<Filter, Error>) -> Void)) -> Cancellable {
+        let endpoint = APIEndpoints.loadFilter()
+        
+        let task = RepositoryTask()
+        
+        task.networkTask = dataTransferService.request(with: endpoint, completion: { result in
+            switch result {
+            case .success(let response):
+                let product = response.toDomain()
+                completion(.success(product))
+            case .failure(let error):
+                completion(.failure(error))
             }
         })
         return task

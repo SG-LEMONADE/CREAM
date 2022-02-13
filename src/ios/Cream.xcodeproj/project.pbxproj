@@ -86,8 +86,12 @@
 		7B5EEEA027B7E48100990E37 /* SettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B5EEE9F27B7E48100990E37 /* SettingViewModel.swift */; };
 		7B5EEEA227B8013200990E37 /* FilterResponseDTO+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B5EEEA127B8013200990E37 /* FilterResponseDTO+Mapping.swift */; };
 		7B5EEEA427B80F4800990E37 /* HomeListUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B5EEEA327B80F4800990E37 /* HomeListUseCase.swift */; };
+		7B5EEEA627B8174800990E37 /* Filter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B5EEEA527B8174700990E37 /* Filter.swift */; };
+		7B5EEEA827B8281C00990E37 /* DetailFilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B5EEEA727B8281C00990E37 /* DetailFilterViewController.swift */; };
+		7B5EEEAA27B8283200990E37 /* DetailFilterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B5EEEA927B8283200990E37 /* DetailFilterViewModel.swift */; };
+		7B5EEEAE27B8FD0E00990E37 /* ProductListView+CompositionalLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B5EEEAD27B8FD0E00990E37 /* ProductListView+CompositionalLayout.swift */; };
 		7B8EAA78279FBBB600B07259 /* ProductRepositoryInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B8EAA77279FBBB600B07259 /* ProductRepositoryInterface.swift */; };
-		7B8EAA7F279FC38300B07259 /* BaseDIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B8EAA7E279FC38300B07259 /* BaseDIViewController.swift */; };
+		7B8EAA7F279FC38300B07259 /* DIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B8EAA7E279FC38300B07259 /* DIViewController.swift */; };
 		7B8EAA8627A0DB4700B07259 /* ValidationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B8EAA8527A0DB4700B07259 /* ValidationHelper.swift */; };
 		7B8EAA8827A17C3000B07259 /* JoinViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B8EAA8727A17C3000B07259 /* JoinViewController.swift */; };
 		7B8EAA8A27A17C7600B07259 /* JoinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B8EAA8927A17C7600B07259 /* JoinView.swift */; };
@@ -209,8 +213,12 @@
 		7B5EEE9F27B7E48100990E37 /* SettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewModel.swift; sourceTree = "<group>"; };
 		7B5EEEA127B8013200990E37 /* FilterResponseDTO+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FilterResponseDTO+Mapping.swift"; sourceTree = "<group>"; };
 		7B5EEEA327B80F4800990E37 /* HomeListUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeListUseCase.swift; sourceTree = "<group>"; };
+		7B5EEEA527B8174700990E37 /* Filter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Filter.swift; sourceTree = "<group>"; };
+		7B5EEEA727B8281C00990E37 /* DetailFilterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailFilterViewController.swift; sourceTree = "<group>"; };
+		7B5EEEA927B8283200990E37 /* DetailFilterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailFilterViewModel.swift; sourceTree = "<group>"; };
+		7B5EEEAD27B8FD0E00990E37 /* ProductListView+CompositionalLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProductListView+CompositionalLayout.swift"; sourceTree = "<group>"; };
 		7B8EAA77279FBBB600B07259 /* ProductRepositoryInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductRepositoryInterface.swift; sourceTree = "<group>"; };
-		7B8EAA7E279FC38300B07259 /* BaseDIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseDIViewController.swift; sourceTree = "<group>"; };
+		7B8EAA7E279FC38300B07259 /* DIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DIViewController.swift; sourceTree = "<group>"; };
 		7B8EAA8527A0DB4700B07259 /* ValidationHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationHelper.swift; sourceTree = "<group>"; };
 		7B8EAA8727A17C3000B07259 /* JoinViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinViewController.swift; sourceTree = "<group>"; };
 		7B8EAA8927A17C7600B07259 /* JoinView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinView.swift; sourceTree = "<group>"; };
@@ -311,12 +319,15 @@
 				7B5EEE3827A770AA00990E37 /* ProductListViewController.swift */,
 				7B5EEE3C27A773AE00990E37 /* ProductListViewModel.swift */,
 				7B5EEE3A27A7713100990E37 /* ProductListView.swift */,
+				7B5EEEAD27B8FD0E00990E37 /* ProductListView+CompositionalLayout.swift */,
 				7B5EEE6427AEBCD800990E37 /* FilterViewController.swift */,
 				7B5EEE8027B4052500990E37 /* FilterViewModel.swift */,
 				7B5EEE7E27B404FE00990E37 /* FilterView.swift */,
 				7B5EEE7827B2D36D00990E37 /* SortViewController.swift */,
 				7B5EEE7C27B2D77A00990E37 /* SortViewModel.swift */,
 				7B5EEE7A27B2D39300990E37 /* SortView.swift */,
+				7B5EEEA727B8281C00990E37 /* DetailFilterViewController.swift */,
+				7B5EEEA927B8283200990E37 /* DetailFilterViewModel.swift */,
 			);
 			path = ProductListScene;
 			sourceTree = "<group>";
@@ -490,6 +501,7 @@
 				7BF82E0527A38558007E0A79 /* User.swift */,
 				7B5EEE3627A6C6B000990E37 /* Product.swift */,
 				7B5EEE7327B2062500990E37 /* ProductDetail.swift */,
+				7B5EEEA527B8174700990E37 /* Filter.swift */,
 			);
 			path = Entities;
 			sourceTree = "<group>";
@@ -585,7 +597,7 @@
 			children = (
 				7B5EEE7527B2065D00990E37 /* Views */,
 				7B193C8E2796EC1500B934A3 /* Protocol */,
-				7B8EAA7E279FC38300B07259 /* BaseDIViewController.swift */,
+				7B8EAA7E279FC38300B07259 /* DIViewController.swift */,
 				7BB0110A278AE227005E5C9E /* NavigateMenuBaseController.swift */,
 			);
 			path = Base;
@@ -812,6 +824,7 @@
 				7B5EEE7F27B404FF00990E37 /* FilterView.swift in Sources */,
 				7B5EEE5F27ACBFA300990E37 /* UITextField+.swift in Sources */,
 				7B8EAAA227A2414300B07259 /* DataTransferService.swift in Sources */,
+				7B5EEEAA27B8283200990E37 /* DetailFilterViewModel.swift in Sources */,
 				7B8EAA8E27A1919600B07259 /* LoginViewController.swift in Sources */,
 				7B5EEE6A27B0103500990E37 /* ProductListItemCell.swift in Sources */,
 				7B5EEE9627B768F200990E37 /* SettingViewController.swift in Sources */,
@@ -827,6 +840,7 @@
 				7B193CA12798EE7E00B934A3 /* ItemInfoCell.swift in Sources */,
 				7B5EEE9227B64D8500990E37 /* CompanyInfoCell.swift in Sources */,
 				7B8EAA9E27A2411700B07259 /* Endpoint.swift in Sources */,
+				7B5EEEA627B8174800990E37 /* Filter.swift in Sources */,
 				7B5EEE6327AD481900990E37 /* ProcessViewModel.swift in Sources */,
 				7B5EEE4927A83A6900990E37 /* ProductView+CompositionalLayout.swift in Sources */,
 				7B5EEE5D27ABDC9B00990E37 /* ProcessViewController.swift in Sources */,
@@ -869,7 +883,7 @@
 				7B5EEE3F27A80E8B00990E37 /* String+.swift in Sources */,
 				7B5EEEA027B7E48100990E37 /* SettingViewModel.swift in Sources */,
 				7B5EEE3927A770AA00990E37 /* ProductListViewController.swift in Sources */,
-				7B8EAA7F279FC38300B07259 /* BaseDIViewController.swift in Sources */,
+				7B8EAA7F279FC38300B07259 /* DIViewController.swift in Sources */,
 				7B5EEE7927B2D36E00990E37 /* SortViewController.swift in Sources */,
 				7B193CA52798F4CC00B934A3 /* DebugLog.swift in Sources */,
 				7B5EEE3D27A773AE00990E37 /* ProductListViewModel.swift in Sources */,
@@ -877,9 +891,11 @@
 				7B5EEE7227B10CD800990E37 /* HomeListRepositoryInterface.swift in Sources */,
 				7BB01117278BCA54005E5C9E /* Observable.swift in Sources */,
 				7B8EAA9C27A240F900B07259 /* NetworkConfigurable.swift in Sources */,
+				7B5EEEAE27B8FD0E00990E37 /* ProductListView+CompositionalLayout.swift in Sources */,
 				7B5EEE9E27B7E45B00990E37 /* SettingView.swift in Sources */,
 				7B5EEE7D27B2D77A00990E37 /* SortViewModel.swift in Sources */,
 				7BB01115278BC6D1005E5C9E /* BindingTextField.swift in Sources */,
+				7B5EEEA827B8281C00990E37 /* DetailFilterViewController.swift in Sources */,
 				7B5EEE5627A9A0B000990E37 /* TradePriceView.swift in Sources */,
 				7BB01121278BD66C005E5C9E /* UIView+.swift in Sources */,
 				7B36DB102789202800D8ACB0 /* SceneDelegate.swift in Sources */,

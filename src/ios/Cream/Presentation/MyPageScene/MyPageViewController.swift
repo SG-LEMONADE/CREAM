@@ -8,7 +8,7 @@
 import UIKit
 import Toast_Swift
 
-class MyPageViewController: BaseDIViewController<MyPageViewModel> {
+class MyPageViewController: DIViewController<MyPageViewModelInterface> {
     private lazy var myPageView = MyPageView()
     
     // MARK: View Life Cycle
@@ -58,7 +58,7 @@ class MyPageViewController: BaseDIViewController<MyPageViewModel> {
         let dataTransferService     = DefaultDataTransferService(with: networkService)
         let repository              = UserRepository(dataTransferService: dataTransferService)
         let usecase                 = UserUseCase(repository)
-        let viewModel               = DefaultSettingViewModel(usecase)
+        let viewModel               = SettingViewModel(usecase)
         let settingViewController   = SettingViewController(viewModel)
         
         self.navigationController?.pushViewController(settingViewController, animated: true)

@@ -7,7 +7,7 @@
 
 import UIKit
 
-class LoginView: UIView {
+final class LoginView: UIView {
     enum ViewMessage: String, CustomStringConvertible {
         case emailLabel = "이메일 주소"
         case emailPlaceholder = "예) kream@kream.co.kr"

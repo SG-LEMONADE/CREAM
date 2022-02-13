@@ -11,16 +11,12 @@ protocol SizeSelectDelegate: AnyObject {
     func configureShoesSize(_ size: Int)
 }
 
-final class SizeListViewController: BaseDIViewController<SizeListViewModel> {
+final class SizeListViewController: DIViewController<SizeListViewModelInterface> {
     
     private lazy var sizeView = SizeListView()
     private var isJoinProcess: Bool = true
     
     weak var delegate: SizeSelectDelegate?
-    
-    override init(_ viewModel: SizeListViewModel) {
-        super.init(viewModel)
-    }
     
     convenience init(_ viewModel: SizeListViewModel,
                      isJoinProcess: Bool) {

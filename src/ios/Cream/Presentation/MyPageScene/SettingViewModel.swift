@@ -16,9 +16,9 @@ protocol SettingViewModelOutput {
     var sectionTitles: [String] { get set }
     var sectionInfo: [[String]] { get set }
 }
-protocol SettingViewModel: SettingViewModelInput, SettingViewModelOutput { }
+protocol SettingViewModelInterface: SettingViewModelInput, SettingViewModelOutput { }
 
-final class DefaultSettingViewModel: SettingViewModel {
+final class SettingViewModel: SettingViewModelInterface {
     var sectionTitles: [String] = ["일반", "정보"]
     var sectionInfo: [[String]] = [["로그인 정보", "주소록"], ["로그아웃"]]
     let usecase: UserUseCaseInterface

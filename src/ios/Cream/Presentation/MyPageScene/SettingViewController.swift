@@ -7,7 +7,7 @@
 
 import UIKit
 
-class SettingViewController: BaseDIViewController<SettingViewModel> {
+class SettingViewController: DIViewController<SettingViewModelInterface> {
     private lazy var settingView = SettingView()
     
     // MARK: View Life Cycle

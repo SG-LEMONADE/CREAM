@@ -22,30 +22,6 @@ protocol UserUseCaseInterface {
     func reissuanceToken(completion: @escaping (Result<Auth, UserError>) -> Void)
 }
 
-enum UserError: Error {
-    case userNotAccepted
-    case duplicatedEmail
-    case networkUnconnected
-    case needEmailVerified
-    case unknownError(Error)
-    
-    var userMessage: String {
-        switch self {
-        case .userNotAccepted:      return "이메일 또는 비밀번호를 확인해주세요."
-        case .duplicatedEmail:      return "이미 사용중인 이메일입니다."
-        case .networkUnconnected:   return "서버 문제로 로그인에 실패했습니다.\n 개발자에게 문의해주세요."
-        case .needEmailVerified:    return "이메일 인증이 필요합니다.\n인증을 진행해주세요."
-        case .unknownError(_):      return "알수없는 에러 발생.\n 개발자에게 문의해주세요."
-        }
-    }
-}
-
-extension UserError: Equatable {
-    static func == (lhs: UserError, rhs: UserError) -> Bool {
-        return lhs.localizedDescription == rhs.localizedDescription
-    }
-}
-
 final class UserUseCase: UserUseCaseInterface {
     
     private let repository: UserRepositoryInterface
