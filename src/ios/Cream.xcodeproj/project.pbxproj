@@ -332,8 +332,6 @@
 				7B5EEE3C27A773AE00990E37 /* ProductListViewModel.swift */,
 				7B5EEE3A27A7713100990E37 /* ProductListView.swift */,
 				7B5EEEAD27B8FD0E00990E37 /* ProductListView+CompositionalLayout.swift */,
-				7B5EEEBD27B9559900990E37 /* FilterScene */,
-				7B5EEEBE27B955B500990E37 /* SortScene */,
 			);
 			path = ProductListScene;
 			sourceTree = "<group>";
@@ -357,7 +355,6 @@
 				7B3566862792420300C45A68 /* MyPageViewController.swift */,
 				7B5EEE8627B561FA00990E37 /* MyPageViewModel.swift */,
 				7B5EEE8827B5620400990E37 /* MyPageView.swift */,
-				7B5EEEC027B9575100990E37 /* SettingScene */,
 			);
 			path = MyPageScene;
 			sourceTree = "<group>";
@@ -422,7 +419,6 @@
 				7B193CB4279D115500B934A3 /* TradeViewController.swift */,
 				7B5EEE4427A8390C00990E37 /* TradeViewModel.swift */,
 				7B5EEE4627A8391700990E37 /* TradeView.swift */,
-				7B5EEEBF27B955CE00990E37 /* TradeProcessScene */,
 			);
 			path = TradeScene;
 			sourceTree = "<group>";
@@ -658,12 +654,16 @@
 				7BB0111B278BCED4005E5C9E /* Base */,
 				7B35667E2791B29500C45A68 /* HomeScene */,
 				7B35667D2791B28D00C45A68 /* ProductListScene */,
+				7B5EEEBD27B9559900990E37 /* FilterScene */,
+				7B5EEEBE27B955B500990E37 /* SortScene */,
 				7B193C8F2796F8C900B934A3 /* ProductScene */,
 				7B5EEE4327A832B600990E37 /* TradeScene */,
+				7B5EEEBF27B955CE00990E37 /* TradeProcessScene */,
 				7BB0111A278BCEB7005E5C9E /* LoginScene */,
 				7B54D6FA278EF2D900214664 /* JoinScene */,
 				7BF82E0F27A3FE21007E0A79 /* SizeSelectScene */,
 				7B356685279241F100C45A68 /* MyPageScene */,
+				7B5EEEC027B9575100990E37 /* SettingScene */,
 			);
 			path = Presentation;
 			sourceTree = "<group>";
