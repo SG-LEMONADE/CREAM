@@ -12,50 +12,32 @@ protocol SortChangeDelegate: AnyObject {
     func didChangeStandard(to standard: String)
 }
 
-extension ProductListViewController: UISearchBarDelegate {
-    
-    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        _ = viewModel.viewDidLoad()
-    }
-    
-    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-        guard let text = searchBar.text else {
-            return
-        }
-        
-        _ = viewModel.didSearch(with: text)
-    }
-}
-
-class ProductListViewController: BaseDIViewController<ProductListViewModel> {
-    
+final class ProductListViewController: DIViewController<ProductListViewModelInterface> {
     enum Constraint {
         static let verticalInset: CGFloat = 20
         static let horizontalInset: CGFloat = 20
     }
+    
     private var currentBanner: Int = 0
     private var selectedIndexPaths = [IndexPath]()
     private lazy var productListView = ProductListView()
         
     weak var delegate: SortChangeDelegate?
-    override init(_ viewModel: ProductListViewModel) {
-        super.init(viewModel)
-    }
     
     // MARK: View Life Cycle
     override func loadView() {
-        self.view = productListView
+        view = productListView
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationController?.navigationBar.backgroundColor = .clear
         setupCollectionView()
         setupSearchController()
+        setupNavigationBarItem()
         bindViewModel()
         productListView.indicatorView.startAnimating()
         viewModel.viewDidLoad()
-        viewConfigure()
+        
     }
     
     private func setupSearchController() {
@@ -67,9 +49,8 @@ class ProductListViewController: BaseDIViewController<ProductListViewModel> {
         searchController.searchBar.setValue("취소", forKey: "cancelButtonText")
         searchController.searchBar.tintColor = .black
         
-        self.navigationItem.searchController = searchController
-        
-        self.definesPresentationContext = true
+        navigationItem.searchController = searchController
+        definesPresentationContext = true
         
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
@@ -96,13 +77,14 @@ class ProductListViewController: BaseDIViewController<ProductListViewModel> {
                                     withReuseIdentifier: SortFilterFooterView.reuseIdentifier)
     }
     
-    func viewConfigure() {
+    private func setupNavigationBarItem() {
         let backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)
         backBarButtonItem.tintColor = .systemGray
-        self.navigationItem.backBarButtonItem = backBarButtonItem
+        navigationItem.backBarButtonItem = backBarButtonItem
+        navigationController?.navigationBar.backgroundColor = .clear
     }
     
-    func bindViewModel() {
+    private func bindViewModel() {
         self.viewModel.products.bind { [weak self] _ in
             DispatchQueue.main.async {
                 guard let self = self
@@ -111,7 +93,6 @@ class ProductListViewController: BaseDIViewController<ProductListViewModel> {
                 self.productListView.shopCollectionView.reloadSections(.init(integer: 1))
                 self.delegate?.didChangeStandard(to: self.viewModel.sortStandard.description)
                 self.productListView.indicatorView.stopAnimating()
-                
             }
         }
     }
@@ -128,6 +109,13 @@ extension ProductListViewController: UICollectionViewDataSource {
         case 0:
             return viewModel.banners.count
         default:
+            if (self.viewModel.products.value.count == 0) {
+                productListView.shopCollectionView.setEmptyMessage("검색 결과가 없습니다.")
+                productListView.shopCollectionView.isScrollEnabled = false
+            } else {
+                productListView.shopCollectionView.restore()
+                productListView.shopCollectionView.isScrollEnabled = true
+            }
             return viewModel.products.value.count
         }
     }
@@ -186,18 +174,31 @@ extension ProductListViewController: UICollectionViewDelegate {
             guard let baseURL = URL(string: "http://1.231.16.189:8081")
             else { return }
         
-            let config: NetworkConfigurable = ApiDataNetworkConfig(baseURL: baseURL)
-            let networkService: NetworkService = DefaultNetworkService(config: config)
+            let config: NetworkConfigurable              = ApiDataNetworkConfig(baseURL: baseURL)
+            let networkService: NetworkService           = DefaultNetworkService(config: config)
             let dataTransferService: DataTransferService = DefaultDataTransferService(with: networkService)
-            let repository: ProductRepositoryInterface = ProductRepository(dataTransferService: dataTransferService)
-            let usecase: ProductUseCaseInterface = ProductUseCase(repository)
-            var viewModel: ProductViewModel = DefaultProductViewModel(usecase: usecase)
+            let repository: ProductRepositoryInterface   = ProductRepository(dataTransferService: dataTransferService)
+            let usecase: ProductUseCaseInterface         = ProductUseCase(repository)
+            var viewModel: ProductViewModelInterface     = DefaultProductViewModel(usecase: usecase)
             viewModel.id = self.viewModel.products.value[indexPath.item].id 
             let productViewController = ProductViewController(viewModel)
             
             productViewController.hidesBottomBarWhenPushed = true
             self.navigationController?.pushViewController(productViewController, animated: true)
         }
+    }
+}
+
+extension ProductListViewController: UISearchBarDelegate {
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        _ = viewModel.viewDidLoad()
+    }
+    
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        guard let text = searchBar.text else {
+            return
+        }
+        _ = viewModel.didSearch(with: text)
     }
 }
 
@@ -224,7 +225,15 @@ extension ProductListViewController: ShopViewFilterHeaderViewDelegate {
     func didSelectItemAt(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if indexPath.item == .zero {
             // TODO: FilterUseCase 구성
-            let filterViewModel: FilterViewModel = DefaultFilterViewModel(FilterUseCase())
+            guard let baseURL = URL(string: "http://1.231.16.189:8081")
+            else { fatalError() }
+            
+            let config               = ApiDataNetworkConfig(baseURL: baseURL)
+            let networkService       = DefaultNetworkService(config: config)
+            let dataTranferService   = DefaultDataTransferService(with: networkService)
+            let repository           = ProductRepository(dataTransferService: dataTranferService)
+            let usecase              = FilterUseCase(repository)
+            let filterViewModel      = FilterViewModel(usecase)
             let filterViewController = FilterViewController(filterViewModel)
             let navigationController = UINavigationController(rootViewController: filterViewController)
             self.present(navigationController, animated: true)
@@ -276,12 +285,12 @@ extension ProductListViewController: ShopViewFilterHeaderViewDataSource {
 
 extension ProductListViewController: SortFilterFooterViewDelegate {
     func didTapSortButton() {
-        let viewModel = DefaultSortViewModel()
+        let viewModel = SortViewModel()
         let sortViewController = SortViewController(viewModel)
         sortViewController.delegate = self
         
         sortViewController.modalPresentationStyle = .overFullScreen
-        self.present(sortViewController, animated: false)
+        present(sortViewController, animated: false)
     }
 }
 

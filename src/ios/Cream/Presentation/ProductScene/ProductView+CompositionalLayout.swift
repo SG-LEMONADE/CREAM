@@ -13,7 +13,7 @@ extension ProductView {
         case image, itemInfo, release, delivery, advertise, priceChart, similarity
     }
     
-    func configureCollectionView() {
+    func registerCollectionViewCell() {
         self.ItemInfoListView.register(ItemInfoCell.self, forCellWithReuseIdentifier: ItemInfoCell.reuseIdentifier)
         self.ItemInfoListView.register(ReleaseInfoCell.self, forCellWithReuseIdentifier: ReleaseInfoCell.reuseIdentifier)
         self.ItemInfoListView.register(ShopBannerCell.self, forCellWithReuseIdentifier: ShopBannerCell.reuseIdentifier)
@@ -38,7 +38,7 @@ extension ProductView {
             case .delivery:     return self.configureDeliverySectionLayout()
             case .advertise:    return self.configureAdvertiseSectionLayout()
             case .priceChart:   return self.configurePriceChartSectionLayout()
-            case .similarity:  return self.configureSimilarItemSectionLayout()
+            case .similarity:   return self.configureSimilarItemSectionLayout()
             }
         }
     }

@@ -8,5 +8,5 @@
 import Foundation
 
 extension Int {
-    static var one = 1
+    static let one = 1
 }

@@ -7,7 +7,7 @@
 
 import UIKit
 
-// MARK: Add ArrangedSubviews
+// MARK: - Add ArrangedSubviews
 extension UIStackView {
     func addArrangedSubviews(_ views: UIView...) {
         views.forEach {
@@ -16,7 +16,7 @@ extension UIStackView {
     }
 }
 
-// MARK: Add Separators between inner Views
+// MARK: - Add Separators between inner Views
 extension UIStackView {
     func addSeparators(at positions: [Int], color: UIColor) {
         for position in positions {

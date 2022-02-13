@@ -48,12 +48,13 @@ final class ShopViewFilterHeaderView: UICollectionReusableView {
         applyViewSettings()
     }
     
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        applyViewSettings()
+        fatalError("init(coder:) has not been implemented")
     }
 }
 
+// MARK: - UICollectionViewDataSource
 extension ShopViewFilterHeaderView: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return dataSource?.setupNumberOfItemsInSection(collectionView, numberOfItemsInSection: section) ?? 0
@@ -64,6 +65,7 @@ extension ShopViewFilterHeaderView: UICollectionViewDataSource {
     }
 }
 
+// MARK: - UICollectionViewDelegate, UICollectionViewDelegateFlowLayout
 extension ShopViewFilterHeaderView: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return delegate?.setupSizeForItemAt(collectionView, layout: collectionViewLayout, sizeForItemAt: indexPath) ?? .zero
@@ -88,11 +90,11 @@ extension ShopViewFilterHeaderView: ViewConfiguration {
         addSubviews(filterCollectionView)
     }
     func viewConfigure() {
-        self.clipsToBounds = false
-        self.layer.masksToBounds = false
-        self.layer.shadowColor = UIColor.systemGray2.cgColor
-        self.layer.shadowOpacity = 0.5
-        self.layer.shadowRadius = 1.5
-        self.layer.shadowOffset = CGSize(width: 0.0, height: 2.5)
+        clipsToBounds = false
+        layer.masksToBounds = false
+        layer.shadowColor = UIColor.systemGray2.cgColor
+        layer.shadowOpacity = 0.5
+        layer.shadowRadius = 1.5
+        layer.shadowOffset = CGSize(width: 0.0, height: 2.5)
     }
 }

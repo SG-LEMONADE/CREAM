@@ -6,34 +6,34 @@
 //
 
 import UIKit
+import SwiftKeychainWrapper
 
 class RepositoryTask: Cancellable {
     var networkTask: NetworkCancellable?
     var isCancelled: Bool = false
-
+    
     func cancel() {
         networkTask?.cancel()
         isCancelled = true
     }
 }
 
-protocol LoginViewModelProperty {
+protocol LoginViewModelInput {
+    func validateEmail(_ email: String)
+    func validatePassword(_ password: String)
+    func confirmUser(email: String, password: String, completion: @escaping (Result<Bool, UserError>) -> Void)
+}
+
+protocol LoginViewModelOutput {
     var emailMessage: Observable<String> { get set }
     var passwordMessage: Observable<String> { get set }
     var isLoginAvailable: Observable<Bool> { get set }
 }
 
-protocol LoginViewModelValidatable {
-    func validateEmail(_ email: String)
-    func validatePassword(_ password: String)
-}
+protocol LoginViewModelInterface: LoginViewModelInput, LoginViewModelOutput { }
 
-protocol LoginViewModel: LoginViewModelProperty, LoginViewModelValidatable {
-    func confirmUser(email: String, password: String, completion: @escaping (Result<Bool, Error>) -> Void)
-}
-
-final class DefaultLoginViewModel: LoginViewModel {
-    var usecase: UserUseCaseInterface
+final class LoginViewModel: LoginViewModelInterface {
+    private let usecase: UserUseCaseInterface
     var emailMessage: Observable<String> = Observable(" ")
     var passwordMessage: Observable<String> = Observable(" ")
     var isLoginAvailable: Observable<Bool> = Observable(false)
@@ -62,17 +62,16 @@ final class DefaultLoginViewModel: LoginViewModel {
     
     private func validateFormatAvailable() {
         isLoginAvailable.value = passwordMessage.value == "" &&
-                                  emailMessage.value == ""
+        emailMessage.value == ""
     }
     
-    func confirmUser(email: String, password: String, completion: @escaping (Result<Bool, Error>) -> Void) {
+    func confirmUser(email: String, password: String, completion: @escaping (Result<Bool, UserError>) -> Void) {
         
         let _ = usecase.confirm(userEmail: email, userPassword: password) { result in
             switch result {
             case .success(let user):
-                let accessToken = user.accessToken
-                let refreshToken = user.refreshToken
-                print("\(accessToken) \(refreshToken)")
+                KeychainWrapper.standard.set(user.accessToken, forKey: KeychainWrapper.Key.accessToken)
+                KeychainWrapper.standard.set(user.refreshToken, forKey: KeychainWrapper.Key.refreshToken)
                 completion(.success(true))
             case .failure(let error):
                 completion(.failure(error))

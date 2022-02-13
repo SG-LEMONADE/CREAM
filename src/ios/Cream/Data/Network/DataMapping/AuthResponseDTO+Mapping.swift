@@ -7,6 +7,7 @@
 
 import Foundation
 
+// MARK: - AuthResponseDTO
 struct AuthResponseDTO: Decodable {
     let accessToken: String
     let refreshToken: String

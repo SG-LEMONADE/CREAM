@@ -7,6 +7,7 @@
 
 import Foundation
 
+// MARK: - AuthRequestDTO
 struct AuthRequestDTO: Encodable {
     let email: String
     let password: String

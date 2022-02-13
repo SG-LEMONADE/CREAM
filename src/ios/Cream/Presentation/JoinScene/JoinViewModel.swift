@@ -7,29 +7,24 @@
 
 import Foundation
 
-protocol JoinViewModelProperty {
+protocol JoinViewModelInput {
+    func validateEmail(_ email: String)
+    func validatePassword(_ password: String)
+    func addUser(email: String, password: String, shoesize: Int, completion: @escaping (Result<User, UserError>) -> ())
+}
+
+protocol JoinViewModelOutput {
     var emailMessage: Observable<String> { get set }
     var passwordMessage: Observable<String> { get set }
     var shoeSize: Observable<Int> { get set }
     var isJoinAvailable: Observable<Bool> { get set }
 }
 
-protocol JoinViewModelValidatable {
-    func validateEmail(_ email: String)
-    func validatePassword(_ password: String)
-}
+protocol JoinViewModelInterface: JoinViewModelInput ,JoinViewModelOutput { }
 
-protocol JoinViewModelOutput {
-    func didValidateEmail()
-    func didValidatePassword()
-}
+final class JoinViewModel: JoinViewModelInterface {
 
-protocol JoinViewModel: JoinViewModelProperty, JoinViewModelValidatable {
-    func addUser(email: String, password: String, shoesize: Int, completion: @escaping (Result<User, Error>) -> ())
-}
-
-final class DefaultJoinViewModel: JoinViewModel {
-    var usecase: UserUseCaseInterface
+    private let usecase: UserUseCaseInterface
     var emailMessage: Observable<String> = Observable(" ")
     var passwordMessage: Observable<String> = Observable(" ")
     var isJoinAvailable: Observable<Bool> = Observable(false)
@@ -61,7 +56,7 @@ final class DefaultJoinViewModel: JoinViewModel {
         isJoinAvailable.value = (passwordMessage.value == "" && emailMessage.value == "")
     }
     
-    func addUser(email: String, password: String, shoesize: Int, completion: @escaping (Result<User, Error>) -> Void) {
+    func addUser(email: String, password: String, shoesize: Int, completion: @escaping (Result<User, UserError>) -> Void) {
         let _ = usecase.add(userEmail: email, userPassword: password, shoeSize: shoesize) { result in
             switch result {
             case .success(let user):

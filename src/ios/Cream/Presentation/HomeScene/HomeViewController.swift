@@ -7,42 +7,38 @@
 
 import UIKit
 
-class HomeViewController: BaseDIViewController<HomeListViewModel> {
+class HomeViewController: DIViewController<HomeListViewModel> {
     weak var delegate: FooterScrollDelegate?
     
     private lazy var homeView = HomeView()
     
-    private func configureNavigation() {
-        self.navigationController?.navigationBar.tintColor = .black
-        let alertBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "bell"), style: .plain, target: self, action: #selector(alertBarButtonItemTapped))
-        navigationItem.setRightBarButton(alertBarButtonItem, animated: false)
-    }
-    
-    @objc
-    private func alertBarButtonItemTapped() {
-        DispatchQueue.global().asyncAfter(deadline: .now() + 2) {
-            print(#function)
-        }
-    }
-    // MARK: - Action handlers
-    
+    // MARK: - View Life Cycle
     override func loadView() {
         self.view = homeView
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureDelegate()
-        configureCollectionView()
-        configureNavigation()
+        setupCollectionView()
+        setupNavigationBarItem()
         bindViewModel()
         viewModel.viewDidLoad()
     }
     
-    private func configureDelegate() {
+    private func setupNavigationBarItem() {
+        let alertBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "bell"),
+                                                 style: .plain,
+                                                 target: self,
+                                                 action: #selector(alertBarButtonItemTapped))
+        navigationItem.setRightBarButton(alertBarButtonItem, animated: false)
+        navigationController?.navigationBar.tintColor = .black
+    }
+    
+    private func setupCollectionView() {
         homeView.homeCollectionView.delegate = self
         homeView.homeCollectionView.dataSource = self
         homeView.delegate = self
+        registerCollectionViewCell()
     }
     
     private func bindViewModel() {
@@ -51,7 +47,7 @@ class HomeViewController: BaseDIViewController<HomeListViewModel> {
         }
     }
     
-    func configureCollectionView() {
+    private func registerCollectionViewCell() {
         homeView.homeCollectionView.register(ShopBannerCell.self,
                                     forCellWithReuseIdentifier: ShopBannerCell.reuseIdentifier)
         homeView.homeCollectionView.register(SizeListCell.self,
@@ -65,28 +61,38 @@ class HomeViewController: BaseDIViewController<HomeListViewModel> {
                                     forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter,
                                     withReuseIdentifier: PageControlFooterView.reuseIdentifier)
     }
+    
+    @objc
+    private func alertBarButtonItemTapped() {
+        DispatchQueue.global().asyncAfter(deadline: .now() + 2) {
+            print(#function)
+        }
+    }
 }
 
+// MARK: - UICollectionViewDelegate
 extension HomeViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if indexPath.section % 2 == 1 {
             guard let baseURL = URL(string: "http://1.231.16.189:8081")
             else { return }
             
-            let config: NetworkConfigurable = ApiDataNetworkConfig(baseURL: baseURL)
-            let networkService: NetworkService = DefaultNetworkService(config: config)
-            let dataTransferService: DataTransferService = DefaultDataTransferService(with: networkService)
-            let repository: ProductRepositoryInterface = ProductRepository(dataTransferService: dataTransferService)
-            let usecase: ProductUseCaseInterface = ProductUseCase(repository)
-            var viewModel: ProductViewModel = DefaultProductViewModel(usecase: usecase)
+            let config: NetworkConfigurable                 = ApiDataNetworkConfig(baseURL: baseURL)
+            let networkService: NetworkService              = DefaultNetworkService(config: config)
+            let dataTransferService: DataTransferService    = DefaultDataTransferService(with: networkService)
+            let repository: ProductRepositoryInterface      = ProductRepository(dataTransferService: dataTransferService)
+            let usecase: ProductUseCaseInterface            = ProductUseCase(repository)
+            var viewModel: ProductViewModelInterface        = DefaultProductViewModel(usecase: usecase)
             viewModel.id = self.viewModel.homeInfo.value.sections[indexPath.section/2].products[indexPath.item].id
-            let productViewController = ProductViewController(viewModel)
+            let productViewController                       = ProductViewController(viewModel)
+            
             productViewController.hidesBottomBarWhenPushed = true
             self.navigationController?.pushViewController(productViewController, animated: true)
         }
     }
 }
 
+// MARK: - UICollectionViewDataSource
 extension HomeViewController: UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return viewModel.numberOfSections

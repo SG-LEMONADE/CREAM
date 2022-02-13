@@ -7,6 +7,7 @@
 
 import Foundation
 
+// MARK: - JoinResponseDTO
 struct JoinResponseDTO: Decodable {
     let email: String
     let name: String?
@@ -15,7 +16,7 @@ struct JoinResponseDTO: Decodable {
     let age: String?
     let shoeSize: Int
     let profileImageUrl: String
-    let status: Int
+    let status: String
     let passwordChangedDateTime: String
     let lastLoginDateTime: String?
     let createdAt: String

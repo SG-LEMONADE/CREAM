@@ -6,13 +6,14 @@
 //
 
 import UIKit
+import SwiftKeychainWrapper
 
 final class NavigateMenuBaseController: UITabBarController {
     internal enum InnerViewType: String, CustomStringConvertible, CaseIterable {
         case home, shop, my
         
         var description: String {
-            self.rawValue
+            rawValue
         }
         
         var symbol: String {
@@ -27,7 +28,7 @@ final class NavigateMenuBaseController: UITabBarController {
         }
         
         var title: String {
-            self.description.uppercased()
+            description.uppercased()
         }
         
         var image: UIImage? {
@@ -58,16 +59,35 @@ final class NavigateMenuBaseController: UITabBarController {
                 guard let baseURL = URL(string: "http://1.231.16.189:8081")
                 else { fatalError() }
                 
-                let config: NetworkConfigurable = ApiDataNetworkConfig(baseURL: baseURL)
-                let networkService: NetworkService = DefaultNetworkService(config: config)
-                let dataTransferService: DataTransferService = DefaultDataTransferService(with: networkService)
-                let repository: ProductRepositoryInterface = ProductRepository(dataTransferService: dataTransferService)
-                let usecase: ProductUseCaseInterface = ProductUseCase(repository)
-                let viewModel: ProductListViewModel = DefaultListViewModel(usecase)
-                let listViewController = ProductListViewController(viewModel)
-                return listViewController
+                let config: NetworkConfigurable                             = ApiDataNetworkConfig(baseURL: baseURL)
+                let networkService: NetworkService                          = DefaultNetworkService(config: config)
+                let dataTransferService: DataTransferService                = DefaultDataTransferService(with: networkService)
+                let repository: ProductRepositoryInterface                  = ProductRepository(dataTransferService: dataTransferService)
+                let usecase: ProductUseCaseInterface                        = ProductUseCase(repository)
+                let viewModel: ProductListViewModelInterface                = ProductListViewModel(usecase)
+                let productListViewController: ProductListViewController    = ProductListViewController(viewModel)
+                
+                return productListViewController
             case .my:
-                return MyPageViewController()
+                guard let tradeBaseURL = URL(string: "http://1.231.16.189:8081"),
+                      let userBaseURL = URL(string: "http://1.231.16.189:8080")
+                else { fatalError() }
+                let userConfig: NetworkConfigurable                     = ApiDataNetworkConfig(baseURL: userBaseURL)
+                let userNetworkService: NetworkService                  = DefaultNetworkService(config: userConfig)
+                let userDataTransferService: DataTransferService        = DefaultDataTransferService(with: userNetworkService)
+                
+                let tradeConfig: NetworkConfigurable                     = ApiDataNetworkConfig(baseURL: tradeBaseURL)
+                let tradeNetworkService: NetworkService                  = DefaultNetworkService(config: tradeConfig)
+                let tradeDatatransferService: DataTransferService        = DefaultDataTransferService(with: tradeNetworkService)
+                
+                let tradeRepository: TradeRepositoryInterface           = ProductRepository(dataTransferService: tradeDatatransferService)
+                let userRepository: UserRepositoryInterface             = UserRepository(dataTransferService: userDataTransferService)
+                let usecase: MyPageUseCaseInterface                     = MyPageUseCase(userRepository: userRepository,
+                                                                                        tradeRepository: tradeRepository)
+                let viewModel: MyPageViewModel = MyPageViewModel(usecase)
+                let mypageViewController = MyPageViewController(viewModel)
+                
+                return mypageViewController
             }
         }
     }
@@ -82,6 +102,8 @@ final class NavigateMenuBaseController: UITabBarController {
     
     private func setupTabBarColor() {
         tabBar.barTintColor = .white
+        tabBar.backgroundColor = .white
+        tabBar.tintColor = .black
         tabBar.isTranslucent = false
     }
     
@@ -91,13 +113,13 @@ final class NavigateMenuBaseController: UITabBarController {
             rootNavigationViewController.tabBarItem = configureTabBarItem(config: tab)
             tabBarViewControllers.append(rootNavigationViewController)
         }
-        self.viewControllers = tabBarViewControllers
+        viewControllers = tabBarViewControllers
     }
 }
 
 extension NavigateMenuBaseController: UITabBarControllerDelegate {
     private func configureDelegate() {
-        self.delegate = self
+        delegate = self
     }
     
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
@@ -107,21 +129,23 @@ extension NavigateMenuBaseController: UITabBarControllerDelegate {
     
     
     func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
-        let isLogout = true
+        if let accessToken = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.accessToken) {
+            return true
+        }
         
         if let naviVC = viewController as? UINavigationController,
-           (naviVC.viewControllers.first as? MyPageViewController != nil) && isLogout {
-            guard let baseURL = URL(string: "http://ec2-13-125-85-156.ap-northeast-2.compute.amazonaws.com:8081")
+           (naviVC.viewControllers.first as? MyPageViewController != nil) {
+            guard let baseURL = URL(string: "http://1.231.16.189:8080")
             else { fatalError() }
         
-            let config: NetworkConfigurable = ApiDataNetworkConfig(baseURL: baseURL)
-            let networkService: NetworkService = DefaultNetworkService(config: config)
-            let dataTransferService: DataTransferService = DefaultDataTransferService(with: networkService)
-            let repository: UserRepositoryInterface = UserRepository(dataTransferService: dataTransferService)
-            let usecase: UserUseCaseInterface = UserUseCase(repository)
-            let viewModel: LoginViewModel = DefaultLoginViewModel(usecase: usecase)
-            let loginViewController = LoginViewController(viewModel)
-            let navigationViewController = UINavigationController(rootViewController: loginViewController)
+            let config: NetworkConfigurable                 = ApiDataNetworkConfig(baseURL: baseURL)
+            let networkService: NetworkService              = DefaultNetworkService(config: config)
+            let dataTransferService: DataTransferService    = DefaultDataTransferService(with: networkService)
+            let repository: UserRepositoryInterface         = UserRepository(dataTransferService: dataTransferService)
+            let usecase: UserUseCaseInterface               = UserUseCase(repository)
+            let viewModel: LoginViewModel                   = LoginViewModel(usecase: usecase)
+            let loginViewController                         = LoginViewController(viewModel)
+            let navigationViewController                    = UINavigationController(rootViewController: loginViewController)
             
             navigationViewController.modalPresentationStyle = .fullScreen
             tabBarController.present(navigationViewController, animated: true, completion: nil)

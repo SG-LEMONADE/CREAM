@@ -12,9 +12,10 @@ struct HomeInfo {
     let sections: [Section]
 }
 
-struct SectionInfo {
+struct Section {
     let header: String
     let detail: String
+    let imageUrl: String
     let products: [Product]
 }
 

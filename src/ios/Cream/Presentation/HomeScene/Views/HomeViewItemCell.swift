@@ -34,21 +34,21 @@ final class HomeProductCell: UICollectionViewCell {
         applyViewSettings()
     }
     
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        applyViewSettings()
+        fatalError("init(coder:) has not been implemented")
     }
     
     override func prepareForReuse() {
         sessionTask?.cancel()
         
-        self.itemView.productImageView.image = nil
-        self.itemView.titleLabel.text = nil
-        self.itemView.tradeLabel.text = nil
-        self.itemView.detailLabel.text = nil
-        self.wishButton.setTitle(nil, for: .normal)
-        self.itemView.priceLabel.text = nil
-        self.itemView.priceExpressionLabel.text = nil
+        itemView.productImageView.image = nil
+        itemView.titleLabel.text = nil
+        itemView.tradeLabel.text = nil
+        itemView.detailLabel.text = nil
+        wishButton.setTitle(nil, for: .normal)
+        itemView.priceLabel.text = nil
+        itemView.priceExpressionLabel.text = nil
     }
 }
 
@@ -84,12 +84,12 @@ extension HomeProductCell: ViewConfiguration {
 // MARK: Cell Configure
 extension HomeProductCell {
     func configure(_ viewModel: Product, isRelatedItem: Bool = false) {
-        self.itemView.tradeLabel.text = viewModel.totalSaleText
-        self.itemView.titleLabel.text = viewModel.brandName
-        self.itemView.detailLabel.text = viewModel.originalName
-        self.itemView.priceLabel.text = viewModel.price
-        self.itemView.priceExpressionLabel.text = "즉시 구매가"
-        self.itemView.productImageView.backgroundColor = .init(rgb: viewModel.backgroundColor.hexToInt ?? 0)
+        itemView.tradeLabel.text = viewModel.totalSaleText
+        itemView.titleLabel.text = viewModel.brandName
+        itemView.detailLabel.text = viewModel.originalName
+        itemView.priceLabel.text = viewModel.price
+        itemView.priceExpressionLabel.text = "즉시 구매가"
+        itemView.productImageView.backgroundColor = .init(rgb: viewModel.backgroundColor.hexToInt ?? 0)
         guard let urlString = viewModel.imageUrls.first,
               let url = URL(string: urlString)
         else { return }
@@ -101,7 +101,7 @@ extension HomeProductCell {
         }
         
         if isRelatedItem {
-            self.itemView.tradeLabel.text = nil
+            itemView.tradeLabel.text = nil
             wishButton.isHidden = true
         }
     }

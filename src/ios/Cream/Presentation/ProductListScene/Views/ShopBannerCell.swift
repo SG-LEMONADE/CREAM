@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ShopBannerCell: UICollectionViewCell {
+final class ShopBannerCell: UICollectionViewCell {
     
     var sessionTask: URLSessionDataTask?
     
@@ -24,9 +24,9 @@ class ShopBannerCell: UICollectionViewCell {
         applyViewSettings()
     }
     
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        applyViewSettings()
+        fatalError("init(coder:) has not been implemented")
     }
     
     override func prepareForReuse() {
@@ -35,7 +35,7 @@ class ShopBannerCell: UICollectionViewCell {
         self.sessionTask = nil
     }
 }
-// MARK: ViewConfiguration
+// MARK: - ViewConfiguration
 extension ShopBannerCell: ViewConfiguration {
     func buildHierarchy() {
         addSubviews(imageView)
@@ -48,7 +48,7 @@ extension ShopBannerCell: ViewConfiguration {
     }
 }
 
-// MARK: Configure Cell
+// MARK: - Configure Cell
 extension ShopBannerCell {
     func loadImage(url: URL, completion: @escaping (UIImage?) -> Void) -> URLSessionDataTask {
         let task = URLSession.shared.dataTask(with: url) { data, Response, error in

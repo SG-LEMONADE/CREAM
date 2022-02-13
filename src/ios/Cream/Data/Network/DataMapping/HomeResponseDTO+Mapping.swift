@@ -7,11 +7,13 @@
 
 import Foundation
 
+// MARK: - AdImageResponseDTO
 struct AdImageResponseDTO: Decodable {
     let imageUrl: String
     let backgroundColor: String
 }
 
+// MARK: - HomeResponseDTO
 struct HomeResponseDTO: Decodable {
     let adImageUrls: [AdImageResponseDTO]
     let sections: [SectionResponseDTO]
@@ -31,18 +33,12 @@ extension HomeResponseDTO {
     }
 }
 
+// MARK: - SectionResponseDTO
 struct SectionResponseDTO: Decodable {
     let header: String
     let detail: String
     let imageUrl: String
     let products: [ProductInfoResponseDTO]
-}
-
-struct Section {
-    let header: String
-    let detail: String
-    let imageUrl: String
-    let products: [Product]
 }
 
 extension SectionResponseDTO {
@@ -51,7 +47,6 @@ extension SectionResponseDTO {
         self.products.forEach {
             products.append($0.toDomain())
         }
-        
         return Section(header: header, detail: detail, imageUrl: imageUrl, products: products)
     }
 }

@@ -7,6 +7,7 @@
 
 import UIKit
 
+// MARK: - Apply RGB Color
 extension UIColor {
     convenience init(red: Int, green: Int, blue: Int, a: Int = 0xFF) {
         self.init(

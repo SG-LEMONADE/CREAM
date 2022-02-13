@@ -1,5 +1,5 @@
 //
-//  BaseDIViewController.swift
+//  DIViewController.swift
 //  Cream
 //
 //  Created by wankikim-MN on 2022/01/25.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class BaseDIViewController<T>: UIViewController {
+class DIViewController<T>: UIViewController {
     var viewModel: T
     
     init(_ viewModel: T) {

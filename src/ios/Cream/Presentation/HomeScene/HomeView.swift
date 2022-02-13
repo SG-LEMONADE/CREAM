@@ -13,7 +13,7 @@ class HomeView: UIView {
     weak var delegate: FooterScrollDelegate?
     var item: Int = 0 {
         didSet {
-            self.delegate?.didScrollTo(item)
+            delegate?.didScrollTo(item)
         }
     }
     

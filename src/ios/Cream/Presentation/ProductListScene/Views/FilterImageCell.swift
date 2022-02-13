@@ -20,9 +20,9 @@ class FilterImageCell: UICollectionViewCell {
         applyViewSettings()
     }
     
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        applyViewSettings()
+        fatalError("init(coder:) has not been implemented")
     }
     
     override func layoutSubviews() {

@@ -7,6 +7,7 @@
 
 import Foundation
 
+// MARK: - ProductResponseDTO
 struct ProductResponseDTO: Decodable {
     let product: ProductInfoResponseDTO
     let lastCompletedTrade: [CompletedTradeDTO]?
@@ -21,19 +22,69 @@ struct ProductResponseDTO: Decodable {
     let relatedProducts: [ProductInfoResponseDTO]
 }
 
+extension ProductResponseDTO {
+    func toDomain() -> ProductDetail {
+        var trades: [CompletedTrade] = []
+        lastCompletedTrade?.forEach {
+            trades.append(.init(price: $0.price, size: $0.size, tradeDate: $0.tradeDate))
+        }
+        var asksSizes: [TradeBySizeCount] = []
+        asksBySizeCount.forEach {
+            asksSizes.append(.init(count: $0.count, price: $0.price, size: $0.size))
+        }
+        var bidsSizes: [TradeBySizeCount] = []
+        bidsBySizeCount.forEach {
+            bidsSizes.append(.init(count: $0.count, price: $0.price, size: $0.size))
+        }
+        
+        var products: Products = []
+        self.relatedProducts.forEach {
+            products.append($0.toDomain())
+        }
+        
+        return .init(imageUrls: product.imageUrls,
+                     brandName: product.brandName,
+                     originalName: product.originalName,
+                     translatedName: product.translatedName,
+                     pricePremiumPercentage: pricePremiumPercentage,
+                     changeValue: changeValue,
+                     lastSalePrice: lastSalePrice,
+                     pricePremium: pricePremium,
+                     backgroundColor: product.backgroundColor,
+                     styleCode: product.styleCode,
+                     releaseDate: product.releasedDate ?? "-",
+                     color: product.color ?? "-",
+                     originalPrice: product.originalPrice,
+                     lowestAsk: lowestAsk,
+                     highestBid: highestBid,
+                     askPrices: askPrices,
+                     bidPrices: bidPrices,
+                     wishList: product.wishList,
+                     wishCount: product.wishCnt,
+                     sizes: product.sizes,
+                     lastCompletedTrade: trades,
+                     asksBySizeCount: asksSizes,
+                     bidsBySizeCount: bidsSizes,
+                     changePercentage: changePercentage,
+                     relatedProducts: products)
+    }
+}
+
+
+// MARK: - TradeBySizeCountDTO
 struct TradeBySizeCountDTO: Decodable {
     let count, price: Int
     let size: String
 }
 
-
+// MARK: - CompletedTradeDTO
 struct CompletedTradeDTO: Decodable {
     let price: Int
     let size: String
     let tradeDate: String
 }
 
-// MARK: - ProductInfoDTO
+// MARK: - ProductInfoResponseDTO
 struct ProductInfoResponseDTO: Decodable {
     let id: Int
     let originalName, translatedName: String
@@ -75,60 +126,3 @@ extension ProductInfoResponseDTO {
                      wishCount: wishCnt)
     }
 }
-
-
-extension ProductResponseDTO {
-    func toDomain() -> ProductDetail {
-        var trades: [CompletedTrade] = []
-        lastCompletedTrade?.forEach {
-            trades.append(.init(price: $0.price,
-                                size: $0.size,
-                                tradeDate: $0.tradeDate))
-        }
-        var asksSizes: [TradeBySizeCount] = []
-        asksBySizeCount.forEach {
-            asksSizes.append(.init(count: $0.count,
-                                   price: $0.price,
-                                   size: $0.size))
-        }
-        var bidsSizes: [TradeBySizeCount] = []
-        bidsBySizeCount.forEach {
-            bidsSizes.append(.init(count: $0.count,
-                                   price: $0.price,
-                                   size: $0.size))
-        }
-        
-        var products: Products = []
-        self.relatedProducts.forEach {
-            products.append($0.toDomain())
-        }
-        
-        return .init(imageUrls: product.imageUrls,
-                     brandName: product.brandName,
-                     originalName: product.originalName,
-                     translatedName: product.translatedName,
-                     pricePremiumPercentage: pricePremiumPercentage,
-                     changeValue: changeValue,
-                     lastSalePrice: lastSalePrice,
-                     pricePremium: pricePremium,
-                     backgroundColor: product.backgroundColor,
-                     styleCode: product.styleCode,
-                     releaseDate: product.releasedDate ?? "-",
-                     color: product.color ?? "-",
-                     originalPrice: product.originalPrice,
-                     lowestAsk: lowestAsk,
-                     highestBid: highestBid,
-                     askPrices: askPrices,
-                     bidPrices: bidPrices,
-                     wishList: product.wishList,
-                     wishCount: product.wishCnt,
-                     sizes: product.sizes,
-                     lastCompletedTrade: trades,
-                     asksBySizeCount: asksSizes,
-                     bidsBySizeCount: bidsSizes,
-                     changePercentage: changePercentage,
-                     relatedProducts: products)
-    }
-}
-
-

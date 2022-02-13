@@ -11,7 +11,7 @@ protocol SortSelectDelegate: AnyObject {
     func updateListData(_ standard: String)
 }
 
-final class SortViewController: BaseDIViewController<SortViewModel> {
+final class SortViewController: DIViewController<SortViewModelInterface> {
     
     private lazy var sortView = SortView(frame: .zero,
                                          defaultHeight: viewModel.heightInfo)
@@ -20,15 +20,13 @@ final class SortViewController: BaseDIViewController<SortViewModel> {
     
     // MARK: View Life Cycle
     override func loadView() {
-        self.view = sortView
+        view = sortView
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureTableView()
-        let dimmedTap = UITapGestureRecognizer(target: self, action: #selector(dimmedViewTapped(_:)))
-        sortView.dimmedView.addGestureRecognizer(dimmedTap)
-        sortView.dimmedView.isUserInteractionEnabled = true
+        setupTableView()
+        setupDimmedViewGesture()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -37,12 +35,18 @@ final class SortViewController: BaseDIViewController<SortViewModel> {
         animatePresentContainer()
     }
     
-    func configureTableView() {
+    private func setupTableView() {
         sortView.sortTableView.delegate = self
         sortView.sortTableView.dataSource = self
     }
     
-    func animateShowDimmedView() {
+    private func setupDimmedViewGesture() {
+        let dimmedTap = UITapGestureRecognizer(target: self, action: #selector(dimmedViewTapped(_:)))
+        sortView.dimmedView.addGestureRecognizer(dimmedTap)
+        sortView.dimmedView.isUserInteractionEnabled = true
+    }
+    
+    private func animateShowDimmedView() {
         sortView.dimmedView.alpha = 0
         UIView.animate(withDuration: 0.4) { [weak self] in
             guard let self = self
@@ -52,7 +56,7 @@ final class SortViewController: BaseDIViewController<SortViewModel> {
         }
     }
     
-    func animatePresentContainer() {
+    private func animatePresentContainer() {
         UIView.animate(withDuration: 0.3) {
             self.sortView.containerViewBottomConstraint?.constant = 0
             self.view.layoutIfNeeded()
@@ -71,11 +75,13 @@ final class SortViewController: BaseDIViewController<SortViewModel> {
         }
     }
 
-    @objc private func dimmedViewTapped(_ tapRecognizer: UITapGestureRecognizer) {
+    @objc
+    private func dimmedViewTapped(_ tapRecognizer: UITapGestureRecognizer) {
         hideBottomSheetAndGoBack()
     }
     
-    @objc func animateDismissView() {
+    @objc
+    private func animateDismissView() {
         UIView.animate(withDuration: 0.3) {
             self.sortView.containerViewBottomConstraint?.constant = self.sortView.defaultHeight
             self.view.layoutIfNeeded()
@@ -93,7 +99,7 @@ final class SortViewController: BaseDIViewController<SortViewModel> {
 // MARK: - UITableViewDataSource
 extension SortViewController: UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return .one
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -103,9 +109,9 @@ extension SortViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell()
         var content = cell.defaultContentConfiguration()
+        content.textProperties.color = .black
         content.text = viewModel.filters[indexPath.row].translatedString
         cell.contentConfiguration = content
-        
         return cell
     }
 }

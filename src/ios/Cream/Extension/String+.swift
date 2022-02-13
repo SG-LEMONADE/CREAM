@@ -7,6 +7,7 @@
 
 import Foundation
 
+// MARK: - Change Hex String To Int?
 extension String {
     var hexToInt: Int? {
         let hexString = self.replacingOccurrences(of: "#", with: "")

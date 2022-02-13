@@ -18,7 +18,7 @@ class JoinView: UIView {
         case signupButton = "가입하기"
         
         var description: String {
-            self.rawValue
+            rawValue
         }
     }
     

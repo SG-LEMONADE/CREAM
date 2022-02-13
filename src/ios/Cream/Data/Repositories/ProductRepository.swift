@@ -8,14 +8,14 @@
 import Foundation
 
 final class ProductRepository {
-    private var dataTransferService: DataTransferService
+    private let dataTransferService: DataTransferService
 
     init(dataTransferService: DataTransferService) {
         self.dataTransferService = dataTransferService
     }
 }
 
-// MARK: Product View Repository Interface
+// MARK: - Product View Repository Interface
 extension ProductRepository: ProductRepositoryInterface {    
     func requestProducts(page: Int,
                          searchWord: String?,
@@ -50,7 +50,7 @@ extension ProductRepository: ProductRepositoryInterface {
                 let product = response.toDomain()
                 completion(.success(product))
             case .failure(let error):
-                print(error)
+                completion(.failure(error))
             }
         })
         return task
@@ -65,7 +65,7 @@ extension ProductRepository: ProductRepositoryInterface {
     }
 }
 
-// MARK: Home View Repository Interface
+// MARK: - Home View Repository Interface
 extension ProductRepository: HomeListRepositoryInterface {
     func fetchHome(completion: @escaping ((Result<HomeInfo, Error>) -> Void)) -> Cancellable {
         let endpoint = APIEndpoints.loadHome()
@@ -78,7 +78,45 @@ extension ProductRepository: HomeListRepositoryInterface {
                 let product = response.toDomain()
                 completion(.success(product))
             case .failure(let error):
-                print(error)
+                completion(.failure(error))
+            }
+        })
+        return task
+    }
+}
+
+extension ProductRepository: FilterRepositoryInterface {
+    func fetchFilter(completion: @escaping ((Result<Filter, Error>) -> Void)) -> Cancellable {
+        let endpoint = APIEndpoints.loadFilter()
+        
+        let task = RepositoryTask()
+        
+        task.networkTask = dataTransferService.request(with: endpoint, completion: { result in
+            switch result {
+            case .success(let response):
+                let product = response.toDomain()
+                completion(.success(product))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        })
+        return task
+    }
+}
+
+extension ProductRepository: TradeRepositoryInterface {
+    func fetchTradeInfo(with type: TradeType, completion: @escaping (Result<TradeList, Error>) -> Void) -> Cancellable {
+        let endpoint = APIEndpoints.fetchTradeInfo(type: type)
+        
+        let task = RepositoryTask()
+        
+        task.networkTask = dataTransferService.request(with: endpoint, completion: { result in
+            switch result {
+            case .success(let response):
+                let product = response.toDomain()
+                completion(.success(product))
+            case .failure(let error):
+                completion(.failure(error))
             }
         })
         return task
