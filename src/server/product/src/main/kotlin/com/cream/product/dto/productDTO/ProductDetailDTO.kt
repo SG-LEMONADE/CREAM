@@ -14,4 +14,5 @@ data class ProductDetailDTO(
     val pricePremiumPercentage: Float?,
     val askPrices: HashMap<String, Int?>,
     val bidPrices: HashMap<String, Int?>,
+    val relatedProducts: List<ProductDTO>
 )

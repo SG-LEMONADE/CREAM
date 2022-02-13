@@ -4,7 +4,7 @@ import javax.persistence.*
 
 @Entity
 @Table(name = "section")
-class Section (
+class Section(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
@@ -18,6 +18,9 @@ class Section (
 
     @Column
     var imageUrl: String,
+
+    @Column
+    var backgroundColor: String,
 
     @Column
     var filterInfo: String,

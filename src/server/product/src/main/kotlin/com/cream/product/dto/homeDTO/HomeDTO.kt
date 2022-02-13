@@ -1,8 +1,6 @@
 package com.cream.product.dto.homeDTO
 
-import org.springframework.boot.Banner
-
-data class HomeDTO (
-    val adImageUrls: List<String>,
+data class HomeDTO(
+    val adImageUrls: List<HomeAdDTO>,
     val sections: List<SectionDTO>
 )

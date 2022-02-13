@@ -15,6 +15,8 @@ interface WishRepository : JpaRepository<Wish, Long>, WishRepositoryCustom {
     @Query("INSERT INTO wish (user_id, product_id, size) VALUE (:userId, :productId, :size)", nativeQuery = true)
     @Modifying
     fun createWish(userId: Long, productId: Long, size: String)
+    @Query("SELECT COUNT(*) FROM wish WHERE wish.user_id=:userId ", nativeQuery = true)
+    fun getWishCount(userId: Long): Int
 }
 
 class WishRepositoryImpl :

@@ -28,7 +28,7 @@ interface ProductRepositoryCustom {
     fun getProductWithWish(userId: Long, productId: Long, size: String?): ProductPriceWishDTO
 
     fun getProductPricesBySize(productId: Long, requestType: RequestType): List<ProductPriceBySizeDTO>?
-    fun getProductsByWish(userId: Long, offset: Long, limit: Long): List<ProductPriceWishDTO>
+    fun getProductsByWish(userId: Long, offset: Long, limit: Long): List<WishedProductDTO>
 }
 
 interface ProductRepository : JpaRepository<Product, Long>, ProductRepositoryCustom
@@ -72,7 +72,7 @@ class ProductRepositoryImpl :
             )
             .offset(offset)
             .limit(limit)
-            .orderBy(getOrder(sort))
+            .orderBy(getOrder(sort), OrderSpecifier(Order.ASC, productEntity.id))
             .fetch()
     }
 
@@ -110,7 +110,7 @@ class ProductRepositoryImpl :
             )
             .offset(offset)
             .limit(limit)
-            .orderBy(getOrder(sort))
+            .orderBy(getOrder(sort), OrderSpecifier(Order.ASC, productEntity.id))
             .fetch()
     }
 
@@ -180,18 +180,27 @@ class ProductRepositoryImpl :
         userId: Long,
         offset: Long,
         limit: Long,
-    ): List<ProductPriceWishDTO> {
+    ): List<WishedProductDTO> {
         return jpaQueryFactory.select(
-            Projections.constructor(
-                ProductPriceWishDTO::class.java,
-                productEntity,
+            QWishedProductDTO(
+                wishEntity.product.id,
+                wishEntity.product.brandName,
+                wishEntity.product.originalName,
                 wishEntity.size,
-                lowestAskQuery(null),
+                wishEntity.product.imageUrls,
+                wishEntity.product.backgroundColor,
+                tradeEntity.price.min()
             )
-        ).from(productEntity)
-            .join(wishEntity)
-            .on(wishEntity.product.id.eq(productEntity.id))
+        ).from(wishEntity)
+            .leftJoin(tradeEntity)
+            .on(
+                tradeEntity.product.id.eq(wishEntity.product.id),
+                tradeEntity.size.eq(wishEntity.size),
+                tradeEntity.requestType.eq(RequestType.ASK)
+            )
             .where(wishEntity.userId.eq(userId))
+            .groupBy(wishEntity.size, wishEntity.product.id)
+            .orderBy(OrderSpecifier(Order.DESC, wishEntity.id.min()))
             .offset(offset)
             .limit(limit)
             .fetch()
@@ -274,11 +283,11 @@ class ProductRepositoryImpl :
     }
 
     private fun geoPrice(price: Int?): BooleanExpression? {
-        return if (price == null) null else lowestAsk.goe(price)
+        return if (price == null) null else lowestAskQuery(null).goe(price)
     }
 
     private fun loePrice(price: Int?): BooleanExpression? {
-        return if (price == null) null else lowestAsk.loe(price)
+        return if (price == null) null else lowestAskQuery(null).loe(price)
     }
 
     private fun likeKeyword(keyWord: String?): BooleanExpression? {

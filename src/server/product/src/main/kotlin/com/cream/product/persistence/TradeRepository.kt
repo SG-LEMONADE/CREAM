@@ -1,5 +1,6 @@
 package com.cream.product.persistence
 
+import com.cream.product.constant.RequestTradeStatus
 import com.cream.product.constant.RequestType
 import com.cream.product.constant.TradeStatus
 import com.cream.product.dto.tradeDTO.*
@@ -17,10 +18,12 @@ import java.time.LocalDateTime
 
 interface TradeRepositoryCustom {
     fun findFirstTrade(productId: Long, size: String, requestType: RequestType): Trade
-    fun findAllByPageAndStatus(userId: Long, offset: Long, limit: Long, requestType: RequestType, tradeStatus: TradeStatus): List<TradeHistoryDTO>
+    fun findAllByPageAndStatus(userId: Long, offset: Long, limit: Long, requestType: RequestType, tradeStatus: RequestTradeStatus): List<TradeHistoryDTO>
 
     fun findByProductIdWithCount(size: String?, productId: Long, requestType: RequestType): List<TradeBySizeCountDTO>
-    fun findByProductIdCompleted(productId: Long): List<TradeLastCompletedDTO>
+    fun findByProductIdCompleted(productId: Long, size: String?): List<TradeLastCompletedDTO>
+
+    fun findCountsByTradeStatus(userId: Long, requestType: RequestType): List<TradeStatusCounterDTO>
 }
 
 interface TradeRepository : JpaRepository<Trade, Long>, TradeRepositoryCustom
@@ -60,13 +63,15 @@ class TradeRepositoryImpl :
         offset: Long,
         limit: Long,
         requestType: RequestType,
-        tradeStatus: TradeStatus
+        tradeStatus: RequestTradeStatus
     ): List<TradeHistoryDTO> {
         return jpaQueryFactory
             .select(
                 QTradeHistoryDTO(
                     tradeEntity.product.originalName,
                     tradeEntity.size,
+                    tradeEntity.product.imageUrls,
+                    tradeEntity.product.backgroundColor,
                     tradeEntity.tradeStatus,
                     tradeEntity.updatedAt,
                     tradeEntity.validationDateTime
@@ -75,8 +80,8 @@ class TradeRepositoryImpl :
             .from(tradeEntity)
             .where(
                 tradeEntity.requestType.eq(requestType),
-                tradeEntity.tradeStatus.eq(tradeStatus),
-                tradeEntity.userId.eq(userId).or(tradeEntity.counterpartUserId.eq(userId))
+                tradeEntity.userId.eq(userId).or(tradeEntity.counterpartUserId.eq(userId)),
+                eqTradeStatus(tradeStatus)
             )
             .offset(offset)
             .limit(limit)
@@ -114,7 +119,8 @@ class TradeRepositoryImpl :
     }
 
     override fun findByProductIdCompleted(
-        productId: Long
+        productId: Long,
+        size: String?
     ): List<TradeLastCompletedDTO> {
         return jpaQueryFactory
             .select(
@@ -127,10 +133,32 @@ class TradeRepositoryImpl :
             .from(tradeEntity)
             .where(
                 tradeEntity.tradeStatus.eq(TradeStatus.COMPLETED),
-                tradeEntity.product.id.eq(productId)
+                tradeEntity.product.id.eq(productId),
+                eqSize(size)
             )
             .orderBy(OrderSpecifier(Order.DESC, tradeEntity.updatedAt))
             .limit(5)
+            .fetch()
+    }
+
+    override fun findCountsByTradeStatus(
+        userId: Long,
+        requestType: RequestType
+    ): List<TradeStatusCounterDTO> {
+        return jpaQueryFactory
+            .select(
+                QTradeStatusCounterDTO(
+                    tradeEntity.tradeStatus,
+                    tradeEntity.count()
+                )
+            )
+            .from(tradeEntity)
+            .where(
+                tradeEntity.userId.eq(userId),
+                tradeEntity.requestType.eq(requestType)
+            )
+            .groupBy(tradeEntity.tradeStatus)
+            .orderBy(OrderSpecifier(Order.ASC, tradeEntity.tradeStatus))
             .fetch()
     }
 
@@ -145,5 +173,19 @@ class TradeRepositoryImpl :
         size: String?
     ): BooleanExpression? {
         return if (size == null) null else tradeEntity.size.eq(size)
+    }
+
+    private fun eqTradeStatus(
+        status: RequestTradeStatus
+    ): BooleanExpression? {
+        return when (status) {
+            (RequestTradeStatus.ALL) -> null
+            (RequestTradeStatus.WAITING) -> tradeEntity.tradeStatus.eq(TradeStatus.WAITING)
+            (RequestTradeStatus.IN_PROGRESS) -> tradeEntity.tradeStatus.eq(TradeStatus.IN_PROGRESS)
+            (RequestTradeStatus.FINISHED) -> tradeEntity.tradeStatus.eq(TradeStatus.CANCELED)
+                .or(tradeEntity.tradeStatus.eq(TradeStatus.EXPIRED))
+                .or(tradeEntity.tradeStatus.eq(TradeStatus.COMPLETED))
+            else -> null
+        }
     }
 }

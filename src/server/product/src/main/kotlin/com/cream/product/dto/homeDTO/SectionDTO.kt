@@ -2,9 +2,10 @@ package com.cream.product.dto.homeDTO
 
 import com.cream.product.dto.productDTO.ProductDTO
 
-data class SectionDTO (
+data class SectionDTO(
     val header: String,
     val detail: String,
     val imageUrl: String,
+    val backgroundColor: String?,
     val products: List<ProductDTO>
 )

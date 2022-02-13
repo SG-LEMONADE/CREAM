@@ -26,7 +26,7 @@ class User(
     var address: String?,
 
     @Column
-    var gender: Boolean?,
+    var gender: String?,
 
     @Column
     var age: Int?,

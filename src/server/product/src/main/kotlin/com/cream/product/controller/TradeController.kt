@@ -1,9 +1,9 @@
 package com.cream.product.controller
 
+import com.cream.product.constant.RequestTradeStatus
 import com.cream.product.constant.RequestType
-import com.cream.product.constant.TradeStatus
 import com.cream.product.dto.filterDTO.PageDTO
-import com.cream.product.dto.tradeDTO.TradeHistoryDTO
+import com.cream.product.dto.tradeDTO.MyPageTradeListDTO
 import com.cream.product.dto.tradeDTO.TradeRegisterDTO
 import com.cream.product.service.TradeService
 import org.springframework.beans.factory.annotation.Autowired
@@ -20,9 +20,9 @@ class TradeController {
     fun getTradeList(
         pageDTO: PageDTO,
         @RequestParam requestType: RequestType,
-        @RequestParam tradeStatus: TradeStatus,
+        @RequestParam tradeStatus: RequestTradeStatus,
         @RequestHeader("userId", required = true) userId: Long,
-    ): ResponseEntity<List<TradeHistoryDTO>> {
+    ): ResponseEntity<MyPageTradeListDTO> {
         return ResponseEntity.ok(tradeService.getTradeList(userId, pageDTO, requestType, tradeStatus))
     }
 

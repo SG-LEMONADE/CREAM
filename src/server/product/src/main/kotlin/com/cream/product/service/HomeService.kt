@@ -1,6 +1,7 @@
 package com.cream.product.service
 
 import com.cream.product.dto.filterDTO.FilterRequestDTO
+import com.cream.product.dto.homeDTO.HomeAdDTO
 import com.cream.product.dto.homeDTO.HomeDTO
 import com.cream.product.dto.homeDTO.SectionDTO
 import com.cream.product.dto.productDTO.ProductDTO
@@ -10,7 +11,6 @@ import com.cream.product.persistence.SectionRepository
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import java.nio.charset.StandardCharsets
 import kotlin.streams.toList
 
 @Service
@@ -26,10 +26,10 @@ class HomeService {
 
     fun getHomeView(
         userId: Long?
-    ): HomeDTO{
-        val imageUrls: List<String> = bannerRepository.findAllByValidIsTrue()
+    ): HomeDTO {
+        val imageUrls: List<HomeAdDTO> = bannerRepository.findAllByValidIsTrue()
             .stream().map {
-                it.imageUrl
+                HomeAdDTO(it.imageUrl, it.backgroundColor)
             }.toList()
 
         val sections: List<SectionDTO> = sectionRepository.findAllByValidIsTrue()
@@ -41,13 +41,13 @@ class HomeService {
                             ProductDTO(it)
                         }.toList()
                 } else {
-                    productRepository.getProducts(0, 16, "total_sale", filter).stream()
+                    productRepository.getProductsWithWish(userId, 0, 16, "total_sale", filter).stream()
                         .map {
                             ProductDTO(it)
                         }.toList()
                 }
 
-                SectionDTO(section.header, section.detail, section.imageUrl, products)
+                SectionDTO(section.header, section.detail, section.imageUrl, section.backgroundColor, products)
             }.toList()
 
         return HomeDTO(imageUrls, sections)

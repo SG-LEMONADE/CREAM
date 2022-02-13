@@ -25,5 +25,6 @@ enum class ErrorCode(
     DUPLICATED_USER_EMAIL(409, -18, "duplicated email"),
     USER_EMAIL_NOT_FOUND(404, -19, "user email not found"),
     USER_PASSWORD_NOT_MATCH(401, -20, "user password not match"),
+    USER_NEW_PASSWORD_SAME_AS_OLD(400, -21, "user password is not changed")
     ;
 }

@@ -81,14 +81,9 @@ class UserService {
         tokenDTO: TokenDTO
     ): TokenDTO {
         // 둘다 Bearer 앞에 와야합니다.
-        val accessToken: String = tokenDTO.accessToken
         val refreshToken: String = tokenDTO.refreshToken
 
         val userId = tokenProvider.validateAndGetUserId(refreshToken)
-        if (tokenProvider.validateAndGetUserId(accessToken) != userId) {
-            // 엑세스 토큰과 리프레시 토큰이 다른 사람일때
-            throw UserCustomException(ErrorCode.REFRESH_TOKEN_NOT_VALID)
-        }
 
         val stringValueOperation = redisTemplate.opsForValue()
         val storedToken: String? = stringValueOperation.get("refresh-$userId")
@@ -121,24 +116,23 @@ class UserService {
         redisTemplate.delete(email)
     }
 
-
     fun update(
         userId: Long,
         userUpdateDTO: UpdateUserDTO,
     ): ResponseUserDTO {
         val user = userRepository.findById(userId).orElseThrow()
 
-        if (!passwordEncoder.matches(user.password, userUpdateDTO.password)) {
+        if (userUpdateDTO.password != null) {
+            if (passwordEncoder.matches(user.password, userUpdateDTO.password))
+                throw UserCustomException(ErrorCode.USER_NEW_PASSWORD_SAME_AS_OLD)
+            user.password = passwordEncoder.encode(userUpdateDTO.password)
             user.passwordChangedDatetime = LocalDateTime.now()
         }
-        user.email = userUpdateDTO.email
-        user.password = passwordEncoder.encode(userUpdateDTO.password)
-        user.name = userUpdateDTO.name
-        user.address = userUpdateDTO.address
-        user.shoeSize = userUpdateDTO.shoeSize
-        user.age = userUpdateDTO.age
-        user.gender = userUpdateDTO.gender
-        user.profileImageUrl = userUpdateDTO.profileImageUrl
+        if (userUpdateDTO.address != null) user.address = userUpdateDTO.address
+        if (userUpdateDTO.shoeSize != null) user.shoeSize = userUpdateDTO.shoeSize
+        if (userUpdateDTO.profileImageUrl != null) user.profileImageUrl = userUpdateDTO.profileImageUrl
+        if (userUpdateDTO.name != null) user.name = userUpdateDTO.name
+
         user.updatedAt = LocalDateTime.now()
         return ResponseUserDTO(userRepository.save(user))
     }

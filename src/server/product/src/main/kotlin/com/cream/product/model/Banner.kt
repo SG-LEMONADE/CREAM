@@ -1,11 +1,10 @@
 package com.cream.product.model
 
-import java.time.LocalDateTime
 import javax.persistence.*
 
 @Entity
-@Table(name="banner")
-class Banner (
+@Table(name = "banner")
+class Banner(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
@@ -13,6 +12,9 @@ class Banner (
 
     @Column
     var imageUrl: String,
+
+    @Column
+    var backgroundColor: String,
 
     @Column
     var valid: Boolean
