@@ -154,7 +154,7 @@ class UserService {
         return ResponseUserDTO(userRepository.getById(userId))
     }
 
-    fun logOut(
+    fun logout(
         token: String
     ) {
         val userId = tokenProvider.validateAndGetUserId(token)
