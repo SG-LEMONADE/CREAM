@@ -10,12 +10,12 @@ import Foundation
 protocol UserUseCaseInterface {
     func confirm(userEmail: String,
                  userPassword: String,
-                 completion: @escaping (Result<Auth, UserError>) -> Void) -> Cancellable?
+                 completion: @escaping (Result<Auth, UserError>) -> Void)
     
     func add(userEmail: String,
              userPassword: String,
              shoeSize: Int,
-             completion: @escaping (Result<User, UserError>) -> Void) -> Cancellable?
+             completion: @escaping (Result<User, UserError>) -> Void)
     
     func removeToken(completion: @escaping (Result<Void, UserError>) -> Void)
     func verifyToken(completion: @escaping (Result<Void, UserError>) -> Void)
@@ -31,8 +31,8 @@ final class UserUseCase: UserUseCaseInterface {
         self.repository = userRepository
     }
     
-    func confirm(userEmail: String, userPassword: String, completion: @escaping (Result<Auth, UserError>) -> Void) -> Cancellable? {
-        repository.confirm(email: userEmail, password: userPassword) { result in
+    func confirm(userEmail: String, userPassword: String, completion: @escaping (Result<Auth, UserError>) -> Void) {
+        _ = repository.confirm(email: userEmail, password: userPassword) { result in
             switch result {
             case .success(let auth):
                 let auth = Auth(accessToken: auth.accessToken, refreshToken: auth.refreshToken)
@@ -58,8 +58,8 @@ final class UserUseCase: UserUseCaseInterface {
         }
     }
     
-    func add(userEmail: String, userPassword: String, shoeSize: Int, completion: @escaping (Result<User, UserError>) -> Void) -> Cancellable? {
-        repository.add(email: userEmail, password: userPassword, shoesize: shoeSize) { result in
+    func add(userEmail: String, userPassword: String, shoeSize: Int, completion: @escaping (Result<User, UserError>) -> Void) {
+        _ = repository.add(email: userEmail, password: userPassword, shoesize: shoeSize) { result in
             switch result {
             case .success(let userDTO):
                 let user = User(email: userDTO.email,

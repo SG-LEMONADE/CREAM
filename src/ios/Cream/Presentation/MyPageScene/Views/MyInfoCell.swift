@@ -15,6 +15,7 @@ protocol ProfileReviseDelegate: AnyObject {
 class MyInfoCell: UITableViewCell {
     static let reuseIdentifier: String = "\(MyInfoCell.self)"
     
+    var session: URLSessionDataTask?
     weak var delegate: ProfileReviseDelegate?
     
     private lazy var profileImageView: UIImageView = {
@@ -73,12 +74,25 @@ class MyInfoCell: UITableViewCell {
     }
 }
 
-extension MyInfoCell {
-    func configureTest() {
-        profileImageView.image = UIImage(systemName: "person.fill")
-        nameLabel.text = "nameLabel"
-        profileNameLabel.text = "profileNameLabel"
-        reviseProfileButton.setTitle("프로필 편집", for: .normal)
+extension MyInfoCell: ImageLoadable {
+    func configure(with info: User) {
+        if let name = info.name {
+            nameLabel.text = name
+        } else {
+            nameLabel.text = "닉네임 미설정"
+        }
+        profileNameLabel.text = info.email.split(separator: "@").map { String($0) }.first
+        
+        guard let url = URL(string: info.profileImageUrl) else {
+            profileImageView.image = UIImage(systemName: "person.fill")
+            return
+        }
+        
+        session = loadImage(url: url) { (image) in
+            DispatchQueue.main.async { [weak self] in
+                self?.profileImageView.image = image
+            }
+        }
     }
 }
 

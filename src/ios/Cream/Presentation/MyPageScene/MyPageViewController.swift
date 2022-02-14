@@ -21,11 +21,28 @@ class MyPageViewController: DIViewController<MyPageViewModelInterface> {
         setupTableView()
         setupNavigationBarItem()
         registerCell()
+        bindViewModel()
+        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        viewModel.viewDidLoad()
     }
     
     func setupTableView() {
         myPageView.userTableView.delegate = self
         myPageView.userTableView.dataSource = self
+    }
+    
+    func setupNavigationBarItem() {
+        self.navigationController?.navigationBar.topItem?.title = "내 쇼핑"
+        let navigationItem = UIBarButtonItem(image: UIImage(systemName: "gearshape"),
+                                             style: .plain,
+                                             target: self,
+                                             action: #selector(pushToSettingViewController))
+        navigationItem.tintColor = .black
+        self.navigationItem.leftBarButtonItem = navigationItem
     }
     
     func registerCell() {
@@ -39,14 +56,15 @@ class MyPageViewController: DIViewController<MyPageViewModelInterface> {
                                           forHeaderFooterViewReuseIdentifier: WishItemHeaderView.reuseIdentifier)
     }
     
-    func setupNavigationBarItem() {
-        self.navigationController?.navigationBar.topItem?.title = "내 쇼핑"
-        let navigationItem = UIBarButtonItem(image: UIImage(systemName: "gearshape"),
-                                             style: .plain,
-                                             target: self,
-                                             action: #selector(pushToSettingViewController))
-        navigationItem.tintColor = .black
-        self.navigationItem.leftBarButtonItem = navigationItem
+    func bindViewModel() {
+        viewModel.isFinished.bind { [weak self] _ in
+            DispatchQueue.main.async { [weak self] in
+                print(self?.viewModel.userInfo)
+                print(self?.viewModel.askList)
+                print(self?.viewModel.bidList)
+                self?.myPageView.userTableView.reloadData()
+            }
+        }
     }
     
     @objc func pushToSettingViewController() {
@@ -78,21 +96,23 @@ extension MyPageViewController: UITableViewDataSource {
         if indexPath.section == .zero {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: MyInfoCell.reuseIdentifier) as? MyInfoCell
             else { return UITableViewCell() }
+            
             cell.delegate = self
+            cell.configure(with: viewModel.userInfo)
             return cell
         } else if indexPath.section == .one {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: MyTradeCell.reuseIdentifier) as? MyTradeCell
             else { return UITableViewCell() }
             
+            cell.configure(ask: viewModel.askList,
+                           bid: viewModel.bidList)
+            
             cell.buyHistoryAction = { [weak self] in
                 self?.didTapBuyHistoryButton()
             }
-            
             cell.sellHistoryAction = { [weak self] in
                 self?.didTapSellHistoryButton()
             }
-            
-            cell.configure(with: "test")
             
             return cell
         } else {

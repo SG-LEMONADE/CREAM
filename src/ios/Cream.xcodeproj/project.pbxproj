@@ -8,6 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		3AA6865D5E6AC36E76D7F9E1 /* Pods_Cream.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A30B26FB25B22F519249FD4 /* Pods_Cream.framework */; };
+		7B17623D27BA50FA0082B79B /* LoginViewModelSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B17623C27BA50FA0082B79B /* LoginViewModelSpec.swift */; };
+		7B17624427BA521A0082B79B /* MockUserUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B17624327BA521A0082B79B /* MockUserUseCase.swift */; };
+		7B17624627BA5A2E0082B79B /* RepositoryTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B17624527BA5A2E0082B79B /* RepositoryTask.swift */; };
+		7B17624927BA81850082B79B /* PasswordTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B17624827BA81850082B79B /* PasswordTextField.swift */; };
+		7B17624B27BA8F3F0082B79B /* JoinViewModelSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B17624A27BA8F3F0082B79B /* JoinViewModelSpec.swift */; };
 		7B193C832794D3D300B934A3 /* HomeViewItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B193C822794D3D300B934A3 /* HomeViewItemCell.swift */; };
 		7B193C8927965E5A00B934A3 /* HomeViewCategoryHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B193C8827965E5A00B934A3 /* HomeViewCategoryHeaderView.swift */; };
 		7B193C8B27965EE500B934A3 /* ShopViewFilterHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B193C8A27965EE500B934A3 /* ShopViewFilterHeaderView.swift */; };
@@ -120,10 +125,7 @@
 		7BB01117278BCA54005E5C9E /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BB01116278BCA54005E5C9E /* Observable.swift */; };
 		7BB01121278BD66C005E5C9E /* UIView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BB01120278BD66C005E5C9E /* UIView+.swift */; };
 		7BDA400D278978500093E75F /* BetterSegmentedControl in Frameworks */ = {isa = PBXBuildFile; productRef = 7BDA400C278978500093E75F /* BetterSegmentedControl */; };
-		7BDA40132789793B0093E75F /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 7BDA40122789793B0093E75F /* Alamofire */; };
-		7BDA4016278979AB0093E75F /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 7BDA4015278979AB0093E75F /* Kingfisher */; };
 		7BDA4019278A9BF70093E75F /* BSImagePicker in Frameworks */ = {isa = PBXBuildFile; productRef = 7BDA4018278A9BF70093E75F /* BSImagePicker */; };
-		7BDA4021278A9D540093E75F /* SwipeCellKit in Frameworks */ = {isa = PBXBuildFile; productRef = 7BDA4020278A9D540093E75F /* SwipeCellKit */; };
 		7BF82E0227A2CD18007E0A79 /* JoinRequestDTO+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BF82E0127A2CD17007E0A79 /* JoinRequestDTO+Mapping.swift */; };
 		7BF82E0427A2CD2B007E0A79 /* JoinResponseDTO+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BF82E0327A2CD2B007E0A79 /* JoinResponseDTO+Mapping.swift */; };
 		7BF82E0627A38558007E0A79 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BF82E0527A38558007E0A79 /* User.swift */; };
@@ -136,8 +138,24 @@
 		7BF82E1A27A57117007E0A79 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7B36DB162789202A00D8ACB0 /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		7B17623E27BA50FA0082B79B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7B36DB022789202800D8ACB0 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 7B36DB092789202800D8ACB0;
+			remoteInfo = Cream;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		6A30B26FB25B22F519249FD4 /* Pods_Cream.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Cream.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7B17623A27BA50FA0082B79B /* CreamTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CreamTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		7B17623C27BA50FA0082B79B /* LoginViewModelSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModelSpec.swift; sourceTree = "<group>"; };
+		7B17624327BA521A0082B79B /* MockUserUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockUserUseCase.swift; sourceTree = "<group>"; };
+		7B17624527BA5A2E0082B79B /* RepositoryTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepositoryTask.swift; sourceTree = "<group>"; };
+		7B17624827BA81850082B79B /* PasswordTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordTextField.swift; sourceTree = "<group>"; };
+		7B17624A27BA8F3F0082B79B /* JoinViewModelSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinViewModelSpec.swift; sourceTree = "<group>"; };
 		7B193C822794D3D300B934A3 /* HomeViewItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewItemCell.swift; sourceTree = "<group>"; };
 		7B193C8827965E5A00B934A3 /* HomeViewCategoryHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewCategoryHeaderView.swift; sourceTree = "<group>"; };
 		7B193C8A27965EE500B934A3 /* ShopViewFilterHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopViewFilterHeaderView.swift; sourceTree = "<group>"; };
@@ -265,16 +283,20 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		7B17623727BA50FA0082B79B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		7B36DB072789202800D8ACB0 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7BDA4016278979AB0093E75F /* Kingfisher in Frameworks */,
 				7BDA400D278978500093E75F /* BetterSegmentedControl in Frameworks */,
-				7BDA40132789793B0093E75F /* Alamofire in Frameworks */,
 				7BDA4019278A9BF70093E75F /* BSImagePicker in Frameworks */,
 				7BB0110F278BBBAC005E5C9E /* SnapKit in Frameworks */,
-				7BDA4021278A9D540093E75F /* SwipeCellKit in Frameworks */,
 				3AA6865D5E6AC36E76D7F9E1 /* Pods_Cream.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -288,6 +310,40 @@
 				6A30B26FB25B22F519249FD4 /* Pods_Cream.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		7B17623B27BA50FA0082B79B /* CreamTests */ = {
+			isa = PBXGroup;
+			children = (
+				7B17624C27BA93CC0082B79B /* Mock */,
+				7B17624D27BA93D90082B79B /* ViewModelUnitTest */,
+			);
+			path = CreamTests;
+			sourceTree = "<group>";
+		};
+		7B17624727BA81770082B79B /* views */ = {
+			isa = PBXGroup;
+			children = (
+				7B17624827BA81850082B79B /* PasswordTextField.swift */,
+			);
+			path = views;
+			sourceTree = "<group>";
+		};
+		7B17624C27BA93CC0082B79B /* Mock */ = {
+			isa = PBXGroup;
+			children = (
+				7B17624327BA521A0082B79B /* MockUserUseCase.swift */,
+			);
+			path = Mock;
+			sourceTree = "<group>";
+		};
+		7B17624D27BA93D90082B79B /* ViewModelUnitTest */ = {
+			isa = PBXGroup;
+			children = (
+				7B17623C27BA50FA0082B79B /* LoginViewModelSpec.swift */,
+				7B17624A27BA8F3F0082B79B /* JoinViewModelSpec.swift */,
+			);
+			path = ViewModelUnitTest;
 			sourceTree = "<group>";
 		};
 		7B193C7F27944AF000B934A3 /* SupportFile */ = {
@@ -363,6 +419,7 @@
 			isa = PBXGroup;
 			children = (
 				7B36DB0C2789202800D8ACB0 /* Cream */,
+				7B17623B27BA50FA0082B79B /* CreamTests */,
 				7B36DB0B2789202800D8ACB0 /* Products */,
 				8054DFD6B3DB5002DFAF10ED /* Pods */,
 				4A27CD989B739ADF78A05923 /* Frameworks */,
@@ -373,6 +430,7 @@
 			isa = PBXGroup;
 			children = (
 				7B36DB0A2789202800D8ACB0 /* Cream.app */,
+				7B17623A27BA50FA0082B79B /* CreamTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -630,6 +688,7 @@
 		7BB0111A278BCEB7005E5C9E /* LoginScene */ = {
 			isa = PBXGroup;
 			children = (
+				7B17624727BA81770082B79B /* views */,
 				7B8EAA8D27A1919600B07259 /* LoginViewController.swift */,
 				7B8EAA8F27A191A300B07259 /* LoginViewModel.swift */,
 				7B8EAA9127A191AA00B07259 /* LoginView.swift */,
@@ -709,6 +768,7 @@
 			children = (
 				7BF82E0A27A38BB5007E0A79 /* UserRepository.swift */,
 				7B5EEE3427A6B0D300990E37 /* ProductRepository.swift */,
+				7B17624527BA5A2E0082B79B /* RepositoryTask.swift */,
 			);
 			path = Repositories;
 			sourceTree = "<group>";
@@ -744,6 +804,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		7B17623927BA50FA0082B79B /* CreamTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7B17624227BA50FA0082B79B /* Build configuration list for PBXNativeTarget "CreamTests" */;
+			buildPhases = (
+				7B17623627BA50FA0082B79B /* Sources */,
+				7B17623727BA50FA0082B79B /* Frameworks */,
+				7B17623827BA50FA0082B79B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				7B17623F27BA50FA0082B79B /* PBXTargetDependency */,
+			);
+			name = CreamTests;
+			productName = CreamTests;
+			productReference = 7B17623A27BA50FA0082B79B /* CreamTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		7B36DB092789202800D8ACB0 /* Cream */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 7B36DB1E2789202A00D8ACB0 /* Build configuration list for PBXNativeTarget "Cream" */;
@@ -761,10 +839,7 @@
 			name = Cream;
 			packageProductDependencies = (
 				7BDA400C278978500093E75F /* BetterSegmentedControl */,
-				7BDA40122789793B0093E75F /* Alamofire */,
-				7BDA4015278979AB0093E75F /* Kingfisher */,
 				7BDA4018278A9BF70093E75F /* BSImagePicker */,
-				7BDA4020278A9D540093E75F /* SwipeCellKit */,
 				7BB0110E278BBBAC005E5C9E /* SnapKit */,
 			);
 			productName = Cream;
@@ -781,6 +856,10 @@
 				LastSwiftUpdateCheck = 1310;
 				LastUpgradeCheck = 1310;
 				TargetAttributes = {
+					7B17623927BA50FA0082B79B = {
+						CreatedOnToolsVersion = 13.1;
+						TestTargetID = 7B36DB092789202800D8ACB0;
+					};
 					7B36DB092789202800D8ACB0 = {
 						CreatedOnToolsVersion = 13.1;
 					};
@@ -797,10 +876,7 @@
 			mainGroup = 7B36DB012789202800D8ACB0;
 			packageReferences = (
 				7BDA400B278978500093E75F /* XCRemoteSwiftPackageReference "BetterSegmentedControl" */,
-				7BDA40112789793B0093E75F /* XCRemoteSwiftPackageReference "Alamofire" */,
-				7BDA4014278979AB0093E75F /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				7BDA4017278A9BF70093E75F /* XCRemoteSwiftPackageReference "BSImagePicker" */,
-				7BDA401F278A9D540093E75F /* XCRemoteSwiftPackageReference "SwipeCellKit" */,
 				7BB0110D278BBBAB005E5C9E /* XCRemoteSwiftPackageReference "SnapKit" */,
 			);
 			productRefGroup = 7B36DB0B2789202800D8ACB0 /* Products */;
@@ -808,11 +884,19 @@
 			projectRoot = "";
 			targets = (
 				7B36DB092789202800D8ACB0 /* Cream */,
+				7B17623927BA50FA0082B79B /* CreamTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		7B17623827BA50FA0082B79B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		7B36DB082789202800D8ACB0 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -867,6 +951,16 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		7B17623627BA50FA0082B79B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7B17624B27BA8F3F0082B79B /* JoinViewModelSpec.swift in Sources */,
+				7B17624427BA521A0082B79B /* MockUserUseCase.swift in Sources */,
+				7B17623D27BA50FA0082B79B /* LoginViewModelSpec.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		7B36DB062789202800D8ACB0 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -949,6 +1043,7 @@
 				7B8EAA9C27A240F900B07259 /* NetworkConfigurable.swift in Sources */,
 				7B5EEEAE27B8FD0E00990E37 /* ProductListView+CompositionalLayout.swift in Sources */,
 				7B5EEE9E27B7E45B00990E37 /* SettingView.swift in Sources */,
+				7B17624627BA5A2E0082B79B /* RepositoryTask.swift in Sources */,
 				7B5EEE7D27B2D77A00990E37 /* SortViewModel.swift in Sources */,
 				7BB01115278BC6D1005E5C9E /* BindingTextField.swift in Sources */,
 				7B5EEEA827B8281C00990E37 /* DetailFilterViewController.swift in Sources */,
@@ -980,6 +1075,7 @@
 				7B5EEE5027A95DCB00990E37 /* ImageLoader.swift in Sources */,
 				7BF82E0B27A38BB5007E0A79 /* UserRepository.swift in Sources */,
 				7B8EAA8A27A17C7600B07259 /* JoinView.swift in Sources */,
+				7B17624927BA81850082B79B /* PasswordTextField.swift in Sources */,
 				7B8EAAAF27A2601C00B07259 /* AuthResponseDTO+Mapping.swift in Sources */,
 				7B193CB3279BE1A000B934A3 /* CALayer+.swift in Sources */,
 				7B8EAAAA27A25ED800B07259 /* APIEndpoints.swift in Sources */,
@@ -994,6 +1090,14 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		7B17623F27BA50FA0082B79B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 7B36DB092789202800D8ACB0 /* Cream */;
+			targetProxy = 7B17623E27BA50FA0082B79B /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin PBXVariantGroup section */
 		7B36DB182789202A00D8ACB0 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
@@ -1006,6 +1110,54 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		7B17624027BA50FA0082B79B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 6U5233X9SB;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = sgs.devCamp.CreamTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Cream.app/Cream";
+			};
+			name = Debug;
+		};
+		7B17624127BA50FA0082B79B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 6U5233X9SB;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = sgs.devCamp.CreamTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Cream.app/Cream";
+			};
+			name = Release;
+		};
 		7B36DB1C2789202A00D8ACB0 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1181,6 +1333,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		7B17624227BA50FA0082B79B /* Build configuration list for PBXNativeTarget "CreamTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7B17624027BA50FA0082B79B /* Debug */,
+				7B17624127BA50FA0082B79B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		7B36DB052789202800D8ACB0 /* Build configuration list for PBXProject "Cream" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -1218,36 +1379,12 @@
 				minimumVersion = 2.0.0;
 			};
 		};
-		7BDA40112789793B0093E75F /* XCRemoteSwiftPackageReference "Alamofire" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
-			requirement = {
-				branch = master;
-				kind = branch;
-			};
-		};
-		7BDA4014278979AB0093E75F /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/onevcat/Kingfisher.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 7.0.0;
-			};
-		};
 		7BDA4017278A9BF70093E75F /* XCRemoteSwiftPackageReference "BSImagePicker" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/mikaoj/BSImagePicker.git";
 			requirement = {
 				branch = master;
 				kind = branch;
-			};
-		};
-		7BDA401F278A9D540093E75F /* XCRemoteSwiftPackageReference "SwipeCellKit" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/idiel/SwipeCellKit.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 2.0.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -1263,25 +1400,10 @@
 			package = 7BDA400B278978500093E75F /* XCRemoteSwiftPackageReference "BetterSegmentedControl" */;
 			productName = BetterSegmentedControl;
 		};
-		7BDA40122789793B0093E75F /* Alamofire */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 7BDA40112789793B0093E75F /* XCRemoteSwiftPackageReference "Alamofire" */;
-			productName = Alamofire;
-		};
-		7BDA4015278979AB0093E75F /* Kingfisher */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 7BDA4014278979AB0093E75F /* XCRemoteSwiftPackageReference "Kingfisher" */;
-			productName = Kingfisher;
-		};
 		7BDA4018278A9BF70093E75F /* BSImagePicker */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 7BDA4017278A9BF70093E75F /* XCRemoteSwiftPackageReference "BSImagePicker" */;
 			productName = BSImagePicker;
-		};
-		7BDA4020278A9D540093E75F /* SwipeCellKit */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 7BDA401F278A9D540093E75F /* XCRemoteSwiftPackageReference "SwipeCellKit" */;
-			productName = SwipeCellKit;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

@@ -8,16 +8,6 @@
 import UIKit
 import SwiftKeychainWrapper
 
-class RepositoryTask: Cancellable {
-    var networkTask: NetworkCancellable?
-    var isCancelled: Bool = false
-    
-    func cancel() {
-        networkTask?.cancel()
-        isCancelled = true
-    }
-}
-
 protocol LoginViewModelInput {
     func validateEmail(_ email: String)
     func validatePassword(_ password: String)

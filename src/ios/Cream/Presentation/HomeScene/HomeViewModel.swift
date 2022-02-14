@@ -7,19 +7,19 @@
 
 import Foundation
 
-protocol HomeListViewModelInput {
+protocol HomeViewModelInput {
     func viewDidLoad()
     func didTapProduct(indexPath: IndexPath)
 }
 
-protocol HomeListViewModelOutput {
+protocol HomeViewModelOutput {
     var homeInfo: Observable<HomeInfo> { get set }
     var numberOfSections: Int { get }
 }
 
-protocol HomeListViewModel: HomeListViewModelInput, HomeListViewModelOutput { }
+protocol HomeViewModelInterface: HomeViewModelInput, HomeViewModelOutput { }
 
-final class DefaultHomeListViewModel: HomeListViewModel {
+final class HomeViewModel: HomeViewModelInterface {
     var homeInfo: Observable<HomeInfo> = Observable(.init(ads: [], sections: []))
     var usecase: HomeListUseCaseInterface
     
