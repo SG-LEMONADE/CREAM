@@ -146,16 +146,17 @@ struct APIEndpoints {
                                               "perPage": 20,
                                               "requestType": type.requestString,
                                               "tradeStatus": "ALL"]
-        var headerParameters: [String: String] = ["Content-Type":"application/json"]
+        var headerParameters: [String: String] = ["Content-Type":"application/json",
+                                                  "userId": "1"]
         
-        _ = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.accessToken)
-            .map { "Bearer-\($0)" }
-            .flatMap {
-                headerParameters.updateValue($0, forKey: "Authorization")
-            }
+//        _ = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.accessToken)
+//            .map { "Bearer-\($0)" }
+//            .flatMap {
+//                headerParameters.updateValue($0, forKey: "Authorization")
+//            }
         
         return Endpoint(path: "trades",
-                        method: .post,
+                        method: .get,
                         headerParamaters: headerParameters,
                         queryParameters: queryParameters)
     }

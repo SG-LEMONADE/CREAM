@@ -88,23 +88,37 @@ extension MyTradeCell: ViewConfiguration {
             .textColor = UIColor(rgb: 0x41B979)
         selectionStyle = .none
         tradeStackView.isUserInteractionEnabled = true
+        buyTradeHistoryView.sectionLabel.text = "구매 내역"
+        sellTradeHistoryView.sectionLabel.text = "판매 내역"
         setupUserAction()
     }
 }
 
 extension MyTradeCell {
-    func configure(with test: String) {
-        buyTradeHistoryView.sectionLabel.text = "구매 내역"
-        sellTradeHistoryView.sectionLabel.text = "판매 내역"
-        
-        buyTradeHistoryView.totalHistoryView.countLabel.text = "1"
-        buyTradeHistoryView.bidHistoryView.countLabel.text = "1"
-        buyTradeHistoryView.progressHistoryView.countLabel.text = "-"
-        buyTradeHistoryView.completeHistoryView.countLabel.text = "-"
-        sellTradeHistoryView.totalHistoryView.countLabel.text = "1"
-        sellTradeHistoryView.bidHistoryView.countLabel.text = "1"
-        sellTradeHistoryView.progressHistoryView.countLabel.text = "-"
-        sellTradeHistoryView.completeHistoryView.countLabel.text = "-"
+    func configure(ask: TradeList,
+                   bid: TradeList) {
+        buyTradeHistoryView.totalHistoryView.countLabel.text = "\(ask.counter.totalCnt)"
+        buyTradeHistoryView.bidHistoryView.countLabel.text = "\(ask.counter.waitingCnt)"
+        buyTradeHistoryView.progressHistoryView.countLabel.text = "\(ask.counter.inProgressCnt)"
+        buyTradeHistoryView.completeHistoryView.countLabel.text = "\(ask.counter.finishedCnt)"
+        sellTradeHistoryView.totalHistoryView.countLabel.text = "\(bid.counter.totalCnt)"
+        sellTradeHistoryView.bidHistoryView.countLabel.text = "\(bid.counter.waitingCnt)"
+        sellTradeHistoryView.progressHistoryView.countLabel.text = "\(bid.counter.inProgressCnt)"
+        sellTradeHistoryView.completeHistoryView.countLabel.text = "\(bid.counter.finishedCnt)"
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        buyTradeHistoryView.sectionLabel.text = nil
+        sellTradeHistoryView.sectionLabel.text = nil
+        buyTradeHistoryView.totalHistoryView.countLabel.text = nil
+        buyTradeHistoryView.bidHistoryView.countLabel.text = nil
+        buyTradeHistoryView.progressHistoryView.countLabel.text = nil
+        buyTradeHistoryView.completeHistoryView.countLabel.text = nil
+        sellTradeHistoryView.totalHistoryView.countLabel.text = nil
+        sellTradeHistoryView.bidHistoryView.countLabel.text = nil
+        sellTradeHistoryView.progressHistoryView.countLabel.text = nil
+        sellTradeHistoryView.completeHistoryView.countLabel.text = nil
     }
 }
 
