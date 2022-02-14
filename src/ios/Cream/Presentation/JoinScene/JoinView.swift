@@ -50,10 +50,9 @@ class JoinView: UIView {
         return emailField
     }()
     
-    lazy var passwordTextField: BindingTextField = {
-        let passwordField = BindingTextField()
+    lazy var passwordTextField: PasswordTextField = {
+        let passwordField = PasswordTextField()
         passwordField.font?.withSize(15)
-
         return passwordField
     }()
     

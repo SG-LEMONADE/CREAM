@@ -10,7 +10,7 @@ import UIKit
 final class LoginView: UIView {
     enum ViewMessage: String, CustomStringConvertible {
         case emailLabel = "이메일 주소"
-        case emailPlaceholder = "예) kream@kream.co.kr"
+        case emailPlaceholder = "예) cream@cream.co.kr"
         case passwordLabel = "비밀번호"
         case passwordPlaceholder = ""
         case emailInvalid = "올바른 이메일을 입력해주세요."
@@ -53,8 +53,8 @@ final class LoginView: UIView {
         return emailField
     }()
     
-    lazy var passwordTextField: BindingTextField = {
-        let passwordField = BindingTextField()
+    lazy var passwordTextField: PasswordTextField = {
+        let passwordField = PasswordTextField()
         passwordField.placeholder = ViewMessage.passwordPlaceholder.description
         passwordField.font?.withSize(15)
         
