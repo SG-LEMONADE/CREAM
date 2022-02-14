@@ -10,7 +10,17 @@ import SnapKit
 
 final class FilterCell: UICollectionViewCell {
     static let reuseIdentifer = "\(FilterCell.self)"
-
+    
+    override var isSelected: Bool {
+        didSet {
+            if isSelected {
+                titleLabel.textColor = UIColor(rgb: 0xEF6253)
+            } else {
+                titleLabel.textColor = .black
+            }
+        }
+    }
+    
     lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.textColor = .black

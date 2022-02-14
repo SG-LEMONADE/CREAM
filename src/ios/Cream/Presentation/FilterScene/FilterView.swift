@@ -42,7 +42,7 @@ extension FilterView: ViewConfiguration {
     func setupConstraints() {
         filterTableView.snp.makeConstraints {
             $0.top.leading.trailing.equalToSuperview().inset(10)
-            $0.bottom.equalTo(searchButton.snp.top).offset(10)
+            $0.bottom.equalTo(searchButton.snp.top)
         }
         
         searchButton.snp.makeConstraints {
