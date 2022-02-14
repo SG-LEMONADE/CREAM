@@ -19,9 +19,10 @@ final class ProductListViewController: DIViewController<ProductListViewModelInte
     }
     
     private var currentBanner: Int = 0
-    private var selectedIndexPaths = [IndexPath]()
+    private var selectedIndexPath: IndexPath?
+    
     private lazy var productListView = ProductListView()
-        
+    
     weak var delegate: SortChangeDelegate?
     
     // MARK: View Life Cycle
@@ -64,17 +65,17 @@ final class ProductListViewController: DIViewController<ProductListViewModelInte
         productListView.shopCollectionView.delegate = self
         
         productListView.shopCollectionView.register(ShopBannerCell.self,
-                                    forCellWithReuseIdentifier: ShopBannerCell.reuseIdentifier)
+                                                    forCellWithReuseIdentifier: ShopBannerCell.reuseIdentifier)
         productListView.shopCollectionView.register(SizeListCell.self,
-                                    forCellWithReuseIdentifier: SizeListCell.reuseIdentifier)
+                                                    forCellWithReuseIdentifier: SizeListCell.reuseIdentifier)
         productListView.shopCollectionView.register(ProductListItemCell.self,
-                                    forCellWithReuseIdentifier: ProductListItemCell.reuseIdentifier)
+                                                    forCellWithReuseIdentifier: ProductListItemCell.reuseIdentifier)
         productListView.shopCollectionView.register(ShopViewFilterHeaderView.self,
-                                    forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
-                                    withReuseIdentifier: ShopViewFilterHeaderView.reuseIdentifier)
+                                                    forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
+                                                    withReuseIdentifier: ShopViewFilterHeaderView.reuseIdentifier)
         productListView.shopCollectionView.register(SortFilterFooterView.self,
-                                    forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter,
-                                    withReuseIdentifier: SortFilterFooterView.reuseIdentifier)
+                                                    forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter,
+                                                    withReuseIdentifier: SortFilterFooterView.reuseIdentifier)
     }
     
     private func setupNavigationBarItem() {
@@ -161,7 +162,7 @@ extension ProductListViewController: UICollectionViewDataSource {
             self.delegate = header
             
             return header
-
+            
         default:
             assert(false, "Unexpected element kind")
         }
@@ -173,14 +174,14 @@ extension ProductListViewController: UICollectionViewDelegate {
         if indexPath.section == 1 {
             guard let baseURL = URL(string: "http://1.231.16.189:8081")
             else { return }
-        
+            
             let config: NetworkConfigurable              = ApiDataNetworkConfig(baseURL: baseURL)
             let networkService: NetworkService           = DefaultNetworkService(config: config)
             let dataTransferService: DataTransferService = DefaultDataTransferService(with: networkService)
             let repository: ProductRepositoryInterface   = ProductRepository(dataTransferService: dataTransferService)
             let usecase: ProductUseCaseInterface         = ProductUseCase(repository)
             var viewModel: ProductViewModelInterface     = DefaultProductViewModel(usecase: usecase)
-            viewModel.id = self.viewModel.products.value[indexPath.item].id 
+            viewModel.id = self.viewModel.products.value[indexPath.item].id
             let productViewController = ProductViewController(viewModel)
             
             productViewController.hidesBottomBarWhenPushed = true
@@ -207,8 +208,8 @@ extension ProductListViewController: ShopViewFilterHeaderViewDelegate {
                             layout collectionViewLayout: UICollectionViewLayout,
                             sizeForItemAt indexPath: IndexPath) -> CGSize {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FilterCell.reuseIdentifer,
-                                                                  for: indexPath) as? FilterCell else
-                                                                  { return .zero }
+                                                            for: indexPath) as? FilterCell else
+                                                            { return .zero }
         
         cell.configure(viewModel.categories[indexPath.item])
         cell.titleLabel.sizeToFit()
@@ -239,8 +240,18 @@ extension ProductListViewController: ShopViewFilterHeaderViewDelegate {
             self.present(navigationController, animated: true)
             return
         }
+        guard let firstCell = collectionView.cellForItem(at: IndexPath.init(item: 0, section: 0)) as? FilterCell
+        else { return }
         
-        if indexPath.item > 2 {
+        if let selected = selectedIndexPath, selected == indexPath {
+            collectionView.deselectItem(at: indexPath, animated: false)
+            selectedIndexPath = nil
+            firstCell.titleLabel.attributedText = getAttachment(color: .black)
+            productListView.indicatorView.startAnimating()
+            viewModel.viewDidLoad()
+        } else if indexPath.item > 2 {
+            selectedIndexPath = indexPath
+            firstCell.titleLabel.attributedText = getAttachment(color: UIColor(rgb: 0xEF6253))
             productListView.indicatorView.startAnimating()
             viewModel.didTapCategory(indexPath: indexPath)
         }
@@ -268,15 +279,15 @@ extension ProductListViewController: ShopViewFilterHeaderViewDataSource {
             let attachment = NSTextAttachment()
             attachment.image = UIImage(systemName: "checklist")
             let attachmentString = NSAttributedString(attachment: attachment)
-
+            
             cell.titleLabel.attributedText = attachmentString
             cell.titleLabel.sizeToFit()
         } else {
             cell.configure(viewModel.categories[indexPath.item])
             cell.titleLabel.sizeToFit()
         }
-
-        if indexPath.item == 2 {
+        
+        if (1...2).contains(indexPath.item) {
             cell.isUserInteractionEnabled = false
         }
         return cell

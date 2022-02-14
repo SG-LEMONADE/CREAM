@@ -75,6 +75,7 @@ final class ProductListViewModel: ProductListViewModelInterface {
     
     func viewDidLoad() {
         searchWord = nil
+        category = nil
         let _ = usecase.fetch(page: cursor,
                               searchWord: searchWord,
                               category: category,
