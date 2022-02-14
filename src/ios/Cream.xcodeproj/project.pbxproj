@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		3AA6865D5E6AC36E76D7F9E1 /* Pods_Cream.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A30B26FB25B22F519249FD4 /* Pods_Cream.framework */; };
+		7B17623D27BA50FA0082B79B /* LoginViewModelSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B17623C27BA50FA0082B79B /* LoginViewModelSpec.swift */; };
+		7B17624427BA521A0082B79B /* MockUserUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B17624327BA521A0082B79B /* MockUserUseCase.swift */; };
+		7B17624627BA5A2E0082B79B /* RepositoryTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B17624527BA5A2E0082B79B /* RepositoryTask.swift */; };
 		7B193C832794D3D300B934A3 /* HomeViewItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B193C822794D3D300B934A3 /* HomeViewItemCell.swift */; };
 		7B193C8927965E5A00B934A3 /* HomeViewCategoryHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B193C8827965E5A00B934A3 /* HomeViewCategoryHeaderView.swift */; };
 		7B193C8B27965EE500B934A3 /* ShopViewFilterHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B193C8A27965EE500B934A3 /* ShopViewFilterHeaderView.swift */; };
@@ -133,8 +136,22 @@
 		7BF82E1A27A57117007E0A79 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7B36DB162789202A00D8ACB0 /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		7B17623E27BA50FA0082B79B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7B36DB022789202800D8ACB0 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 7B36DB092789202800D8ACB0;
+			remoteInfo = Cream;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		6A30B26FB25B22F519249FD4 /* Pods_Cream.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Cream.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7B17623A27BA50FA0082B79B /* CreamTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CreamTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		7B17623C27BA50FA0082B79B /* LoginViewModelSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModelSpec.swift; sourceTree = "<group>"; };
+		7B17624327BA521A0082B79B /* MockUserUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockUserUseCase.swift; sourceTree = "<group>"; };
+		7B17624527BA5A2E0082B79B /* RepositoryTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepositoryTask.swift; sourceTree = "<group>"; };
 		7B193C822794D3D300B934A3 /* HomeViewItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewItemCell.swift; sourceTree = "<group>"; };
 		7B193C8827965E5A00B934A3 /* HomeViewCategoryHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewCategoryHeaderView.swift; sourceTree = "<group>"; };
 		7B193C8A27965EE500B934A3 /* ShopViewFilterHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopViewFilterHeaderView.swift; sourceTree = "<group>"; };
@@ -262,6 +279,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		7B17623727BA50FA0082B79B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		7B36DB072789202800D8ACB0 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -282,6 +306,15 @@
 				6A30B26FB25B22F519249FD4 /* Pods_Cream.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		7B17623B27BA50FA0082B79B /* CreamTests */ = {
+			isa = PBXGroup;
+			children = (
+				7B17623C27BA50FA0082B79B /* LoginViewModelSpec.swift */,
+				7B17624327BA521A0082B79B /* MockUserUseCase.swift */,
+			);
+			path = CreamTests;
 			sourceTree = "<group>";
 		};
 		7B193C7F27944AF000B934A3 /* SupportFile */ = {
@@ -357,6 +390,7 @@
 			isa = PBXGroup;
 			children = (
 				7B36DB0C2789202800D8ACB0 /* Cream */,
+				7B17623B27BA50FA0082B79B /* CreamTests */,
 				7B36DB0B2789202800D8ACB0 /* Products */,
 				8054DFD6B3DB5002DFAF10ED /* Pods */,
 				4A27CD989B739ADF78A05923 /* Frameworks */,
@@ -367,6 +401,7 @@
 			isa = PBXGroup;
 			children = (
 				7B36DB0A2789202800D8ACB0 /* Cream.app */,
+				7B17623A27BA50FA0082B79B /* CreamTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -703,6 +738,7 @@
 			children = (
 				7BF82E0A27A38BB5007E0A79 /* UserRepository.swift */,
 				7B5EEE3427A6B0D300990E37 /* ProductRepository.swift */,
+				7B17624527BA5A2E0082B79B /* RepositoryTask.swift */,
 			);
 			path = Repositories;
 			sourceTree = "<group>";
@@ -738,6 +774,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		7B17623927BA50FA0082B79B /* CreamTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7B17624227BA50FA0082B79B /* Build configuration list for PBXNativeTarget "CreamTests" */;
+			buildPhases = (
+				7B17623627BA50FA0082B79B /* Sources */,
+				7B17623727BA50FA0082B79B /* Frameworks */,
+				7B17623827BA50FA0082B79B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				7B17623F27BA50FA0082B79B /* PBXTargetDependency */,
+			);
+			name = CreamTests;
+			productName = CreamTests;
+			productReference = 7B17623A27BA50FA0082B79B /* CreamTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		7B36DB092789202800D8ACB0 /* Cream */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 7B36DB1E2789202A00D8ACB0 /* Build configuration list for PBXNativeTarget "Cream" */;
@@ -772,6 +826,10 @@
 				LastSwiftUpdateCheck = 1310;
 				LastUpgradeCheck = 1310;
 				TargetAttributes = {
+					7B17623927BA50FA0082B79B = {
+						CreatedOnToolsVersion = 13.1;
+						TestTargetID = 7B36DB092789202800D8ACB0;
+					};
 					7B36DB092789202800D8ACB0 = {
 						CreatedOnToolsVersion = 13.1;
 					};
@@ -796,11 +854,19 @@
 			projectRoot = "";
 			targets = (
 				7B36DB092789202800D8ACB0 /* Cream */,
+				7B17623927BA50FA0082B79B /* CreamTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		7B17623827BA50FA0082B79B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		7B36DB082789202800D8ACB0 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -855,6 +921,15 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		7B17623627BA50FA0082B79B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7B17624427BA521A0082B79B /* MockUserUseCase.swift in Sources */,
+				7B17623D27BA50FA0082B79B /* LoginViewModelSpec.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		7B36DB062789202800D8ACB0 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -937,6 +1012,7 @@
 				7B8EAA9C27A240F900B07259 /* NetworkConfigurable.swift in Sources */,
 				7B5EEEAE27B8FD0E00990E37 /* ProductListView+CompositionalLayout.swift in Sources */,
 				7B5EEE9E27B7E45B00990E37 /* SettingView.swift in Sources */,
+				7B17624627BA5A2E0082B79B /* RepositoryTask.swift in Sources */,
 				7B5EEE7D27B2D77A00990E37 /* SortViewModel.swift in Sources */,
 				7BB01115278BC6D1005E5C9E /* BindingTextField.swift in Sources */,
 				7B5EEEA827B8281C00990E37 /* DetailFilterViewController.swift in Sources */,
@@ -982,6 +1058,14 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		7B17623F27BA50FA0082B79B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 7B36DB092789202800D8ACB0 /* Cream */;
+			targetProxy = 7B17623E27BA50FA0082B79B /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin PBXVariantGroup section */
 		7B36DB182789202A00D8ACB0 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
@@ -994,6 +1078,54 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		7B17624027BA50FA0082B79B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 6U5233X9SB;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = sgs.devCamp.CreamTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Cream.app/Cream";
+			};
+			name = Debug;
+		};
+		7B17624127BA50FA0082B79B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 6U5233X9SB;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = sgs.devCamp.CreamTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Cream.app/Cream";
+			};
+			name = Release;
+		};
 		7B36DB1C2789202A00D8ACB0 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1169,6 +1301,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		7B17624227BA50FA0082B79B /* Build configuration list for PBXNativeTarget "CreamTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7B17624027BA50FA0082B79B /* Debug */,
+				7B17624127BA50FA0082B79B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		7B36DB052789202800D8ACB0 /* Build configuration list for PBXProject "Cream" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
