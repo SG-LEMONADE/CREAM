@@ -75,20 +75,26 @@ extension ProductListItemCell: ViewConfiguration {
 // MARK: - Cell Configure
 extension ProductListItemCell {
     func configure(_ viewModel: Product) {
-        self.itemView.tradeLabel.text = viewModel.totalSaleText
-        self.itemView.titleLabel.text = viewModel.brandName
-        self.itemView.detailLabel.text = viewModel.originalName
-        self.wishButton.setTitle(viewModel.wishText, for: .normal)
-        self.itemView.priceLabel.text = viewModel.price
-        self.itemView.priceExpressionLabel.text = "즉시 구매가"
-        self.itemView.productImageView.backgroundColor = .init(rgb: viewModel.backgroundColor.hexToInt ?? 0)
+        itemView.spinner.startAnimating()
+        itemView.tradeLabel.text = viewModel.totalSaleText
+        itemView.titleLabel.text = viewModel.brandName
+        itemView.detailLabel.text = viewModel.originalName
+        wishButton.setTitle(viewModel.wishText, for: .normal)
+        itemView.priceLabel.text = viewModel.price
+        itemView.priceExpressionLabel.text = "즉시 구매가"
+        itemView.productImageView.backgroundColor = .init(rgb: viewModel.backgroundColor.hexToInt ?? 0)
         guard let urlString = viewModel.imageUrls.first,
               let url = URL(string: urlString)
-        else { return }
+        else {
+            itemView.productImageView.image = UIImage(systemName: "photo")
+            itemView.spinner.stopAnimating()
+            return
+        }
         
         sessionTask = loadImage(url: url) { [weak self] (image) in
             DispatchQueue.main.async {
                 self?.itemView.productImageView.image = image
+                self?.itemView.spinner.stopAnimating()
             }
         }
     }

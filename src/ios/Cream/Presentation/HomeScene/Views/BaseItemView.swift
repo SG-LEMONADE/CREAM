@@ -9,6 +9,9 @@ import UIKit
 import SnapKit
 
 class BaseItemView: UIView {
+    
+    lazy var spinner = UIActivityIndicatorView(style: .large)
+    
     lazy var tradeLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 11)
@@ -96,12 +99,15 @@ class BaseItemView: UIView {
 
 extension BaseItemView: ViewConfiguration {
     func buildHierarchy() {
-        productImageView.addSubviews(tradeLabel)
+        productImageView.addSubviews(tradeLabel, spinner)
         addSubviews(productImageView,
                     containerStackView)
     }
     
     func setupConstraints() {
+        spinner.snp.makeConstraints {
+            $0.center.equalToSuperview()
+        }
         tradeLabel.snp.makeConstraints {
             $0.top.trailing.equalToSuperview().inset(10)
         }
