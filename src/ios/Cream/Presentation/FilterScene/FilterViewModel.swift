@@ -13,28 +13,26 @@ protocol FilterViewModelInput {
 }
 
 protocol FilterViewModelOutput {
-    var products: Observable<Products> { get set }
-    var filterKind: [String] { get set }
-    var filter: Observable<Filter> { get set }
+    var filterList: [String] { get set }
+    var detailFilters: Observable<Filter> { get set }
+    var selectedFilters: Observable<SelectFilter> { get set }
     var numberOfCells: Int { get }
 }
 
 protocol FilterViewModelInterface: FilterViewModelInput, FilterViewModelOutput { }
 
 final class FilterViewModel: FilterViewModelInterface {
-    
-    var products: Observable<Products> = Observable([])
-    var filterKind: [String] = ["카테고리", "브랜드", "성별", "컬렉션"]
-    var filter: Observable<Filter> = Observable(.init(categories: [],
+    private let usecase: FilterUseCaseInterface
+    var detailFilters: Observable<Filter> = Observable(.init(categories: [],
                                                       brands: [],
                                                       collections: [],
                                                       gender: []))
+    var selectedFilters: Observable<SelectFilter> = Observable(.init())
+    var filterList: [String] = ["카테고리", "브랜드", "성별", "컬렉션"]
     
     var numberOfCells: Int {
-        return filterKind.count
+        return filterList.count
     }
-    
-    private let usecase: FilterUseCaseInterface
     
     init(_ usecase: FilterUseCaseInterface) {
         self.usecase = usecase
@@ -45,8 +43,7 @@ final class FilterViewModel: FilterViewModelInterface {
         _ = usecase.fetchFilter { result in
             switch result {
             case .success(let filter):
-                print(filter)
-                self.filter.value = filter
+                self.detailFilters.value = filter
             case .failure(_):
                 break
             }

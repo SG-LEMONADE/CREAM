@@ -8,16 +8,72 @@
 import Foundation
 
 protocol DetailFilterViewModelInput {
-    func viewDidLoad()
+    func reinitSelected()
+    func didSelectRowAt(indexPath: IndexPath)
+    func didDeselectRowAt(indexPath: IndexPath)
 }
-protocol DetailFilterViewModelOutput { }
+protocol DetailFilterViewModelOutput {
+    var type: FilterCategory { get }
+    var filter: [String] { get }
+    var totalFilters: Filter { get set }
+    var selectedList: Observable<SelectFilter> { get set }
+}
 
 protocol DetailFilterViewModelInterface: DetailFilterViewModelInput, DetailFilterViewModelOutput { }
 
 final class DetailFilterViewModel: DetailFilterViewModelInterface {
+    var totalFilters: Filter
+    let filter: [String]
+    let type: FilterCategory
+    var selectedList: Observable<SelectFilter> = Observable(.init())
     
-    func viewDidLoad() {
-        
+    init(filter: [String],
+         type: FilterCategory,
+         totalFilter: Filter,
+         selectedList: Observable<SelectFilter>) {
+        self.filter = filter
+        self.type = type
+        self.totalFilters = totalFilter
+        self.selectedList = selectedList
+    }
+    
+    func reinitSelected() {
+        switch self.type {
+        case .category:
+            selectedList.value.category = nil
+        case .brand:
+            selectedList.value.brands = []
+        case .gender:
+            selectedList.value.gender = nil
+        case .collection:
+            selectedList.value.collections = []
+        }
+    }
+    
+    func didSelectRowAt(indexPath: IndexPath) {
+        switch type {
+        case .category:
+            selectedList.value.category = filter[indexPath.row]
+        case .brand:
+            selectedList.value.brands.append(filter[indexPath.row])
+        case .gender:
+            selectedList.value.gender = filter[indexPath.row]
+        case .collection:
+            selectedList.value.collections.append(filter[indexPath.row])
+        }
+    }
+    
+    func didDeselectRowAt(indexPath: IndexPath) {
+        switch type {
+        case .category:
+            selectedList.value.category = nil
+        case .brand:
+            selectedList.value.brands.removeAll(where: { $0 == filter[indexPath.row]})
+        case .gender:
+            selectedList.value.gender = nil
+        case .collection:
+            selectedList.value.collections.removeAll(where: { $0 == filter[indexPath.row]})
+        }
     }
 }
 
