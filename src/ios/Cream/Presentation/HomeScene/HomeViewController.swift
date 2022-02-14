@@ -7,7 +7,7 @@
 
 import UIKit
 
-class HomeViewController: DIViewController<HomeListViewModel> {
+class HomeViewController: DIViewController<HomeViewModelInterface> {
     weak var delegate: FooterScrollDelegate?
     
     private lazy var homeView = HomeView()

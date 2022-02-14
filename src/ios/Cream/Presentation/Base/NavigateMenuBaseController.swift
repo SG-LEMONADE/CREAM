@@ -46,13 +46,14 @@ final class NavigateMenuBaseController: UITabBarController {
                 guard let baseURL = URL(string: "http://1.231.16.189:8081")
                 else { fatalError() }
                 
-                let config: NetworkConfigurable = ApiDataNetworkConfig(baseURL: baseURL)
-                let networkService: NetworkService = DefaultNetworkService(config: config)
-                let dataTransferService: DataTransferService = DefaultDataTransferService(with: networkService)
-                let repository: HomeListRepositoryInterface = ProductRepository(dataTransferService: dataTransferService)
-                let usecase: HomeListUseCaseInterface = HomeListUseCase(repository: repository)
-                let viewModel: HomeListViewModel = DefaultHomeListViewModel(usecase)
+                let config: NetworkConfigurable                             = ApiDataNetworkConfig(baseURL: baseURL)
+                let networkService: NetworkService                          = DefaultNetworkService(config: config)
+                let dataTransferService: DataTransferService                = DefaultDataTransferService(with: networkService)
+                let repository: HomeListRepositoryInterface                 = ProductRepository(dataTransferService: dataTransferService)
+                let usecase: HomeListUseCaseInterface                       = HomeListUseCase(repository: repository)
+                let viewModel: HomeViewModelInterface                       = HomeViewModel(usecase)
                 let homeViewController = HomeViewController(viewModel)
+                
                 return homeViewController
                 
             case .shop:
@@ -68,6 +69,7 @@ final class NavigateMenuBaseController: UITabBarController {
                 let productListViewController: ProductListViewController    = ProductListViewController(viewModel)
                 
                 return productListViewController
+                
             case .my:
                 guard let tradeBaseURL = URL(string: "http://1.231.16.189:8081"),
                       let userBaseURL = URL(string: "http://1.231.16.189:8080")
