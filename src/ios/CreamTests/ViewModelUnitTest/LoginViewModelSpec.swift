@@ -12,16 +12,19 @@ class LoginViewModelSpec: XCTestCase {
     var viewModel: LoginViewModel!
     var mockUseCase: UserUseCaseInterface!
     
+    override func setUp() {
+        mockUseCase = MockUserService(isSuccess: true)
+        viewModel = .init(usecase: mockUseCase)
+    }
+    
     override func tearDown() {
         mockUseCase = nil
         viewModel = nil
     }
     
     // MARK: Login 성공 케이스
-    func testLoginWIthCorrectDataSetsSuccessPresentedToTrue() {
+    func test_success_LoginWithCorrectData() {
         // give
-        mockUseCase = MockUserService(isSuccess: true)
-        viewModel = .init(usecase: mockUseCase)
         let answer = true
         // when
         viewModel.confirmUser(email: "HI", password: "HI") { result in
@@ -36,11 +39,12 @@ class LoginViewModelSpec: XCTestCase {
     }
     
     // MARK: Login 실패 케이스
-    func testLoginWithFailDataSetsSuccessPresentedToTrue() {
+    func test_failure_loginWithInCorrectData() {
         mockUseCase = MockUserService(isSuccess: false)
         viewModel = .init(usecase: mockUseCase)
+        // give
         let answer: UserError = .authInvalid
-        
+        // when
         viewModel.confirmUser(email: "", password: "") { result in
             switch result {
             // then
@@ -54,49 +58,41 @@ class LoginViewModelSpec: XCTestCase {
     
     // MARK: Email Input 유효값 성공 케이스
     func test_success_EmailIsValid() {
-        mockUseCase = MockUserService()
-        viewModel = .init(usecase: mockUseCase)
-        
+        // give
         let answer = ValidationHelper.State.valid
-        
-        let regEx = "wankikim@smilegate.com"
-        viewModel.validateEmail(regEx)
-        
+        let validInput = "wankikim@smilegate.com"
+        // when
+        viewModel.validateEmail(validInput)
+        // then
         XCTAssertEqual(answer.description, viewModel.emailMessage.value)
     }
     // MARK: Email Input 유효값 실패 케이스
     func test_failure_EmailIsValid() {
-        mockUseCase = MockUserService()
-        viewModel = .init(usecase: mockUseCase)
         // give
         let answer = ValidationHelper.State.emailFormatInvalid
+        let invalidInput = "wankiki@@@..com"
         // when
-        let regEx = "wankiki@@@..com"
-        viewModel.validateEmail(regEx)
+        viewModel.validateEmail(invalidInput)
         // then
         XCTAssertEqual(answer.description, viewModel.emailMessage.value)
     }
     // MARK: Password Input 유효값 성공 케이스
     func test_success_PasswordIsValid() {
-        mockUseCase = MockUserService()
-        viewModel = .init(usecase: mockUseCase)
         // give
         let answer = ValidationHelper.State.valid
+        let validInput = "password1!"
         // when
-        let regEx = "password1!"
-        viewModel.validatePassword(regEx)
+        viewModel.validatePassword(validInput)
         // then
         XCTAssertEqual(answer.description, viewModel.passwordMessage.value)
     }
     // MARK: Password Input 유효값 실패 케이스
-    func test_success_PasswordIsInValid() {
-        mockUseCase = MockUserService()
-        viewModel = .init(usecase: mockUseCase)
+    func test_failure_PasswordIsInValid() {
         // give
         let answer = ValidationHelper.State.passwordFormatInvalid
+        let invalidInput = "123445"
         // when
-        let regEx = "123445"
-        viewModel.validatePassword(regEx)
+        viewModel.validatePassword(invalidInput)
         // then
         XCTAssertEqual(answer.description, viewModel.passwordMessage.value)
     }

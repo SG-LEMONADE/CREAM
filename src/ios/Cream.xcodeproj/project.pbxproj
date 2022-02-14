@@ -12,6 +12,7 @@
 		7B17624427BA521A0082B79B /* MockUserUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B17624327BA521A0082B79B /* MockUserUseCase.swift */; };
 		7B17624627BA5A2E0082B79B /* RepositoryTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B17624527BA5A2E0082B79B /* RepositoryTask.swift */; };
 		7B17624927BA81850082B79B /* PasswordTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B17624827BA81850082B79B /* PasswordTextField.swift */; };
+		7B17624B27BA8F3F0082B79B /* JoinViewModelSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B17624A27BA8F3F0082B79B /* JoinViewModelSpec.swift */; };
 		7B193C832794D3D300B934A3 /* HomeViewItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B193C822794D3D300B934A3 /* HomeViewItemCell.swift */; };
 		7B193C8927965E5A00B934A3 /* HomeViewCategoryHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B193C8827965E5A00B934A3 /* HomeViewCategoryHeaderView.swift */; };
 		7B193C8B27965EE500B934A3 /* ShopViewFilterHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B193C8A27965EE500B934A3 /* ShopViewFilterHeaderView.swift */; };
@@ -154,6 +155,7 @@
 		7B17624327BA521A0082B79B /* MockUserUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockUserUseCase.swift; sourceTree = "<group>"; };
 		7B17624527BA5A2E0082B79B /* RepositoryTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepositoryTask.swift; sourceTree = "<group>"; };
 		7B17624827BA81850082B79B /* PasswordTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordTextField.swift; sourceTree = "<group>"; };
+		7B17624A27BA8F3F0082B79B /* JoinViewModelSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinViewModelSpec.swift; sourceTree = "<group>"; };
 		7B193C822794D3D300B934A3 /* HomeViewItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewItemCell.swift; sourceTree = "<group>"; };
 		7B193C8827965E5A00B934A3 /* HomeViewCategoryHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewCategoryHeaderView.swift; sourceTree = "<group>"; };
 		7B193C8A27965EE500B934A3 /* ShopViewFilterHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopViewFilterHeaderView.swift; sourceTree = "<group>"; };
@@ -313,8 +315,8 @@
 		7B17623B27BA50FA0082B79B /* CreamTests */ = {
 			isa = PBXGroup;
 			children = (
-				7B17623C27BA50FA0082B79B /* LoginViewModelSpec.swift */,
-				7B17624327BA521A0082B79B /* MockUserUseCase.swift */,
+				7B17624C27BA93CC0082B79B /* Mock */,
+				7B17624D27BA93D90082B79B /* ViewModelUnitTest */,
 			);
 			path = CreamTests;
 			sourceTree = "<group>";
@@ -325,6 +327,23 @@
 				7B17624827BA81850082B79B /* PasswordTextField.swift */,
 			);
 			path = views;
+			sourceTree = "<group>";
+		};
+		7B17624C27BA93CC0082B79B /* Mock */ = {
+			isa = PBXGroup;
+			children = (
+				7B17624327BA521A0082B79B /* MockUserUseCase.swift */,
+			);
+			path = Mock;
+			sourceTree = "<group>";
+		};
+		7B17624D27BA93D90082B79B /* ViewModelUnitTest */ = {
+			isa = PBXGroup;
+			children = (
+				7B17623C27BA50FA0082B79B /* LoginViewModelSpec.swift */,
+				7B17624A27BA8F3F0082B79B /* JoinViewModelSpec.swift */,
+			);
+			path = ViewModelUnitTest;
 			sourceTree = "<group>";
 		};
 		7B193C7F27944AF000B934A3 /* SupportFile */ = {
@@ -936,6 +955,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7B17624B27BA8F3F0082B79B /* JoinViewModelSpec.swift in Sources */,
 				7B17624427BA521A0082B79B /* MockUserUseCase.swift in Sources */,
 				7B17623D27BA50FA0082B79B /* LoginViewModelSpec.swift in Sources */,
 			);

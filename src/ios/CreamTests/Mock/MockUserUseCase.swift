@@ -25,15 +25,19 @@ final class MockUserService: UserUseCaseInterface {
     }
     
     func add(userEmail: String, userPassword: String, shoeSize: Int, completion: @escaping (Result<User, UserError>) -> Void) {
-        //
+        if isSuccess {
+            completion(.success(.init(email: userEmail, name: nil, address: nil, gender: nil, age: nil, shoeSize: shoeSize, profileImageUrl: "", lastLoginDateTime: nil)))
+        } else {
+            completion(.failure(.userNotAccepted))
+        }
     }
     
     func removeToken(completion: @escaping (Result<Void, UserError>) -> Void) {
-        //
+        
     }
     
     func verifyToken(completion: @escaping (Result<Void, UserError>) -> Void) {
-        //
+        
     }
     
     func reissuanceToken(completion: @escaping (Result<Auth, UserError>) -> Void) {
