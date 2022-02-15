@@ -58,7 +58,7 @@ class TradeService {
         requestType: RequestType,
         tradeStatus: RequestTradeStatus
     ): MyPageTradeListDTO {
-        val trades = tradeRepository.findAllByPageAndStatus(userId, pageDTO.offset(), pageDTO.limit(), requestType, tradeStatus)
+        val trades = tradeRepository.findAllByPageAndStatus(userId, pageDTO.offset(), pageDTO.perPage, requestType, tradeStatus)
         val counters = tradeRepository.findCountsByTradeStatus(userId, requestType)
 
         var totalCnt = 0

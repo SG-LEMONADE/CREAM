@@ -39,12 +39,12 @@ class ProductService {
         filter: FilterRequestDTO
     ): List<ProductDTO> {
         if (userId == null) {
-            return productRepository.getProducts(page.offset(), page.limit(), page.sort, filter).stream()
+            return productRepository.getProducts(page.offset(), page.perPage, page.sort, filter).stream()
                 .map {
                     ProductDTO(it)
                 }.toList()
         }
-        return productRepository.getProductsWithWish(userId, page.offset(), page.limit(), page.sort, filter).stream()
+        return productRepository.getProductsWithWish(userId, page.offset(), page.perPage, page.sort, filter).stream()
             .map {
                 ProductDTO(it)
             }.toList()
@@ -158,7 +158,7 @@ class ProductService {
         page: PageDTO,
         userId: Long
     ): WishList {
-        val products = productRepository.getProductsByWish(userId, page.offset(), page.limit())
+        val products = productRepository.getProductsByWish(userId, page.offset(), page.perPage)
         val totalCount = wishRepository.getWishCount(userId)
         return WishList(totalCount, products)
     }

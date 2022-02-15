@@ -10,8 +10,4 @@ data class PageDTO(
     fun offset(): Long {
         return cursor * perPage
     }
-
-    fun limit(): Long {
-        return (cursor * perPage) + perPage
-    }
 }
