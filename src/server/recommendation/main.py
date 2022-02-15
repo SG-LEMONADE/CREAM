@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+import schedule as schedule
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
@@ -125,4 +126,6 @@ def main(log_sum_pivot, least_sum_pivot, n_items):
 
 
 if __name__ == '__main__':
-    main(50, 15, 30)
+    schedule.every(3).hours.do(main(50, 15, 30))
+    while True:
+        schedule.run_pending()
