@@ -34,13 +34,13 @@ const ProductSmallInfo: FunctionComponent<ProductSmallInfoProps> = (props) => {
 			<ProductInfoArea>
 				{styleCode && <StyledCode>{styleCode}</StyledCode>}
 				<StyledProductName>{productName}</StyledProductName>
+				{productNameKor && (
+					<StyledProductNameKor>{productNameKor}</StyledProductNameKor>
+				)}
 				{size && (
 					<StlyledSize>
 						<StyledSpan>{size}</StyledSpan>
 					</StlyledSize>
-				)}
-				{productNameKor && (
-					<StyledProductNameKor>{productNameKor}</StyledProductNameKor>
 				)}
 			</ProductInfoArea>
 		</ProductArea>
@@ -74,7 +74,7 @@ const ProductInfoArea = styled.div`
 	flex-direction: column;
 	justify-content: center;
 	flex: 1;
-	max-width: 80%;
+	/* max-width: 80%; */
 `;
 
 const StyledCode = styled.p`
@@ -86,6 +86,8 @@ const StyledCode = styled.p`
 `;
 
 const StlyledSize = styled.p`
+	margin: 0;
+	padding: 0;
 	line-height: 19px;
 	margin-top: 4px;
 `;
@@ -94,13 +96,13 @@ const StyledSpan = styled.span`
 	display: inline-block;
 	vertical-align: top;
 	font-size: 14px;
-	font-weight: 700;
+	font-weight: 800;
 	letter-spacing: -0.5px;
 	color: rgba(34, 34, 34, 0.5);
 `;
 
 const StyledProductName = styled.p`
-	white-space: nowrap;
+	white-space: normal;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	line-height: 18px;
@@ -111,6 +113,7 @@ const StyledProductName = styled.p`
 `;
 
 const StyledProductNameKor = styled.p`
+	margin: 0;
 	line-height: 14px;
 	font-size: 12px;
 	letter-spacing: -0.06px;
@@ -118,5 +121,5 @@ const StyledProductNameKor = styled.p`
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: normal;
-	margin-top: 7px;
+	margin-top: 4px;
 `;

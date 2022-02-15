@@ -46,7 +46,7 @@ const StyledButton = styled.button<{
 	disabled: boolean;
 	fullWidth: boolean;
 }>`
-	textalign: center;
+	text-align: center;
 	display: flex;
 	justify-content: center;
 	align-items: center;

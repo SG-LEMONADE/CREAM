@@ -392,7 +392,7 @@ const ColumnRight = styled.div`
 	float: right;
 	padding-left: 3.334%;
 	width: 50%;
-	&: before {
+	&::before {
 		content: "";
 		display: block;
 		position: absolute;

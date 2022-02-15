@@ -61,6 +61,9 @@ const Search: FunctionComponent = () => {
 		}
 	}, []);
 
+	/** For Code Review
+	 * onPostWish 함수 내의 mutate를 통해 찜 관련 토글을 바로 갱신합니다.
+	 */
 	const onPostWish = useCallback(
 		async (size: string) => {
 			try {

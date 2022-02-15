@@ -1,6 +1,7 @@
-import React, { CSSProperties, FunctionComponent } from "react";
+import React, { CSSProperties, FunctionComponent, useContext } from "react";
 
 import styled from "@emotion/styled";
+import UserContext from "context/user";
 
 type KnobProps = {
 	category: "buy" | "sell";
@@ -10,10 +11,15 @@ type KnobProps = {
 };
 
 const Knob: FunctionComponent<KnobProps> = (props) => {
+	const { user } = useContext(UserContext);
+
 	const { category, price, productId, style } = props;
+
 	return (
 		<StyledKnobWrapper
-			href={`/${category}/select/${productId}?size=`}
+			href={
+				user && user.id ? `/${category}/select/${productId}?size=` : `/login`
+			}
 			category={category}
 			style={style}
 		>
@@ -66,7 +72,7 @@ const StyledCategory = styled.strong`
 	text-align: center;
 	font-size: 18px;
 	letter-spacing: -0.27px;
-	font-wieght: bold;
+	font-weight: bold;
 `;
 
 const StyledPriceWrapper = styled.div`
@@ -90,9 +96,8 @@ const StyledPrice = styled.em`
 `;
 
 const StyledDesc = styled.span`
-    display: block;
-    font-size: 11px;
-    font-weight: 600;
-    color: hsla(0,0%,100%,.8);
-}
+	display: block;
+	font-size: 11px;
+	font-weight: 600;
+	color: hsla(0, 0%, 100%, 0.8);
 `;

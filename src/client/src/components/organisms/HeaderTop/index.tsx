@@ -25,6 +25,10 @@ const HeaderTop: FunctionComponent = () => {
 
 	const { setUser } = useContext(UserContext);
 
+	/** For Code Review
+	 * 아래의 useSWR 토잇ㄴ을 통해 토큰정보를 확인합니다.
+	 * 2번째 인자로 넘어간 fetcherWithToken을 통해서 인증이 본격적으로 수행됩니다.
+	 */
 	const { data: myInfo } = useSWR<UserInfo>(
 		`${process.env.END_POINT_USER}/users/me`,
 		fetcherWithToken,
@@ -67,6 +71,10 @@ const HeaderTop: FunctionComponent = () => {
 		router.push("/");
 	}, []);
 
+	/** For Code Review
+	 * useSWR를 통해서 받아온 데이터인 myInfo가 존재한다면, 로그인 상태로 변경해주고,
+	 * context api에 저장되는 유저 아이디 값에 아이디를 저장해줍니다.
+	 */
 	useEffect(() => {
 		if (myInfo) {
 			setIsLogin(true);

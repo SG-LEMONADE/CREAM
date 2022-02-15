@@ -20,6 +20,10 @@ const ProductBuySizeSelect: FunctionComponent = (props) => {
 		fetcher,
 	);
 
+	/**
+	 * 사용자가 선택한 제품이 지원하는 사이즈 배열을 기반으로 SizeSelectTemplate -> ProductSizeSelectGrid로
+	 * props를 전달하여 그리드 화면을 작성합니다.
+	 */
 	return (
 		<NavTemplate
 			headerTop={<HeaderTop />}

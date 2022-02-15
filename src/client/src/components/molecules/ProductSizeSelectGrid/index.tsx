@@ -25,29 +25,24 @@ const ProductSizeSelectGrid: FunctionComponent<ProductSizeSelectGridProps> = (
 		pricePerSize,
 	} = props;
 
+	/** For Code Review
+	 * 신발 사이즈 / 사이즈 & 찜 아이콘 / 사이즈 & 가격 으로 구성된 그리드 컴포넌트를 담당합니다.
+	 * category를 통해서 3가지 기능에 대해서 담당을 하며,
+	 * 그리드를 구성하는 컴포넌트 또한 ProductSizeSelect 컴포넌트를 재사용하여 구성합니다.
+	 */
 	return (
 		<StyledGridWrapper>
 			{category === "price" &&
-				datas.map((data) =>
-					data === activeSizeOption ? (
-						<ProductSizeSelect
-							key={data}
-							category={subCategory}
-							size={data}
-							price={pricePerSize[data]}
-							onClick={onClick}
-							active
-						/>
-					) : (
-						<ProductSizeSelect
-							key={data}
-							category={subCategory}
-							size={data}
-							price={pricePerSize[data]}
-							onClick={onClick}
-						/>
-					),
-				)}
+				datas.map((data) => (
+					<ProductSizeSelect
+						key={data}
+						category={subCategory}
+						size={data}
+						price={pricePerSize[data]}
+						onClick={onClick}
+						active={data === activeSizeOption}
+					/>
+				))}
 			{category === "wish" &&
 				datas.map((data) =>
 					activeSizeOption && activeSizeOption.includes(data) ? (
@@ -68,24 +63,15 @@ const ProductSizeSelectGrid: FunctionComponent<ProductSizeSelectGridProps> = (
 					),
 				)}
 			{category === "sizeOnly" &&
-				shoeAllSizeList.map((size) =>
-					size === activeSizeOption ? (
-						<ProductSizeSelect
-							key={size}
-							category="sizeOnly"
-							size={size}
-							onClick={onClick}
-							active
-						/>
-					) : (
-						<ProductSizeSelect
-							key={size}
-							category="sizeOnly"
-							size={size}
-							onClick={onClick}
-						/>
-					),
-				)}
+				shoeAllSizeList.map((size) => (
+					<ProductSizeSelect
+						key={size}
+						category="sizeOnly"
+						size={size}
+						onClick={onClick}
+						active={size === activeSizeOption}
+					/>
+				))}
 		</StyledGridWrapper>
 	);
 };
@@ -93,10 +79,9 @@ const ProductSizeSelectGrid: FunctionComponent<ProductSizeSelectGridProps> = (
 export default ProductSizeSelectGrid;
 
 const StyledGridWrapper = styled.div`
-    display: grid;
-    padding 0 32px;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px 10px;
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 10px 10px;
 `;
 
 const shoeAllSizeList = [
