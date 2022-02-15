@@ -49,4 +49,8 @@ extension SelectFilter {
         result.removeLast(2)
         return result
     }
+    
+    func isInvalid() -> Bool {
+        return category == nil && brands.isEmpty && collections.isEmpty && gender == nil
+    }
 }

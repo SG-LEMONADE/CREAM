@@ -24,6 +24,7 @@ final class ShopViewFilterHeaderView: UICollectionReusableView {
     weak var delegate: ShopViewFilterHeaderViewDelegate?
     weak var dataSource: ShopViewFilterHeaderViewDataSource?
     
+    private var filterRange = (0...7)
     private lazy var filterCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
@@ -85,7 +86,7 @@ extension ShopViewFilterHeaderView: ViewConfiguration {
     func setupConstraints() {
         filterCollectionView.frame = bounds
     }
-
+    
     func buildHierarchy() {
         addSubviews(filterCollectionView)
     }
@@ -96,5 +97,36 @@ extension ShopViewFilterHeaderView: ViewConfiguration {
         layer.shadowOpacity = 0.5
         layer.shadowRadius = 1.5
         layer.shadowOffset = CGSize(width: 0.0, height: 2.5)
+    }
+}
+
+extension ShopViewFilterHeaderView: FilterChangeDelegate {
+    func didChangeSelectedRow(with setting: SelectFilter) {
+        guard let category = setting.category,
+              let type = FilterHeaderCategory(rawValue: category)
+        else {
+            if let firstCell = filterCollectionView.cellForItem(at: IndexPath.init(item: 0, section: 0)) as? FilterCell {
+                firstCell.titleLabel.attributedText = getAttachment(color: .black)
+            }
+            filterRange.forEach {
+                filterCollectionView.deselectItem(at: .init(item: $0, section: .zero), animated: false)
+            }
+            return
+        }
+        
+        if let selectedIndex = filterCollectionView.indexPathsForSelectedItems?.first {
+            if selectedIndex != type.headerIndexPath {
+                filterCollectionView.selectItem(at: type.headerIndexPath,
+                                                animated: false, scrollPosition: .centeredHorizontally)
+                filterCollectionView.delegate?.collectionView?(filterCollectionView, didSelectItemAt: type.headerIndexPath)
+            }
+        }
+    }
+    
+    private func getAttachment(color: UIColor) -> NSAttributedString {
+        let attachment = NSTextAttachment()
+        attachment.image = UIImage(systemName: "checklist")
+        attachment.image = attachment.image?.withTintColor(color)
+        return NSAttributedString(attachment: attachment)
     }
 }

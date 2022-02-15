@@ -12,6 +12,7 @@ protocol ProductUseCaseInterface {
                searchWord: String?,
                category: String?,
                sort: String?,
+               brandId: String?,
                completion: @escaping ((Result<Products, Error>) -> Void)) -> Cancellable
     func fetchItemById(_ id: Int, completion: @escaping ((Result<ProductDetail, Error>) -> Void)) -> Cancellable
 }
@@ -25,17 +26,20 @@ final class ProductUseCase {
 }
 
 extension ProductUseCase: ProductUseCaseInterface {
+    
     // TODO: 목록 요청
     @discardableResult
     func fetch(page: Int,
                searchWord: String?,
                category: String?,
                sort: String?,
+               brandId: String?,
                completion: @escaping ((Result<Products, Error>) -> Void)) -> Cancellable {
         repository.requestProducts(page: page,
                                    searchWord: searchWord,
                                    category: category,
-                                   sort: sort) { result in
+                                   sort: sort,
+                                   brandId: brandId) { result in
             switch result {
             case .success(let products):
                 completion(.success(products))
@@ -45,7 +49,6 @@ extension ProductUseCase: ProductUseCaseInterface {
         }
     }
     
-    // TODO: 특정 Product 요청
     @discardableResult
     func fetchItemById(_ id: Int, completion: @escaping ((Result<ProductDetail, Error>) -> Void)) -> Cancellable {
         repository.requestProductById(id) { result in

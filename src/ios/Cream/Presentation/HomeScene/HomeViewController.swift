@@ -49,17 +49,17 @@ class HomeViewController: DIViewController<HomeViewModelInterface> {
     
     private func registerCollectionViewCell() {
         homeView.homeCollectionView.register(ShopBannerCell.self,
-                                    forCellWithReuseIdentifier: ShopBannerCell.reuseIdentifier)
+                                             forCellWithReuseIdentifier: ShopBannerCell.reuseIdentifier)
         homeView.homeCollectionView.register(SizeListCell.self,
-                                    forCellWithReuseIdentifier: SizeListCell.reuseIdentifier)
+                                             forCellWithReuseIdentifier: SizeListCell.reuseIdentifier)
         homeView.homeCollectionView.register(HomeProductCell.self,
-                                    forCellWithReuseIdentifier: HomeProductCell.reuseIdentifier)
+                                             forCellWithReuseIdentifier: HomeProductCell.reuseIdentifier)
         homeView.homeCollectionView.register(HomeViewCategoryHeaderView.self,
-                                    forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
-                                    withReuseIdentifier: HomeViewCategoryHeaderView.reuseIdentifier)
+                                             forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
+                                             withReuseIdentifier: HomeViewCategoryHeaderView.reuseIdentifier)
         homeView.homeCollectionView.register(PageControlFooterView.self,
-                                    forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter,
-                                    withReuseIdentifier: PageControlFooterView.reuseIdentifier)
+                                             forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter,
+                                             withReuseIdentifier: PageControlFooterView.reuseIdentifier)
     }
     
     @objc
@@ -82,8 +82,9 @@ extension HomeViewController: UICollectionViewDelegate {
             let dataTransferService: DataTransferService    = DefaultDataTransferService(with: networkService)
             let repository: ProductRepositoryInterface      = ProductRepository(dataTransferService: dataTransferService)
             let usecase: ProductUseCaseInterface            = ProductUseCase(repository)
-            var viewModel: ProductViewModelInterface        = DefaultProductViewModel(usecase: usecase)
-            viewModel.id = self.viewModel.homeInfo.value.sections[indexPath.section/2].products[indexPath.item].id
+            let viewModel: ProductViewModelInterface        = ProductViewModel(usecase: usecase,
+                                                                               id: viewModel.homeInfo.value.sections[indexPath.section/2]
+                                                                                .products[indexPath.item].id)
             let productViewController                       = ProductViewController(viewModel)
             
             productViewController.hidesBottomBarWhenPushed = true

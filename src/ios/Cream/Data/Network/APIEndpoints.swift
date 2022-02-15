@@ -102,11 +102,12 @@ struct APIEndpoints {
                         headerParamaters: ["Content-Type":"application/json"])
     }
     
-    static func loadProducts(_ page: Int,
+    static func loadProducts(_ cursor: Int,
                              searchWord: String?,
                              category: String?,
-                             sort: String?) -> Endpoint<[ProductInfoResponseDTO]> {
-        var queryParameters: [String: Any] = ["cursor": page,
+                             sort: String?,
+                             brandId: String?) -> Endpoint<[ProductInfoResponseDTO]> {
+        var queryParameters: [String: Any] = ["cursor": cursor,
                                               "perPage": 20]
         _ = searchWord.flatMap {
             queryParameters.updateValue($0, forKey: "keyword")
@@ -116,6 +117,9 @@ struct APIEndpoints {
         }
         _ = sort.flatMap {
             queryParameters.updateValue($0, forKey: "sort")
+        }
+        _ = brandId.flatMap {
+            queryParameters.updateValue($0, forKey: "brandId")
         }
         
         return Endpoint(path: "products",
@@ -146,7 +150,7 @@ struct APIEndpoints {
                                               "perPage": 20,
                                               "requestType": type.requestString,
                                               "tradeStatus": "ALL"]
-        var headerParameters: [String: String] = ["Content-Type":"application/json",
+        let headerParameters: [String: String] = ["Content-Type":"application/json",
                                                   "userId": "1"]
         
 //        _ = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.accessToken)

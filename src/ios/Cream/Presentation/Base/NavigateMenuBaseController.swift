@@ -131,7 +131,7 @@ extension NavigateMenuBaseController: UITabBarControllerDelegate {
     
     
     func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
-        if let accessToken = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.accessToken) {
+        if let _ = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.accessToken) {
             return true
         }
         
