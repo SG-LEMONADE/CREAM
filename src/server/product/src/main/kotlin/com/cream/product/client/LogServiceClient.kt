@@ -13,6 +13,6 @@ interface LogServiceClient {
     @PostMapping("/log")
     fun insertUserLogData(@RequestBody userLogDTO: UserLogDTO)
 
-    @GetMapping("/recommendations")
-    fun getRecommendedItems(@RequestHeader("userId") userId: Long): List<Long>
+    @GetMapping("/recommendations/{userId}")
+    fun getRecommendedItems(@PathVariable userId: Long): List<Long>
 }

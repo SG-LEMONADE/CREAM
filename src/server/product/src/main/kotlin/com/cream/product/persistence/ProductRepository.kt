@@ -105,6 +105,7 @@ class ProductRepositoryImpl :
                 inCollectionId(filter.collectionId),
                 likeKeyword(filter.keyword),
                 eqGender(filter.gender),
+                isRecommendation(filter.recommendation)
             )
             .groupBy(productEntity.id)
             .having(
@@ -308,6 +309,10 @@ class ProductRepositoryImpl :
 
     private fun eqGender(gender: String?): BooleanExpression? {
         return if (gender == null) null else productEntity.gender.eq(gender)
+    }
+
+    private fun isRecommendation(items: List<Long>?): BooleanExpression? {
+        return if (items == null) null else productEntity.id.`in`(items)
     }
 
     private fun getOrder(sort: String?): OrderSpecifier<*> {
