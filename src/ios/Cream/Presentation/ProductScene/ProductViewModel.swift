@@ -25,7 +25,7 @@ protocol ProductViewModelOutput {
 
 protocol ProductViewModelInterface: ProductViewModelInput, ProductViewModelOutput { }
 
-final class DefaultProductViewModel: ProductViewModelInterface {
+final class ProductViewModel: ProductViewModelInterface {
     private let usecase: ProductUseCaseInterface
     var item: Observable<ProductDetail> = Observable(ProductDetail.create())
     var releaseInfo: [(String, String)] {
@@ -37,7 +37,7 @@ final class DefaultProductViewModel: ProductViewModelInterface {
         
         return info
     }
-    var id: Int = 0
+    var id: Int
     var numberOfImageUrls: Int {
         return item.value.imageUrls.count
     }
@@ -48,8 +48,9 @@ final class DefaultProductViewModel: ProductViewModelInterface {
     
     private var page: Int = 1
     
-    init(usecase: ProductUseCaseInterface) {
+    init(usecase: ProductUseCaseInterface, id: Int) {
         self.usecase = usecase
+        self.id = id
     }
     
     func viewDidLoad() {

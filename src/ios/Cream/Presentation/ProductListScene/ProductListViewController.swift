@@ -12,6 +12,10 @@ protocol SortChangeDelegate: AnyObject {
     func didChangeStandard(to standard: String)
 }
 
+protocol FilterChangeDelegate: AnyObject {
+    func didChangeSelectedRow(with setting: SelectFilter)
+}
+
 final class ProductListViewController: DIViewController<ProductListViewModelInterface> {
     enum Constraint {
         static let verticalInset: CGFloat = 20
@@ -24,7 +28,7 @@ final class ProductListViewController: DIViewController<ProductListViewModelInte
     private lazy var productListView = ProductListView()
     
     weak var delegate: SortChangeDelegate?
-    
+    weak var filterDelegate: FilterChangeDelegate?
     // MARK: View Life Cycle
     override func loadView() {
         view = productListView
@@ -36,11 +40,12 @@ final class ProductListViewController: DIViewController<ProductListViewModelInte
         setupSearchController()
         setupNavigationBarItem()
         bindViewModel()
+        addNotificationObservers()
         productListView.indicatorView.startAnimating()
         viewModel.viewDidLoad()
         
     }
-    
+
     private func setupSearchController() {
         let searchController = UISearchController(searchResultsController: nil)
         searchController.searchBar.delegate = self
@@ -86,7 +91,7 @@ final class ProductListViewController: DIViewController<ProductListViewModelInte
     }
     
     private func bindViewModel() {
-        self.viewModel.products.bind { [weak self] _ in
+        viewModel.products.bind { [weak self] _ in
             DispatchQueue.main.async {
                 guard let self = self
                 else { return }
@@ -96,6 +101,30 @@ final class ProductListViewController: DIViewController<ProductListViewModelInte
                 self.productListView.indicatorView.stopAnimating()
             }
         }
+    }
+    private func addNotificationObservers() {
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(didReceiveFilterCancelNotification(_:)),
+                                               name: .filterCancelNotification,
+                                               object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(didReceiveFilterSearchNotification(_:)),
+                                               name: .filterSearchNotification,
+                                               object: nil)
+    }
+    
+    @objc
+    private func didReceiveFilterCancelNotification(_ notification: Notification) {
+        selectedIndexPath = nil
+        viewModel.didCancelFilterModal()
+        filterDelegate?.didChangeSelectedRow(with: viewModel.selectedFilters.value)
+    }
+    
+    @objc
+    private func didReceiveFilterSearchNotification(_ notification: Notification) {
+        viewModel.didFilterRequest(with: notification.object as? String)
+        selectedIndexPath = viewModel.selectedFilters.value.isInvalid() ? nil : selectedIndexPath
+        filterDelegate?.didChangeSelectedRow(with: viewModel.selectedFilters.value)
     }
 }
 
@@ -148,9 +177,10 @@ extension ProductListViewController: UICollectionViewDataSource {
                                                                                withReuseIdentifier: ShopViewFilterHeaderView.reuseIdentifier,
                                                                                for: indexPath) as? ShopViewFilterHeaderView
             else { return UICollectionReusableView() }
-            
+            self.filterDelegate = header
             header.delegate = self
             header.dataSource = self
+            
             return header
             
         case UICollectionView.elementKindSectionFooter:
@@ -171,7 +201,7 @@ extension ProductListViewController: UICollectionViewDataSource {
 
 extension ProductListViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if indexPath.section == 1 {
+        if indexPath.section == .one {
             guard let baseURL = URL(string: "http://1.231.16.189:8081")
             else { return }
             
@@ -180,8 +210,8 @@ extension ProductListViewController: UICollectionViewDelegate {
             let dataTransferService: DataTransferService = DefaultDataTransferService(with: networkService)
             let repository: ProductRepositoryInterface   = ProductRepository(dataTransferService: dataTransferService)
             let usecase: ProductUseCaseInterface         = ProductUseCase(repository)
-            var viewModel: ProductViewModelInterface     = DefaultProductViewModel(usecase: usecase)
-            viewModel.id = self.viewModel.products.value[indexPath.item].id
+            let viewModel: ProductViewModelInterface     = ProductViewModel(usecase: usecase,
+                                                                            id: viewModel.products.value[indexPath.item].id)
             let productViewController = ProductViewController(viewModel)
             
             productViewController.hidesBottomBarWhenPushed = true
@@ -225,7 +255,11 @@ extension ProductListViewController: ShopViewFilterHeaderViewDelegate {
     
     func didSelectItemAt(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if indexPath.item == .zero {
-            // TODO: FilterUseCase 구성
+            if let selected = selectedIndexPath {
+                collectionView.selectItem(at: selected, animated: false, scrollPosition: [])
+            }
+            viewModel.didPresentFilterModal()
+            
             guard let baseURL = URL(string: "http://1.231.16.189:8081")
             else { fatalError() }
             
@@ -234,7 +268,8 @@ extension ProductListViewController: ShopViewFilterHeaderViewDelegate {
             let dataTranferService   = DefaultDataTransferService(with: networkService)
             let repository           = ProductRepository(dataTransferService: dataTranferService)
             let usecase              = FilterUseCase(repository)
-            let filterViewModel      = FilterViewModel(usecase)
+            let filterViewModel      = FilterViewModel(usecase,
+                                                       selectedFilters: viewModel.selectedFilters)
             let filterViewController = FilterViewController(filterViewModel)
             let navigationController = UINavigationController(rootViewController: filterViewController)
             self.present(navigationController, animated: true)
@@ -246,11 +281,13 @@ extension ProductListViewController: ShopViewFilterHeaderViewDelegate {
         if let selected = selectedIndexPath, selected == indexPath {
             collectionView.deselectItem(at: indexPath, animated: false)
             selectedIndexPath = nil
+            viewModel.didDoubleTapCategory(indexPath: indexPath)
             firstCell.titleLabel.attributedText = getAttachment(color: .black)
             productListView.indicatorView.startAnimating()
             viewModel.viewDidLoad()
         } else if indexPath.item > 2 {
             selectedIndexPath = indexPath
+            viewModel.didTapCategory(indexPath: indexPath)
             firstCell.titleLabel.attributedText = getAttachment(color: UIColor(rgb: 0xEF6253))
             productListView.indicatorView.startAnimating()
             viewModel.didTapCategory(indexPath: indexPath)

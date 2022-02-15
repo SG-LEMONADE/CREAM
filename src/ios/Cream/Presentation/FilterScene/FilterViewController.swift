@@ -42,6 +42,7 @@ class FilterViewController: DIViewController<FilterViewModelInterface> {
         super.viewDidLoad()
         setupTableView()
         setupNavigationBarItem()
+        configureUserActions()
         bindViewModel()
         viewModel.viewDidLoad()
     }
@@ -72,6 +73,12 @@ class FilterViewController: DIViewController<FilterViewModelInterface> {
         navigationItem.rightBarButtonItem = clearButton
     }
     
+    private func configureUserActions() {
+        filterView.searchButton.addTarget(self,
+                                          action: #selector(didTapSearchButton),
+                                          for: .touchUpInside)
+    }
+    
     private func bindViewModel() {
         viewModel.detailFilters.bind { [weak self] filter in
             self?.filterView.filterTableView.reloadData()
@@ -80,15 +87,26 @@ class FilterViewController: DIViewController<FilterViewModelInterface> {
     
     @objc
     private func didTapCloseButton() {
+        NotificationCenter.default.post(name: .filterCancelNotification, object: nil)
         dismiss(animated: true, completion: nil)
     }
     
     @objc
     private func didTapClearButton() {
-        viewModel.selectedFilters.value = .init()
+        viewModel.selectedFilters.value.category = nil
+        viewModel.selectedFilters.value.brands = []
+        viewModel.selectedFilters.value.collections = []
+        viewModel.selectedFilters.value.gender = nil
+        
         DispatchQueue.main.async { [weak self] in
             self?.filterView.filterTableView.reloadData()
         }
+    }
+    
+    @objc
+    func didTapSearchButton() {
+        viewModel.didTapSearchButton()
+        dismiss(animated: true, completion: nil)
     }
 }
 
@@ -131,11 +149,19 @@ extension FilterViewController: UITableViewDelegate {
         guard let category = FilterCategory(rawValue: indexPath.row)
         else { return }
         
-        let detailFilterViewModel: DetailFilterViewModel?
+        guard let baseURL = URL(string: "http://1.231.16.189:8081")
+        else { fatalError() }
         
+        let config               = ApiDataNetworkConfig(baseURL: baseURL)
+        let networkService       = DefaultNetworkService(config: config)
+        let dataTranferService   = DefaultDataTransferService(with: networkService)
+        let repository           = ProductRepository(dataTransferService: dataTranferService)
+        let usecase              = ProductUseCase(repository)
+        let detailFilterViewModel: DetailFilterViewModel?
         switch category {
         case .category:
-            detailFilterViewModel = DetailFilterViewModel(filter: viewModel.detailFilters.value.categories,
+            detailFilterViewModel = DetailFilterViewModel(usecase: usecase,
+                                                          filter: viewModel.detailFilters.value.categories,
                                                           type: .category,
                                                           totalFilter: viewModel.detailFilters.value,
                                                           selectedList: viewModel.selectedFilters)
@@ -144,19 +170,22 @@ extension FilterViewController: UITableViewDelegate {
             viewModel.detailFilters.value.brands.forEach {
                 filters.append($0.toTranslatedName())
             }
-            detailFilterViewModel = DetailFilterViewModel(filter: filters,
+            detailFilterViewModel = DetailFilterViewModel(usecase: usecase,
+                                                          filter: filters,
                                                           type: .brand,
                                                           totalFilter: viewModel.detailFilters.value,
                                                           selectedList: viewModel.selectedFilters)
             
         case .gender:
-            detailFilterViewModel = DetailFilterViewModel(filter: viewModel.detailFilters.value.gender,
+            detailFilterViewModel = DetailFilterViewModel(usecase: usecase,
+                                                          filter: viewModel.detailFilters.value.gender,
                                                           type: .gender,
                                                           totalFilter: viewModel.detailFilters.value,
                                                           selectedList: viewModel.selectedFilters)
             
         case .collection:
-            detailFilterViewModel = DetailFilterViewModel(filter: viewModel.detailFilters.value.collections,
+            detailFilterViewModel = DetailFilterViewModel(usecase: usecase,
+                                                          filter: viewModel.detailFilters.value.collections,
                                                           type: .collection,
                                                           totalFilter: viewModel.detailFilters.value,
                                                           selectedList: viewModel.selectedFilters)

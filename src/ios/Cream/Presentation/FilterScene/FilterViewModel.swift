@@ -10,6 +10,7 @@ import Foundation
 // MARK: - ViewModel
 protocol FilterViewModelInput {
     func viewDidLoad()
+    func didTapSearchButton()
 }
 
 protocol FilterViewModelOutput {
@@ -27,15 +28,16 @@ final class FilterViewModel: FilterViewModelInterface {
                                                       brands: [],
                                                       collections: [],
                                                       gender: []))
-    var selectedFilters: Observable<SelectFilter> = Observable(.init())
+    var selectedFilters: Observable<SelectFilter>
     var filterList: [String] = ["카테고리", "브랜드", "성별", "컬렉션"]
     
     var numberOfCells: Int {
         return filterList.count
     }
     
-    init(_ usecase: FilterUseCaseInterface) {
+    init(_ usecase: FilterUseCaseInterface, selectedFilters: Observable<SelectFilter>) {
         self.usecase = usecase
+        self.selectedFilters = selectedFilters
     }
     
     func viewDidLoad() {
@@ -48,5 +50,24 @@ final class FilterViewModel: FilterViewModelInterface {
                 break
             }
         }
+    }
+    
+    func didTapSearchButton() {
+        var brandIds: [Int] = []
+        var brandQuery: String? = nil
+        
+        selectedFilters.value.brands.forEach { selected in
+            detailFilters.value.brands.forEach { brand in
+                if selected == brand.name {
+                    brandIds.append(brand.id)
+                }
+            }
+        }
+        if brandIds.isEmpty {
+            brandQuery = nil
+        } else {
+            brandQuery = brandIds.map{ String($0) }.joined(separator: ",")
+        }
+        NotificationCenter.default.post(name: .filterSearchNotification, object: brandQuery)
     }
 }

@@ -12,6 +12,7 @@ protocol ProductRepositoryInterface {
                          searchWord: String?,
                          category: String?,
                          sort: String?,
+                         brandId: String?,
                          completion: @escaping ((Result<Products, Error>) -> Void)) -> Cancellable
     func requestProductById(_ id: Int,
                             completion: @escaping ((Result<ProductDetail, Error>) -> Void)) -> Cancellable

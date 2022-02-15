@@ -13,6 +13,7 @@
 		7B17624627BA5A2E0082B79B /* RepositoryTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B17624527BA5A2E0082B79B /* RepositoryTask.swift */; };
 		7B17624927BA81850082B79B /* PasswordTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B17624827BA81850082B79B /* PasswordTextField.swift */; };
 		7B17624B27BA8F3F0082B79B /* JoinViewModelSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B17624A27BA8F3F0082B79B /* JoinViewModelSpec.swift */; };
+		7B17624F27BB45A20082B79B /* NotificationName+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B17624E27BB45A10082B79B /* NotificationName+.swift */; };
 		7B193C832794D3D300B934A3 /* HomeViewItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B193C822794D3D300B934A3 /* HomeViewItemCell.swift */; };
 		7B193C8927965E5A00B934A3 /* HomeViewCategoryHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B193C8827965E5A00B934A3 /* HomeViewCategoryHeaderView.swift */; };
 		7B193C8B27965EE500B934A3 /* ShopViewFilterHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B193C8A27965EE500B934A3 /* ShopViewFilterHeaderView.swift */; };
@@ -156,6 +157,7 @@
 		7B17624527BA5A2E0082B79B /* RepositoryTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepositoryTask.swift; sourceTree = "<group>"; };
 		7B17624827BA81850082B79B /* PasswordTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordTextField.swift; sourceTree = "<group>"; };
 		7B17624A27BA8F3F0082B79B /* JoinViewModelSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinViewModelSpec.swift; sourceTree = "<group>"; };
+		7B17624E27BB45A10082B79B /* NotificationName+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NotificationName+.swift"; sourceTree = "<group>"; };
 		7B193C822794D3D300B934A3 /* HomeViewItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewItemCell.swift; sourceTree = "<group>"; };
 		7B193C8827965E5A00B934A3 /* HomeViewCategoryHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewCategoryHeaderView.swift; sourceTree = "<group>"; };
 		7B193C8A27965EE500B934A3 /* ShopViewFilterHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopViewFilterHeaderView.swift; sourceTree = "<group>"; };
@@ -739,6 +741,7 @@
 				7B5EEE5E27ACBFA300990E37 /* UITextField+.swift */,
 				7B5EEE8227B4236500990E37 /* Int+.swift */,
 				7B5EEE8D27B57A0900990E37 /* KeychainWrapper+.swift */,
+				7B17624E27BB45A10082B79B /* NotificationName+.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -1065,6 +1068,7 @@
 				7BF82E1927A56C8B007E0A79 /* ErrorMessage.swift in Sources */,
 				7B5EEE6127AD10E500990E37 /* ProcessView.swift in Sources */,
 				7B5EEE2F27A69ADA00990E37 /* ProductResponseDTO+Mapping.swift in Sources */,
+				7B17624F27BB45A20082B79B /* NotificationName+.swift in Sources */,
 				7B193CAD2799BDEF00B934A3 /* UIColor+.swift in Sources */,
 				7B5EEE6827B00F0300990E37 /* BaseItemView.swift in Sources */,
 				7BF82E0227A2CD18007E0A79 /* JoinRequestDTO+Mapping.swift in Sources */,

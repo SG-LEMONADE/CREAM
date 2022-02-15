@@ -21,8 +21,12 @@ extension ProductRepository: ProductRepositoryInterface {
                          searchWord: String?,
                          category: String?,
                          sort: String?,
+                         brandId: String?,
                          completion: @escaping ((Result<Products, Error>) -> Void)) -> Cancellable {
-        let endpoint = APIEndpoints.loadProducts(page, searchWord: searchWord, category: category, sort: sort)
+        let endpoint = APIEndpoints.loadProducts(page, searchWord: searchWord,
+                                                 category: category,
+                                                 sort: sort,
+                                                 brandId: brandId)
         
         let task = RepositoryTask()
         task.networkTask = dataTransferService.request(with: endpoint) { result in

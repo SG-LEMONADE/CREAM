@@ -19,6 +19,7 @@ class DetailFilterViewController: DIViewController<DetailFilterViewModelInterfac
         super.viewDidLoad()
         setupTableView()
         setupNavigationBarItem()
+        configureUserActions()
         bindViewModel()
     }
     
@@ -44,6 +45,12 @@ class DetailFilterViewController: DIViewController<DetailFilterViewModelInterfac
         navigationItem.rightBarButtonItem = clearButton
     }
     
+    private func configureUserActions() {
+        filterView.searchButton.addTarget(self,
+                                          action: #selector(didTapSearchButton),
+                                          for: .touchUpInside)
+    }
+    
     private func bindViewModel() {
         viewModel.selectedList.bind { [weak self] _ in
             self?.filterView.filterTableView.reloadData()
@@ -58,6 +65,12 @@ class DetailFilterViewController: DIViewController<DetailFilterViewModelInterfac
     @objc
     func didTapClearButton() {
         viewModel.reinitSelected()
+    }
+    
+    @objc
+    func didTapSearchButton() {
+        viewModel.didTapSearchButton()
+        dismiss(animated: true, completion: nil)
     }
 }
 
@@ -108,7 +121,6 @@ extension DetailFilterViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let cell = tableView.cellForRow(at: indexPath)
         else { return }
-
         viewModel.didSelectRowAt(indexPath: indexPath)
         cell.accessoryType = .checkmark
     }
