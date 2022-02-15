@@ -43,6 +43,7 @@ def cf_knn(df, user_sim, user_id, product_id, neighbor_size=0):
 
 
 def cf_recommend_product(df, user_sim, user_id, n_items, neighbor_size=30):
+    # 유저별로 비슷한 유저의 이웃에서 가장 높은 점수를 정렬해서 가져옵니다.
     user_product = df.loc[user_id].copy()
     for product in df:
         user_product.loc[product] = cf_knn(df, user_sim, user_id, product, neighbor_size)
@@ -53,6 +54,7 @@ def cf_recommend_product(df, user_sim, user_id, n_items, neighbor_size=30):
 
 
 def cbf_recommend_product(df, name_sim, idx, n_items=30):
+    # 컨텐츠 별로 관련 가장 비슷한 상품들을 반환합니다.
     product = df[df['id'] == str(idx)]
     target_product_index = product.index.values
 
@@ -102,18 +104,22 @@ def main(log_sum_pivot, least_sum_pivot, n_items):
             print(user_idx+1)
         data = {}
         if data_cnt >= log_sum_pivot:
+            # CF
             data["recommendedItems"] = cf_recommend_product(rating_matrix, user_similarity,
                                                              user_idx + 1, n_items, 71)
         elif data_cnt > least_sum_pivot:
+            # CBF
             cbf_product_list = []
             curr_user_log = ratings_by_user_product[ratings_by_user_product['userId'] == user_idx + 1] \
                 .sort_values('action', ascending=False)
             for user, product_id, score in curr_user_log.values:
+                # 많이 관심을 가진 만큼 관련된 상품 목록의 수를 결정합니다.
                 score_proportion = int((score / data_cnt) * n_items)
                 cbf_product_list.extend(cbf_recommend_product(products, name_c_sim, product_id, score_proportion))
             data["recommendedItems"] = cbf_product_list
 
         else:
+            # cold user를 위한 추천 best items + new items
             cold_user_product_list = []
             best_item_num, new_item_num = int(0.75 * n_items), int(0.25 * n_items)
             cold_user_product_list.extend(ratings_by_products[:best_item_num].index.to_list())
