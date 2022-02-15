@@ -2,20 +2,23 @@
 ## Index
 - [Cream Server](#cream-server)
   - [Index](#index)
-  - [Server 주요 코드](#server-주요-코드)
+  - [Server 개요](#server-개요)
     - [Directory](#directory)
-    - [Architecture](#architecture)
+    - [Architecture & ERD](#architecture--erd)
+      - [Architecture](#architecture)
+      - [Architecture Flow](#architecture-flow)
+      - [ERD](#erd)
     - [Common](#common)
-    - [user server](#user-server)
-    - [product server](#product-server)
-    - [log server](#log-server)
+    - [User server](#user-server)
+    - [Product server](#product-server)
+    - [Log server](#log-server)
   - [설계 및 구현](#설계-및-구현)
     - [프로젝트 구현 사항 및 선정 이유](#프로젝트-구현-사항-및-선정-이유)
       - [Kotlin](#kotlin)
         - [코틀린을 사용한 이유](#코틀린을-사용한-이유)
         - [코틀린 구현 사항](#코틀린-구현-사항)
-      - [스프링](#스프링)
-      - [스프링을 사용한 이유](#스프링을-사용한-이유)
+      - [Spring Boot](#spring-boot)
+      - [스프링 부트를 사용한 이유](#스프링-부트를-사용한-이유)
       - [JPA를 사용한 이유](#jpa를-사용한-이유)
       - [스프링 구현 사항](#스프링-구현-사항)
       - [JPA 구현 사항](#jpa-구현-사항)
@@ -27,7 +30,7 @@
     - [개인화 된 추천](#개인화-된-추천)
   - [그외 고민들](#그외-고민들)
 
-## Server 주요 코드
+## Server 개요
 
 ### Directory
 
@@ -35,46 +38,26 @@
 server
 ├── db
 │   └── create_table.sql // 데이터 베이스 생성 sql 파일
-├── eureka
-│   └── src
-│       ├── main
-│       │   ├── kotlin
-│       │   └── resources
-│       └── test
-│           └── kotlin
-├── gateway
-│   └── src
-│       ├── main
-│       │   ├── kotlin
-│       │   └── resources
-│       └── test
-│           └── kotlin
-├── log
-│   ├── HELP.md
-│   └── src
-│       ├── main
-│       │   ├── kotlin
-│       │   └── resources
-│       └── test
-│           └── kotlin
-├── product
-│   └── src
-│       ├── main
-│       │   ├── kotlin
-│       │   └── resources
-│       └── test
-│           └── kotlin
-├── recommendation
-└── user
-    └── src
-        ├── main
-        │   ├── kotlin
-        │   └── resources
-        └── test
-            └── kotlin
+├── eureka // 디스커버리
+├── gateway // 게이트웨이
+├── log // 추천, 가격 및 유저 로그
+├── product // 상품 및 거래
+└── user // 인증 및 유저
 ```
 
-### Architecture
+### Architecture & ERD
+
+#### Architecture
+
+![아키텍처](https://i.imgur.com/9DZBDoC.png)
+
+#### Architecture Flow
+
+![아키텍처 플로우](https://i.imgur.com/lMQgGlJ.png)
+
+#### ERD
+
+![DB ERD](https://i.imgur.com/KdCUBkH.png)
 
 ### Common
 
@@ -94,27 +77,29 @@ gateway와 eureka를 제외한 모든 프로젝트에 공통적인 특징으로 
 
 추가적으로 협업을 위한 swagger를 모든 프로젝트에 등록해서 사용중에 있습니다.
 
-### user server
+***
+### User server
 
-인증, 유저 정보를 처리하는 서버입니다.
+**인증, 유저 정보를 처리하는 서버입니다.**
+
 JWT 방식의 인증을 사용하고 있습니다.
 
-데이터 베이스는 mysql과 redis를 사용하고 있습니다.
+데이터 베이스는 **mysql**과 **redis**를 사용하고 있습니다.
 redis는 이메일 인증, refresh 토큰 저장용도와 로그아웃 후 쓰지 않는 토큰을 관리하는 용도로 사용하고 있습니다.
 
 인증 부분에서 redis를 사용한 가장 큰 이유는 만료 시간을 쉽게 설정해 인증을 좀 더 편리하고 안전하게 해 줄 수 있다는 장점으로 사용했습니다.
 
-[주요 코드 - 이메일 인증 (verify), 토큰 재발급 (refresh), 로그 아웃 (logout)](https://github.com/SG-LEMONADE/CREAM/blob/develop/src/server/user/src/main/kotlin/com/cream/user/service/UserService.kt)
+[👨🏻‍💻 주요 코드 - 이메일 인증 (verify), 토큰 재발급 (refresh), 로그 아웃 (logout)](https://github.com/SG-LEMONADE/CREAM/blob/develop/src/server/user/src/main/kotlin/com/cream/user/service/UserService.kt)
 
 유저 회원가입 이메일 인증을 위한 spring-boot-starter-mail 라이브러리를 사용했습니다. 레퍼런스를 참고해 작성했습니다. 많은 이메일 라이브러리중 최근까지 업데이트 되는 것을 확인하고 사용하게 되었습니다.
 
-[주요 코드 - 이메일 전송](https://github.com/SG-LEMONADE/CREAM/blob/develop/src/server/user/src/main/kotlin/com/cream/user/utils/UserMailSender.kt)
+[👨🏻‍💻 주요 코드 - 이메일 전송](https://github.com/SG-LEMONADE/CREAM/blob/develop/src/server/user/src/main/kotlin/com/cream/user/utils/UserMailSender.kt)
 
 토큰을 생성하기 위해 Spring Security를 사용중에 있습니다. 스프링 시큐리티를 사용해서 일일이 보안 관련 로직을 직접 작성하지 않아도 되는 장점이 있어 사용했습니다.
+***
+### Product server
 
-### product server
-
-상품과 거래를 처리하는 서버입니다.
+**상품과 거래를 처리하는 서버입니다.**
 
 상품 데이터와 거래 관련해서 가격 설정 등 복잡한 구조가 많았기에 쿼리문을 유지보수, 가독성, 변경하기 용이하게 하기 위해 Querydsl을 이용했습니다. 특히 Querydsl을 통해 상품 검색 필터를 손쉽게 변경 및 사용이 가능하게 만들었습니다.
 
@@ -129,13 +114,14 @@ redis는 이메일 인증, refresh 토큰 저장용도와 로그아웃 후 쓰�
 
 특히 많은 api가 있는 부분이기 때문에 조금이라도 더 효율적인 쿼리문과 데이터베이스 모델을 짜는 것에 집중한 서버입니다.
 
-[주요 코드 - 상품 관련 repository](https://github.com/SG-LEMONADE/CREAM/blob/develop/src/server/product/src/main/kotlin/com/cream/product/persistence/ProductRepository.kt)
+[🛍 주요 코드 - 상품 관련 repository](https://github.com/SG-LEMONADE/CREAM/blob/develop/src/server/product/src/main/kotlin/com/cream/product/persistence/ProductRepository.kt)
 
-[주요 코드 - 거래 관련 repository](https://github.com/SG-LEMONADE/CREAM/blob/develop/src/server/product/src/main/kotlin/com/cream/product/persistence/TradeRepository.kt)
+[🛍 주요 코드 - 거래 관련 repository](https://github.com/SG-LEMONADE/CREAM/blob/develop/src/server/product/src/main/kotlin/com/cream/product/persistence/TradeRepository.kt)
 
-### log server
+***
+### Log server
 
-유저의 활동 로그 저장과 상품 상세 페이지에서 보여지는 그래프를 그리기 위한 상품의 1개월, 3개월, 6개월, 1년전의 가격을 날짜단위로 반환해 줍니다.
+**유저의 활동 로그 저장과 상품 상세 페이지에서 보여지는 그래프를 그리기 위한 상품의 1개월, 3개월, 6개월, 1년전의 가격을 날짜단위로 반환해 줍니다. 추천 상품을 상품 서버로 보내주는 서버입니다.**
 
 유저 정보와 상품의 가격정보들을 반환해 주기 위해 mongodb를 이용해 저장하고 있습니다. 또한 유저가 상품 서버 api를 호출한다면 활동 로그를 기록할 수 있게 feign client를 사용했습니다.
 
@@ -147,6 +133,7 @@ mongodb를 사용한 이유는 다음과 같습니다.
 - 로그 데이터와 같이 확장성이 높은 것들은 관계형보다는 문서형 no-sql을 사용하는 것이 성능면으로도 확장을 고려해도 훨씬 좋을 것이라 생각했습니다.
 - 여러 문서형 데이터베이스 중 가장 레퍼런스와 다양한 workbench가 많은 mongodb를 선택했습니다.
 
+***
 ## 설계 및 구현
 
 ### 프로젝트 구현 사항 및 선정 이유
@@ -172,11 +159,14 @@ mongodb를 사용한 이유는 다음과 같습니다.
 
 다만 자바를 학교 수업과 코딩테스트에 사용했던 경험이 있어서 익숙했지만, kotlin은 처음 접하는 것이기 때문에 처음에는 작업속도가 문법 때문에 더뎌진 경험이 있습니다. 관련되어서는 아래 링크를 통해 코틀린의 특징과 코틀린 + 스프링 조합에 관련된 이슈들을 정리해 놓았습니다.
 
-결론적으로 제가 코틀린으로 선택한 마지막 이유에 대한 답변은 충분히 코틀린으로 스프링을 제작 할만하다라는 생각이 들었습니다. 다만 굳이 만들어져있는 프로젝트들을 많은 리소스를 들여가면서까지는 포팅은 하지 않아도 될 거 같다는 결론을 얻게 되었습니다.
+결론적으로 제가 코틀린으로 선택한 마지막 이유에 대한 답변은 충분히 코틀린으로 스프링을 제작 할만하다라는 생각이 들었습니다.
 
-#### 스프링
+ **다만 굳이 만들어져있는 프로젝트들을 많은 리소스를 들여가면서까지는 포팅은 하지 않아도 될 거 같다는 결론을 얻게 되었습니다.**
 
-#### 스프링을 사용한 이유
+***
+#### Spring Boot
+
+#### 스프링 부트를 사용한 이유
 
 - 스마일 게이트 스토브에 전환되는 것이 팀 목표 중 하나였습니다. 현재 스토브 역시도 스프링을 사용하기 때문에 충분히 어필 될 수 있다고 생각했습니다.
 - 서버 개발자의 커리어를 다른 프레임워크로 시작한 저로써는 스프링 프로젝트에 대한 갈망이 항상 존재했기 때문에 기회가 될 때 확실히 배워두고 싶었습니다.
@@ -193,9 +183,17 @@ mongodb를 사용한 이유는 다음과 같습니다.
 스프링 부트를 사용하였고 최신 버전인 2.6.2버전을 사용했습니다. 스프링 클라우드 프로젝트 최신 버전과 함께 스프링 부트 역시도 최신버전으로 사용했습니다.
  Java는 11을 사용했습니다. 8과 비교해서 안정성도 동일하고 compile 명령어를 따로 하지 않아도 컴파일 및 실행시킬 수 있다는 점때문에 Java 11을 사용했습니다.
 
+ 그 외에 고민한 내용으로는 스프링처럼 스프링을 사용하기 위해서 Common에서 나눈 것처럼 역할을 분리하고 가장 중점들이 되는 개념(IOC, DI, AOP)들을 정리하고 사용했습니다.
+
+ 그 외에도 쉽게 오해 할 수 있는 개념(필터와 인터셉터의 차이 등)들을 따로 markdown 문서로 정리해 가며 작업을 진행했습니다.
+
 #### JPA 구현 사항
 
 ORM 뿐만 아니라 다양한 상황에 유연하게 대처하기 위해 Querydsl이라는 라이브러리도 같이 사용했습니다.
+
+제대로 스프링 ORM을 사용하기 위해서는 영속성이라는 개념과 JDBC 동작원리 Hibernate와 같은 개념들을 정리하고 사용해야 한다고 생각했습니다. 스프링과 마찬가지로 작업을 진행하면서 느꼈던 것들과 학습한 내용들을 markdown 문서로 정리해 가며 진행했습니다.
+
+***
 
 ### MSA
 
@@ -214,22 +212,22 @@ MSA를 구현하기 위해 스프링 클라우드 프로젝트를 이용했습�
 
 다만, 어떠한 단위로 서버를 나누어야 할지에 대한 고민이 조금 더 깊게 이루어 지고 프로젝트를 진행했으면 어땠을까 하는 아쉬움이 남습니다.
 
-제가 MSA를 구현 하면서 부족했던 점은 다음과 같습니다.
+**제가 MSA를 구현 하면서 부족했던 점은 다음과 같습니다.**
 
 1. 개인적으로 느끼기에 많은 부분이 product server에 집중되어 있다는 느낌이 들었습니다. 조금 더 데이터베이스 모델을 MSA에 맞추어 고려를 하고 작성을 했다면 충분히 분리 할 수 있었지 않았을까 하는 아쉬움이 남습니다.
 2. log 서버에서는 현재 추천을 같이 진행하고 있습니다. 많은 유저 데이터들을 서버를 따로 분리해 보내는 것보다는 차라리 log 서버에서 있는 데이터를 직접 이용해서 계산하는 것이 성능상 이슈가 없을 것이라 판단했습니다. 대용량 파일을 주고 받을 때를 대비하지 못한 구조라는 아쉬움이 남습니다.
 
-MSA를 구현하면서 만족했던 점은 다음과 같습니다.
+**MSA를 구현하면서 만족했던 점은 다음과 같습니다.**
 
 1. 클라우드 프로젝트를 이용하긴 했지만 로드밸런싱과 서버간 통신이 예상 이상으로 원활하게 진행되었다는 점입니다.
 2. 게이트웨이를 통해 통합 인증 구현을 잘 해냈습니다.
 3. 실제 비지니스를 위한 MSA 구축시 고려해야 될 점들을 배운 경험이었습니다.
 
-[Spring Cloud Gateway - 글로벌 인증 필터](https://github.com/SG-LEMONADE/CREAM/blob/develop/src/server/gateway/src/main/kotlin/com/cream/gateway/filter/JwtAuthFilter.kt)
-[Spring Cloud Eureka](https://github.com/SG-LEMONADE/CREAM/tree/develop/src/server/eureka)
+[🌤 Spring Cloud Gateway - 글로벌 인증 필터](https://github.com/SG-LEMONADE/CREAM/blob/develop/src/server/gateway/src/main/kotlin/com/cream/gateway/filter/JwtAuthFilter.kt)
+
+***
 
 ### 개인화 추천
-
 #### 상품 데이터 제작
 
 총 상품 데이터는 1592개로 크롤링을 통해 크림에서 데이터를 추출했습니다.
@@ -270,7 +268,7 @@ MSA를 구현하면서 만족했던 점은 다음과 같습니다.
 
 또 유저별 유사도를 결정할 때에 현재 사용한 유사도는 코사인 유사도를 사용했습니다.
 
-유저 데이터를 binary로 구성할 때에는 지카드 유사도를 사용해도 괜찮지만, 현재는 유저별 상품 정보를 연속적인 숫자들로 저장하고 있기에 코사인 유사도를 선택하였습니다.
+유저 데이터를 binary로 구성할 때에는 지카드 유사도를 사용해도 괜찮지만, 현재는 유저별 상품 정보를 연속적인 숫자들로 저장하고 있기에 코사인 유사도를 선택하였습니다. 실제로 클릭 여부, 구매 단위로 자카드 유사도를 추출해 추천 수행시 유저의 행동 패턴이 너무 적어서 잘 파악을 못하거나 너무 희미해 지는 경향이 있었습니다. 그렇기에 연속 값인 코사인 유사도를 통해 데이터를 구하고 있습니다.
 
 ### 개인화 된 추천
 
@@ -280,13 +278,15 @@ Python을 라이브러리인 Pandas, Numpy, sklearn을 이용해 CF 알고리즘
 
 현재는 MF 모델을 sgd 알고리즘을 사용해서 검증해 보고 있습니다. 추천화 결과가 어느정도 설명이 가능한 정도로 이해가 되고 만들어 진다면 추가할 계획입니다.
 
-[CF 알고리즘 코드]()
+[ 👩🏻‍💼 CF 알고리즘 코드](https://github.com/SG-LEMONADE/CREAM/blob/develop/src/server/recommendation/cf.py)
 
-[CBF 알고리즘 코드]()
+[ 👩🏻‍💼 CBF 알고리즘 코드](https://github.com/SG-LEMONADE/CREAM/blob/develop/src/server/recommendation/cbf.py)
 
-[MF 알고리즘 (미완성)]()
+[ 👩🏻‍💼 MF 알고리즘 (미완성)](https://github.com/SG-LEMONADE/CREAM/blob/develop/src/server/recommendation/mf.py)
 
 각 알고리즘 별 최적화 관련된 이슈는 다음 링크에 더욱 자세히 남겨두었습니다.
+
+***
 
 ## 그외 고민들
 

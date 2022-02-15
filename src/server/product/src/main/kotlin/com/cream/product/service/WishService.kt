@@ -8,7 +8,9 @@ import com.cream.product.persistence.ProductRepository
 import com.cream.product.persistence.WishRepository
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.jpa.repository.Lock
 import org.springframework.stereotype.Service
+import javax.persistence.LockModeType
 import javax.transaction.Transactional
 
 @Service
@@ -23,6 +25,7 @@ class WishService {
     lateinit var logServiceClient: LogServiceClient
 
     @Transactional
+    @Lock(value = LockModeType.PESSIMISTIC_READ)
     fun toggleWish(
         userId: Long,
         productId: Long,
