@@ -98,11 +98,10 @@ const BookmarkArea = styled.div`
 `;
 
 const BookmarkContents = styled.span`
-    display: inline-flex;
-    align-items: center;
-    vertical-align: top;
-    padding; 0 8px;
-    height: 20px;
+	display: inline-flex;
+	align-items: center;
+	vertical-align: top;
+	height: 20px;
 `;
 
 const BookemarkCnt = styled.span<{ selected?: boolean }>`

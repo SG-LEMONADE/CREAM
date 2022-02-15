@@ -79,7 +79,13 @@ const SizeSelectTemplate: FunctionComponent<SizeSelectTemplateProps> = (
 								}
 								onClick={() => {
 									router.push({
-										pathname: `/${category}/${id}?size=${selectedSize}`,
+										pathname: `/${category}/${id}`,
+										query: {
+											size: `${selectedSize}`,
+											auction: `${
+												pricePerSize[selectedSize] === null ? true : false
+											}`,
+										},
 									});
 								}}
 							>

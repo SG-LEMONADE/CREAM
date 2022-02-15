@@ -37,7 +37,7 @@ const ProductBuySizeSelect: FunctionComponent = (props) => {
 					originalName={productInfo.product.originalName}
 					translatedName={productInfo.product.translatedName}
 					sizes={productInfo.product.sizes}
-					pricePerSize={productInfo.askPrices}
+					pricePerSize={productInfo.bidPrices}
 				/>
 			)}
 		</NavTemplate>

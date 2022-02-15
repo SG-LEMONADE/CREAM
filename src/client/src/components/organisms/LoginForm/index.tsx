@@ -62,25 +62,22 @@ const LoginForm: FunctionComponent = () => {
 		}
 	};
 
+	/**
+	 * 아래 Input 컴포넌트 또한 atom에서 작성된 것 그대로 가져다가 사용하는 모습입니다.
+	 * 상황에 따라 onChange, onClick 이벤트를 바인딩해주고 있으며,
+	 * error 처리 또한 상위 컴포넌트인 현재 위치 (LoginForm)에서 결정되어집니다.
+	 */
 	return (
 		<LoginContainer>
 			<LoginContents>
 				<LoginArea>
 					<Logo category="LogowithTag" />
-					{isErrorEmail ? (
-						<Input
-							onChange={onValidateEmailFormat}
-							category="email"
-							error
-							content="이메일 주소"
-						/>
-					) : (
-						<Input
-							onChange={onValidateEmailFormat}
-							category="email"
-							content="이메일 주소"
-						/>
-					)}
+					<Input
+						onChange={onValidateEmailFormat}
+						category="email"
+						error={isErrorEmail}
+						content="이메일 주소"
+					/>
 					<form>
 						<Input
 							onChange={(e) => setPassword(e.target.value)}
@@ -88,23 +85,19 @@ const LoginForm: FunctionComponent = () => {
 							content="비밀번호"
 						/>
 						<ButtonArea>
-							{isErrorEmail ||
-							isErrorPwd ||
-							email.length === 0 ||
-							password.length === 0 ? (
-								<Button
-									onClick={onHandleLogin}
-									category="primary"
-									fullWidth
-									disabled
-								>
-									로그인
-								</Button>
-							) : (
-								<Button onClick={onHandleLogin} category="primary" fullWidth>
-									로그인
-								</Button>
-							)}
+							<Button
+								onClick={onHandleLogin}
+								category="primary"
+								fullWidth
+								disabled={
+									isErrorEmail ||
+									isErrorPwd ||
+									email.length === 0 ||
+									password.length === 0
+								}
+							>
+								로그인
+							</Button>
 							<LookBox>
 								<LookList>
 									<Link href={"/join"}>
@@ -165,16 +158,16 @@ const LookList = styled.li`
 	display: inline-flex;
 	align-items: flex-start;
 	flex: 1;
-	&: after {
+	&::after {
 		content: "";
 		margin-top: 2px;
 		display: inline-block;
 		width: 1px;
 		height: 14px;
 		background-color: #d3d3d3;
-        margin-left: 20px;
+		margin-left: 20px;
 	}
-	&: last-child: after {
+	:last-child&::after {
 		display: none;
 	}
 `;
@@ -183,7 +176,7 @@ const StyledA = styled.a`
 	padding: 0 10px;
 	display: inline-flex;
 	font-size: 13px;
-	letter-spaceing: -0.07px;
+	letter-spacing: -0.07px;
 	text-decoration: none;
 	cursor: pointer;
 `;

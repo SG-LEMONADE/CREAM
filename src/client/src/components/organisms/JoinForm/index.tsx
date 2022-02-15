@@ -78,46 +78,33 @@ const JoinForm: FunctionComponent = () => {
 		}
 	};
 
+	/** For Code Review
+	 * 아래 작성한 atom인 Input를 사용하며 onChange 이벤트 핸들러를 상위 컴포넌트인 JoinForm에서 내려줍니다.
+	 * error가 있는지에 대해 validate 절차를 통해 계산된 결과값을 내려줍니다.
+	 * 109번쨰 줄에 Input은 클릭했을때 모달이 보여지는데, 해당 기능 또한 onClick으로 구현됩니다.
+	 */
 	return (
 		<JoinContainer>
 			<JoinContents>
 				<JoinArea>
 					<StyledTitle>회원 가입</StyledTitle>
 					<InputBox>
-						{isErrorEmail ? (
-							<Input
-								category="email"
-								content="이메일 주소"
-								required
-								onChange={onValidateEmailFormat}
-								error
-							/>
-						) : (
-							<Input
-								category="email"
-								content="이메일 주소"
-								required
-								onChange={onValidateEmailFormat}
-							/>
-						)}
+						<Input
+							category="email"
+							content="이메일 주소"
+							required
+							onChange={onValidateEmailFormat}
+							error={isErrorEmail}
+						/>
 					</InputBox>
 					<InputBox>
-						{isErrorPwd ? (
-							<Input
-								category="password"
-								content="비밀번호"
-								required
-								onChange={onValidatePwdFormat}
-								error
-							/>
-						) : (
-							<Input
-								category="password"
-								content="비밀번호"
-								required
-								onChange={onValidatePwdFormat}
-							/>
-						)}
+						<Input
+							category="password"
+							content="비밀번호"
+							required
+							onChange={onValidatePwdFormat}
+							error={isErrorPwd}
+						/>
 					</InputBox>
 					<InputBox>
 						<Input
@@ -129,19 +116,20 @@ const JoinForm: FunctionComponent = () => {
 						/>
 					</InputBox>
 					<ButtonArea>
-						{email.length === 0 ||
-						password.length === 0 ||
-						size.length === 0 ||
-						isErrorEmail ||
-						isErrorPwd ? (
-							<Button category="primary" fullWidth disabled>
-								가입하기
-							</Button>
-						) : (
-							<Button category="primary" fullWidth onClick={onHandleJoin}>
-								가입하기
-							</Button>
-						)}
+						<Button
+							category="primary"
+							fullWidth
+							disabled={
+								email.length === 0 ||
+								password.length === 0 ||
+								size.length === 0 ||
+								isErrorEmail ||
+								isErrorPwd
+							}
+							onClick={onHandleJoin}
+						>
+							가입하기
+						</Button>
 					</ButtonArea>
 				</JoinArea>
 			</JoinContents>
@@ -149,7 +137,7 @@ const JoinForm: FunctionComponent = () => {
 				category="wish"
 				onClose={() => setIsOpen(false)}
 				show={isOpen}
-				title="관심 상품 추가"
+				title="스니커즈 사이즈 선택"
 			>
 				<ProductSizeSelectGrid
 					activeSizeOption={size}

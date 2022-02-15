@@ -38,6 +38,10 @@ const Input: FunctionComponent<InputProps> = (props) => {
 		required = false,
 	} = props;
 
+	/** For Code Review
+	 * 아래의 StyledInput에게 cateogory를 부여하여 재사용성을 늘렸습니다.
+	 * error의 여부에 따라 색을 다르게 조정하여 사용자에게 오류가 있음을 알려줍니다.
+	 */
 	return (
 		<>
 			<StyledInputTitle error={error} required={required}>

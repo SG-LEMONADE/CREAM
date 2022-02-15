@@ -21,6 +21,11 @@ const MyTradeBuying: FunctionComponent = () => {
 		fetcher,
 	);
 
+	/** For Code Review
+	 * 찜 제거를 위해 post 요청 수행.
+	 * 요청을 마치고 성공했다면 mutate를 통해 갱신된 정보를 다시 불러 찜 목록을 업데이트 해줍니다.
+	 * 삭제를 누른 찜 상품이 제거된 것을 본 유저는 정상적으로 삭제되었음을 확인합니다.
+	 */
 	const onDeleteWish = useCallback(async (id: number, size: string) => {
 		try {
 			const res = await axios.post(
@@ -38,6 +43,9 @@ const MyTradeBuying: FunctionComponent = () => {
 					`Something wrong when posting. error code ${res.status}}`,
 				);
 			} else {
+				/** For Code Review
+				 * 아래 mutate를 통해 갱신합니다.
+				 */
 				mutate();
 				Swal.fire({
 					position: "top",
