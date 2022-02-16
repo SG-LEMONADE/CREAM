@@ -19,12 +19,9 @@ const color = {
 const TradeTab: FunctionComponent<TradeTabProps> = (props) => {
 	const { category, waiting, in_progress, finished, filter, onClick } = props;
 
-	const onHandleApplyFilter = useCallback(
-		(filter: string) => {
-			onClick(filter);
-		},
-		[filter],
-	);
+	const onHandleApplyFilter = (filter: string) => {
+		onClick(filter);
+	};
 
 	return (
 		<TradeTabWrapper>

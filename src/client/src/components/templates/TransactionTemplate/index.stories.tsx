@@ -15,7 +15,7 @@ const Template: ComponentStory<typeof TransactionTemplate> = (args) => (
 export const Buy = Template.bind({});
 Buy.args = {
 	category: "buy",
-	auction: true,
+	auction: false,
 	imgSrc:
 		"https://kream-phinf.pstatic.net/MjAyMjAxMTFfMTgz/MDAxNjQxODk0OTEwNDkz.yjpQl2LYd3NjYlowBnIAwCgqsvRkjiyRMIOUHqKas7Ug.nBYnJxoNrMke_rg09-HX3X_LB3Tp3o_53lALlvFBSmAg.PNG/a_4d5c1b5f5165488bbb39597002611df3.png?type=m",
 	backgroundColor: "rgb(235, 240, 245)",
@@ -59,6 +59,7 @@ Buy.args = {
 		"290": 120000,
 		"모든 사이즈": null,
 	},
+	instantPrice: 120000,
 };
 
 export const BuyOnlyAuction = Template.bind({});
@@ -108,12 +109,13 @@ BuyOnlyAuction.args = {
 		"290": 120000,
 		"모든 사이즈": null,
 	},
+	instantPrice: null,
 };
 
 export const Sell = Template.bind({});
 Sell.args = {
 	category: "sell",
-	auction: true,
+	auction: false,
 	imgSrc:
 		"https://kream-phinf.pstatic.net/MjAyMjAxMTFfMTgz/MDAxNjQxODk0OTEwNDkz.yjpQl2LYd3NjYlowBnIAwCgqsvRkjiyRMIOUHqKas7Ug.nBYnJxoNrMke_rg09-HX3X_LB3Tp3o_53lALlvFBSmAg.PNG/a_4d5c1b5f5165488bbb39597002611df3.png?type=m",
 	backgroundColor: "rgb(235, 240, 245)",
@@ -157,6 +159,7 @@ Sell.args = {
 		"290": 120000,
 		"모든 사이즈": null,
 	},
+	instantPrice: 100000,
 };
 
 export const SellAuction = Template.bind({});
@@ -206,4 +209,5 @@ SellAuction.args = {
 		"290": 120000,
 		"모든 사이즈": null,
 	},
+	instantPrice: null,
 };

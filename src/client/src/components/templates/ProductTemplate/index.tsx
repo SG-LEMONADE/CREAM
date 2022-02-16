@@ -26,7 +26,7 @@ import ProductThumbnail from "components/organisms/ProductThumbnail";
 import Floater from "components/organisms/Floater";
 import ProductSmallInfo from "components/molecules/ProductSmallInfo";
 import { ProductRes } from "types";
-import { validateUser } from "utils/user";
+import { validateUser } from "lib/user";
 
 import styled from "@emotion/styled";
 

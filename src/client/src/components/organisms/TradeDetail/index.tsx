@@ -35,9 +35,9 @@ const TradeDetail: FunctionComponent<TradeDetailProps> = (props) => {
 				<StyledText>만료일</StyledText>
 			</StyledBar>
 			{items.length > 0 ? (
-				items.map((item) => (
+				items.map((item, id) => (
 					<TradeHistoryItem
-						key={`${item.imageUrl[0]}/${item.validationDate}/${item.size}`}
+						key={`${item.imageUrl[0]}/${item.validationDate}/${item.size}/${id}`}
 						imgSrc={item.imageUrl[0]}
 						backgroundColor={item.backgroundColor}
 						productName={item.name}

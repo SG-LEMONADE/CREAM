@@ -1,5 +1,5 @@
 import axios from "axios";
-import { getToken } from "utils/token";
+import { getToken } from "lib/token";
 
 export const fetcher = async (url: string) => {
 	const res = await axios.get(url, {

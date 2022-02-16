@@ -17,11 +17,7 @@ const BannerImage: FunctionComponent<BannerProps> = (props) => {
 	const { links, bgColor, category, src, moreHeight } = props;
 	const router = useRouter();
 	return (
-		<StyledBannerWrapper
-			onClick={() => router.push(`/${links}`)}
-			category={category}
-			bgColor={bgColor}
-		>
+		<StyledBannerWrapper category={category} bgColor={bgColor}>
 			<StyledImage
 				width={category === "small" ? "400%" : "100%"}
 				height={moreHeight ? `60%` : `30%`}

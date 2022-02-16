@@ -1,6 +1,6 @@
 import axios from "axios";
 
-import { getToken } from "./token";
+import { getToken } from "../lib/token";
 
 export const onPatchUserInfo = async (id: number, data: any) => {
 	const token = getToken("accessToken");

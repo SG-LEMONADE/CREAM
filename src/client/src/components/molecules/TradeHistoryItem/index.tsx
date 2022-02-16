@@ -14,20 +14,13 @@ type TradeHistoryItemProps = {
 };
 
 const TradeHistoryItem: FunctionComponent<TradeHistoryItemProps> = (props) => {
-	const {
-		imgSrc,
-		backgroundColor,
-		productName,
-		size,
-		status,
-		wishedPrice,
-		expiredDate,
-	} = props;
+	const { imgSrc, backgroundColor, productName, size, status, expiredDate } =
+		props;
 
 	const StatusCode = {
 		WAITING: "입찰 중",
 		IN_PROGRESS: "진행 중",
-		FINISHED: "종료",
+		COMPLETED: "종료",
 	};
 
 	return (
@@ -44,11 +37,6 @@ const TradeHistoryItem: FunctionComponent<TradeHistoryItemProps> = (props) => {
 				{status && (
 					<StatusBlock>
 						<StautsText>{StatusCode[status]}</StautsText>
-					</StatusBlock>
-				)}
-				{wishedPrice && (
-					<StatusBlock>
-						<StautsText>{wishedPrice.toLocaleString()}원</StautsText>
 					</StatusBlock>
 				)}
 				{expiredDate && (
@@ -86,8 +74,7 @@ const HistoryStatusArea = styled.div`
 const StatusBlock = styled.div`
 	display: block;
 	margin-left: 25px;
-    // width: 134px;
-}
+	// width: 134px;
 `;
 
 const StautsText = styled.span`
