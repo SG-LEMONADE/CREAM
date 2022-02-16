@@ -73,6 +73,7 @@ class TradeRepositoryImpl :
         return jpaQueryFactory
             .select(
                 QTradeHistoryDTO(
+                    tradeEntity.id,
                     tradeEntity.product.originalName,
                     tradeEntity.size,
                     tradeEntity.product.imageUrls,

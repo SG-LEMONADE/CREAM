@@ -6,6 +6,7 @@ import com.querydsl.core.annotations.QueryProjection
 import java.time.LocalDateTime
 
 data class TradeHistoryDTO @QueryProjection constructor(
+    val id: Long,
     val name: String,
     val size: String,
     @JsonRawValue val imageUrl: String,
