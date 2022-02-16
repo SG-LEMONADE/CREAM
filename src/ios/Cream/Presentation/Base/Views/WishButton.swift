@@ -58,8 +58,14 @@ extension WishButton: ViewConfiguration {
 
 
 extension WishButton {
-    func configure(_ count: Int) {
-        self.upperImageView.image = UIImage(systemName: "bookmark")
-        self.wishCountLabel.text = "\(count)"
+    func configure(_ product: ProductDetail) {
+        self.wishCountLabel.text = "\(product.wishCount)"
+        if let wishList = product.wishList, wishList.isEmpty == false {
+            self.upperImageView.image = UIImage(systemName: "bookmark.fill")
+        } else {
+            self.upperImageView.image = UIImage(systemName: "bookmark")
+        }
+        
+        
     }
 }

@@ -99,7 +99,8 @@ struct APIEndpoints {
         // TODO: AccessToken이 있다면, header에 해당 값 넣기
         return Endpoint(path: "products/\(id)",
                         method: .get,
-                        headerParamaters: ["Content-Type":"application/json"])
+                        headerParamaters: ["Content-Type": "application/json",
+                                           "userId": "2"])
     }
     
     static func loadProducts(_ cursor: Int,
@@ -128,15 +129,6 @@ struct APIEndpoints {
                         queryParameters: queryParameters)
     }
     
-    static func addToWishList(id: Int, size: String) -> Endpoint<Void> {
-        let queryParameters: [String: Any] = ["id": id,
-                                              "size": size]
-        return Endpoint(path: "wish",
-                        method: .post,
-                        headerParamaters: ["Content-Type":"application/json"],
-                        queryParameters: queryParameters)
-    }
-    
     // MARK: - Filter API
     static func loadFilter() -> Endpoint<FilterResponseDTO> {
         return Endpoint(path: "filters",
@@ -151,7 +143,7 @@ struct APIEndpoints {
                                               "requestType": type.requestString,
                                               "tradeStatus": "ALL"]
         let headerParameters: [String: String] = ["Content-Type":"application/json",
-                                                  "userId": "1"]
+                                                  "userId": "2"]
         
         //        _ = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.accessToken)
         //            .map { "Bearer-\($0)" }
@@ -172,8 +164,8 @@ struct APIEndpoints {
                              validate: Int?) -> Endpoint<Void> {
         if let validateDay = validate {
             let bodyParameters: [String: Any] = ["price": price,
-                                                  "requestType": tradeType.requestString,
-                                                  "validationDay": validateDay]
+                                                 "requestType": tradeType.requestString,
+                                                 "validationDay": validateDay]
             
             let headerParameters: [String: String] = ["Content-Type": "application/json",
                                                       "userId": "2"]
@@ -185,6 +177,17 @@ struct APIEndpoints {
         return Endpoint(path: "trades/\(tradeType.rawValue)/select/\(productId)/\(size)",
                         method: .post,
                         headerParamaters: ["Content-Type":"application/json",
-                                           "userId": "3"])
+                                           "userId": "2"])
+    }
+    
+    // MARK: - Wish API
+    static func addToWishList(productId: Int,
+                              size: String) -> Endpoint<Void> {
+        let headerParameters: [String: String] = ["Content-Type": "application/json",
+                                                  "userId": "2"]
+        
+        return Endpoint(path: "wish/\(productId)/\(size)",
+                        method: .post,
+                        headerParamaters: headerParameters)
     }
 }

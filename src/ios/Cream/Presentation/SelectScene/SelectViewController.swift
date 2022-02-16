@@ -12,12 +12,15 @@ import UIKit
     @objc optional func updateListData(_ standard: String)
     @objc optional func didTapDeadline(_ deadline: Int)
     @objc optional func didTapSort(by sort: String)
+    @objc optional func didRemoveFromWishlist(_ size: String)
+    @objc optional func didAppendToWishList(_ size: String)
 }
 
 final class SelectViewController: DIViewController<SelectViewModelInterface> {
     private lazy var selectView = SelectView(frame: .zero,
                                              defaultHeight: viewModel.heightInfo)
     
+    var selectCompleteHandler: (() -> Void)?
     weak var delegate: SelectDelegate?
     
     // MARK: View Life Cycle
@@ -37,6 +40,10 @@ final class SelectViewController: DIViewController<SelectViewModelInterface> {
         super.viewDidAppear(animated)
         animateShowDimmedView()
         animatePresentContainer()
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        selectCompleteHandler?()
     }
     
     private func setupCollectionView() {
@@ -141,8 +148,13 @@ extension SelectViewController: UICollectionViewDataSource {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: WishCell.reuseIdentifier, for: indexPath) as? WishCell
             else { return UICollectionViewCell() }
             
-            if case let .wish(size) = value {
-                cell.configure(size: size)
+            if case let .wish(size, isSelected) = value {
+                cell.configure(size: size, isSelected: isSelected)
+                if isSelected {
+                    collectionView.selectItem(at: indexPath, animated: false, scrollPosition: .centeredVertically)
+                } else {
+                    collectionView.deselectItem(at: indexPath, animated: false)
+                }
             }
             return cell
             
@@ -194,7 +206,9 @@ extension SelectViewController: UICollectionViewDelegate {
         let value = viewModel.items[indexPath.item]
         switch viewModel.type {
         case .wish:
-            break
+            if case let .wish(size, _) = value {
+                delegate?.didAppendToWishList?(size)
+            }
         case .size:
             break
         case .sizePrice:
@@ -209,6 +223,18 @@ extension SelectViewController: UICollectionViewDelegate {
                 delegate?.didTapDeadline?(date)
             }
             dismissView()
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+        let value = viewModel.items[indexPath.item]
+        switch viewModel.type {
+        case .wish:
+            if case let .wish(size, _) = value {
+                delegate?.didAppendToWishList?(size)
+            }
+        default:
+            break
         }
     }
 }

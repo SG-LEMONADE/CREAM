@@ -62,7 +62,7 @@ class ProductViewController: DIViewController<ProductViewModelInterface> {
             // TODO: button Info Setting
             self?.productView.tradeContainerView.sellButton.setPrice(product.highestBid)
             self?.productView.tradeContainerView.buyButton.setPrice(product.lowestAsk)
-            self?.productView.tradeContainerView.wishButton.configure(product.wishCount)
+            self?.productView.tradeContainerView.wishButton.configure(product)
         }
     }
 }
@@ -77,7 +77,30 @@ extension ProductViewController {
     
     @objc
     func didTapWishButton() {
-        print(#function)
+        var items: [SelectionType] = []
+        
+        let item = viewModel.item.value
+        if let wishList = item.wishList {
+            item.sizes.forEach {
+                if wishList.contains($0) {
+                    items.append(SelectionType.wish(size: $0, isSelected: true))
+                } else {
+                    items.append(SelectionType.wish(size: $0, isSelected: false))
+                }
+            }
+        } else {
+            items = item.sizes.map{ SelectionType.wish(size: $0, isSelected: false) }
+        }
+    
+        let vm = SelectViewModel(type: .wish(), items: items)
+        let vc = SelectViewController(vm)
+        vc.selectCompleteHandler = { [weak self] in
+            self?.viewModel.viewDidLoad()
+        }
+        vc.delegate = self
+        
+        vc.modalPresentationStyle = .overCurrentContext
+        present(vc, animated: false, completion: nil)
     }
     
     @objc
@@ -259,5 +282,15 @@ extension ProductViewController: ItemInfoCellDelegate {
         let sizeListViewController = SizeListViewController(SizeListViewModel(viewModel.item.value.sizes))
         sizeListViewController.modalPresentationStyle = .overCurrentContext
         self.present(sizeListViewController, animated: false)
+    }
+}
+
+extension ProductViewController: SelectDelegate {
+    func didRemoveFromWishlist(_ size: String) {
+        viewModel.removeFromWishList(size: size)
+    }
+    
+    func didAppendToWishList(_ size: String) {
+        viewModel.addToWishList(size: size)
     }
 }
