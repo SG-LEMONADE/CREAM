@@ -133,6 +133,12 @@
 		7BB01121278BD66C005E5C9E /* UIView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BB01120278BD66C005E5C9E /* UIView+.swift */; };
 		7BDA400D278978500093E75F /* BetterSegmentedControl in Frameworks */ = {isa = PBXBuildFile; productRef = 7BDA400C278978500093E75F /* BetterSegmentedControl */; };
 		7BDA4019278A9BF70093E75F /* BSImagePicker in Frameworks */ = {isa = PBXBuildFile; productRef = 7BDA4018278A9BF70093E75F /* BSImagePicker */; };
+		7BF4CE9D27BD2006001AF601 /* SelectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BF4CE9C27BD2006001AF601 /* SelectViewController.swift */; };
+		7BF4CE9F27BD200E001AF601 /* SelectViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BF4CE9E27BD200E001AF601 /* SelectViewModel.swift */; };
+		7BF4CEA127BD2016001AF601 /* SelectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BF4CEA027BD2016001AF601 /* SelectView.swift */; };
+		7BF4CEA427BD2B7E001AF601 /* WishCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BF4CEA327BD2B7E001AF601 /* WishCell.swift */; };
+		7BF4CEA627BD2DDD001AF601 /* SortCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BF4CEA527BD2DDD001AF601 /* SortCell.swift */; };
+		7BF4CEA827BD524C001AF601 /* DeadlineCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BF4CEA727BD524C001AF601 /* DeadlineCell.swift */; };
 		7BF82E0227A2CD18007E0A79 /* JoinRequestDTO+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BF82E0127A2CD17007E0A79 /* JoinRequestDTO+Mapping.swift */; };
 		7BF82E0427A2CD2B007E0A79 /* JoinResponseDTO+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BF82E0327A2CD2B007E0A79 /* JoinResponseDTO+Mapping.swift */; };
 		7BF82E0627A38558007E0A79 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BF82E0527A38558007E0A79 /* User.swift */; };
@@ -283,6 +289,12 @@
 		7BB01114278BC6D1005E5C9E /* BindingTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BindingTextField.swift; sourceTree = "<group>"; };
 		7BB01116278BCA54005E5C9E /* Observable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Observable.swift; sourceTree = "<group>"; };
 		7BB01120278BD66C005E5C9E /* UIView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+.swift"; sourceTree = "<group>"; };
+		7BF4CE9C27BD2006001AF601 /* SelectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectViewController.swift; sourceTree = "<group>"; };
+		7BF4CE9E27BD200E001AF601 /* SelectViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectViewModel.swift; sourceTree = "<group>"; };
+		7BF4CEA027BD2016001AF601 /* SelectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectView.swift; sourceTree = "<group>"; };
+		7BF4CEA327BD2B7E001AF601 /* WishCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishCell.swift; sourceTree = "<group>"; };
+		7BF4CEA527BD2DDD001AF601 /* SortCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortCell.swift; sourceTree = "<group>"; };
+		7BF4CEA727BD524C001AF601 /* DeadlineCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeadlineCell.swift; sourceTree = "<group>"; };
 		7BF82E0127A2CD17007E0A79 /* JoinRequestDTO+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "JoinRequestDTO+Mapping.swift"; sourceTree = "<group>"; };
 		7BF82E0327A2CD2B007E0A79 /* JoinResponseDTO+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "JoinResponseDTO+Mapping.swift"; sourceTree = "<group>"; };
 		7BF82E0527A38558007E0A79 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
@@ -737,6 +749,7 @@
 		7BB0111C278BCEE9005E5C9E /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
+				7BF4CE9B27BD1FF0001AF601 /* SelectScene */,
 				7BB0111B278BCED4005E5C9E /* Base */,
 				7B35667E2791B29500C45A68 /* HomeScene */,
 				7B35667D2791B28D00C45A68 /* ProductListScene */,
@@ -770,6 +783,27 @@
 				7B17625327BBF4710082B79B /* UISegmentedControl+.swift */,
 			);
 			path = Extension;
+			sourceTree = "<group>";
+		};
+		7BF4CE9B27BD1FF0001AF601 /* SelectScene */ = {
+			isa = PBXGroup;
+			children = (
+				7BF4CEA227BD2B73001AF601 /* Views */,
+				7BF4CE9C27BD2006001AF601 /* SelectViewController.swift */,
+				7BF4CE9E27BD200E001AF601 /* SelectViewModel.swift */,
+				7BF4CEA027BD2016001AF601 /* SelectView.swift */,
+			);
+			path = SelectScene;
+			sourceTree = "<group>";
+		};
+		7BF4CEA227BD2B73001AF601 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				7BF4CEA327BD2B7E001AF601 /* WishCell.swift */,
+				7BF4CEA527BD2DDD001AF601 /* SortCell.swift */,
+				7BF4CEA727BD524C001AF601 /* DeadlineCell.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		7BF82E0727A38B57007E0A79 /* Interfaces */ = {
@@ -1007,6 +1041,7 @@
 				7B3566872792420300C45A68 /* MyPageViewController.swift in Sources */,
 				7B5EEE2427A58A9C00990E37 /* UserRepositoryInterface.swift in Sources */,
 				7B193CB5279D115500B934A3 /* TradeViewController.swift in Sources */,
+				7BF4CEA627BD2DDD001AF601 /* SortCell.swift in Sources */,
 				7B5EEE3B27A7713100990E37 /* ProductListView.swift in Sources */,
 				7B193C972797E49700B934A3 /* FilterImageCell.swift in Sources */,
 				7B5EEE7427B2062500990E37 /* ProductDetail.swift in Sources */,
@@ -1014,6 +1049,7 @@
 				7B5EEE9227B64D8500990E37 /* CompanyInfoCell.swift in Sources */,
 				7B8EAA9E27A2411700B07259 /* Endpoint.swift in Sources */,
 				7B5EEEA627B8174800990E37 /* Filter.swift in Sources */,
+				7BF4CE9D27BD2006001AF601 /* SelectViewController.swift in Sources */,
 				7B5EEE6327AD481900990E37 /* ProcessViewModel.swift in Sources */,
 				7B5EEE4927A83A6900990E37 /* ProductView+CompositionalLayout.swift in Sources */,
 				7B5EEE5D27ABDC9B00990E37 /* ProcessViewController.swift in Sources */,
@@ -1047,11 +1083,13 @@
 				7B54D708279045F400214664 /* TradeButton.swift in Sources */,
 				7B33E9D327BCD959000BC779 /* TradeRequestDTO+Mapping.swift in Sources */,
 				7B5EEE8127B4052500990E37 /* FilterViewModel.swift in Sources */,
+				7BF4CE9F27BD200E001AF601 /* SelectViewModel.swift in Sources */,
 				7B5EEE2227A58A4400990E37 /* UserUseCase.swift in Sources */,
 				7B5EEE8927B5620400990E37 /* MyPageView.swift in Sources */,
 				7BB0110B278AE227005E5C9E /* NavigateMenuBaseController.swift in Sources */,
 				7B193CAF279A67E900B934A3 /* PageControlFooterView.swift in Sources */,
 				7B8EAAA027A2412700B07259 /* NetworkService.swift in Sources */,
+				7BF4CEA827BD524C001AF601 /* DeadlineCell.swift in Sources */,
 				7B193CA32798F3B600B934A3 /* ReleaseInfoCell.swift in Sources */,
 				7B5EEE2B27A5AD8500990E37 /* ProductViewModel.swift in Sources */,
 				7B5EEE3527A6B0D300990E37 /* ProductRepository.swift in Sources */,
@@ -1065,6 +1103,7 @@
 				7B5EEEA027B7E48100990E37 /* SettingViewModel.swift in Sources */,
 				7B5EEE3927A770AA00990E37 /* ProductListViewController.swift in Sources */,
 				7B8EAA7F279FC38300B07259 /* DIViewController.swift in Sources */,
+				7BF4CEA427BD2B7E001AF601 /* WishCell.swift in Sources */,
 				7B5EEE7927B2D36E00990E37 /* SortViewController.swift in Sources */,
 				7B193CA52798F4CC00B934A3 /* DebugLog.swift in Sources */,
 				7B5EEEB427B9160700990E37 /* TradeUseCase.swift in Sources */,
@@ -1102,6 +1141,7 @@
 				7B17624F27BB45A20082B79B /* NotificationName+.swift in Sources */,
 				7B193CAD2799BDEF00B934A3 /* UIColor+.swift in Sources */,
 				7B5EEE6827B00F0300990E37 /* BaseItemView.swift in Sources */,
+				7BF4CEA127BD2016001AF601 /* SelectView.swift in Sources */,
 				7BF82E0227A2CD18007E0A79 /* JoinRequestDTO+Mapping.swift in Sources */,
 				7B5EEE9427B6B90D00990E37 /* WishItemHeaderView.swift in Sources */,
 				7BF82E1527A54944007E0A79 /* SizeListViewModel.swift in Sources */,

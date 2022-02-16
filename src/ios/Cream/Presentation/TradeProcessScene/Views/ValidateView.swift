@@ -17,7 +17,7 @@ final class ValidateView: UIView {
     
     lazy var dateValueLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 13)
+        label.font = UIFont.systemFont(ofSize: 14, weight: .bold)
         return label
     }()
     

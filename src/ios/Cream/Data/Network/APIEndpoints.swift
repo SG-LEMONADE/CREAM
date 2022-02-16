@@ -171,20 +171,20 @@ struct APIEndpoints {
                              price: Int,
                              validate: Int?) -> Endpoint<Void> {
         if let validateDay = validate {
-            let queryParameters: [String: Any] = ["price": price,
+            let bodyParameters: [String: Any] = ["price": price,
                                                   "requestType": tradeType.requestString,
                                                   "validationDay": validateDay]
             
-            let headerParameters: [String: String] = ["Content-Type":"application/json",
-                                                      "userId": "1"]
+            let headerParameters: [String: String] = ["Content-Type": "application/json",
+                                                      "userId": "2"]
             return Endpoint(path: "trades/products/\(productId)/\(size)",
                             method: .post,
                             headerParamaters: headerParameters,
-                            queryParameters: queryParameters)
+                            bodyParamaters: bodyParameters)
         }
         return Endpoint(path: "trades/\(tradeType.rawValue)/select/\(productId)/\(size)",
                         method: .post,
                         headerParamaters: ["Content-Type":"application/json",
-                                           "userId": "2"])
+                                           "userId": "3"])
     }
 }

@@ -235,6 +235,9 @@ extension ProductViewController: TradeDelegate {
                                   selectedProduct: selectedProduct)
         
         let vc = ProcessViewController(vm)
+        vc.callbackClosure = { [weak self] in
+            self?.viewModel.viewDidLoad()
+        }
         let navigationController = UINavigationController(rootViewController: vc)
         
         navigationController.modalPresentationStyle = .fullScreen

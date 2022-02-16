@@ -59,9 +59,6 @@ class MyPageViewController: DIViewController<MyPageViewModelInterface> {
     func bindViewModel() {
         viewModel.isFinished.bind { [weak self] _ in
             DispatchQueue.main.async { [weak self] in
-                print(self?.viewModel.userInfo)
-                print(self?.viewModel.askList)
-                print(self?.viewModel.bidList)
                 self?.myPageView.userTableView.reloadData()
             }
         }

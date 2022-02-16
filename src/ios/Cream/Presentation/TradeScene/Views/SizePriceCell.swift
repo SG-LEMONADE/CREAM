@@ -86,7 +86,7 @@ extension SizePriceCell: ViewConfiguration {
 }
 
 extension SizePriceCell {
-    func configure(size: String, price: Int?, type: TradeType) {
+    func configure(size: String, price: Int?, type: TradeType = .buy) {
         sizeLabel.text = size
         priceLabel.textColor = type.color
         if let price = price {
