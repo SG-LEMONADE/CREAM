@@ -9,7 +9,7 @@ import Foundation
 
 final class ProductRepository {
     private let dataTransferService: DataTransferService
-
+    
     init(dataTransferService: DataTransferService) {
         self.dataTransferService = dataTransferService
     }
@@ -75,7 +75,7 @@ extension ProductRepository: HomeListRepositoryInterface {
         let endpoint = APIEndpoints.loadHome()
         
         let task = RepositoryTask()
-                
+        
         task.networkTask = dataTransferService.request(with: endpoint, completion: { result in
             switch result {
             case .success(let response):
@@ -119,6 +119,30 @@ extension ProductRepository: TradeRepositoryInterface {
             case .success(let response):
                 let product = response.toDomain()
                 completion(.success(product))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        })
+        return task
+    }
+    
+    func requestTrade(tradeType: TradeType,
+                      productId: Int,
+                      size: String,
+                      price: Int,
+                      validate: Int?,
+                      completion: @escaping (Result<Void, Error>) -> Void) -> Cancellable {
+        let endpoint = APIEndpoints.requestTrade(tradeType: tradeType,
+                                                 productId: productId,
+                                                 size: size,
+                                                 price: price,
+                                                 validate: validate)
+        let task = RepositoryTask()
+        
+        task.networkTask = dataTransferService.request(with: endpoint, completion: { result in
+            switch result {
+            case .success(let response):
+                completion(.success(response))
             case .failure(let error):
                 completion(.failure(error))
             }

@@ -10,7 +10,7 @@ import SnapKit
 
 final class SizePriceButton: UIButton {
     
-    private lazy var sizeLabel: UILabel = {
+    private lazy var priceLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 14, weight: .bold)
         label.textAlignment = .center
@@ -18,11 +18,12 @@ final class SizePriceButton: UIButton {
         return label
     }()
     
-    private lazy var priceLabel: UILabel = {
+    private lazy var deliveryInfoLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 10)
         label.textAlignment = .center
         label.textColor = .white
+        label.text = "일반배송(5-7일소요)"
         return label
     }()
     
@@ -39,18 +40,18 @@ final class SizePriceButton: UIButton {
 
 extension SizePriceButton: ViewConfiguration {
     func buildHierarchy() {
-        addSubviews(sizeLabel,priceLabel)
+        addSubviews(priceLabel, deliveryInfoLabel)
     }
     
     func setupConstraints() {
-        sizeLabel.snp.makeConstraints {
+        priceLabel.snp.makeConstraints {
             $0.top.equalToSuperview().inset(10)
             $0.leading.trailing.equalToSuperview().inset(10)
-            $0.bottom.equalTo(priceLabel.snp.top)
+            $0.bottom.equalTo(deliveryInfoLabel.snp.top)
         }
-        priceLabel.snp.makeConstraints {
+        deliveryInfoLabel.snp.makeConstraints {
             $0.leading.trailing.bottom.equalToSuperview().inset(10)
-            $0.height.equalTo(sizeLabel.snp.height)
+            $0.height.equalTo(priceLabel.snp.height)
         }
     }
     
@@ -62,9 +63,11 @@ extension SizePriceButton: ViewConfiguration {
 }
 
 extension SizePriceButton {
-    func configure(size: String, priceText: String?) {
-        self.sizeLabel.text = size
-        self.priceLabel.text = priceText
-        self.backgroundColor = .black
+    func configure(price: Int?, type: TradeType) {
+        if let price = price {
+            priceLabel.text = price.priceFormat
+        } else {
+            priceLabel.text = type.description + "입찰"
+        }
     }
 }

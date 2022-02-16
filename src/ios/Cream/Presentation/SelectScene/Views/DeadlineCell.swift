@@ -1,15 +1,27 @@
 //
-//  SizeListCell.swift
+//  DeadlineCell.swift
 //  Cream
 //
-//  Created by wankikim-MN on 2022/01/13.
+//  Created by wankikim-MN on 2022/02/17.
 //
 
 import UIKit
 import SnapKit
 
-class SizeListCell: UICollectionViewCell {
-    static let reuseIdentifier = "\(SizeListCell.self)"
+class DeadlineCell: UICollectionViewCell {
+    static let reuseIdentifier = "\(DeadlineCell.self)"
+    
+    override var isSelected: Bool {
+        didSet {
+            if isSelected {
+                layer.borderColor = UIColor.black.cgColor
+                sizeLabel.font = UIFont.boldSystemFont(ofSize: 18)
+            } else {
+                layer.borderColor = UIColor.systemGray5.cgColor
+                sizeLabel.font = UIFont.systemFont(ofSize: 18)
+            }
+        }
+    }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -23,12 +35,13 @@ class SizeListCell: UICollectionViewCell {
     
     private lazy var sizeLabel: UILabel = {
         let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 18)
         label.textAlignment = .center
         return label
     }()
 }
 
-extension SizeListCell: ViewConfiguration {
+extension DeadlineCell: ViewConfiguration {
     func buildHierarchy() {
         self.addSubviews(sizeLabel)
     }
@@ -46,8 +59,8 @@ extension SizeListCell: ViewConfiguration {
     }
 }
 
-extension SizeListCell {
-    func configure(size: String) {
-        self.sizeLabel.text = size
+extension DeadlineCell {
+    func configure(date: Int) {
+        self.sizeLabel.text = "\(date)일"
     }
 }

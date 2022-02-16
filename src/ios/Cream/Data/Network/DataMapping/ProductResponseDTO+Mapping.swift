@@ -42,7 +42,8 @@ extension ProductResponseDTO {
             products.append($0.toDomain())
         }
         
-        return .init(imageUrls: product.imageUrls,
+        return .init(id: product.id,
+                     imageUrls: product.imageUrls,
                      brandName: product.brandName,
                      originalName: product.originalName,
                      translatedName: product.translatedName,

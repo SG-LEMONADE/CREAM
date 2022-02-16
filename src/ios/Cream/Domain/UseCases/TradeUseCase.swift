@@ -7,62 +7,42 @@
 
 import Foundation
 
-protocol MyPageUseCaseInterface {
-    func fetchUserInfo(completion: @escaping (Result<User, UserError>) -> Void)
-    func fetchTradeInfo(tradeType: TradeType, completion: @escaping (Result<TradeList, UserError>) -> Void)
+// MARK: TradeUseCaseInterface
+protocol TradeUseCaseInterface {
+    func requestTrade(tradeType: TradeType,
+                      productId: Int,
+                      size: String,
+                      price: Int,
+                      validate: Int?,
+                      completion: @escaping (Result<Void, Error>) -> Void)
 }
 
-final class MyPageUseCase: MyPageUseCaseInterface {
-    private let userRepository: UserRepositoryInterface
-    private let tradeRepository: TradeRepositoryInterface
+// MARK: - TradeUseCase
+final class TradeUseCase {
+    private let repository: TradeRepositoryInterface
     
-    init(userRepository: UserRepositoryInterface,
-         tradeRepository: TradeRepositoryInterface) {
-        self.userRepository = userRepository
-        self.tradeRepository = tradeRepository
+    init(_ repository: TradeRepositoryInterface) {
+        self.repository = repository
     }
-    
-    func fetchUserInfo(completion: @escaping (Result<User, UserError>) -> Void) {
-        _ = userRepository.fetchUserInfo { result in
+}
+
+extension TradeUseCase: TradeUseCaseInterface {
+    func requestTrade(tradeType: TradeType,
+                      productId: Int,
+                      size: String,
+                      price: Int,
+                      validate: Int?,
+                      completion: @escaping (Result<Void, Error>) -> Void) {
+        _ = repository.requestTrade(tradeType: tradeType,
+                                productId: productId,
+                                size: size,
+                                price: price,
+                                validate: validate) { result in
             switch result {
-            case .success(let user):
-                completion(.success(user))
+            case .success(let data):
+                completion(.success(data))
             case .failure(let error):
-                guard let decodedError = error as? DataTransferError,
-                      let errorMessage = decodedError.errorMessage
-                else { return }
-                
-                switch errorMessage.code {
-                case ErrorList.INVALID_INPUT_VALUE:
-                    completion(.failure(.authInvalid))
-                case ErrorList.INTERNAL_SERVER_ERROR:
-                    completion(.failure(.networkUnconnected))
-                default:
-                    completion(.failure(.unknownError(error)))
-                }
-            }
-        }
-        
-    }
-    
-    func fetchTradeInfo(tradeType: TradeType, completion: @escaping (Result<TradeList, UserError>) -> Void) {
-        _ = tradeRepository.fetchTradeInfo(with: tradeType) { result in
-            switch result {
-            case .success(let user):
-                completion(.success(user))
-            case .failure(let error):
-                guard let decodedError = error as? DataTransferError,
-                      let errorMessage = decodedError.errorMessage
-                else { return }
-                
-                switch errorMessage.code {
-                case ErrorList.INVALID_INPUT_VALUE:
-                    completion(.failure(.authInvalid))
-                case ErrorList.INTERNAL_SERVER_ERROR:
-                    completion(.failure(.networkUnconnected))
-                default:
-                    completion(.failure(.unknownError(error)))
-                }
+                completion(.failure(error))
             }
         }
     }

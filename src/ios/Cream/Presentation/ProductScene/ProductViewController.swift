@@ -37,10 +37,23 @@ class ProductViewController: DIViewController<ProductViewModelInterface> {
         viewModel.viewDidLoad()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        addBorder()
+    }
+    
     func configureDelegate() {
         productView.ItemInfoListView.delegate = self
         productView.ItemInfoListView.dataSource = self
         productView.delegate = self
+    }
+    
+    private func addBorder(thickness: CGFloat = 0.5, color: UIColor = .systemGray3) {
+        let topBorder = CALayer()
+        topBorder.frame = CGRect(x: 0.0, y: 0.0,
+                                 width: productView.tradeContainerView.frame.size.width,
+                                 height: thickness)
+        topBorder.backgroundColor = color.cgColor
+        productView.tradeContainerView.layer.addSublayer(topBorder)
     }
     
     func bindViewModel() {
@@ -54,29 +67,12 @@ class ProductViewController: DIViewController<ProductViewModelInterface> {
     }
 }
 
-extension ProductViewController: TradeDelegate {
-    func moveFocusToProcessScene() {
-        let processViewController = ProcessViewController(ProcessViewModel())
-        let navigationController = UINavigationController(rootViewController: processViewController)
-        navigationController.modalPresentationStyle = .fullScreen
-        self.present(navigationController, animated: true, completion: nil)
-    }
-}
-
-extension ProductViewController: BannerViewDelegate {
-    func didReceivePageNumber(_ page: Int) {
-        if page != self.item {
-            self.item = page
-        }
-    }
-}
-
 // MARK: User Event
 extension ProductViewController {
     func configureUserEvent() {
-        self.productView.tradeContainerView.wishButton.addTarget(self, action: #selector(didTapWishButton), for: .touchUpInside)
-        self.productView.tradeContainerView.buyButton.addTarget(self, action: #selector(didTapBuyButton), for: .touchUpInside)
-        self.productView.tradeContainerView.sellButton.addTarget(self, action: #selector(didTapSellButton), for: .touchUpInside)
+        productView.tradeContainerView.wishButton.addTarget(self, action: #selector(didTapWishButton), for: .touchUpInside)
+        productView.tradeContainerView.buyButton.addTarget(self, action: #selector(didTapBuyButton), for: .touchUpInside)
+        productView.tradeContainerView.sellButton.addTarget(self, action: #selector(didTapSellButton), for: .touchUpInside)
     }
     
     @objc
@@ -86,25 +82,29 @@ extension ProductViewController {
     
     @objc
     func didTapBuyButton() {
-        let tradeViewController = TradeViewController(TradeViewModel(tradeType: .buy,
-                                                                            viewModel.item.value))
-        let navigationController = UINavigationController(rootViewController: tradeViewController)
+        let tradeViewModel = TradeViewModel(tradeType: .buy,
+                                            viewModel.item.value)
+        let tradeViewController = TradeViewController(tradeViewModel)
         tradeViewController.delegate = self
-        self.present(navigationController, animated: true)
+        let navigationController = UINavigationController(rootViewController: tradeViewController)
+        
+        present(navigationController, animated: true)
     }
     
     @objc
     func didTapSellButton() {
-        let tradeViewController = TradeViewController(TradeViewModel(tradeType: .sell,
-                                                                            viewModel.item.value))
+        let tradeViewModel = TradeViewModel(tradeType: .sell,
+                                            viewModel.item.value)
+        let tradeViewController = TradeViewController(tradeViewModel)
+        tradeViewController.delegate = self
         let navigationController = UINavigationController(rootViewController: tradeViewController)
-        self.present(navigationController, animated: true)
+        
+        present(navigationController, animated: true)
     }
 }
 
-extension ProductViewController: UICollectionViewDelegate {
-    
-}
+// MARK: UICollectionViewDelegate
+extension ProductViewController: UICollectionViewDelegate { }
 
 extension ProductViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
@@ -162,8 +162,11 @@ extension ProductViewController: UICollectionViewDataSource, UICollectionViewDel
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ShopBannerCell.reuseIdentifier,
                                                                 for: indexPath) as? ShopBannerCell
             else { return UICollectionViewCell() }
-            print(viewModel.item.value.backgroundColor)
-            cell.backgroundColor = UIColor(rgb: viewModel.item.value.backgroundColor.hexToInt!)
+            
+            viewModel.item.value.backgroundColor.hexToInt.flatMap {
+                cell.backgroundColor = UIColor(rgb: $0)
+            }
+            
             cell.configure(viewModel.item.value.imageUrls[indexPath.item])
             
             return cell
@@ -212,6 +215,40 @@ extension ProductViewController: UICollectionViewDataSource, UICollectionViewDel
             
             cell.configure(viewModel.item.value.relatedProducts[indexPath.item], isRelatedItem: true)
             return cell
+        }
+    }
+}
+
+extension ProductViewController: TradeDelegate {
+    func moveFocusToProcessScene(selectedProduct: TradeRequest, tradeType: TradeType) {
+        guard let baseURL = URL(string: "http://1.231.16.189:8081")
+        else { fatalError() }
+        
+        let config: NetworkConfigurable = ApiDataNetworkConfig(baseURL: baseURL)
+        let networkService: NetworkService = DefaultNetworkService(config: config)
+        let dataTransferService: DataTransferService = DefaultDataTransferService(with: networkService)
+        let repository = ProductRepository(dataTransferService: dataTransferService)
+        let usecase = TradeUseCase(repository)
+        let vm = ProcessViewModel(usecase,
+                                  tradeType: tradeType,
+                                  product: viewModel.item.value,
+                                  selectedProduct: selectedProduct)
+        
+        let vc = ProcessViewController(vm)
+        vc.callbackClosure = { [weak self] in
+            self?.viewModel.viewDidLoad()
+        }
+        let navigationController = UINavigationController(rootViewController: vc)
+        
+        navigationController.modalPresentationStyle = .fullScreen
+        self.present(navigationController, animated: true, completion: nil)
+    }
+}
+
+extension ProductViewController: BannerViewDelegate {
+    func didReceivePageNumber(_ page: Int) {
+        if page != self.item {
+            self.item = page
         }
     }
 }

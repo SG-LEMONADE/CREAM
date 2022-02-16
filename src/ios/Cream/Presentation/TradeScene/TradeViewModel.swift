@@ -8,17 +8,16 @@
 import Foundation
 
 protocol TradeViewModelInput {
-    var tradeType: TradeType { get }
-    var product: ProductDetail { get }
     func didTapSizeCell(indexPath: IndexPath)
     func didTapTradeButton()
 }
 protocol TradeViewModelOutput {
-    var selectSize: Observable<(size: String, price: String?)> { get set }
+    var selectSize: Observable<TradeRequest> { get set }
     var sizes: Observable<[String]> { get set }
     var numberOfCells: Int { get }
     var numberOfColumns: Double { get }
-    func willTransferToPayScene()
+    var tradeType: TradeType { get }
+    var product: ProductDetail { get }
 }
 
 protocol TradeViewModelInterface: TradeViewModelInput, TradeViewModelOutput { }
@@ -27,8 +26,7 @@ final class TradeViewModel: TradeViewModelInterface {
     
     var tradeType: TradeType
     var product: ProductDetail
-    
-    var selectSize: Observable<(size: String, price: String?)> = Observable((size: "", price: nil))
+    var selectSize: Observable<TradeRequest> = Observable(.init(size: "", price: nil))
     var sizes: Observable<[String]> = Observable([])
     
     init(tradeType: TradeType, _ product: ProductDetail) {
@@ -36,18 +34,18 @@ final class TradeViewModel: TradeViewModelInterface {
         self.product = product
     }
     
-    func willTransferToPayScene() {
-        
-    }
-    
     func didTapSizeCell(indexPath: IndexPath) {
+        
         let size = product.sizes[indexPath.item]
-        let value = product.askPrices[size]
+        let value = tradeType == .buy ? product.askPrices[size] : product.bidPrices[size]
+        
         if let optionalPrice = value,
-            let price = optionalPrice {
-            selectSize.value = (size: size, price: price.priceFormat)
+           let price = optionalPrice {
+            selectSize.value = .init(size: size,
+                                     price: price)
         } else {
-            selectSize.value = (size: size, price: String(describing: tradeType.description + "입찰"))
+            selectSize.value = .init(size: size,
+                                     price: nil)
         }
     }
     
