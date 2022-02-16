@@ -1,9 +1,5 @@
-import React, {
-	FunctionComponent,
-	useCallback,
-	useEffect,
-	useState,
-} from "react";
+import React, { FunctionComponent, useEffect, useState } from "react";
+import { useRouter } from "next/router";
 
 import styled from "@emotion/styled";
 import Image from "next/image";
@@ -24,6 +20,8 @@ const titles = {
 };
 
 const CompleteTemplate: FunctionComponent<CompleteTemplateProps> = (props) => {
+	const router = useRouter();
+
 	const {
 		category,
 		auction,
@@ -73,8 +71,18 @@ const CompleteTemplate: FunctionComponent<CompleteTemplateProps> = (props) => {
 								)}
 							</CompleteTitleArea>
 							<CompleteButtonWrapper>
-								<Button category="primary">내역 상세 보기</Button>
-								<Button category="primary">SHOP 가기</Button>
+								<Button
+									category="primary"
+									onClick={() => router.push(`/my/${category}ing`)}
+								>
+									내역 상세 보기
+								</Button>
+								<Button
+									category="primary"
+									onClick={() => router.push("/search")}
+								>
+									SHOP 가기
+								</Button>
 							</CompleteButtonWrapper>
 							<CompleteExtraP>
 								‘구매내역 &gt; 입찰 중’ 상태일 때는 입찰 지우기가 가능합니다.
@@ -86,7 +94,9 @@ const CompleteTemplate: FunctionComponent<CompleteTemplateProps> = (props) => {
 									<PriceTitle>총 결제금액</PriceTitle>
 									<FinalPrice category={category}>
 										<StyledSpan italic>
-											{category === "buy" ? `${price + 5000}` : `${price}`}
+											{category === "buy"
+												? `${(price + 5000).toLocaleString()}`
+												: `${price.toLocaleString()}`}
 										</StyledSpan>
 										<StyledSpan italic={false}>원</StyledSpan>
 									</FinalPrice>

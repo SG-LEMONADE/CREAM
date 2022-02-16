@@ -143,8 +143,8 @@ const TransactionTemplate: FunctionComponent<TransactionTemplateProps> = (
 										{userInputPrice === 0
 											? `0`
 											: category === "sell"
-											? `${userInputPrice}`
-											: `${userInputPrice + 5000}`}
+											? `${userInputPrice.toLocaleString()}`
+											: `${(userInputPrice + 5000).toLocaleString()}`}
 									</StyledSpan>
 									<StyledSpanNonItalic>원</StyledSpanNonItalic>
 								</StyledDd>
