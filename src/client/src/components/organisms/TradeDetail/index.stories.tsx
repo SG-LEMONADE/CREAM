@@ -23,8 +23,9 @@ Buy.args = {
 	items: [
 		{
 			backgroundColor: "#ebebeb",
-			imageUrl:
+			imageUrl: [
 				"https://kream-phinf.pstatic.net/MjAyMTA0MTJfNjgg/MDAxNjE4MjA4ODE0MjI3.TrFMsOubBPIX-fyqngJoHiN1h78jPSgISjKBBnRlCakg.QqX73fbXeQ_s69-Ydb4ccVBbQl9OKfiXQL5KUCAH7lcg.JPEG/p_e8c137c6c4de415781c61512464dc384.jpg?type=m",
+			],
 			name: "Nike NRG Solo Swoosh Fleece Hoodie Daolo Swoosh Fleece Hoodie Daolo Swoosh Fleece Hoodie Dark Grey Heather - Asia",
 			size: "L",
 			tradeStatus: "WAITING",
@@ -33,8 +34,9 @@ Buy.args = {
 		},
 		{
 			backgroundColor: "#ebebeb",
-			imageUrl:
+			imageUrl: [
 				"https://kream-phinf.pstatic.net/MjAyMTA0MTJfNjgg/MDAxNjE4MjA4ODE0MjI3.TrFMsOubBPIX-fyqngJoHiN1h78jPSgISjKBBnRlCakg.QqX73fbXeQ_s69-Ydb4ccVBbQl9OKfiXQL5KUCAH7lcg.JPEG/p_e8c137c6c4de415781c61512464dc384.jpg?type=m",
+			],
 			name: "Nike NRG Solo Swoosh Fleece Hoodie Dark Grey Heather - Asia",
 			size: "L",
 			tradeStatus: "WAITING",
@@ -43,8 +45,9 @@ Buy.args = {
 		},
 		{
 			backgroundColor: "#ebebeb",
-			imageUrl:
+			imageUrl: [
 				"https://kream-phinf.pstatic.net/MjAyMTA0MTJfNjgg/MDAxNjE4MjA4ODE0MjI3.TrFMsOubBPIX-fyqngJoHiN1h78jPSgISjKBBnRlCakg.QqX73fbXeQ_s69-Ydb4ccVBbQl9OKfiXQL5KUCAH7lcg.JPEG/p_e8c137c6c4de415781c61512464dc384.jpg?type=m",
+			],
 			name: "Nike NRG Solo Swoosh Fleece Hoodie Dark Grey Heather - Asia",
 			size: "L",
 			tradeStatus: "WAITING",
@@ -53,8 +56,9 @@ Buy.args = {
 		},
 		{
 			backgroundColor: "#ebebeb",
-			imageUrl:
+			imageUrl: [
 				"https://kream-phinf.pstatic.net/MjAyMTA0MTJfNjgg/MDAxNjE4MjA4ODE0MjI3.TrFMsOubBPIX-fyqngJoHiN1h78jPSgISjKBBnRlCakg.QqX73fbXeQ_s69-Ydb4ccVBbQl9OKfiXQL5KUCAH7lcg.JPEG/p_e8c137c6c4de415781c61512464dc384.jpg?type=m",
+			],
 			name: "Nike NRG Solo Swoosh Fleece Hoodie Dark Grey Heather - Asia",
 			size: "L",
 			tradeStatus: "WAITING",
@@ -74,8 +78,9 @@ Sell.args = {
 	items: [
 		{
 			backgroundColor: "#ebebeb",
-			imageUrl:
+			imageUrl: [
 				"https://kream-phinf.pstatic.net/MjAyMTA0MTJfNjgg/MDAxNjE4MjA4ODE0MjI3.TrFMsOubBPIX-fyqngJoHiN1h78jPSgISjKBBnRlCakg.QqX73fbXeQ_s69-Ydb4ccVBbQl9OKfiXQL5KUCAH7lcg.JPEG/p_e8c137c6c4de415781c61512464dc384.jpg?type=m",
+			],
 			name: "Nike NRG Solo Swoosh Fleece Hoodie Daolo Swoosh Fleece Hoodie Daolo Swoosh Fleece Hoodie Dark Grey Heather - Asia",
 			size: "L",
 			tradeStatus: "WAITING",
@@ -84,8 +89,9 @@ Sell.args = {
 		},
 		{
 			backgroundColor: "#ebebeb",
-			imageUrl:
+			imageUrl: [
 				"https://kream-phinf.pstatic.net/MjAyMTA0MTJfNjgg/MDAxNjE4MjA4ODE0MjI3.TrFMsOubBPIX-fyqngJoHiN1h78jPSgISjKBBnRlCakg.QqX73fbXeQ_s69-Ydb4ccVBbQl9OKfiXQL5KUCAH7lcg.JPEG/p_e8c137c6c4de415781c61512464dc384.jpg?type=m",
+			],
 			name: "Nike NRG Solo Swoosh Fleece Hoodie Dark Grey Heather - Asia",
 			size: "L",
 			tradeStatus: "WAITING",
@@ -94,8 +100,9 @@ Sell.args = {
 		},
 		{
 			backgroundColor: "#ebebeb",
-			imageUrl:
+			imageUrl: [
 				"https://kream-phinf.pstatic.net/MjAyMTA0MTJfNjgg/MDAxNjE4MjA4ODE0MjI3.TrFMsOubBPIX-fyqngJoHiN1h78jPSgISjKBBnRlCakg.QqX73fbXeQ_s69-Ydb4ccVBbQl9OKfiXQL5KUCAH7lcg.JPEG/p_e8c137c6c4de415781c61512464dc384.jpg?type=m",
+			],
 			name: "Nike NRG Solo Swoosh Fleece Hoodie Dark Grey Heather - Asia",
 			size: "L",
 			tradeStatus: "WAITING",
@@ -104,8 +111,9 @@ Sell.args = {
 		},
 		{
 			backgroundColor: "#ebebeb",
-			imageUrl:
+			imageUrl: [
 				"https://kream-phinf.pstatic.net/MjAyMTA0MTJfNjgg/MDAxNjE4MjA4ODE0MjI3.TrFMsOubBPIX-fyqngJoHiN1h78jPSgISjKBBnRlCakg.QqX73fbXeQ_s69-Ydb4ccVBbQl9OKfiXQL5KUCAH7lcg.JPEG/p_e8c137c6c4de415781c61512464dc384.jpg?type=m",
+			],
 			name: "Nike NRG Solo Swoosh Fleece Hoodie Dark Grey Heather - Asia",
 			size: "L",
 			tradeStatus: "WAITING",

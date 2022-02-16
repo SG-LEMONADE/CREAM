@@ -50,7 +50,7 @@ const SearchFilterBar: FunctionComponent<SearchFilterBarProps> = (props) => {
 	const [brandData, setBrandData] = useState<string[]>([]);
 	const [collectionData, setCollectionData] = useState<string[]>([]);
 
-	const { data, error } = useSWR(
+	const { data: filterDatas } = useSWR(
 		`${process.env.END_POINT_PRODUCT}/filters`,
 		fetcher,
 		{
@@ -67,21 +67,16 @@ const SearchFilterBar: FunctionComponent<SearchFilterBarProps> = (props) => {
 	}, []);
 
 	useEffect(() => {
-		if (data) {
+		if (filterDatas) {
 			let map = new Map();
-			data.brands.forEach((brand) => {
+			filterDatas.brands.forEach((brand) => {
 				map.set(brand.name, brand.id);
 			});
 			setBrandId(map);
-			setBrandData(data.brands.map((obj) => obj.name));
-			setCollectionData(data.collections.map((obj) => obj.name));
+			setBrandData(filterDatas.brands.map((obj) => obj.name));
+			setCollectionData(filterDatas.collections.map((obj) => obj.name));
 		}
-	}, [data]);
-
-	useEffect(() => {
-		console.log("--SearchFilterBar component--");
-		console.log(luxaryFilter, filteredCategory, filteredBrand, filteredGender);
-	}, [luxaryFilter, filteredCategory, filteredBrand, filteredGender]);
+	}, [filterDatas]);
 
 	return (
 		<SearchFilterBarWrapper>

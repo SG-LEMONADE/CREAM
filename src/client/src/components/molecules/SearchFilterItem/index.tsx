@@ -160,13 +160,13 @@ const MainTitle = styled.div<{ active: boolean }>`
 `;
 
 const SubTitle = styled.div`
-    margin-top: 4px;
-    overflow: hidden
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    font-size: 15px;
-    letter-spacing: -.15px;
-    color: rgba(34,34,34,0.5)
+	margin-top: 4px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	font-size: 15px;
+	letter-spacing: -0.15px;
+	color: rgba(34, 34, 34, 0.5);
 `;
 
 const SubTitleActive = styled.div`

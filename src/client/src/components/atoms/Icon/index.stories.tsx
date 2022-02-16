@@ -97,3 +97,9 @@ export const TurnOn = Template.bind({});
 TurnOn.args = {
 	name: "TurnOn",
 };
+
+export const Trash = Template.bind({});
+Trash.args = {
+	name: "Trash",
+	style: { width: "25px", height: "25px" },
+};

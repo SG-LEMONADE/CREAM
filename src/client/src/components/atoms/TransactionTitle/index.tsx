@@ -4,7 +4,7 @@ import styled from "@emotion/styled";
 import colors from "colors/color";
 
 type TransactionTitleProps = {
-	category: "buy" | "sell";
+	category: "buy" | "sell" | "ask" | "bid";
 };
 
 const titles = {
