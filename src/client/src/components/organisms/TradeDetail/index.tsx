@@ -37,13 +37,11 @@ const TradeDetail: FunctionComponent<TradeDetailProps> = (props) => {
 			{items.length > 0 ? (
 				items.map((item) => (
 					<TradeHistoryItem
-						key={`${item.imageUrl[0]}/${item.size}`}
+						key={`${item.imageUrl[0]}/${item.validationDate}/${item.size}`}
 						imgSrc={item.imageUrl[0]}
 						backgroundColor={item.backgroundColor}
 						productName={item.name}
 						size={item.size}
-						// FIX ME
-						// wishedPrice={item.}
 						expiredDate={item.validationDate}
 					/>
 				))

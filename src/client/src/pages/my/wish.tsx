@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useCallback } from "react";
+import React, { FunctionComponent, useCallback, useState } from "react";
 import useSWR from "swr";
 import axios from "axios";
 
@@ -13,12 +13,24 @@ import ProductWish, {
 } from "components/organisms/ProductWish";
 import { fetcher } from "lib/fetcher";
 import { GetProductWishRes } from "types";
+
 import Swal from "sweetalert2";
+import Pagination from "rc-pagination";
+import "rc-pagination/assets/index.css";
 
 const MyTradeBuying: FunctionComponent = () => {
+	const [cursor, setCursor] = useState<number>(0);
+
 	const { data: wishProducts, mutate } = useSWR<GetProductWishRes>(
-		`${process.env.END_POINT_PRODUCT}/products/wishes?cursor=0&perPage=10`,
+		`${process.env.END_POINT_PRODUCT}/products/wishes?cursor=${cursor}&perPage=10`,
 		fetcher,
+	);
+
+	const onHandleChange = useCallback(
+		(current: number, pageSize: number) => {
+			setCursor(current - 1);
+		},
+		[setCursor],
 	);
 
 	/** For Code Review
@@ -84,6 +96,15 @@ const MyTradeBuying: FunctionComponent = () => {
 							onDeleteWish={() => onDeleteWish(product.id, product.size)}
 						/>
 					))}
+				{wishProducts && (
+					<Pagination
+						defaultPageSize={10}
+						total={wishProducts.count}
+						current={cursor + 1}
+						onChange={onHandleChange}
+						style={{ textAlign: "center", marginTop: "40px" }}
+					/>
+				)}
 			</MyPageTemplate>
 		</NavTemplate>
 	);

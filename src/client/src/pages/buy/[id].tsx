@@ -71,7 +71,7 @@ const ProductBuy: FunctionComponent = () => {
 			headerMain={<HeaderMain />}
 			footer={<Footer />}
 		>
-			<TransactionTitle category="buy" />
+			<TransactionTitle category={auction ? `ask` : `buy`} />
 			{productInfo && (
 				<TransactionTemplate
 					category="buy"

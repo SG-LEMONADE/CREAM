@@ -1,5 +1,6 @@
 import React, {
 	FunctionComponent,
+	SetStateAction,
 	useCallback,
 	useEffect,
 	useState,
@@ -11,7 +12,7 @@ import Slider from "components/organisms/Slider";
 import BannerImage from "components/atoms/BannerImage";
 import TagItem from "components/atoms/TagItem";
 import SearchFilterBar from "components/organisms/SearchFilterBar";
-import Dropdown from "components/organisms/Dropdown";
+import Dropdown from "components/molecules/Dropdown";
 import { queryMaker } from "utils/query";
 
 import styled from "@emotion/styled";
@@ -19,6 +20,7 @@ import { css } from "@emotion/react";
 
 type ShopTemplateProps = {
 	isLoading?: boolean;
+	cb?: React.Dispatch<SetStateAction<boolean>>;
 	children: React.ReactNode;
 };
 
@@ -46,7 +48,7 @@ const ImageInfos = [
 ];
 
 const ShopTemplate: FunctionComponent<ShopTemplateProps> = (props) => {
-	const { children, isLoading = false } = props;
+	const { children, isLoading = false, cb } = props;
 
 	const router = useRouter();
 
@@ -79,12 +81,14 @@ const ShopTemplate: FunctionComponent<ShopTemplateProps> = (props) => {
 			filteredPrice,
 			sortOption,
 		);
-		Object.keys(query).length > 0 &&
+		if (Object.keys(query).length > 0) {
 			router &&
-			router.push({
-				pathname: "/search",
-				query: query,
-			});
+				router.push({
+					pathname: "/search",
+					query: query,
+				});
+			cb(false);
+		}
 	}, [
 		luxaryFilter,
 		filteredCategory,
@@ -327,9 +331,17 @@ const SearchLoading = styled.div`
 	align-items: center;
 `;
 
-const SearchEmptyConent = styled.div`
+export const SearchEmptyConent = styled.div`
 	position: relative;
 	padding: 120px 0 100px;
 	background-color: #fff;
 	text-align: center;
+`;
+
+export const StatusText = styled.p`
+	padding-left: max(10%, 40px);
+	padding-bottom: 5%;
+	font-size: 16px;
+	color: rgba(34, 34, 34, 0.9);
+	font-weight: 700;
 `;
