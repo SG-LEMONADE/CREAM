@@ -31,7 +31,7 @@ class JwtExceptionHandler: ErrorWebExceptionHandler {
                 errCode = ErrorResponse(ErrorCode.USER_TOKEN_EXPIRED)
             }
             MalformedJwtException::class.java, SignatureException::class.java, UnsupportedJwtException::class.java,
-            NumberFormatException::class.java -> {
+            NumberFormatException::class.java, LogoutTokenException::class.java, TokenInvalidException::class.java -> {
                 errCode = ErrorResponse(ErrorCode.USER_TOKEN_NOT_VALID)
             }
             IllegalArgumentException::class.java -> {

@@ -19,36 +19,35 @@ class UserController {
     fun join(
         @RequestBody @Valid registerUserDTO: RegisterUserDTO
     ): ResponseEntity<ResponseUserDTO> {
-        return ResponseEntity.ok(
-            userService.create(registerUserDTO)
-        )
+        return ResponseEntity.ok(userService.create(registerUserDTO))
     }
 
     @PostMapping("/login")
     fun login(
         @RequestBody userDTO: LoginDTO
     ): ResponseEntity<TokenDTO> {
-        return ResponseEntity.ok(
-            userService.getValidationToken(userDTO)
-        )
+        return ResponseEntity.ok(userService.getValidationToken(userDTO))
     }
 
     @PostMapping("/refresh")
     fun refresh(
         @RequestBody tokenDTO: RefreshTokenDTO
     ): ResponseEntity<TokenDTO> {
-        return ResponseEntity.ok(
-            userService.refreshToken(tokenDTO)
-        )
+        return ResponseEntity.ok(userService.refreshToken(tokenDTO))
     }
 
-    @PostMapping("/validate")
+    @GetMapping("/validate")
     fun validate(
-        @RequestHeader("Authorization") token: String
+        @RequestHeader("userId") userId: Long
     ): ResponseEntity<Unit> {
-        return ResponseEntity.ok(
-            null
-        )
+        return ResponseEntity.ok(null)
+    }
+
+    @GetMapping("/me")
+    fun me(
+        @RequestHeader("userId") userId: Long
+    ): ResponseEntity<ResponseUserDTO> {
+        return ResponseEntity.ok(userService.getMe(userId))
     }
 
     @GetMapping("/verify")
@@ -56,16 +55,7 @@ class UserController {
         @RequestParam("email", required = true) email: String,
         @RequestParam("key", required = true) hash: String
     ): ResponseEntity<Unit> {
-        return ResponseEntity.ok(
-            userService.verify(email, hash)
-        )
-    }
-
-    @GetMapping("/me")
-    fun me(
-        @RequestHeader("Authorization") token: String
-    ): ResponseEntity<ResponseUserDTO> {
-        return ResponseEntity.ok(userService.getMe(token))
+        return ResponseEntity.ok(userService.verify(email, hash))
     }
 
     @PostMapping("/logout")
@@ -78,7 +68,7 @@ class UserController {
     @PatchMapping("/{id}")
     fun update(
         @PathVariable id: Long,
-        @RequestBody updatedUser: UpdateUserDTO
+        @RequestBody @Valid updatedUser: UpdateUserDTO
     ): ResponseEntity<ResponseUserDTO> {
         return ResponseEntity.ok(userService.update(id, updatedUser))
     }

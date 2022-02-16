@@ -152,10 +152,9 @@ class UserService {
     }
 
     fun getMe(
-        token: String
+        userId: Long
     ): ResponseUserDTO {
         // 내 정보 반환
-        val userId = tokenProvider.validateAndGetUserId(token)
         return ResponseUserDTO(userRepository.getById(userId))
     }
 
@@ -165,6 +164,10 @@ class UserService {
         val userId = tokenProvider.validateAndGetUserId(token)
         // 로그아웃 시 refresh token 삭제
         redisTemplate.delete("refresh-$userId")
+
+        // block
+        val stringValueOperation = redisTemplate.opsForValue()
+        stringValueOperation.set(token.substring(7), "logout", 30, TimeUnit.MINUTES)
     }
 
     private fun getByCredentials(
