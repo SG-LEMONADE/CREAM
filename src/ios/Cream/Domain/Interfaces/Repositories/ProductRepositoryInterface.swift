@@ -17,5 +17,5 @@ protocol ProductRepositoryInterface {
     func requestProductById(_ id: Int,
                             completion: @escaping ((Result<ProductDetail, Error>) -> Void)) -> Cancellable
     
-    func addWishList(id: Int, size: String, completion: @escaping ((Result<Void, Error>) -> Void)) -> Cancellable
+    func addWishList(productId: Int, size: String, completion: @escaping (Result<Void, Error>) -> Void) -> Cancellable
 }

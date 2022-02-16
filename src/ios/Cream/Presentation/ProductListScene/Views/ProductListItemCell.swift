@@ -75,6 +75,12 @@ extension ProductListItemCell: ViewConfiguration {
 // MARK: - Cell Configure
 extension ProductListItemCell {
     func configure(_ viewModel: Product) {
+        if let wishList = viewModel.wishList,
+           wishList.isEmpty == false {
+            wishButton.setImage(UIImage(systemName: "bookmark.fill"), for: .selected)
+        } else {
+            wishButton.isSelected = false
+        }
         itemView.spinner.startAnimating()
         itemView.tradeLabel.text = viewModel.totalSaleText
         itemView.titleLabel.text = viewModel.brandName

@@ -40,6 +40,7 @@ class WishCell: UICollectionViewCell {
     private lazy var wishImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "bookmark")
+        imageView.contentMode = .scaleAspectFit
         return imageView
     }()
     
@@ -59,7 +60,7 @@ extension WishCell: ViewConfiguration {
     
     func setupConstraints() {
         containerView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
+            $0.edges.equalToSuperview().inset(5)
         }
     }
     
@@ -71,8 +72,9 @@ extension WishCell: ViewConfiguration {
 }
 
 extension WishCell {
-    func configure(size: String) {
+    func configure(size: String, isSelected: Bool) {
         self.sizeLabel.text = size
+        self.isSelected = isSelected
     }
 }
 

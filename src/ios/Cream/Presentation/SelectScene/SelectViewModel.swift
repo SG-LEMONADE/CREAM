@@ -18,7 +18,7 @@ enum Layout: Double {
 }
 
 enum SelectionType {
-    case wish(size: String = "")
+    case wish(size: String = "", isSelected: Bool = false)
     case size(size: String = "")
     case sizePrice(size: String = "", price: Int? = nil)
     case sort(sequence: String = "")

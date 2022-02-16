@@ -16,7 +16,8 @@ final class ProductRepository {
 }
 
 // MARK: - Product View Repository Interface
-extension ProductRepository: ProductRepositoryInterface {    
+extension ProductRepository: ProductRepositoryInterface {
+
     func requestProducts(page: Int,
                          searchWord: String?,
                          category: String?,
@@ -60,13 +61,22 @@ extension ProductRepository: ProductRepositoryInterface {
         return task
     }
     
-    func addWishList(id: Int, size: String, completion: @escaping ((Result<Void, Error>) -> Void)) -> Cancellable {
-        let endpoint = APIEndpoints.addToWishList(id: id, size: size)
-        
+    func addWishList(productId: Int, size: String, completion: @escaping (Result<Void, Error>) -> Void) -> Cancellable {
+        let endpoint = APIEndpoints.addToWishList(productId: productId, size: size)
+
         let task = RepositoryTask()
         
+        task.networkTask = dataTransferService.request(with: endpoint, completion: { result in
+            switch result {
+            case .success(let response):
+                completion(.success(response))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        })
         return task
     }
+
 }
 
 // MARK: - Home View Repository Interface
@@ -150,3 +160,4 @@ extension ProductRepository: TradeRepositoryInterface {
         return task
     }
 }
+

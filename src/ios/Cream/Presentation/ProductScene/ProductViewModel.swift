@@ -10,9 +10,10 @@ import Foundation
 
 protocol ProductViewModelInput {
     func viewDidLoad()
-    func didTapWishButton()
     func didTapBuyButton()
     func didTapSellButton()
+    func removeFromWishList(size: String)
+    func addToWishList(size: String)
     var id: Int { get set }
 }
 
@@ -65,9 +66,6 @@ final class ProductViewModel: ProductViewModelInterface {
         }
     }
     
-    func didTapWishButton() {
-         
-    }
     
     func didTapBuyButton() {
          
@@ -75,5 +73,27 @@ final class ProductViewModel: ProductViewModelInterface {
     
     func didTapSellButton() {
          
+    }
+    
+    func removeFromWishList(size: String) {
+        usecase.addWishList(productId: id, size: size) { result in
+            switch result {
+            case .success(let _):
+                print("success")
+            case .failure(let error):
+                print(error)
+            }
+        }
+    }
+    
+    func addToWishList(size: String) {
+        usecase.addWishList(productId: id, size: size) { result in
+            switch result {
+            case .success(let _):
+                print("success")
+            case .failure(let error):
+                print(error)
+            }
+        }
     }
 }
