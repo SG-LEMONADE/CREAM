@@ -1,4 +1,4 @@
-package com.cream.product.dto.productDTO
+package com.cream.product.dto.productDTO.projectionDTO
 
 import com.cream.product.model.Product
 import com.querydsl.core.annotations.QueryProjection

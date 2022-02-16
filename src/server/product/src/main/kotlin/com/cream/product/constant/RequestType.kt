@@ -5,5 +5,4 @@ enum class RequestType(
 ) {
     ASK(0),
     BID(1)
-    ;
 }

@@ -4,11 +4,11 @@ import com.cream.product.constant.RequestTradeStatus
 import com.cream.product.constant.RequestType
 import com.cream.product.constant.TradeStatus
 import com.cream.product.dto.tradeDTO.*
+import com.cream.product.dto.tradeDTO.projectionDTO.*
 import com.cream.product.model.QTrade
 import com.cream.product.model.Trade
 import com.querydsl.core.types.Order
 import com.querydsl.core.types.OrderSpecifier
-import com.querydsl.core.types.Projections
 import com.querydsl.core.types.dsl.BooleanExpression
 import com.querydsl.jpa.impl.JPAQueryFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -102,8 +102,7 @@ class TradeRepositoryImpl :
         // 상품 상세 페이지 화면을 위한 거래 내역과 사이즈별 거래 개수를 반환합니다.
         return jpaQueryFactory
             .select(
-                Projections.constructor(
-                    TradeBySizeCountDTO::class.java,
+                QTradeBySizeCountDTO(
                     tradeEntity.size,
                     tradeEntity.price,
                     tradeEntity.count()

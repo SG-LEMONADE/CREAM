@@ -4,10 +4,10 @@ import com.cream.product.constant.RequestType
 import com.cream.product.constant.TradeStatus
 import com.cream.product.dto.filterDTO.FilterRequestDTO
 import com.cream.product.dto.productDTO.*
+import com.cream.product.dto.productDTO.projectionDTO.*
 import com.cream.product.model.*
 import com.querydsl.core.types.Order
 import com.querydsl.core.types.OrderSpecifier
-import com.querydsl.core.types.Projections
 import com.querydsl.core.types.dsl.BooleanExpression
 import com.querydsl.core.types.dsl.Expressions
 import com.querydsl.core.types.dsl.NumberExpression
@@ -164,11 +164,10 @@ class ProductRepositoryImpl :
     override fun getProductPricesBySize(
         productId: Long,
         requestType: RequestType
-    ): MutableList<ProductPriceBySizeDTO>? {
+    ): List<ProductPriceBySizeDTO>? {
         // 상품의 최저, 최고 가격들을 사이즈별로 반환해 줍니다.
         return jpaQueryFactory.select(
-            Projections.constructor(
-                ProductPriceBySizeDTO::class.java,
+            QProductPriceBySizeDTO(
                 tradeEntity.size,
                 lowestAskOrHighestBid(requestType)
             )

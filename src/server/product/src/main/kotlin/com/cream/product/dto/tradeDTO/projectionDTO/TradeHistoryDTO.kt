@@ -1,4 +1,4 @@
-package com.cream.product.dto.tradeDTO
+package com.cream.product.dto.tradeDTO.projectionDTO
 
 import com.cream.product.constant.TradeStatus
 import com.fasterxml.jackson.annotation.JsonRawValue

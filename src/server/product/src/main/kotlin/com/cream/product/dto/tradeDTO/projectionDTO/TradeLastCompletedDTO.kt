@@ -1,4 +1,4 @@
-package com.cream.product.dto.tradeDTO
+package com.cream.product.dto.tradeDTO.projectionDTO
 
 import com.querydsl.core.annotations.QueryProjection
 import java.time.LocalDateTime

@@ -1,5 +1,6 @@
 package com.cream.product.dto.productDTO
 
+import com.cream.product.dto.productDTO.projectionDTO.ProductPriceWishDTO
 import com.fasterxml.jackson.annotation.JsonRawValue
 import java.time.LocalDate
 
