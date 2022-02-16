@@ -197,9 +197,7 @@ class TradeRepositoryImpl :
             // 진행중 내역
             (RequestTradeStatus.IN_PROGRESS) -> tradeEntity.tradeStatus.eq(TradeStatus.IN_PROGRESS)
             // 종료된 내역
-            (RequestTradeStatus.FINISHED) -> tradeEntity.tradeStatus.eq(TradeStatus.CANCELED)
-                .or(tradeEntity.tradeStatus.eq(TradeStatus.EXPIRED))
-                .or(tradeEntity.tradeStatus.eq(TradeStatus.COMPLETED))
+            (RequestTradeStatus.FINISHED) -> tradeEntity.tradeStatus.eq(TradeStatus.COMPLETED)
             else -> null
         }
     }
