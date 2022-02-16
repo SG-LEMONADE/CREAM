@@ -46,6 +46,7 @@ class UserService {
             throw UserCustomException(ErrorCode.DUPLICATED_USER_EMAIL)
         }
 
+        // 인증 메일 전송
         mailSender.sendEmail(email, 0, redisTemplate)
         return ResponseUserDTO(userRepository.save(user))
     }
@@ -85,7 +86,7 @@ class UserService {
     }
 
     fun refreshToken(
-        tokenDTO: TokenDTO
+        tokenDTO: RefreshTokenDTO
     ): TokenDTO {
         // "Bearer "가 토큰 값 앞에 와야합니다.
         val refreshToken: String = tokenDTO.refreshToken
