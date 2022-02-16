@@ -33,6 +33,9 @@
 		7B193CAF279A67E900B934A3 /* PageControlFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B193CAE279A67E900B934A3 /* PageControlFooterView.swift */; };
 		7B193CB3279BE1A000B934A3 /* CALayer+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B193CB2279BE1A000B934A3 /* CALayer+.swift */; };
 		7B193CB5279D115500B934A3 /* TradeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B193CB4279D115500B934A3 /* TradeViewController.swift */; };
+		7B33E9D327BCD959000BC779 /* TradeRequestDTO+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B33E9D227BCD959000BC779 /* TradeRequestDTO+Mapping.swift */; };
+		7B33E9D527BCEF06000BC779 /* MyPageUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B33E9D427BCEF05000BC779 /* MyPageUseCase.swift */; };
+		7B33E9D727BCF7DF000BC779 /* ValidateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B33E9D627BCF7DF000BC779 /* ValidateView.swift */; };
 		7B3566822791E53C00C45A68 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3566812791E53C00C45A68 /* HomeViewController.swift */; };
 		7B3566872792420300C45A68 /* MyPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3566862792420300C45A68 /* MyPageViewController.swift */; };
 		7B36DB0E2789202800D8ACB0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B36DB0D2789202800D8ACB0 /* AppDelegate.swift */; };
@@ -180,6 +183,9 @@
 		7B193CAE279A67E900B934A3 /* PageControlFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageControlFooterView.swift; sourceTree = "<group>"; };
 		7B193CB2279BE1A000B934A3 /* CALayer+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CALayer+.swift"; sourceTree = "<group>"; };
 		7B193CB4279D115500B934A3 /* TradeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradeViewController.swift; sourceTree = "<group>"; };
+		7B33E9D227BCD959000BC779 /* TradeRequestDTO+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TradeRequestDTO+Mapping.swift"; sourceTree = "<group>"; };
+		7B33E9D427BCEF05000BC779 /* MyPageUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageUseCase.swift; sourceTree = "<group>"; };
+		7B33E9D627BCF7DF000BC779 /* ValidateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidateView.swift; sourceTree = "<group>"; };
 		7B3566812791E53C00C45A68 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		7B3566862792420300C45A68 /* MyPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewController.swift; sourceTree = "<group>"; };
 		7B36DB0A2789202800D8ACB0 /* Cream.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Cream.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -358,6 +364,7 @@
 			isa = PBXGroup;
 			children = (
 				7B17625627BBFDDC0082B79B /* PriceTextField.swift */,
+				7B33E9D627BCF7DF000BC779 /* ValidateView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -642,6 +649,7 @@
 				7B5EEEA327B80F4800990E37 /* HomeListUseCase.swift */,
 				7B5EEEB327B9160700990E37 /* TradeUseCase.swift */,
 				7B5EEEB727B921F800990E37 /* FilterUseCase.swift */,
+				7B33E9D427BCEF05000BC779 /* MyPageUseCase.swift */,
 			);
 			path = UseCases;
 			sourceTree = "<group>";
@@ -676,6 +684,7 @@
 				7B5EEEA127B8013200990E37 /* FilterResponseDTO+Mapping.swift */,
 				7B5EEEAF27B9118300990E37 /* UserResponseDTO+Mapping.swift */,
 				7B5EEEBB27B954ED00990E37 /* TradeResponseDTO+Mapping.swift */,
+				7B33E9D227BCD959000BC779 /* TradeRequestDTO+Mapping.swift */,
 			);
 			path = DataMapping;
 			sourceTree = "<group>";
@@ -1008,6 +1017,7 @@
 				7B5EEE6327AD481900990E37 /* ProcessViewModel.swift in Sources */,
 				7B5EEE4927A83A6900990E37 /* ProductView+CompositionalLayout.swift in Sources */,
 				7B5EEE5D27ABDC9B00990E37 /* ProcessViewController.swift in Sources */,
+				7B33E9D727BCF7DF000BC779 /* ValidateView.swift in Sources */,
 				7BF82E0E27A3CCB9007E0A79 /* Cancellable.swift in Sources */,
 				7B5EEEBA27B92EEC00990E37 /* Trade.swift in Sources */,
 				7B5EEEA227B8013200990E37 /* FilterResponseDTO+Mapping.swift in Sources */,
@@ -1035,6 +1045,7 @@
 				7B5EEE8527B55E8000990E37 /* Integrator.swift in Sources */,
 				7B5EEE3727A6C6B000990E37 /* Product.swift in Sources */,
 				7B54D708279045F400214664 /* TradeButton.swift in Sources */,
+				7B33E9D327BCD959000BC779 /* TradeRequestDTO+Mapping.swift in Sources */,
 				7B5EEE8127B4052500990E37 /* FilterViewModel.swift in Sources */,
 				7B5EEE2227A58A4400990E37 /* UserUseCase.swift in Sources */,
 				7B5EEE8927B5620400990E37 /* MyPageView.swift in Sources */,
@@ -1078,6 +1089,7 @@
 				7B5EEE4D27A9195E00990E37 /* SizePriceButton.swift in Sources */,
 				7B8EAA78279FBBB600B07259 /* ProductRepositoryInterface.swift in Sources */,
 				7B5EEE7727B2B03F00990E37 /* SortFilterFooterView.swift in Sources */,
+				7B33E9D527BCEF06000BC779 /* MyPageUseCase.swift in Sources */,
 				7B54D7042790351400214664 /* SizeListCell.swift in Sources */,
 				7B5EEE8727B561FB00990E37 /* MyPageViewModel.swift in Sources */,
 				7B5EEE4727A8391700990E37 /* TradeView.swift in Sources */,

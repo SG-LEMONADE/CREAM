@@ -7,20 +7,9 @@
 
 import Foundation
 
-// MARK: TradeUseCaseInterface
-protocol TradeUseCaseInterface {
-    
-}
-
-
-// MARK: - TradeUseCase
-final class TradeUseCase: TradeUseCaseInterface {
-    
-}
-
 protocol ProcessViewModelInput {
     func viewDidLoad()
-    func didTapInputField()
+    func didTapTradeButton()
 }
 
 protocol ProcessViewModelOutput {
@@ -29,15 +18,15 @@ protocol ProcessViewModelOutput {
     var tradeType: TradeType { get }
     var product: ProductDetail { get }
     var deliveryPrice: Int { get }
+    var validateDay: Int? { get set }
 }
 
-protocol ProcessViewModelInterface: ProcessViewModelInput, ProcessViewModelOutput {
-    
-}
+protocol ProcessViewModelInterface: ProcessViewModelInput, ProcessViewModelOutput { }
 
 final class ProcessViewModel: ProcessViewModelInterface {
     private let usecase: TradeUseCaseInterface
     
+    var validateDay: Int? = nil
     var requestPrice: Observable<Int> = Observable(0)
     var tradeType: TradeType
     var product: ProductDetail
@@ -69,7 +58,18 @@ final class ProcessViewModel: ProcessViewModelInterface {
         }
     }
     
-    func didTapInputField() {
-        
+    func didTapTradeButton() {
+        _ = usecase.requestTrade(tradeType: tradeType,
+                             productId: product.id,
+                             size: selectedProduct.size,
+                             price: requestPrice.value,
+                             validate: nil) { result in
+            switch result {
+            case .success(_):
+                print("success")
+            case .failure(let error):
+                print(error)
+            }
+        }
     }
 }

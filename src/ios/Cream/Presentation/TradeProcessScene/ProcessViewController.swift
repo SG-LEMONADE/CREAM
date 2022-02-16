@@ -24,6 +24,7 @@ class ProcessViewController: DIViewController<ProcessViewModelInterface>, ImageL
         setupInputTextField()
         setupSegmentControl()
         configureView()
+        setupUserAction()
         bindViewModel()
         viewModel.viewDidLoad()
     }
@@ -44,14 +45,14 @@ class ProcessViewController: DIViewController<ProcessViewModelInterface>, ImageL
         }()
         
         let inspectionButton: UIButton = {
-            let button = UIButton.init(type: .custom)
+            let button = UIButton(type: .custom)
             button.setTitle("검수 기준", for: .normal)
             button.titleLabel?.font = .systemFont(ofSize: 12)
             button.setTitleColor(.darkGray, for: .normal)
             button.layer.borderWidth = 1
             button.layer.cornerRadius = 5
             button.layer.borderColor = UIColor.darkGray.cgColor
-            button.addTarget(self, action: #selector(didTapCloseButton), for: .touchUpInside)
+            button.addTarget(self, action: #selector(didTapInspectButton), for: .touchUpInside)
             button.contentEdgeInsets = .init(top: 3, left: 10, bottom: 3, right: 10)
             return button
         }()
@@ -77,7 +78,7 @@ class ProcessViewController: DIViewController<ProcessViewModelInterface>, ImageL
             processView.descriptionLabel.text = "\(viewModel.tradeType.description) 희망가"
             processView.tradeBottomBar.tradeButton.setTitle("즉시 " + viewModel.tradeType.description,
                                                             for: .normal)
-            
+            processView.validateView.isHidden = false
         } else {
             processView.priceTextField.textField.text = viewModel.selectedProduct.price?.priceFormat
             processView.descriptionLabel.text = "즉시 \(viewModel.tradeType.description)가"
@@ -86,6 +87,7 @@ class ProcessViewController: DIViewController<ProcessViewModelInterface>, ImageL
             if let price = viewModel.selectedProduct.price {
                 processView.tradeBottomBar.totalLabel.priceLabel.text = "\((price+viewModel.deliveryPrice).priceFormat) 원"
             }
+            processView.validateView.isHidden = true
         }
     }
     
@@ -105,7 +107,8 @@ class ProcessViewController: DIViewController<ProcessViewModelInterface>, ImageL
         }
     }
     
-    private func addBorder(thickness: CGFloat = 0.5, color: UIColor = .systemGray3) {
+    private func addBorder(thickness: CGFloat = 0.5,
+                           color: UIColor = .systemGray3) {
         let topBorder = CALayer()
         topBorder.frame = CGRect(x: 0.0, y: 0.0,
                                  width: processView.tradeBottomBar.frame.size.width,
@@ -115,37 +118,48 @@ class ProcessViewController: DIViewController<ProcessViewModelInterface>, ImageL
     }
     
     private func configureView() {
-        if viewModel.tradeType == .buy {
-            processView.deliveryValueLabel.text = viewModel.deliveryPrice.priceFormat + "원"
-        } else {
-            processView.deliveryValueLabel.text = "선불﹒판매자 부담"
-        }
-        
         processView.productInfoView.itemNumberLabel.text = viewModel.product.styleCode
         processView.productInfoView.itemTitleLabel.text = viewModel.product.originalName
         processView.productInfoView.itemTranslatedLabel.text = viewModel.product.translatedName
         processView.productInfoView.sizeLabel.text = viewModel.selectedProduct.size
         processView.tradeBottomBar.totalLabel.tradeTypeLabel.text = viewModel.tradeType.bottomDescription
         
+        if viewModel.selectedProduct.price == nil {
+            processView.segmentControl.setEnabled(false, forSegmentAt: 1)
+            processView.validateView.isHidden = true
+        }
+        
+        if viewModel.tradeType == .buy {
+            processView.deliveryValueLabel.text = viewModel.deliveryPrice.priceFormat + "원"
+        } else {
+            processView.deliveryValueLabel.text = "선불﹒판매자 부담"
+        }
+        
         if let askPrice = viewModel.product.askPrices[viewModel.selectedProduct.size] {
             askPrice.flatMap {
+                if viewModel.tradeType == .buy {
+                    processView.segmentControl.selectedSegmentIndex = .one
+                    processView.validateView.isHidden = true
+                }
                 processView.buyLabel.priceLabel.text = $0.priceFormat + "원"
-                processView.segmentControl.selectedSegmentIndex = 1
                 processView.priceTextField.textField.text = $0.priceFormat
             }
         } else {
             processView.buyLabel.priceLabel.text = "-"
         }
+        
         if let bidPrice = viewModel.product.bidPrices[viewModel.selectedProduct.size] {
             bidPrice.flatMap {
+                if viewModel.tradeType == .sell {
+                    processView.segmentControl.selectedSegmentIndex = .one
+                    processView.validateView.isHidden = true
+                }
                 processView.sellLabel.priceLabel.text = $0.priceFormat + "원"
-                processView.segmentControl.selectedSegmentIndex = 1
                 processView.priceTextField.textField.text = $0.priceFormat
             }
             processView.isUserInteractionEnabled = true
         } else {
             processView.sellLabel.priceLabel.text = "-"
-            processView.segmentControl.isUserInteractionEnabled = false
         }
         
         if let price = viewModel.selectedProduct.price {
@@ -163,7 +177,6 @@ class ProcessViewController: DIViewController<ProcessViewModelInterface>, ImageL
             return
         }
         
-        
         session = loadImage(url: url, completion: { [weak self] image in
             DispatchQueue.main.async {
                 self?.processView.productInfoView.modelImageView.image = image
@@ -171,15 +184,34 @@ class ProcessViewController: DIViewController<ProcessViewModelInterface>, ImageL
         })
     }
     
+    private func setupUserAction() {
+        processView.tradeBottomBar.tradeButton.addTarget(self,
+                                                         action: #selector(didTapTradeButton),
+                                                         for: .touchUpInside)
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapValidateView))
+        processView.validateView.addGestureRecognizer(tapGesture)
+    }
+        
+    @objc func didTapValidateView() {
+        print(#function)
+    }
+
+    
     @objc
     func didTapCloseButton() {
         dismiss(animated: true, completion: nil)
     }
     
     @objc
-    func didTapInputField(sender: UITapGestureRecognizer) {
-        viewModel.didTapInputField()
-        print("input field")
+    func didTapInspectButton() {
+        print(#function)
+    }
+    
+    @objc
+    func didTapTradeButton() {
+        print("입력")
+        viewModel.didTapTradeButton()
     }
 }
 
@@ -188,6 +220,7 @@ extension ProcessViewController: UITextFieldDelegate {
     func textFieldDidBeginEditing(_ textField: UITextField) {
         processView.priceTextField.textField.text = nil
         processView.segmentControl.selectedSegmentIndex = 0
+        processView.validateView.isHidden = false
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
@@ -229,6 +262,5 @@ extension ProcessViewController: UITextFieldDelegate {
                 viewModel.requestPrice.value = price
             }
         }
-        
     }
 }

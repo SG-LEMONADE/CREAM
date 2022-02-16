@@ -30,3 +30,10 @@ struct TradeRequest {
     let size: String
     let price: Int?
 }
+
+enum TradeStatus: String {
+    case ask = "ALL"
+    case finished = "FINISHED"
+    case inProgress = "IN_PROGRESS"
+    case waiting = "WAITING"
+}

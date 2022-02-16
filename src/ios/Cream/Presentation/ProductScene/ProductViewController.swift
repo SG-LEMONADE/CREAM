@@ -221,8 +221,14 @@ extension ProductViewController: UICollectionViewDataSource, UICollectionViewDel
 
 extension ProductViewController: TradeDelegate {
     func moveFocusToProcessScene(selectedProduct: TradeRequest, tradeType: TradeType) {
+        guard let baseURL = URL(string: "http://1.231.16.189:8081")
+        else { fatalError() }
         
-        let usecase = TradeUseCase()
+        let config: NetworkConfigurable = ApiDataNetworkConfig(baseURL: baseURL)
+        let networkService: NetworkService = DefaultNetworkService(config: config)
+        let dataTransferService: DataTransferService = DefaultDataTransferService(with: networkService)
+        let repository = ProductRepository(dataTransferService: dataTransferService)
+        let usecase = TradeUseCase(repository)
         let vm = ProcessViewModel(usecase,
                                   tradeType: tradeType,
                                   product: viewModel.item.value,

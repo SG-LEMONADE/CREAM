@@ -116,7 +116,6 @@ public final class DefaultNetworkService {
             } else {
                 var error: NetworkError
                 error = .error(statusCode: response.statusCode, data: data)
-                
                 completion(.failure(error))
             }
         }

@@ -95,6 +95,8 @@ enum TradeType: String, CustomStringConvertible {
         }
     }
     
+
+    
     var bottomDescription: String {
         switch self {
         case .buy:

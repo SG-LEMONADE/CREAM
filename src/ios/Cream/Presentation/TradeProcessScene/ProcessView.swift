@@ -200,6 +200,11 @@ class ProcessView: UIView {
         return view
     }()
     
+    lazy var validateView: ValidateView = {
+        let view = ValidateView()
+        return view
+    }()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         applyViewSettings()
@@ -221,16 +226,15 @@ extension ProcessView: ViewConfiguration {
                     descriptionLabel,
                     priceTextField,
                     borderView,
+                    validateView,
                     secondDivisionView,
                     infoStack,
                     tradeBottomBar)
     }
     
     func setupConstraints() {
-        secondDivisionView.setContentHuggingPriority(.defaultLow,
-                                                     for: .vertical)
-        secondDivisionView.setContentCompressionResistancePriority(.defaultLow,
-                                                                   for: .vertical)
+        secondDivisionView.setContentHuggingPriority(.defaultLow, for: .vertical)
+        secondDivisionView.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
         
         productInfoView.snp.makeConstraints {
             $0.top.equalTo(self.safeAreaLayoutGuide.snp.top)
@@ -278,6 +282,11 @@ extension ProcessView: ViewConfiguration {
         borderView.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview()
             $0.height.equalTo(3)
+            $0.bottom.equalTo(validateView.snp.top)
+        }
+        
+        validateView.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview()
             $0.bottom.equalTo(secondDivisionView.snp.top)
         }
         

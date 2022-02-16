@@ -153,15 +153,38 @@ struct APIEndpoints {
         let headerParameters: [String: String] = ["Content-Type":"application/json",
                                                   "userId": "1"]
         
-//        _ = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.accessToken)
-//            .map { "Bearer-\($0)" }
-//            .flatMap {
-//                headerParameters.updateValue($0, forKey: "Authorization")
-//            }
+        //        _ = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.accessToken)
+        //            .map { "Bearer-\($0)" }
+        //            .flatMap {
+        //                headerParameters.updateValue($0, forKey: "Authorization")
+        //            }
         
         return Endpoint(path: "trades",
                         method: .get,
                         headerParamaters: headerParameters,
                         queryParameters: queryParameters)
+    }
+    
+    static func requestTrade(tradeType: TradeType,
+                             productId: Int,
+                             size: String,
+                             price: Int,
+                             validate: Int?) -> Endpoint<Void> {
+        if let validateDay = validate {
+            let queryParameters: [String: Any] = ["price": price,
+                                                  "requestType": tradeType.requestString,
+                                                  "validationDay": validateDay]
+            
+            let headerParameters: [String: String] = ["Content-Type":"application/json",
+                                                      "userId": "1"]
+            return Endpoint(path: "trades/products/\(productId)/\(size)",
+                            method: .post,
+                            headerParamaters: headerParameters,
+                            queryParameters: queryParameters)
+        }
+        return Endpoint(path: "trades/\(tradeType.rawValue)/select/\(productId)/\(size)",
+                        method: .post,
+                        headerParamaters: ["Content-Type":"application/json",
+                                           "userId": "2"])
     }
 }
