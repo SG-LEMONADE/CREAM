@@ -10,8 +10,7 @@ import UIKit
 class ProductInfoView: UIView {
     lazy var modelImageView: UIImageView = {
         let imageView = UIImageView(frame: .zero)
-        imageView.layer.cornerRadius = 10
-        imageView.backgroundColor = UIColor.red
+        imageView.layer.cornerRadius = 15
         return imageView
     }()
     
@@ -36,10 +35,18 @@ class ProductInfoView: UIView {
         return label
     }()
     
+    lazy var sizeLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 15, weight: .bold)
+        label.textColor = .black
+        label.text = "사이즈"
+        return label
+    }()
+    
     lazy var labelStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [itemNumberLabel, itemTitleLabel, itemTranslatedLabel])
         stackView.axis = .vertical
-        
+        stackView.spacing = 3
         return stackView
     }()
     
@@ -50,17 +57,27 @@ class ProductInfoView: UIView {
         stackView.backgroundColor = .white
         return stackView
     }()
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        applyViewSettings()
+    }
+    
+    @available(*, unavailable)
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 }
 
 extension ProductInfoView: ViewConfiguration {
     func buildHierarchy() {
-        addSubviews(containerStackView)
+        addSubviews(containerStackView, sizeLabel)
     }
     
     func setupConstraints() {
         modelImageView.snp.makeConstraints {
             $0.width.equalTo(self.snp.width).multipliedBy(0.25)
-            $0.width.equalTo(self.modelImageView.snp.height)
+            $0.width.equalTo(modelImageView.snp.height)
             $0.leading.equalTo(containerStackView.snp.leading).inset(10)
             $0.height.greaterThanOrEqualTo(labelStackView.snp.height)
             $0.trailing.equalTo(labelStackView.snp.leading).offset(-10)
@@ -69,6 +86,11 @@ extension ProductInfoView: ViewConfiguration {
         
         labelStackView.snp.makeConstraints {
             $0.top.equalTo(containerStackView.snp.top).inset(10)
+        }
+        
+        sizeLabel.snp.makeConstraints {
+            $0.leading.equalTo(labelStackView.snp.leading)
+            $0.bottom.equalTo(modelImageView.snp.bottom)
         }
         
         containerStackView.snp.makeConstraints {
@@ -81,6 +103,10 @@ extension ProductInfoView: ViewConfiguration {
     
     func viewConfigure() {
         self.backgroundColor = .white
+        
+        itemNumberLabel.text = "\(itemNumberLabel)"
+        itemTitleLabel.text = "\(itemTitleLabel)"
+        itemTranslatedLabel.text = "\(itemTranslatedLabel)"
     }
 }
 
@@ -159,7 +185,7 @@ class TradeView: UIView {
     lazy var labelStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [itemNumberLabel, itemTitleLabel, itemTranslatedLabel])
         stackView.axis = .vertical
-        
+        stackView.spacing = 3
         return stackView
     }()
     
@@ -245,6 +271,6 @@ extension TradeView: ViewConfiguration {
     }
     
     func viewConfigure() {
-        self.backgroundColor = .white
+        backgroundColor = .white
     }
 }

@@ -9,11 +9,11 @@ import UIKit
 import SnapKit
 
 protocol TradeDelegate: AnyObject {    
-    func moveFocusToProcessScene()
+    func moveFocusToProcessScene(selectedProduct: TradeRequest, tradeType: TradeType)
 }
 
 class TradeViewController: DIViewController<TradeViewModelInterface>, ImageLoadable {
-
+    
     // MARK: Property
     var session: URLSessionDataTask?
     weak var delegate: TradeDelegate?
@@ -27,8 +27,8 @@ class TradeViewController: DIViewController<TradeViewModelInterface>, ImageLoada
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        tradeView.sizeListView.register(SizeListCell.self, forCellWithReuseIdentifier: SizeListCell.reuseIdentifier)
-        setupNavigationBarItem()
+        tradeView.sizeListView.register(SizePriceCell.self, forCellWithReuseIdentifier: SizePriceCell.reuseIdentifier)
+        setupNavigationBar()
         bindViewModel()
         configure()
     }
@@ -38,7 +38,7 @@ class TradeViewController: DIViewController<TradeViewModelInterface>, ImageLoada
         tradeView.sizeListView.delegate = self
     }
     
-    private func setupNavigationBarItem() {
+    private func setupNavigationBar() {
         let navigationItem = UIBarButtonItem(image: UIImage(systemName: "xmark"),
                                              style: .plain,
                                              target: self,
@@ -47,24 +47,35 @@ class TradeViewController: DIViewController<TradeViewModelInterface>, ImageLoada
     }
     
     func bindViewModel() {
-        viewModel.selectSize.bind { [weak self] size, price in
-            self?.tradeView.tradeButton.configure(size: size, priceText: price)
+        viewModel.selectSize.bind { [weak self] request in
+            guard let tradeType = self?.viewModel.tradeType
+            else { return }
+            
             self?.tradeView.tradeButton.isHidden = false
+            
+            self?.tradeView.tradeButton.configure(price: request.price,
+                                                  type: tradeType)
         }
-    }    
+    }
     
     func configure() {
         viewConfigure()
-        self.tradeView.itemNumberLabel.text = viewModel.product.styleCode
-        self.tradeView.itemTitleLabel.text = viewModel.product.originalName
-        self.tradeView.itemTranslatedLabel.text = viewModel.product.translatedName
-        self.navigationItem.titleView = tradeView.navigationTitleView
+        tradeView.itemNumberLabel.text = viewModel.product.styleCode
+        tradeView.itemTitleLabel.text = viewModel.product.originalName
+        tradeView.itemTranslatedLabel.text = viewModel.product.translatedName
+        tradeView.tradeButton.addTarget(self, action: #selector(didTapTradeButton), for: .touchUpInside)
+        
         tradeView.topTitleLabel.text = viewModel.tradeType.navigationTitle
-        self.navigationController?.navigationBar.tintColor = .black
-        self.tradeView.tradeButton.addTarget(self, action: #selector(didTapTradeButton), for: .touchUpInside)
+        navigationItem.titleView = tradeView.navigationTitleView
+        navigationController?.navigationBar.tintColor = .black
+        
+        viewModel.product.backgroundColor.hexToInt.flatMap {
+            tradeView.modelImageView.backgroundColor = UIColor(rgb: $0)
+        }
         
         guard let urlString = viewModel.product.imageUrls.first,
               let url = URL(string: urlString)
+                
         else {
             // TODO: url error의 경우, default Image load
             return
@@ -73,6 +84,7 @@ class TradeViewController: DIViewController<TradeViewModelInterface>, ImageLoada
         session = loadImage(url: url, completion: { [weak self] image in
             DispatchQueue.main.async {
                 self?.tradeView.modelImageView.image = image
+                
             }
         })
     }
@@ -82,13 +94,17 @@ class TradeViewController: DIViewController<TradeViewModelInterface>, ImageLoada
 extension TradeViewController {
     @objc
     func didTapCloseButton() {
-        self.dismiss(animated: true, completion: nil)
+        dismiss(animated: true, completion: nil)
     }
     
     @objc
     func didTapTradeButton() {
-        self.dismiss(animated: true) { [weak self] in
-            self?.delegate?.moveFocusToProcessScene()
+        dismiss(animated: true) { [weak self] in
+            guard let self = self
+            else { return }
+
+            self.delegate?.moveFocusToProcessScene(selectedProduct: self.viewModel.selectSize.value,
+                                                   tradeType: self.viewModel.tradeType)
         }
     }
 }
@@ -107,11 +123,19 @@ extension TradeViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SizeListCell.reuseIdentifier, for: indexPath) as? SizeListCell else { return UICollectionViewCell() }
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SizePriceCell.reuseIdentifier, for: indexPath) as? SizePriceCell
+        else { return UICollectionViewCell() }
         
-        cell.configure(size: viewModel.product.sizes[indexPath.item],
-                       price: viewModel.product.askPrices[viewModel.product.sizes[indexPath.item]])
-        
+        switch viewModel.tradeType {
+        case .buy:
+            cell.configure(size: viewModel.product.sizes[indexPath.item],
+                           price: viewModel.product.askPrices[viewModel.product.sizes[indexPath.item]]!,
+                           type: viewModel.tradeType)
+        case .sell:
+            cell.configure(size: viewModel.product.sizes[indexPath.item],
+                           price: viewModel.product.bidPrices[viewModel.product.sizes[indexPath.item]]!,
+                           type: viewModel.tradeType)
+        }
         return cell
     }
 }

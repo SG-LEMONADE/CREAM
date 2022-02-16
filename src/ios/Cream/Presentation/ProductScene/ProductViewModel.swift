@@ -27,6 +27,7 @@ protocol ProductViewModelInterface: ProductViewModelInput, ProductViewModelOutpu
 
 final class ProductViewModel: ProductViewModelInterface {
     private let usecase: ProductUseCaseInterface
+    
     var item: Observable<ProductDetail> = Observable(ProductDetail.create())
     var releaseInfo: [(String, String)] {
         var info = [(String, String)]()

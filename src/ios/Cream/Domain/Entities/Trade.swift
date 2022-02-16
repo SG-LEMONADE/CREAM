@@ -25,3 +25,8 @@ struct Trade {
     let updateDateTime: String?
     let validationDate: String
 }
+
+struct TradeRequest {
+    let size: String
+    let price: Int?
+}

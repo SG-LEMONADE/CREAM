@@ -14,6 +14,9 @@
 		7B17624927BA81850082B79B /* PasswordTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B17624827BA81850082B79B /* PasswordTextField.swift */; };
 		7B17624B27BA8F3F0082B79B /* JoinViewModelSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B17624A27BA8F3F0082B79B /* JoinViewModelSpec.swift */; };
 		7B17624F27BB45A20082B79B /* NotificationName+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B17624E27BB45A10082B79B /* NotificationName+.swift */; };
+		7B17625227BBC0BC0082B79B /* SizePriceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B17625127BBC0BC0082B79B /* SizePriceCell.swift */; };
+		7B17625427BBF4710082B79B /* UISegmentedControl+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B17625327BBF4710082B79B /* UISegmentedControl+.swift */; };
+		7B17625727BBFDDC0082B79B /* PriceTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B17625627BBFDDC0082B79B /* PriceTextField.swift */; };
 		7B193C832794D3D300B934A3 /* HomeViewItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B193C822794D3D300B934A3 /* HomeViewItemCell.swift */; };
 		7B193C8927965E5A00B934A3 /* HomeViewCategoryHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B193C8827965E5A00B934A3 /* HomeViewCategoryHeaderView.swift */; };
 		7B193C8B27965EE500B934A3 /* ShopViewFilterHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B193C8A27965EE500B934A3 /* ShopViewFilterHeaderView.swift */; };
@@ -158,6 +161,9 @@
 		7B17624827BA81850082B79B /* PasswordTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordTextField.swift; sourceTree = "<group>"; };
 		7B17624A27BA8F3F0082B79B /* JoinViewModelSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinViewModelSpec.swift; sourceTree = "<group>"; };
 		7B17624E27BB45A10082B79B /* NotificationName+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NotificationName+.swift"; sourceTree = "<group>"; };
+		7B17625127BBC0BC0082B79B /* SizePriceCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SizePriceCell.swift; sourceTree = "<group>"; };
+		7B17625327BBF4710082B79B /* UISegmentedControl+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UISegmentedControl+.swift"; sourceTree = "<group>"; };
+		7B17625627BBFDDC0082B79B /* PriceTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriceTextField.swift; sourceTree = "<group>"; };
 		7B193C822794D3D300B934A3 /* HomeViewItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewItemCell.swift; sourceTree = "<group>"; };
 		7B193C8827965E5A00B934A3 /* HomeViewCategoryHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewCategoryHeaderView.swift; sourceTree = "<group>"; };
 		7B193C8A27965EE500B934A3 /* ShopViewFilterHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopViewFilterHeaderView.swift; sourceTree = "<group>"; };
@@ -348,6 +354,14 @@
 			path = ViewModelUnitTest;
 			sourceTree = "<group>";
 		};
+		7B17625527BBFDBA0082B79B /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				7B17625627BBFDDC0082B79B /* PriceTextField.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		7B193C7F27944AF000B934A3 /* SupportFile */ = {
 			isa = PBXGroup;
 			children = (
@@ -486,6 +500,7 @@
 		7B5EEE5927AB7D9900990E37 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				7B17625127BBC0BC0082B79B /* SizePriceCell.swift */,
 				7B5EEE5527A9A0B000990E37 /* TradePriceView.swift */,
 			);
 			path = Views;
@@ -538,6 +553,7 @@
 		7B5EEEBF27B955CE00990E37 /* TradeProcessScene */ = {
 			isa = PBXGroup;
 			children = (
+				7B17625527BBFDBA0082B79B /* Views */,
 				7B5EEE5C27ABDC9B00990E37 /* ProcessViewController.swift */,
 				7B5EEE6227AD481900990E37 /* ProcessViewModel.swift */,
 				7B5EEE6027AD10E500990E37 /* ProcessView.swift */,
@@ -742,6 +758,7 @@
 				7B5EEE8227B4236500990E37 /* Int+.swift */,
 				7B5EEE8D27B57A0900990E37 /* KeychainWrapper+.swift */,
 				7B17624E27BB45A10082B79B /* NotificationName+.swift */,
+				7B17625327BBF4710082B79B /* UISegmentedControl+.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -1028,6 +1045,7 @@
 				7B5EEE2B27A5AD8500990E37 /* ProductViewModel.swift in Sources */,
 				7B5EEE3527A6B0D300990E37 /* ProductRepository.swift in Sources */,
 				7B5EEEB227B915E100990E37 /* TradeRepositoryInterface.swift in Sources */,
+				7B17625227BBC0BC0082B79B /* SizePriceCell.swift in Sources */,
 				7B193C8B27965EE500B934A3 /* ShopViewFilterHeaderView.swift in Sources */,
 				7BB01113278BC44E005E5C9E /* ViewConfiguration.swift in Sources */,
 				7B8EAA8627A0DB4700B07259 /* ValidationHelper.swift in Sources */,
@@ -1065,6 +1083,7 @@
 				7B5EEE4727A8391700990E37 /* TradeView.swift in Sources */,
 				7B193C8927965E5A00B934A3 /* HomeViewCategoryHeaderView.swift in Sources */,
 				7B5EEE7027B0F25500990E37 /* HomeResponseDTO+Mapping.swift in Sources */,
+				7B17625427BBF4710082B79B /* UISegmentedControl+.swift in Sources */,
 				7BF82E1927A56C8B007E0A79 /* ErrorMessage.swift in Sources */,
 				7B5EEE6127AD10E500990E37 /* ProcessView.swift in Sources */,
 				7B5EEE2F27A69ADA00990E37 /* ProductResponseDTO+Mapping.swift in Sources */,
@@ -1085,6 +1104,7 @@
 				7B8EAAAA27A25ED800B07259 /* APIEndpoints.swift in Sources */,
 				7B5EEEA427B80F4800990E37 /* HomeListUseCase.swift in Sources */,
 				7BF82E0427A2CD2B007E0A79 /* JoinResponseDTO+Mapping.swift in Sources */,
+				7B17625727BBFDDC0082B79B /* PriceTextField.swift in Sources */,
 				7B5EEE2927A5AD7A00990E37 /* ProductViewController.swift in Sources */,
 				7B5EEE9027B607C800990E37 /* TradeHistoryCell.swift in Sources */,
 				7B8EAA9927A23BDB00B07259 /* Auth.swift in Sources */,

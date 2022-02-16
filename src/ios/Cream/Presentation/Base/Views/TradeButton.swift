@@ -95,6 +95,15 @@ enum TradeType: String, CustomStringConvertible {
         }
     }
     
+    var bottomDescription: String {
+        switch self {
+        case .buy:
+            return "총 결제 금액"
+        case .sell:
+            return "정산 금액"
+        }
+    }
+    
     var navigationTitle: String {
         return self.description+"하기"
     }

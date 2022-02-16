@@ -11,7 +11,7 @@ import SnapKit
 class TradePriceView: UIView {
     lazy var tradeTypeLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 14, weight: .bold)
+        label.font = UIFont.systemFont(ofSize: 12, weight: .bold)
         label.textAlignment = .center
         label.textColor = .white
         return label
@@ -19,7 +19,7 @@ class TradePriceView: UIView {
 
     lazy var priceLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 10)
+        label.font = UIFont.systemFont(ofSize: 14, weight: .bold)
         label.textAlignment = .center
         label.text = "-"
         label.textColor = .white

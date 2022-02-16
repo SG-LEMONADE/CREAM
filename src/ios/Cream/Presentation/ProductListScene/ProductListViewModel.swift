@@ -32,38 +32,6 @@ protocol ProductListViewModelInterface: ProductListViewModelInput, ProductListVi
     var banners: [String] { get }
 }
 
-enum FilterHeaderCategory: String, CaseIterable {
-    case sneakers
-    case streetwear
-    case accessories
-    case life
-    case electronics
-    
-    var description: String {
-        rawValue
-    }
-    
-    var translatedString: String {
-        switch self {
-        case .sneakers:     return "스니커즈"
-        case .streetwear:   return "의류"
-        case .accessories:  return "패션 잡화"
-        case .life:         return "라이프"
-        case .electronics:  return "테크"
-        }
-    }
-    
-    var headerIndexPath: IndexPath {
-        switch self {
-        case .sneakers:     return .init(item: 3, section: .zero)
-        case .streetwear:   return .init(item: 4, section: .zero)
-        case .accessories:  return .init(item: 5, section: .zero)
-        case .life:         return .init(item: 6, section: .zero)
-        case .electronics:  return .init(item: 7, section: .zero)
-        }
-    }
-}
-
 final class ProductListViewModel: ProductListViewModelInterface {
     private let usecase: ProductUseCaseInterface
     var products: Observable<Products> = Observable([])
@@ -201,6 +169,38 @@ final class ProductListViewModel: ProductListViewModelInterface {
             case .failure(let error):
                 print(error)
             }
+        }
+    }
+}
+
+enum FilterHeaderCategory: String, CaseIterable {
+    case sneakers
+    case streetwear
+    case accessories
+    case life
+    case electronics
+    
+    var description: String {
+        rawValue
+    }
+    
+    var translatedString: String {
+        switch self {
+        case .sneakers:     return "스니커즈"
+        case .streetwear:   return "의류"
+        case .accessories:  return "패션 잡화"
+        case .life:         return "라이프"
+        case .electronics:  return "테크"
+        }
+    }
+    
+    var headerIndexPath: IndexPath {
+        switch self {
+        case .sneakers:     return .init(item: 3, section: .zero)
+        case .streetwear:   return .init(item: 4, section: .zero)
+        case .accessories:  return .init(item: 5, section: .zero)
+        case .life:         return .init(item: 6, section: .zero)
+        case .electronics:  return .init(item: 7, section: .zero)
         }
     }
 }
