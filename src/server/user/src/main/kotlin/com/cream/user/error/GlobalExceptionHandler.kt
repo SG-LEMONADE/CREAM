@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.http.converter.HttpMessageNotReadableException
+import org.springframework.mail.MailSendException
 import org.springframework.validation.BindException
 import org.springframework.web.HttpRequestMethodNotSupportedException
 import org.springframework.web.bind.MethodArgumentNotValidException
@@ -12,6 +13,7 @@ import org.springframework.web.bind.MissingRequestHeaderException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException
+import javax.validation.ConstraintViolationException
 
 @RestControllerAdvice
 class GlobalExceptionHandler {
@@ -71,6 +73,20 @@ class GlobalExceptionHandler {
     fun handleHttpRequestMethodNotSupportedException(ex: HttpRequestMethodNotSupportedException): ResponseEntity<ErrorResponse> {
         log.error("HttpMessageNotReadableException", ex)
         val response = ErrorResponse(ErrorCode.METHOD_NOT_ALLOWED)
+        return ResponseEntity(response, HttpStatus.valueOf(response.status))
+    }
+
+    @ExceptionHandler(MailSendException::class)
+    fun handleMailSendException(ex: MailSendException): ResponseEntity<ErrorResponse> {
+        log.error("SendFailedException", ex)
+        val response = ErrorResponse(ErrorCode.USER_EMAIL_IS_NOT_VALID)
+        return ResponseEntity(response, HttpStatus.valueOf(response.status))
+    }
+
+    @ExceptionHandler(ConstraintViolationException::class)
+    fun handleConstraintViolationException(ex: ConstraintViolationException): ResponseEntity<ErrorResponse> {
+        log.error("ConstraintViolationException", ex)
+        val response = ErrorResponse(ErrorCode.INVALID_INPUT_VALUE)
         return ResponseEntity(response, HttpStatus.valueOf(response.status))
     }
 

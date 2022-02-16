@@ -137,7 +137,7 @@ class UserService {
         if (userUpdateDTO.password != null) {
             // 비밀번호 변경 시
             if (passwordEncoder.matches(user.password, userUpdateDTO.password))
-                // 전에 사용했던 비밀번호와 같을 때 변경 불가
+            // 전에 사용했던 비밀번호와 같을 때 변경 불가
                 throw UserCustomException(ErrorCode.USER_NEW_PASSWORD_SAME_AS_OLD)
             user.password = passwordEncoder.encode(userUpdateDTO.password)
             user.passwordChangedDatetime = LocalDateTime.now()

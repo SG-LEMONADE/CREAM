@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 
 import org.springframework.web.bind.annotation.*
+import javax.validation.Valid
 
 @RestController
 @RequestMapping("/users")
@@ -16,7 +17,7 @@ class UserController {
 
     @PostMapping("/join")
     fun join(
-        @RequestBody registerUserDTO: RegisterUserDTO
+        @RequestBody @Valid registerUserDTO: RegisterUserDTO
     ): ResponseEntity<ResponseUserDTO> {
         return ResponseEntity.ok(
             userService.create(registerUserDTO)
@@ -34,7 +35,7 @@ class UserController {
 
     @PostMapping("/refresh")
     fun refresh(
-        @RequestBody tokenDTO: TokenDTO
+        @RequestBody tokenDTO: RefreshTokenDTO
     ): ResponseEntity<TokenDTO> {
         return ResponseEntity.ok(
             userService.refreshToken(tokenDTO)

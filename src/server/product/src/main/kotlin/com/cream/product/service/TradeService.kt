@@ -121,7 +121,7 @@ class TradeService {
         if (requestType == RequestType.ASK) {
             try {
                 logServiceClient.insertUserLogData(UserLogDTO(userId, productId, 3))
-            } catch (ex: FeignException){
+            } catch (ex: FeignException) {
                 log.error(ex.message)
             }
         }

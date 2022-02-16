@@ -14,7 +14,7 @@ class RecommendController {
     @GetMapping("/{userId}")
     fun getRecommendedItems(
         @PathVariable userId: Long
-    ): List<Long>{
+    ): List<Long> {
         return recommendService.getProductsId(userId)
     }
 }

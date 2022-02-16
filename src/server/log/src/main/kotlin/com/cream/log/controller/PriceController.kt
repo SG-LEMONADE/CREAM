@@ -25,7 +25,7 @@ class PriceController {
     fun getPricesByDateAndSize(
         @PathVariable productId: Long,
         @PathVariable size: String
-    ): ResponseEntity<PricesByDateDTO>{
+    ): ResponseEntity<PricesByDateDTO> {
         return ResponseEntity.ok(priceService.getPriceListByDate(productId, size))
     }
 
