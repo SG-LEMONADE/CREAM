@@ -12,6 +12,8 @@ import TransactionTemplate from "components/templates/TransactionTemplate";
 import { ProductRes } from "types";
 import { fetcher } from "lib/fetcher";
 
+import Swal from "sweetalert2";
+
 const ProductSell: FunctionComponent = () => {
 	const router = useRouter();
 	const { id, size, auction } = router.query;
@@ -40,9 +42,25 @@ const ProductSell: FunctionComponent = () => {
 							},
 						},
 					);
-					console.log(res);
+					router.push({
+						pathname: "/sell/complete",
+						query: {
+							id: id,
+							auction: auction,
+							price: price,
+							date: date,
+						},
+					});
 				} catch (e) {
-					console.error(e);
+					const errResponse = e.response.data;
+					errResponse.code &&
+						Swal.fire({
+							position: "top",
+							icon: "error",
+							html: `${process.env.ERROR_code[parseInt(errResponse.code)]}`,
+							showConfirmButton: false,
+							timer: 2000,
+						});
 				}
 			} else {
 				// 즉시 판매
@@ -52,13 +70,30 @@ const ProductSell: FunctionComponent = () => {
 						{},
 						{
 							headers: {
-								userId: "1",
+								userId: "2",
 							},
 						},
 					);
-					console.log(res);
+					router.push({
+						pathname: "/sell/complete",
+						query: {
+							id: id,
+							auction: auction,
+							price: price,
+							date: date,
+						},
+					});
 				} catch (e) {
-					console.error(e);
+					const errResponse = e.response.data;
+					console.log(errResponse);
+					errResponse.code &&
+						Swal.fire({
+							position: "top",
+							icon: "error",
+							html: `${process.env.ERROR_code[parseInt(errResponse.code)]}`,
+							showConfirmButton: false,
+							timer: 2000,
+						});
 				}
 			}
 		},

@@ -22,7 +22,7 @@ import Modal from "components/molecules/Modal";
 import ProductSmallInfo from "components/molecules/ProductSmallInfo";
 import ProductSizeSelectGrid from "components/molecules/ProductSizeSelectGrid";
 import ProductSkeleton from "components/organisms/Skeletons";
-import { validateUser } from "utils/user";
+import { validateUser } from "lib/user";
 import { fetcher } from "lib/fetcher";
 import { ProductInfoRes } from "types";
 import { queryStringMaker } from "utils/query";

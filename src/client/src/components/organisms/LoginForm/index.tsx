@@ -12,9 +12,10 @@ import UserContext from "context/user";
 import Logo from "components/atoms/Logo";
 import Input from "components/atoms/Input";
 import Button from "components/atoms/Button";
-import { setToken } from "utils/token";
-import { validateEmailFormat } from "utils/validate";
+import { setToken } from "lib/token";
+import { validateEmailFormat } from "lib/validate";
 
+import Swal from "sweetalert2";
 import styled from "@emotion/styled";
 
 const LoginForm: FunctionComponent = () => {
@@ -58,7 +59,13 @@ const LoginForm: FunctionComponent = () => {
 		} catch (err) {
 			const errResponse = err.response.data;
 			errResponse.code &&
-				alert(process.env.ERROR_code[parseInt(errResponse.code)]);
+				Swal.fire({
+					position: "top",
+					icon: "error",
+					html: `${process.env.ERROR_code[parseInt(errResponse.code)]}`,
+					showConfirmButton: false,
+					timer: 2000,
+				});
 		}
 	};
 

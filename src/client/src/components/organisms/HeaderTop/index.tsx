@@ -13,7 +13,7 @@ import useSWR from "swr";
 import HeaderTopItem from "components/atoms/HeaderTopItem";
 import { UserInfo } from "types";
 import { fetcherWithToken } from "lib/fetcher";
-import { getToken } from "utils/token";
+import { getToken } from "lib/token";
 import colors from "colors/color";
 import UserContext from "context/user";
 

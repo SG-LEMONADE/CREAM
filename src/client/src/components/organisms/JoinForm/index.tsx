@@ -6,7 +6,7 @@ import Input from "components/atoms/Input";
 import Button from "components/atoms/Button";
 import Modal from "components/molecules/Modal";
 import ProductSizeSelectGrid from "components/molecules/ProductSizeSelectGrid";
-import { validateEmailFormat, validatePwdFormat } from "utils/validate";
+import { validateEmailFormat, validatePwdFormat } from "lib/validate";
 
 import styled from "@emotion/styled";
 import Swal from "sweetalert2";

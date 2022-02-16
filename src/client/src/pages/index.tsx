@@ -7,7 +7,6 @@ import React, {
 import useSWR from "swr";
 import { fetcher } from "lib/fetcher";
 import { HomeProductInfoRes, HomeRes } from "types";
-import { validateUser } from "utils/user";
 import axios from "axios";
 import { useRouter } from "next/router";
 
@@ -19,7 +18,9 @@ import HomeTemplate from "components/templates/HomeTemplate";
 import HomeProduct from "components/organisms/HomeProduct";
 import Modal from "components/molecules/Modal";
 import ProductSmallInfo from "components/molecules/ProductSmallInfo";
+import Recommendations from "components/organisms/Recommendations";
 import ProductSizeSelectGrid from "components/molecules/ProductSizeSelectGrid";
+import { validateUser } from "lib/user";
 
 import { Oval } from "react-loader-spinner";
 
@@ -129,6 +130,10 @@ const Home: FunctionComponent = () => {
 			footer={<Footer />}
 		>
 			<HomeTemplate ads={homeData && homeData.adImageUrls}>
+				<Recommendations
+					productInfos={[]}
+					onHandleWishClick={onHandleClickWish}
+				/>
 				{homeData &&
 					homeData.sections.map((product) => (
 						<HomeProduct

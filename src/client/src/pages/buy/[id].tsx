@@ -12,6 +12,8 @@ import { ProductRes } from "types";
 import { fetcher } from "lib/fetcher";
 import axios from "axios";
 
+import Swal from "sweetalert2";
+
 const ProductBuy: FunctionComponent = () => {
 	const router = useRouter();
 	const { id, size, auction } = router.query;
@@ -40,9 +42,25 @@ const ProductBuy: FunctionComponent = () => {
 							},
 						},
 					);
-					console.log(res);
+					router.push({
+						pathname: "/buy/complete",
+						query: {
+							id: id,
+							auction: auction,
+							price: price,
+							date: date,
+						},
+					});
 				} catch (e) {
-					console.error(e);
+					const errResponse = e.response.data;
+					errResponse.code &&
+						Swal.fire({
+							position: "top",
+							icon: "error",
+							html: `${process.env.ERROR_code[parseInt(errResponse.code)]}`,
+							showConfirmButton: false,
+							timer: 2000,
+						});
 				}
 			} else {
 				// 즉시 구매
@@ -56,9 +74,25 @@ const ProductBuy: FunctionComponent = () => {
 							},
 						},
 					);
-					console.log(res);
+					router.push({
+						pathname: "/buy/complete",
+						query: {
+							id: id,
+							auction: auction,
+							price: price,
+							date: date,
+						},
+					});
 				} catch (e) {
-					console.error(e);
+					const errResponse = e.response.data;
+					errResponse.code &&
+						Swal.fire({
+							position: "top",
+							icon: "error",
+							html: `${process.env.ERROR_code[parseInt(errResponse.code)]}`,
+							showConfirmButton: false,
+							timer: 2000,
+						});
 				}
 			}
 		},

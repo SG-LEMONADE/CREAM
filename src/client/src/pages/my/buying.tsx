@@ -18,8 +18,15 @@ import { TradeHistoryRes } from "types";
 import Pagination from "rc-pagination";
 import "rc-pagination/assets/index.css";
 
+const tradeStatus = {
+	WAITING: "waitingCnt",
+	IN_PROGRESS: "inProgressCnt",
+	FINISHED: "finishedCnt",
+};
+
 const MyTradeBuying: FunctionComponent = () => {
 	const [cursor, setCursor] = useState<number>(0);
+	const [totalCnt, setTotalCnt] = useState<number>(0);
 	const [filter, setFilter] = useState<string>("WAITING");
 
 	const { data: TradeInfo } = useSWR<TradeHistoryRes>(
@@ -36,7 +43,12 @@ const MyTradeBuying: FunctionComponent = () => {
 
 	useEffect(() => {
 		setCursor(0);
+		TradeInfo && setTotalCnt(TradeInfo.counter[tradeStatus[filter]]);
 	}, [filter]);
+
+	useEffect(() => {
+		TradeInfo && setTotalCnt(TradeInfo.counter[tradeStatus[filter]]);
+	}, [TradeInfo]);
 
 	return (
 		<NavTemplate
@@ -60,7 +72,7 @@ const MyTradeBuying: FunctionComponent = () => {
 				{TradeInfo && (
 					<Pagination
 						defaultPageSize={10}
-						total={TradeInfo.counter.totalCnt}
+						total={totalCnt}
 						current={cursor + 1}
 						onChange={onHandleChange}
 						style={{ textAlign: "center", marginTop: "40px" }}
