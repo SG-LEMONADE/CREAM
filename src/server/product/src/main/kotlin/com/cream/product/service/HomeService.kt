@@ -59,22 +59,26 @@ class HomeService {
         if (userId != null) {
             val sortedRecommendedItems = ArrayList<ProductDTO>()
             val productIds = logServiceClient.getRecommendedItems(userId)
-            val unSortedRecommendItems = productRepository.getProductsWithWish(userId, 0, 30,
-                null, FilterRequestDTO(recommendation=productIds))
-                .stream()
-                .map {
-                    ProductDTO(it)
-                }.toList()
 
-            productIds.forEach {
-                for (product in unSortedRecommendItems){
-                    if (product.id == it){
-                        sortedRecommendedItems.add(product)
-                        break
+            // 만약 추천이 되어있다면 결과를 반환, 아니라면 null 을 반환
+            if (productIds.isNotEmpty()){
+                val unSortedRecommendItems = productRepository.getProductsWithWish(userId, 0, 30,
+                    null, FilterRequestDTO(recommendation=productIds))
+                    .stream()
+                    .map {
+                        ProductDTO(it)
+                    }.toList()
+
+                productIds.forEach {
+                    for (product in unSortedRecommendItems){
+                        if (product.id == it){
+                            sortedRecommendedItems.add(product)
+                            break
+                        }
                     }
                 }
+                recommendItems = sortedRecommendedItems.toList()
             }
-            recommendItems = sortedRecommendedItems.toList()
         }
 
 

@@ -12,7 +12,7 @@ class RecommendService {
 
     fun getProductsId(
         userId: Long
-    ): List<Long>{
-        return recommendRepository.findFirstByUserId(userId).recommendedItems
+    ): List<Long> {
+        return recommendRepository.findFirstByUserId(userId)?.recommendedItems ?: listOf()
     }
 }
