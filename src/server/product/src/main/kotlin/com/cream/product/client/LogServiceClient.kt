@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.*
 @FeignClient(name = "log")
 interface LogServiceClient {
 
-    @PostMapping("/prices/products/{productId}")
-    fun insertPrice(@PathVariable productId: Long, @RequestBody price: Int)
+    @PostMapping("/prices/products/{productId}/{size}")
+    fun insertPrice(@PathVariable productId: Long, @PathVariable size: String, @RequestBody price: Int)
 
     @PostMapping("/log")
     fun insertUserLogData(@RequestBody userLogDTO: UserLogDTO)

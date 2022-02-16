@@ -15,5 +15,8 @@ open class Price(
     var price: Long = 0,
 
     @Field
+    var size: String? = null,
+
+    @Field
     var createdDate: LocalDate = LocalDate.now()
 )
