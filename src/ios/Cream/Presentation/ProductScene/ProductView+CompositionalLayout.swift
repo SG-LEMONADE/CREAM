@@ -18,6 +18,7 @@ extension ProductView {
         self.ItemInfoListView.register(ReleaseInfoCell.self, forCellWithReuseIdentifier: ReleaseInfoCell.reuseIdentifier)
         self.ItemInfoListView.register(ShopBannerCell.self, forCellWithReuseIdentifier: ShopBannerCell.reuseIdentifier)
         self.ItemInfoListView.register(HomeProductCell.self, forCellWithReuseIdentifier: HomeProductCell.reuseIdentifier)
+        self.ItemInfoListView.register(ChartCell.self, forCellWithReuseIdentifier: ChartCell.reuseIdentifier)
         self.ItemInfoListView.register(HomeViewCategoryHeaderView.self,
                                        forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
                                        withReuseIdentifier: HomeViewCategoryHeaderView.reuseIdentifier)

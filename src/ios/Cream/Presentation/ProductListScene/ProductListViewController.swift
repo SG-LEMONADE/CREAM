@@ -84,7 +84,11 @@ final class ProductListViewController: DIViewController<ProductListViewModelInte
     }
     
     private func setupNavigationBarItem() {
-        let backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)
+        let backBarButtonItem = UIBarButtonItem(title: nil,
+                                                style: .plain,
+                                                target: self,
+                                                action: nil)
+        
         backBarButtonItem.tintColor = .systemGray
         navigationItem.backBarButtonItem = backBarButtonItem
         navigationController?.navigationBar.backgroundColor = .clear
@@ -99,6 +103,12 @@ final class ProductListViewController: DIViewController<ProductListViewModelInte
                 self.productListView.shopCollectionView.reloadSections(.init(integer: 1))
                 self.delegate?.didChangeStandard(to: self.viewModel.sortStandard.description)
                 self.productListView.indicatorView.stopAnimating()
+            }
+        }
+        viewModel.error.bind { [weak self] error in
+            if case .networkUnconnected = error {
+                self?.productListView.shopCollectionView.setEmptyMessage(error.userMessage)
+                self?.productListView.indicatorView.stopAnimating()
             }
         }
     }
@@ -140,7 +150,7 @@ extension ProductListViewController: UICollectionViewDataSource {
             return viewModel.banners.count
         default:
             if (self.viewModel.products.value.count == 0) {
-                productListView.shopCollectionView.setEmptyMessage("검색 결과가 없습니다.")
+                productListView.shopCollectionView.setEmptyMessage(viewModel.errorTemplateMessage)
                 productListView.shopCollectionView.isScrollEnabled = false
             } else {
                 productListView.shopCollectionView.restore()
@@ -202,7 +212,7 @@ extension ProductListViewController: UICollectionViewDataSource {
 extension ProductListViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if indexPath.section == .one {
-            guard let baseURL = URL(string: "http://1.231.16.189:8081")
+            guard let baseURL = URL(string: Integrator.gateWayURL)
             else { return }
             
             let config: NetworkConfigurable              = ApiDataNetworkConfig(baseURL: baseURL)
@@ -222,6 +232,7 @@ extension ProductListViewController: UICollectionViewDelegate {
 
 extension ProductListViewController: UISearchBarDelegate {
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        viewModel.errorTemplateMessage = ""
         _ = viewModel.viewDidLoad()
     }
     
@@ -260,7 +271,7 @@ extension ProductListViewController: ShopViewFilterHeaderViewDelegate {
             }
             viewModel.didPresentFilterModal()
             
-            guard let baseURL = URL(string: "http://1.231.16.189:8081")
+            guard let baseURL = URL(string: Integrator.gateWayURL)
             else { fatalError() }
             
             let config               = ApiDataNetworkConfig(baseURL: baseURL)

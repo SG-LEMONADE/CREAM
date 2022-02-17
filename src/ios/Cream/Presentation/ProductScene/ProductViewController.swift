@@ -64,6 +64,18 @@ class ProductViewController: DIViewController<ProductViewModelInterface> {
             self?.productView.tradeContainerView.buyButton.setPrice(product.lowestAsk)
             self?.productView.tradeContainerView.wishButton.configure(product)
         }
+        viewModel.selecteSize.bind { [weak self] size in
+            if let askPrice = self?.viewModel.item.value.askPrices[size] {
+                askPrice.flatMap {
+                    self?.productView.tradeContainerView.buyButton.setPrice($0)
+                }
+            }
+            if let bidPrice =  self?.viewModel.item.value.bidPrices[size] {
+                bidPrice.flatMap {
+                    self?.productView.tradeContainerView.sellButton.setPrice($0)
+                }
+            }
+        }
     }
 }
 
@@ -225,8 +237,8 @@ extension ProductViewController: UICollectionViewDataSource, UICollectionViewDel
             return cell
             
         case .priceChart:
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ShopBannerCell.reuseIdentifier,
-                                                                for: indexPath) as? ShopBannerCell
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ChartCell.reuseIdentifier,
+                                                                for: indexPath) as? ChartCell
             else { return UICollectionViewCell() }
             
             return cell
@@ -244,7 +256,7 @@ extension ProductViewController: UICollectionViewDataSource, UICollectionViewDel
 
 extension ProductViewController: TradeDelegate {
     func moveFocusToProcessScene(selectedProduct: TradeRequest, tradeType: TradeType) {
-        guard let baseURL = URL(string: "http://1.231.16.189:8081")
+        guard let baseURL = URL(string: Integrator.gateWayURL)
         else { fatalError() }
         
         let config: NetworkConfigurable = ApiDataNetworkConfig(baseURL: baseURL)
@@ -264,7 +276,7 @@ extension ProductViewController: TradeDelegate {
         let navigationController = UINavigationController(rootViewController: vc)
         
         navigationController.modalPresentationStyle = .fullScreen
-        self.present(navigationController, animated: true, completion: nil)
+        present(navigationController, animated: true, completion: nil)
     }
 }
 
@@ -277,11 +289,14 @@ extension ProductViewController: BannerViewDelegate {
 }
 
 extension ProductViewController: ItemInfoCellDelegate {
-    // TODO: Button Tap 이후, 상품에 해당하는 사이즈 가져오기
     func didTapSizeButton() {
-        let sizeListViewController = SizeListViewController(SizeListViewModel(viewModel.item.value.sizes))
-        sizeListViewController.modalPresentationStyle = .overCurrentContext
-        self.present(sizeListViewController, animated: false)
+        let items = viewModel.item.value.askPrices.map { SelectionType.sizePrice(size: $0.key, price: $0.value) }
+        let vm = SelectViewModel(type: .sizePrice(), items: items)
+        let vc = SelectViewController(vm)
+        vc.delegate = self
+        
+        vc.modalPresentationStyle = .overCurrentContext
+        present(vc, animated: false)
     }
 }
 
@@ -292,5 +307,9 @@ extension ProductViewController: SelectDelegate {
     
     func didAppendToWishList(_ size: String) {
         viewModel.addToWishList(size: size)
+    }
+    
+    func didTapSize(_ size: String) {
+        viewModel.didSelectItem(size: size)
     }
 }

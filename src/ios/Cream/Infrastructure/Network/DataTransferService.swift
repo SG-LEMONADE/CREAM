@@ -167,3 +167,14 @@ extension DefaultDataTransferService: DataTransferService {
     }
 }
 
+extension DefaultDataTransferService {
+    static func createDefaultService() -> DataTransferService {
+        guard let baseURL = URL(string: Integrator.gateWayURL)
+        else { fatalError() }
+        
+        let config: NetworkConfigurable = ApiDataNetworkConfig(baseURL: baseURL)
+        let networkService: NetworkService = DefaultNetworkService(config: config)
+        let dataTransferService: DataTransferService = DefaultDataTransferService(with: networkService)
+        return dataTransferService
+    }
+}

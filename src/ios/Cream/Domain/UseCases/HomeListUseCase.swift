@@ -9,12 +9,13 @@ import Foundation
 
 protocol HomeListUseCaseInterface {
     func fetchHome(completion: @escaping ((Result<HomeInfo, Error>) -> Void)) -> Cancellable
+    
 }
 
 final class HomeListUseCase {
     private let repository: HomeListRepositoryInterface
     
-    init(repository: HomeListRepositoryInterface) {
+    init(_ repository: HomeListRepositoryInterface) {
         self.repository = repository
     }
 }

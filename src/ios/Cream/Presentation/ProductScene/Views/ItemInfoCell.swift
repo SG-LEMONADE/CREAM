@@ -92,9 +92,9 @@ class ItemInfoCell: UICollectionViewCell {
         applyViewSettings()
     }
     
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        applyViewSettings()
+        fatalError("init(coder:) has not been implemented")
     }
 }
 
@@ -133,11 +133,18 @@ extension ItemInfoCell {
 
 // MARK: Configure Cell Info
 extension ItemInfoCell {
-    func configure(_ product: ProductDetail) {
+    func configure(_ product: ProductDetail, size: String? = nil) {
         brandLabel.text = product.brandName
         detailLabel.text = product.originalName
         translateLabel.text = product.translatedName
-        priceLabel.text = product.originalPrice.priceFormat
+        if let size = size {
+            product.askPrices[size].flatMap { value in
+                priceLabel.text = value != nil ? "\(String(describing: value)) 원" : "-"
+            }
+        } else {
+            priceLabel.text = product.lowestAsk != nil ? "\(String(describing: product.lowestAsk)) 원" : "-"
+        }
+        
         
         recentDescLabel.text = "최근 거래가"
         sizeButton.setTitle("모든 사이즈", for: .normal)

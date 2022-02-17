@@ -55,7 +55,7 @@ protocol SelectViewModelInterface: SelectViewModelInput, SelectViewModelOutput {
 
 final class SelectViewModel: SelectViewModelInterface {
     private let headerHeight: Double = 120.0
-    private let defaultCellHeight: Double = 60.0
+    private let defaultCellHeight: Double = 55.0
     
     var type: SelectionType
     var items: [SelectionType]
@@ -73,8 +73,11 @@ final class SelectViewModel: SelectViewModelInterface {
         if case .deadline = type {
             return Layout.third.description
         }
-        
+
         if items.count < 6 {
+            if case .sizePrice = type {
+                return Layout.third.description
+            }
             return Layout.list.description
         } else if items.count < 12 {
             return Layout.double.description

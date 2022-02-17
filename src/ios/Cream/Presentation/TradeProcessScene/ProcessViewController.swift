@@ -240,6 +240,7 @@ class ProcessViewController: DIViewController<ProcessViewModelInterface>, ImageL
         dismiss(animated: true, completion: nil)
     }
     
+    // MARK: 미구현
     @objc
     func didTapInspectButton() {
         print(#function)

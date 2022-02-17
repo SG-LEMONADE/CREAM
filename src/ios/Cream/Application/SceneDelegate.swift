@@ -23,13 +23,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window?.backgroundColor = .black
         let rootViewController = NavigateMenuBaseController()
         window?.rootViewController = rootViewController
-        
-//        let usecase = TradeUseCase()
-//        let vm = ProcessViewModel(usecase, tradeType: .buy, product: .create(), selectedProduct: .init(size: "250", price: nil))
-//        let vc = ProcessViewController(vm)
-//        let navVC = UINavigationController(rootViewController: vc)
-//        window?.rootViewController = navVC
-//
         window?.makeKeyAndVisible()
     }
     

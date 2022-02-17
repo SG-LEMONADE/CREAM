@@ -65,7 +65,7 @@ class MyPageViewController: DIViewController<MyPageViewModelInterface> {
     }
     
     @objc func pushToSettingViewController() {
-        guard let baseURL = URL(string: "http://1.231.16.189:8080")
+        guard let baseURL = URL(string: Integrator.gateWayURL)
         else { fatalError() }
     
         let config                  = ApiDataNetworkConfig(baseURL: baseURL)

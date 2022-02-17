@@ -41,7 +41,7 @@ extension ProductResponseDTO {
         self.relatedProducts.forEach {
             products.append($0.toDomain())
         }
-        
+
         return .init(id: product.id,
                      imageUrls: product.imageUrls,
                      brandName: product.brandName,

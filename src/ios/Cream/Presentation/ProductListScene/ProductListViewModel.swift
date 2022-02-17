@@ -21,7 +21,8 @@ protocol ProductListViewModelInput {
 }
 
 protocol ProductListViewModelOutput {
-    var error: Observable<String> { get }
+    var errorTemplateMessage: String { get set }
+    var error: Observable<ProductError> { get }
     var products: Observable<Products> { get set }
     var sortStandard: SortInfo { get set }
     var selectedFilters: Observable<SelectFilter> { get set }
@@ -35,10 +36,10 @@ protocol ProductListViewModelInterface: ProductListViewModelInput, ProductListVi
 final class ProductListViewModel: ProductListViewModelInterface {
     private let usecase: ProductUseCaseInterface
     var products: Observable<Products> = Observable([])
-    var error: Observable<String> = Observable("")
+    var error: Observable<ProductError> = Observable(.initValue)
+    var errorTemplateMessage: String = ""
     var selectedFilters: Observable<SelectFilter> = Observable(.init())
     var currentFilters: SelectFilter?
-
     private var cursor: Int = .zero
     
     private var searchWord: String?
@@ -61,7 +62,6 @@ final class ProductListViewModel: ProductListViewModelInterface {
     func viewDidLoad() {
         searchWord = nil
         selectedFilters.value.category = nil
-        print(sortStandard.description)
         let _ = usecase.fetch(page: cursor,
                               searchWord: searchWord,
                               category: selectedFilters.value.category,
@@ -69,9 +69,10 @@ final class ProductListViewModel: ProductListViewModelInterface {
                               brandId: brandId) { result in
             switch result {
             case .success(let products):
+                self.errorTemplateMessage = "데이터를 받아오지 못했습니다."
                 self.products.value = products
-            case .failure(let error):
-                print(error)
+            case .failure(let _):
+                self.error.value = .networkUnconnected
             }
         }
     }
@@ -88,8 +89,8 @@ final class ProductListViewModel: ProductListViewModelInterface {
             switch result {
             case .success(let products):
                 self.products.value = products
-            case .failure(let error):
-                print(error)
+            case .failure(let _):
+                self.error.value = .networkUnconnected
             }
         }
     }
@@ -111,9 +112,10 @@ final class ProductListViewModel: ProductListViewModelInterface {
                               brandId: brandId) { result in
             switch result {
             case .success(let products):
+                self.errorTemplateMessage = "검색 결과가 없습니다."
                 self.products.value = products
             case .failure(let error):
-                print(error)
+                self.error.value = .networkUnconnected
             }
         }
     }

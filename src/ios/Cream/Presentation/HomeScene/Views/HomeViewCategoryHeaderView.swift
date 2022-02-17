@@ -7,7 +7,6 @@
 
 import UIKit
 import SnapKit
-import SwiftUI
 
 class HomeViewCategoryHeaderView: UICollectionReusableView {
     static let reuseIdentifier = "\(HomeViewCategoryHeaderView.self)"

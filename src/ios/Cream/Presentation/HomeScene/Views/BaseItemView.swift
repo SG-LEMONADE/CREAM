@@ -112,7 +112,7 @@ extension BaseItemView: ViewConfiguration {
             $0.top.trailing.equalToSuperview().inset(10)
         }
         productImageView.snp.makeConstraints {
-            $0.top.bottom.equalTo(self.snp.top)
+            $0.top.equalTo(self.snp.top)
             $0.width.height.equalTo(self.snp.width)
             $0.leading.equalTo(self.snp.leading)
             $0.trailing.equalTo(self.snp.trailing)

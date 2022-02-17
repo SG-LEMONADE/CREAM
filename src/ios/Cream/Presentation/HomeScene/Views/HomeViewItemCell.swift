@@ -8,10 +8,16 @@
 import UIKit
 import SnapKit
 
+protocol WishButtonDelegate: AnyObject {
+    func didClickWishButton(for indexPath: IndexPath)
+}
+
 final class HomeProductCell: UICollectionViewCell {
     static let reuseIdentifier = "\(HomeProductCell.self)"
     
+    var indexPath: IndexPath = .init(index: .zero)
     var sessionTask: URLSessionDataTask?
+    weak var delegate: WishButtonDelegate?
     
     private lazy var itemView: BaseItemView = {
         let itemView = BaseItemView()
@@ -20,6 +26,7 @@ final class HomeProductCell: UICollectionViewCell {
     
     private lazy var wishButton: UIButton = {
         let button = UIButton()
+        button.addTarget(self, action: #selector(didSelectWishButton), for: .touchUpInside)
         return button
     }()
     
@@ -87,23 +94,44 @@ extension HomeProductCell {
         itemView.tradeLabel.text = viewModel.totalSaleText
         itemView.titleLabel.text = viewModel.brandName
         itemView.detailLabel.text = viewModel.originalName
-        itemView.priceLabel.text = viewModel.price
         itemView.priceExpressionLabel.text = "즉시 구매가"
-        itemView.productImageView.backgroundColor = .init(rgb: viewModel.backgroundColor.hexToInt ?? 0)
-        guard let urlString = viewModel.imageUrls.first,
-              let url = URL(string: urlString)
-        else { return }
+        if let price = viewModel.lowestAsk {
+            itemView.priceLabel.text = "\(price.priceFormat)원"
+        } else {
+            itemView.priceLabel.text = "-"
+        }
+            
         
-        sessionTask = loadImage(url: url) { [weak self] (image) in
-            DispatchQueue.main.async {
-                self?.itemView.productImageView.image = image
-            }
+        itemView.productImageView.backgroundColor = .init(rgb: viewModel.backgroundColor.hexToInt ?? 0)
+        
+        if let wishList = viewModel.wishList,
+           !wishList.isEmpty {
+            wishImageView.image = UIImage(named: "bookmark.fill")
+        } else {
+            wishImageView.image = UIImage(named: "bookmark")
         }
         
         if isRelatedItem {
             itemView.tradeLabel.text = nil
             wishButton.isHidden = true
         }
+        
+        guard let urlString = viewModel.imageUrls.first,
+              let url = URL(string: urlString)
+        else {
+            itemView.productImageView.image = UIImage(systemName: "questionmark.app.dashed")
+            return
+        }
+        
+        sessionTask = loadImage(url: url) { [weak self] (image) in
+            DispatchQueue.main.async {
+                self?.itemView.productImageView.image = image
+            }
+        }
+    }
+    
+    @objc func didSelectWishButton() {
+        delegate?.didClickWishButton(for: indexPath)
     }
 }
 

@@ -77,7 +77,7 @@ extension ProductListItemCell {
     func configure(_ viewModel: Product) {
         if let wishList = viewModel.wishList,
            wishList.isEmpty == false {
-            wishButton.setImage(UIImage(systemName: "bookmark.fill"), for: .selected)
+            wishButton.setImage(UIImage(systemName: "bookmark.fill"), for: .normal)
         } else {
             wishButton.isSelected = false
         }
@@ -96,7 +96,6 @@ extension ProductListItemCell {
             itemView.spinner.stopAnimating()
             return
         }
-        
         sessionTask = loadImage(url: url) { [weak self] (image) in
             DispatchQueue.main.async {
                 self?.itemView.productImageView.image = image

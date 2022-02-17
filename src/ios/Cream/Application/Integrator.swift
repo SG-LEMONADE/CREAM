@@ -22,6 +22,21 @@ class Integrator: NSObject {
         super.init()
         integrators = [authIntegrator]
     }
+    
+    static var gateWayURL: String {
+        get {
+            // 1
+            guard let filePath = Bundle.main.path(forResource: "API-Info", ofType: "plist") else {
+                fatalError("Couldn't find file 'API-Info.plist'.")
+            }
+            // 2
+            let plist = NSDictionary(contentsOfFile: filePath)
+            guard let value = plist?.object(forKey: "GateWay") as? String else {
+                fatalError("Couldn't find key 'GateWay' in 'API-Info.plist'.")
+            }
+            return value
+        }
+    }    
 }
 
 extension Integrator: Integratorable {
@@ -62,9 +77,9 @@ class AuthIntegrator: Integratorable {
     }
     
     private static func configureAuthInfoTransferService() -> UserUseCaseInterface {
-        guard let baseURL = URL(string: "http://1.231.16.189:8080")
+        guard let baseURL = URL(string: Integrator.gateWayURL)
         else { fatalError() }
-        
+
         let config: NetworkConfigurable = ApiDataNetworkConfig(baseURL: baseURL)
         let networkService: NetworkService = DefaultNetworkService(config: config)
         let dataTransferService: DataTransferService = DefaultDataTransferService(with: networkService)

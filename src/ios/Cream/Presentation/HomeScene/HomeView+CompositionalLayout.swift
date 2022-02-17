@@ -74,7 +74,7 @@ extension HomeView {
         section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 5, bottom: 20, trailing: 0)
         section.boundarySupplementaryItems = [
             NSCollectionLayoutBoundarySupplementaryItem(layoutSize: .init(widthDimension: .fractionalWidth(1),
-                                                                          heightDimension: .estimated(50)),
+                                                                          heightDimension: .fractionalWidth(0.2)),
                                                         elementKind: UICollectionView.elementKindSectionHeader,
                                                         alignment: .topLeading)
         ]

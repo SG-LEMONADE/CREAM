@@ -31,25 +31,25 @@ class ReleaseInfoCell: UICollectionViewCell {
         applyViewSettings()
     }
     
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        applyViewSettings()
+        fatalError("init(coder:) has not been implemented")
     }
 }
 
 extension ReleaseInfoCell: ViewConfiguration {
     func buildHierarchy() {
-        self.addSubviews(templateLabel, valueLabel)
+        addSubviews(templateLabel, valueLabel)
     }
     
     func setupConstraints() {
-        self.templateLabel.snp.makeConstraints {
+        templateLabel.snp.makeConstraints {
             $0.top.equalTo(self.snp.top).offset(5)
             $0.leading.equalTo(self.snp.leading).offset(5)
             $0.trailing.equalTo(self.snp.trailing).offset(-5)
             $0.bottom.equalTo(valueLabel.snp.top).offset(-5)
         }
-        self.valueLabel.snp.makeConstraints {
+        valueLabel.snp.makeConstraints {
             $0.leading.equalTo(self.snp.leading).offset(5)
             $0.trailing.equalTo(self.snp.trailing).offset(-5)
             $0.bottom.lessThanOrEqualTo(self.snp.bottom).offset(-5)
@@ -58,10 +58,10 @@ extension ReleaseInfoCell: ViewConfiguration {
     }
     
     func viewConfigure() {
-        self.backgroundColor = .white
-        self.layer.borderWidth = 0.5
-        self.layer.borderColor = UIColor.systemGray.cgColor
-        self.layer.cornerRadius = 10
+        backgroundColor = .white
+        layer.borderWidth = 0.5
+        layer.borderColor = UIColor.systemGray.cgColor
+        layer.cornerRadius = 10
     }
 }
 

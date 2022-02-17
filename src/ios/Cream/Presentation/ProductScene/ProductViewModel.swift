@@ -14,6 +14,7 @@ protocol ProductViewModelInput {
     func didTapSellButton()
     func removeFromWishList(size: String)
     func addToWishList(size: String)
+    func didSelectItem(size: String)
     var id: Int { get set }
 }
 
@@ -22,13 +23,14 @@ protocol ProductViewModelOutput {
     var numberOfImageUrls: Int { get }
     var releaseInfo: [(String, String)] { get }
     var numberOfSections: Int { get }
+    var selecteSize: Observable<String> { get }
 }
 
 protocol ProductViewModelInterface: ProductViewModelInput, ProductViewModelOutput { }
 
 final class ProductViewModel: ProductViewModelInterface {
     private let usecase: ProductUseCaseInterface
-    
+    var selecteSize: Observable<String> = .init("")
     var item: Observable<ProductDetail> = Observable(ProductDetail.create())
     var releaseInfo: [(String, String)] {
         var info = [(String, String)]()
@@ -66,6 +68,9 @@ final class ProductViewModel: ProductViewModelInterface {
         }
     }
     
+    func didSelectItem(size: String) {
+        self.selecteSize.value = size
+    }
     
     func didTapBuyButton() {
          
@@ -78,8 +83,8 @@ final class ProductViewModel: ProductViewModelInterface {
     func removeFromWishList(size: String) {
         usecase.addWishList(productId: id, size: size) { result in
             switch result {
-            case .success(let _):
-                print("success")
+            case .success(_):
+                break
             case .failure(let error):
                 print(error)
             }
@@ -89,8 +94,8 @@ final class ProductViewModel: ProductViewModelInterface {
     func addToWishList(size: String) {
         usecase.addWishList(productId: id, size: size) { result in
             switch result {
-            case .success(let _):
-                print("success")
+            case .success(_):
+                break
             case .failure(let error):
                 print(error)
             }

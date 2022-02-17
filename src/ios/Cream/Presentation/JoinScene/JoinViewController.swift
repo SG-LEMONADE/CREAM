@@ -112,11 +112,20 @@ extension JoinViewController {
     
     @objc
     func didSelectSneakersSize() {
-        let sizeListViewModel: SizeListViewModel = SizeListViewModel()
-        let sizeListViewController = SizeListViewController(sizeListViewModel)
-        sizeListViewController.delegate = self
-        sizeListViewController.modalPresentationStyle = .overCurrentContext
-        self.present(sizeListViewController, animated: false)
+        
+        let items = Array(0...16).map { "\($0 * 5 + 220)" }.map { SelectionType.size(size: $0) }
+        
+        let vm = SelectViewModel(type: .size(), items: items)
+        let vc = SelectViewController(vm)
+        vc.delegate = self
+        vc.modalPresentationStyle = .overCurrentContext
+        present(vc, animated: false)
+        
+//        let sizeListViewModel: SizeListViewModel = SizeListViewModel()
+//        let sizeListViewController = SizeListViewController(sizeListViewModel)
+//        sizeListViewController.delegate = self
+//        sizeListViewController.modalPresentationStyle = .overCurrentContext
+//        self.present(sizeListViewController, animated: false)
     }
     
     @objc
@@ -164,8 +173,14 @@ extension JoinViewController: UITextFieldDelegate {
 }
 
 // MARK: SizeSelectDelegate
-extension JoinViewController: SizeSelectDelegate {
-    func configureShoesSize(_ size: Int) {
-        self.viewModel.shoeSize.value = size
+//extension JoinViewController: SizeSelectDelegate {
+//    func configureShoesSize(_ size: Int) {
+//        self.viewModel.shoeSize.value = size
+//    }
+//}
+
+extension JoinViewController: SelectDelegate {
+    func didTapSize(_ size: String) {
+        viewModel.shoeSize.value = Int(size) ?? 0
     }
 }

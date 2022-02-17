@@ -10,6 +10,9 @@ import Foundation
 protocol HomeViewModelInput {
     func viewDidLoad()
     func didTapProduct(indexPath: IndexPath)
+    func removeFromWishList(size: String)
+    func addToWishList(size: String)
+    func didTapWishButton(id: Int)
 }
 
 protocol HomeViewModelOutput {
@@ -21,8 +24,10 @@ protocol HomeViewModelInterface: HomeViewModelInput, HomeViewModelOutput { }
 
 final class HomeViewModel: HomeViewModelInterface {
     var homeInfo: Observable<HomeInfo> = Observable(.init(ads: [], sections: []))
-    var usecase: HomeListUseCaseInterface
+    private let homeUseCase: HomeListUseCaseInterface
+    private let productUseCase: ProductUseCaseInterface
     
+    var currentWishItem: Int? = nil
     var numberOfSections: Int {
         return homeInfo.value.sections.count * 2
     }
@@ -31,12 +36,13 @@ final class HomeViewModel: HomeViewModelInterface {
         homeInfo.value.sections[0].products.count
     }
     
-    init(_ usecase: HomeListUseCaseInterface) {
-        self.usecase = usecase
+    init(_ homeUseCase: HomeListUseCaseInterface, _ productUseCase: ProductUseCaseInterface) {
+        self.homeUseCase = homeUseCase
+        self.productUseCase = productUseCase
     }
     
     func viewDidLoad() {
-        _ = usecase.fetchHome { result in
+        _ = homeUseCase.fetchHome { result in
             switch result {
             case .success(let homeInfo):
                 self.homeInfo.value = homeInfo
@@ -45,8 +51,39 @@ final class HomeViewModel: HomeViewModelInterface {
             }
         }
     }
+    func didTapWishButton(id: Int) {
+        currentWishItem = id
+    }
     
     func didTapProduct(indexPath: IndexPath) {
         // TODO: CollectionView Click Event 발생 시
+    }
+    
+    func removeFromWishList(size: String) {
+        guard let currentWishItem = currentWishItem
+        else { return }
+
+        productUseCase.addWishList(productId: currentWishItem, size: size) { result in
+            switch result {
+            case .success(_):
+                break
+            case .failure(let error):
+                print(error)
+            }
+        }
+    }
+
+    func addToWishList(size: String) {
+        guard let currentWishItem = currentWishItem
+        else { return }
+
+        productUseCase.addWishList(productId: currentWishItem, size: size) { result in
+            switch result {
+            case .success(_):
+                break
+            case .failure(let error):
+                print(error)
+            }
+        }
     }
 }
