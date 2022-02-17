@@ -202,9 +202,9 @@ extension TradeButton: ViewConfiguration {
 extension TradeButton {
     func setPrice(_ price: Int?) {
         if let price = price {
-            DispatchQueue.main.async {
-                self.priceLabel.text = "\(price.priceFormat)원"
-            }
+            self.priceLabel.text = "\(price.priceFormat)원"
+        } else {
+            self.priceLabel.text = "\(tradeType.labelText)"
         }
     }
 }

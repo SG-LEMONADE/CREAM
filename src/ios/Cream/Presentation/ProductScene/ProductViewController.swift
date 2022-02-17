@@ -59,21 +59,22 @@ class ProductViewController: DIViewController<ProductViewModelInterface> {
     func bindViewModel() {
         viewModel.item.bind { [weak self] product in
             self?.productView.ItemInfoListView.reloadData()
-            // TODO: button Info Setting
             self?.productView.tradeContainerView.sellButton.setPrice(product.highestBid)
             self?.productView.tradeContainerView.buyButton.setPrice(product.lowestAsk)
             self?.productView.tradeContainerView.wishButton.configure(product)
         }
         viewModel.selecteSize.bind { [weak self] size in
-            if let askPrice = self?.viewModel.item.value.askPrices[size] {
-                askPrice.flatMap {
-                    self?.productView.tradeContainerView.buyButton.setPrice($0)
-                }
+            if let _askPrice = self?.viewModel.item.value.askPrices[size],
+               let askPrice = _askPrice {
+                self?.productView.tradeContainerView.buyButton.setPrice(askPrice)
+            } else {
+                self?.productView.tradeContainerView.buyButton.setPrice(nil)
             }
-            if let bidPrice =  self?.viewModel.item.value.bidPrices[size] {
-                bidPrice.flatMap {
-                    self?.productView.tradeContainerView.sellButton.setPrice($0)
-                }
+            if let _bidPrice =  self?.viewModel.item.value.bidPrices[size],
+               let bidPrice = _bidPrice {
+                self?.productView.tradeContainerView.sellButton.setPrice(bidPrice)
+            } else {
+                self?.productView.tradeContainerView.sellButton.setPrice(nil)
             }
         }
     }
@@ -103,7 +104,7 @@ extension ProductViewController {
         } else {
             items = item.sizes.map{ SelectionType.wish(size: $0, isSelected: false) }
         }
-    
+        
         let vm = SelectViewModel(type: .wish(), items: items)
         let vc = SelectViewController(vm)
         vc.selectCompleteHandler = { [weak self] in
@@ -146,8 +147,8 @@ extension ProductViewController: UICollectionViewDataSource, UICollectionViewDel
         switch kind {
         case UICollectionView.elementKindSectionHeader:
             guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind,
-                                                                                   withReuseIdentifier: HomeViewCategoryHeaderView.reuseIdentifier,
-                                                                                   for: indexPath) as? HomeViewCategoryHeaderView
+                                                                               withReuseIdentifier: HomeViewCategoryHeaderView.reuseIdentifier,
+                                                                               for: indexPath) as? HomeViewCategoryHeaderView
             else { return UICollectionReusableView() }
             
             header.configure(brandInfo: viewModel.item.value.brandName)
@@ -218,7 +219,7 @@ extension ProductViewController: UICollectionViewDataSource, UICollectionViewDel
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ReleaseInfoCell.reuseIdentifier, for: indexPath) as? ReleaseInfoCell
             else { return UICollectionViewCell() }
             cell.configure(with: viewModel.releaseInfo[indexPath.item])
-           return cell
+            return cell
             
         case .delivery:
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ShopBannerCell.reuseIdentifier,
@@ -309,7 +310,7 @@ extension ProductViewController: SelectDelegate {
         viewModel.addToWishList(size: size)
     }
     
-    func didTapSize(_ size: String) {
+    func didSelectItem(_ size: String) {
         viewModel.didSelectItem(size: size)
     }
 }

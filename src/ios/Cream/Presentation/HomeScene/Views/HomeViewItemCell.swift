@@ -71,7 +71,7 @@ extension HomeProductCell: ViewConfiguration {
             $0.leading.trailing.top.equalToSuperview()
             $0.bottom.equalTo(self.snp.bottom).offset(-10)
         }
-
+        
         wishImageView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
@@ -100,7 +100,7 @@ extension HomeProductCell {
         } else {
             itemView.priceLabel.text = "-"
         }
-            
+        
         
         itemView.productImageView.backgroundColor = .init(rgb: viewModel.backgroundColor.hexToInt ?? 0)
         
@@ -116,16 +116,24 @@ extension HomeProductCell {
             wishButton.isHidden = true
         }
         
+        
+        
         guard let urlString = viewModel.imageUrls.first,
               let url = URL(string: urlString)
         else {
             itemView.productImageView.image = UIImage(systemName: "questionmark.app.dashed")
             return
         }
-        
-        sessionTask = loadImage(url: url) { [weak self] (image) in
-            DispatchQueue.main.async {
+        if let image = imageCache.image(forKey: urlString) {
+            DispatchQueue.main.async { [weak self] in
                 self?.itemView.productImageView.image = image
+            }
+        } else {
+            sessionTask = loadImage(url: url) { (image) in
+                image.flatMap { imageCache.add($0, forKey: urlString) }
+                DispatchQueue.main.async { [weak self] in
+                    self?.itemView.productImageView.image = image
+                }
             }
         }
     }

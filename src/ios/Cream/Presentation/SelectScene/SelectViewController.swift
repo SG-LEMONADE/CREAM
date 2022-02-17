@@ -218,6 +218,7 @@ extension SelectViewController: UICollectionViewDelegate {
             dismissView()
         case .sizePrice:
             if case let .sizePrice(size, _) = value {
+                print(size)
                 delegate?.didSelectItem?(size)
             }
             dismissView()

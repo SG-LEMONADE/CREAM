@@ -8,10 +8,10 @@
 import UIKit
 import SnapKit
 
-final class ProductListItemCell: UICollectionViewCell {
+final class ProductListItemCell: UICollectionViewCell, ImageLoadable {
     static let reuseIdentifier = "\(HomeProductCell.self)"
     
-    var sessionTask: URLSessionDataTask?
+    var session: URLSessionDataTask?
     
     private lazy var itemView: BaseItemView = {
         let itemView = BaseItemView()
@@ -40,7 +40,7 @@ final class ProductListItemCell: UICollectionViewCell {
     }
     
     override func prepareForReuse() {
-        sessionTask?.cancel()
+        session?.cancel()
         
         self.itemView.productImageView.image = nil
         self.itemView.titleLabel.text = nil
@@ -96,25 +96,20 @@ extension ProductListItemCell {
             itemView.spinner.stopAnimating()
             return
         }
-        sessionTask = loadImage(url: url) { [weak self] (image) in
-            DispatchQueue.main.async {
+        
+        if let image = imageCache.image(forKey: urlString) {
+            DispatchQueue.main.async { [weak self] in
                 self?.itemView.productImageView.image = image
                 self?.itemView.spinner.stopAnimating()
             }
+        } else {
+            session = loadImage(url: url) { (image) in
+                image.flatMap { imageCache.add($0, forKey: urlString) }
+                DispatchQueue.main.async { [weak self] in
+                    self?.itemView.productImageView.image = image
+                    self?.itemView.spinner.stopAnimating()
+                }
+            }
         }
-    }
-}
-
-extension ProductListItemCell {
-    func loadImage(url: URL, completion: @escaping (UIImage?) -> Void) -> URLSessionDataTask {
-        let task = URLSession.shared.dataTask(with: url) { data, _, _ in
-            guard let data = data
-            else { return }
-            
-            let image = UIImage(data: data)
-            completion(image)
-        }
-        task.resume()
-        return task
     }
 }

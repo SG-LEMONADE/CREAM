@@ -7,9 +7,9 @@
 
 import UIKit
 
-final class ShopBannerCell: UICollectionViewCell {
+final class ShopBannerCell: UICollectionViewCell, ImageLoadable {
     
-    var sessionTask: URLSessionDataTask?
+    var session: URLSessionDataTask?
     
     static let reuseIdentifier = "\(ShopBannerCell.self)"
     
@@ -32,7 +32,7 @@ final class ShopBannerCell: UICollectionViewCell {
     override func prepareForReuse() {
         self.imageView.image = nil
         self.imageView.backgroundColor = nil
-        self.sessionTask = nil
+        self.session = nil
     }
 }
 // MARK: - ViewConfiguration
@@ -50,22 +50,9 @@ extension ShopBannerCell: ViewConfiguration {
 
 // MARK: - Configure Cell
 extension ShopBannerCell {
-    func loadImage(url: URL, completion: @escaping (UIImage?) -> Void) -> URLSessionDataTask {
-        let task = URLSession.shared.dataTask(with: url) { data, Response, error in
-            guard let data = data
-            else { return }
-            
-            let image = UIImage(data: data)
-            completion(image)
-        }
-        task.resume()
-        
-        return task
-    }
-    
     func configure(_ image: String) {
         guard let url = URL(string: image) else { return }
-        sessionTask = loadImage(url: url) { [weak self] (image) in
+        session = loadImage(url: url) { [weak self] (image) in
             DispatchQueue.main.async {
                 self?.imageView.image = image
             }

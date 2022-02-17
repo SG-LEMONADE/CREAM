@@ -141,6 +141,7 @@
 		7BF4CEA827BD524C001AF601 /* DeadlineCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BF4CEA727BD524C001AF601 /* DeadlineCell.swift */; };
 		7BF4CEAF27BE38B4001AF601 /* ChartCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BF4CEAE27BE38B4001AF601 /* ChartCell.swift */; };
 		7BF4CEB827BE497D001AF601 /* API-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7BF4CEB727BE497D001AF601 /* API-Info.plist */; };
+		7BF4CEBA27BE942A001AF601 /* ImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BF4CEB927BE942A001AF601 /* ImageCache.swift */; };
 		7BF82E0227A2CD18007E0A79 /* JoinRequestDTO+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BF82E0127A2CD17007E0A79 /* JoinRequestDTO+Mapping.swift */; };
 		7BF82E0427A2CD2B007E0A79 /* JoinResponseDTO+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BF82E0327A2CD2B007E0A79 /* JoinResponseDTO+Mapping.swift */; };
 		7BF82E0627A38558007E0A79 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BF82E0527A38558007E0A79 /* User.swift */; };
@@ -299,6 +300,7 @@
 		7BF4CEA727BD524C001AF601 /* DeadlineCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeadlineCell.swift; sourceTree = "<group>"; };
 		7BF4CEAE27BE38B4001AF601 /* ChartCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartCell.swift; sourceTree = "<group>"; };
 		7BF4CEB727BE497D001AF601 /* API-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "API-Info.plist"; path = "/Users/wankikim-MN/Documents/github/CREAM/src/ios/Cream/API-Info.plist"; sourceTree = "<absolute>"; };
+		7BF4CEB927BE942A001AF601 /* ImageCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCache.swift; sourceTree = "<group>"; };
 		7BF82E0127A2CD17007E0A79 /* JoinRequestDTO+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "JoinRequestDTO+Mapping.swift"; sourceTree = "<group>"; };
 		7BF82E0327A2CD2B007E0A79 /* JoinResponseDTO+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "JoinResponseDTO+Mapping.swift"; sourceTree = "<group>"; };
 		7BF82E0527A38558007E0A79 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
@@ -395,6 +397,7 @@
 				7BF82E1827A56C8B007E0A79 /* ErrorMessage.swift */,
 				7B5EEE4F27A95DCB00990E37 /* ImageLoader.swift */,
 				7B5EEE9727B7BEF900990E37 /* ErrorList.swift */,
+				7BF4CEB927BE942A001AF601 /* ImageCache.swift */,
 			);
 			path = SupportFile;
 			sourceTree = "<group>";
@@ -1155,6 +1158,7 @@
 				7BF82E1527A54944007E0A79 /* SizeListViewModel.swift in Sources */,
 				7B5EEE6C27B01AA600990E37 /* HomeView+CompositionalLayout.swift in Sources */,
 				7B5EEE8327B4236600990E37 /* Int+.swift in Sources */,
+				7BF4CEBA27BE942A001AF601 /* ImageCache.swift in Sources */,
 				7B5EEE5027A95DCB00990E37 /* ImageLoader.swift in Sources */,
 				7BF82E0B27A38BB5007E0A79 /* UserRepository.swift in Sources */,
 				7B8EAA8A27A17C7600B07259 /* JoinView.swift in Sources */,
