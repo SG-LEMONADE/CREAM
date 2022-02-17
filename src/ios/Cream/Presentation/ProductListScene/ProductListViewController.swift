@@ -99,7 +99,6 @@ final class ProductListViewController: DIViewController<ProductListViewModelInte
             DispatchQueue.main.async {
                 guard let self = self
                 else { return }
-                
                 self.productListView.shopCollectionView.reloadSections(.init(integer: 1))
                 self.delegate?.didChangeStandard(to: self.viewModel.sortStandard.description)
                 self.productListView.indicatorView.stopAnimating()
@@ -210,6 +209,13 @@ extension ProductListViewController: UICollectionViewDataSource {
 }
 
 extension ProductListViewController: UICollectionViewDelegate {
+    
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        if viewModel.products.value.count - indexPath.item == 5 {
+            viewModel.didScroll()
+        }
+    }
+    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if indexPath.section == .one {
             guard let baseURL = URL(string: Integrator.gateWayURL)
