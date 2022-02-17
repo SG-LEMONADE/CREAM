@@ -40,7 +40,7 @@
 
 <br />
 
-<p align="center"><img src="" width='80%' /></p>
+<p align="center"><img src="https://user-images.githubusercontent.com/52649378/154406556-0fdb6a31-6964-45cc-a6dc-236c62e224eb.gif" width='80%' /></p>
 
 <br />
 
