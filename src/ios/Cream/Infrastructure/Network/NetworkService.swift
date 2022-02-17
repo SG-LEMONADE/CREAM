@@ -137,6 +137,7 @@ extension DefaultNetworkService: NetworkService {
     public func request(endpoint: Requestable, completion: @escaping CompletionHandler) -> NetworkCancellable? {
         do {
             let urlRequest = try endpoint.urlRequest(with: config)
+            
             return request(request: urlRequest, completion: completion)
         } catch {
             completion(.failure(.urlGeneration))

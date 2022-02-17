@@ -125,7 +125,8 @@ struct APIEndpoints {
         
         return Endpoint(path: "products",
                         method: .get,
-                        headerParamaters: ["Content-Type":"application/json"],
+                        headerParamaters: ["Content-Type":"application/json",
+                                           "userId": "2"],
                         queryParameters: queryParameters)
     }
     
@@ -185,8 +186,9 @@ struct APIEndpoints {
                               size: String) -> Endpoint<Void> {
         let headerParameters: [String: String] = ["Content-Type": "application/json",
                                                   "userId": "2"]
-        
-        return Endpoint(path: "wish/\(productId)/\(size)",
+        let safeString = size.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+        print(safeString)
+        return Endpoint(path: "wish/\(productId)/\(safeString!)",
                         method: .post,
                         headerParamaters: headerParameters)
     }

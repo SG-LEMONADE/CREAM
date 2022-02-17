@@ -84,7 +84,11 @@ final class ProductListViewController: DIViewController<ProductListViewModelInte
     }
     
     private func setupNavigationBarItem() {
-        let backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)
+        let backBarButtonItem = UIBarButtonItem(title: nil,
+                                                style: .plain,
+                                                target: self,
+                                                action: nil)
+        
         backBarButtonItem.tintColor = .systemGray
         navigationItem.backBarButtonItem = backBarButtonItem
         navigationController?.navigationBar.backgroundColor = .clear

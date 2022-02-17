@@ -30,7 +30,15 @@ class HomeViewController: DIViewController<HomeViewModelInterface> {
                                                  style: .plain,
                                                  target: self,
                                                  action: #selector(alertBarButtonItemTapped))
+        let backBarButtonItem = UIBarButtonItem(title: nil,
+                                                style: .plain,
+                                                target: self,
+                                                action: nil)
+        backBarButtonItem.tintColor = .systemGray
+        
+        navigationItem.backBarButtonItem = backBarButtonItem
         navigationItem.setRightBarButton(alertBarButtonItem, animated: false)
+        navigationController?.navigationBar.backgroundColor = .clear
         navigationController?.navigationBar.tintColor = .black
     }
     

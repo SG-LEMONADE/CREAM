@@ -39,6 +39,7 @@ final class HomeViewModel: HomeViewModelInterface {
         _ = usecase.fetchHome { result in
             switch result {
             case .success(let homeInfo):
+                print(homeInfo)
                 self.homeInfo.value = homeInfo
             case .failure(let error):
                 print(error)

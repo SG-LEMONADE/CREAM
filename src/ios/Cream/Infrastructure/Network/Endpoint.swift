@@ -47,6 +47,7 @@ extension Requestable {
     public func urlRequest(with config: NetworkConfigurable) throws -> URLRequest {
 
         let url = try self.url(with: config)
+        print(url)
         var urlRequest = URLRequest(url: url)
         var allHeaders: [String: String] = config.headers
         headerParamaters.forEach { allHeaders.updateValue($1, forKey: $0) }

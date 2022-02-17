@@ -65,7 +65,5 @@ extension WishButton {
         } else {
             self.upperImageView.image = UIImage(systemName: "bookmark")
         }
-        
-        
     }
 }

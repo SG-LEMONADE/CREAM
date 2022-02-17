@@ -90,19 +90,31 @@ extension HomeProductCell {
         itemView.priceLabel.text = viewModel.price
         itemView.priceExpressionLabel.text = "즉시 구매가"
         itemView.productImageView.backgroundColor = .init(rgb: viewModel.backgroundColor.hexToInt ?? 0)
-        guard let urlString = viewModel.imageUrls.first,
-              let url = URL(string: urlString)
-        else { return }
         
-        sessionTask = loadImage(url: url) { [weak self] (image) in
-            DispatchQueue.main.async {
-                self?.itemView.productImageView.image = image
-            }
+        print(viewModel.wishList)
+        if let wishList = viewModel.wishList,
+           !wishList.isEmpty {
+            wishImageView.image = UIImage(named: "bookmark.fill")
+        } else {
+            wishImageView.image = UIImage(named: "bookmark")
         }
         
         if isRelatedItem {
             itemView.tradeLabel.text = nil
             wishButton.isHidden = true
+        }
+        
+        guard let urlString = viewModel.imageUrls.first,
+              let url = URL(string: urlString)
+        else {
+            itemView.productImageView.image = UIImage(systemName: "questionmark.app.dashed")
+            return
+        }
+        
+        sessionTask = loadImage(url: url) { [weak self] (image) in
+            DispatchQueue.main.async {
+                self?.itemView.productImageView.image = image
+            }
         }
     }
 }

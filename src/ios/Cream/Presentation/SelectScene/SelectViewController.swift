@@ -14,6 +14,7 @@ import UIKit
     @objc optional func didTapSort(by sort: String)
     @objc optional func didRemoveFromWishlist(_ size: String)
     @objc optional func didAppendToWishList(_ size: String)
+    @objc optional func didTapSize(_ size: String)
 }
 
 final class SelectViewController: DIViewController<SelectViewModelInterface> {

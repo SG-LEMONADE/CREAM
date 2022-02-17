@@ -75,6 +75,7 @@ extension ProductListItemCell: ViewConfiguration {
 // MARK: - Cell Configure
 extension ProductListItemCell {
     func configure(_ viewModel: Product) {
+        print(viewModel)
         if let wishList = viewModel.wishList,
            wishList.isEmpty == false {
             wishButton.setImage(UIImage(systemName: "bookmark.fill"), for: .selected)
