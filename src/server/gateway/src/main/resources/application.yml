@@ -21,11 +21,12 @@ spring:
         - id: product
           uri: lb://PRODUCT
           predicates:
-            - Path=/**
+            - Path=/filters, /, /products/**, /trades/**, /wish/**
         - id: log
           uri: lb://LOG
           predicates:
-            - Path=/log/**
+            - Path=/prices/**, /recommendations/**, /log/**
+
 auth-included-path: /users/me, /users/validate, /users/logout, /users/update
 
 secret-key: 
