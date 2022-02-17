@@ -8,10 +8,16 @@
 import UIKit
 import SnapKit
 
+protocol WishButtonDelegate: AnyObject {
+    func didClickWishButton(for indexPath: IndexPath)
+}
+
 final class HomeProductCell: UICollectionViewCell {
     static let reuseIdentifier = "\(HomeProductCell.self)"
     
+    var indexPath: IndexPath = .init(index: .zero)
     var sessionTask: URLSessionDataTask?
+    weak var delegate: WishButtonDelegate?
     
     private lazy var itemView: BaseItemView = {
         let itemView = BaseItemView()
@@ -20,6 +26,7 @@ final class HomeProductCell: UICollectionViewCell {
     
     private lazy var wishButton: UIButton = {
         let button = UIButton()
+        button.addTarget(self, action: #selector(didSelectWishButton), for: .touchUpInside)
         return button
     }()
     
@@ -87,8 +94,14 @@ extension HomeProductCell {
         itemView.tradeLabel.text = viewModel.totalSaleText
         itemView.titleLabel.text = viewModel.brandName
         itemView.detailLabel.text = viewModel.originalName
-        itemView.priceLabel.text = viewModel.price
         itemView.priceExpressionLabel.text = "즉시 구매가"
+        if let price = viewModel.lowestAsk {
+            itemView.priceLabel.text = "\(price.priceFormat)원"
+        } else {
+            itemView.priceLabel.text = "-"
+        }
+            
+        
         itemView.productImageView.backgroundColor = .init(rgb: viewModel.backgroundColor.hexToInt ?? 0)
         
         if let wishList = viewModel.wishList,
@@ -115,6 +128,10 @@ extension HomeProductCell {
                 self?.itemView.productImageView.image = image
             }
         }
+    }
+    
+    @objc func didSelectWishButton() {
+        delegate?.didClickWishButton(for: indexPath)
     }
 }
 

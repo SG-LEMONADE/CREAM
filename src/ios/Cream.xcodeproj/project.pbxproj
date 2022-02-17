@@ -505,7 +505,6 @@
 		7B5EEE4027A819D400990E37 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				7B54D7032790351400214664 /* SizeListCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -524,7 +523,6 @@
 		7B5EEE5927AB7D9900990E37 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				7B17625127BBC0BC0082B79B /* SizePriceCell.swift */,
 				7B5EEE5527A9A0B000990E37 /* TradePriceView.swift */,
 			);
 			path = Views;
@@ -806,6 +804,8 @@
 			isa = PBXGroup;
 			children = (
 				7BF4CEA327BD2B7E001AF601 /* WishCell.swift */,
+				7B54D7032790351400214664 /* SizeListCell.swift */,
+				7B17625127BBC0BC0082B79B /* SizePriceCell.swift */,
 				7BF4CEA527BD2DDD001AF601 /* SortCell.swift */,
 				7BF4CEA727BD524C001AF601 /* DeadlineCell.swift */,
 			);

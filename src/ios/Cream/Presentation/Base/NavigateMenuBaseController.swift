@@ -49,9 +49,10 @@ final class NavigateMenuBaseController: UITabBarController {
                 let config: NetworkConfigurable                             = ApiDataNetworkConfig(baseURL: baseURL)
                 let networkService: NetworkService                          = DefaultNetworkService(config: config)
                 let dataTransferService: DataTransferService                = DefaultDataTransferService(with: networkService)
-                let repository: HomeListRepositoryInterface                 = ProductRepository(dataTransferService: dataTransferService)
-                let usecase: HomeListUseCaseInterface                       = HomeListUseCase(repository: repository)
-                let viewModel: HomeViewModelInterface                       = HomeViewModel(usecase)
+                let repository                                              = ProductRepository(dataTransferService: dataTransferService)
+                let productUseCase: ProductUseCaseInterface                 = ProductUseCase(repository)
+                let homeUseCase: HomeListUseCaseInterface                   = HomeListUseCase(repository)
+                let viewModel: HomeViewModelInterface                       = HomeViewModel(homeUseCase, productUseCase)
                 let homeViewController = HomeViewController(viewModel)
                 
                 return homeViewController

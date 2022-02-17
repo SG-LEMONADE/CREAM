@@ -276,7 +276,7 @@ extension ProductViewController: TradeDelegate {
         let navigationController = UINavigationController(rootViewController: vc)
         
         navigationController.modalPresentationStyle = .fullScreen
-        self.present(navigationController, animated: true, completion: nil)
+        present(navigationController, animated: true, completion: nil)
     }
 }
 
@@ -289,7 +289,6 @@ extension ProductViewController: BannerViewDelegate {
 }
 
 extension ProductViewController: ItemInfoCellDelegate {
-    // TODO: Button Tap 이후, 상품에 해당하는 사이즈 가져오기
     func didTapSizeButton() {
         let items = viewModel.item.value.askPrices.map { SelectionType.sizePrice(size: $0.key, price: $0.value) }
         let vm = SelectViewModel(type: .sizePrice(), items: items)

@@ -75,6 +75,7 @@ extension ProductInfoView: ViewConfiguration {
     }
     
     func setupConstraints() {
+        containerStackView.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
         modelImageView.snp.makeConstraints {
             $0.width.equalTo(self.snp.width).multipliedBy(0.25)
             $0.width.equalTo(modelImageView.snp.height)
@@ -266,7 +267,7 @@ extension TradeView: ViewConfiguration {
             $0.height.equalTo(60)
             $0.leading.equalTo(self.snp.leading).inset(10)
             $0.trailing.equalTo(self.snp.trailing).inset(10)
-            $0.bottom.equalTo(self.safeAreaLayoutGuide.snp.bottom)
+            $0.bottom.equalTo(self.snp.bottom).offset(-10)
         }
     }
     

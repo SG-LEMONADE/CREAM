@@ -10,6 +10,8 @@ import UIKit
 class HomeViewController: DIViewController<HomeViewModelInterface> {
     weak var delegate: FooterScrollDelegate?
     
+    private var currentIndexPath: Int = .zero
+
     private lazy var homeView = HomeView()
     
     // MARK: - View Life Cycle
@@ -137,6 +139,8 @@ extension HomeViewController: UICollectionViewDataSource {
                                                                 for: indexPath) as? HomeProductCell else
                                                                 { return UICollectionViewCell() }
             cell.configure(viewModel.homeInfo.value.sections[indexPath.section/2].products[indexPath.item])
+            cell.indexPath = indexPath
+            cell.delegate = self
             return cell
         }
     }
@@ -172,5 +176,46 @@ extension HomeViewController: UICollectionViewDataSource {
 extension HomeViewController: FooterScrollDelegate {
     func didScrollTo(_ page: Int) {
         delegate?.didScrollTo(page)
+    }
+}
+
+extension HomeViewController: WishButtonDelegate {
+    func didClickWishButton(for indexPath: IndexPath) {
+        let product = viewModel.homeInfo.value.sections[indexPath.section / 2].products[indexPath.item]
+        viewModel.didTapWishButton(id: product.id)
+        var items: [SelectionType] = []
+        
+        if let wishList = product.wishList {
+            product.sizes.forEach {
+                if wishList.contains($0) {
+                    items.append(SelectionType.wish(size: $0, isSelected: true))
+                } else {
+                    items.append(SelectionType.wish(size: $0, isSelected: false))
+                }
+            }
+        } else {
+            items = product.sizes.map{ SelectionType.wish(size: $0, isSelected: false) }
+        }
+        
+        let vm = SelectViewModel(type: .wish(), items: items)
+        let vc = SelectViewController(vm)
+        vc.selectCompleteHandler = { [weak self] in
+            self?.viewModel.viewDidLoad()
+        }
+        vc.delegate = self
+        vc.modalPresentationStyle = .overFullScreen
+        
+        present(vc, animated: false, completion: nil)
+    }
+}
+
+
+extension HomeViewController: SelectDelegate {
+    func didRemoveFromWishlist(_ size: String) {
+        viewModel.removeFromWishList(size: size)
+    }
+    
+    func didAppendToWishList(_ size: String) {
+        viewModel.addToWishList(size: size)
     }
 }

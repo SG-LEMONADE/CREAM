@@ -77,7 +77,6 @@ extension MyTradeCell: ViewConfiguration {
         
         tradeStackView.snp.makeConstraints {
             $0.edges.equalToSuperview().inset(10)
-            $0.height.equalTo(tradeStackView.snp.width).multipliedBy(0.65)
         }
     }
     
