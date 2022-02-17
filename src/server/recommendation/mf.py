@@ -10,7 +10,7 @@ ratings = ratings.drop('createdAt', axis=1)
 class NEW_MF():
     def __init__(self, ratings, K, alpha, beta, iterations, verbose=True):
         self.R = np.array(ratings)
-        ##### >>>>> (2) user_id, item_id를 R의 index와 매핑하기 위한 dictionary 생성
+        # user_id, item_id를 R의 index와 매핑하기 위한 dictionary 생성
         item_id_index = []
         index_item_id = []
         for i, one_id in enumerate(ratings):
@@ -25,7 +25,7 @@ class NEW_MF():
             index_user_id.append([i, one_id])
         self.user_id_index = dict(user_id_index)
         self.index_user_id = dict(index_user_id)
-        #### <<<<< (2)
+        ####
         self.num_users, self.num_items = np.shape(self.R)
         self.K = K
         self.alpha = alpha
@@ -63,7 +63,6 @@ class NEW_MF():
             self.P[i, :] += self.alpha * (e * self.Q[j, :] - self.beta * self.P[i, :])
             self.Q[j, :] += self.alpha * (e * self.P[i, :] - self.beta * self.Q[j, :])
 
-    ##### >>>>> (3)
     # Test set을 선정
     def set_test(self, ratings_test):
         test_set = []

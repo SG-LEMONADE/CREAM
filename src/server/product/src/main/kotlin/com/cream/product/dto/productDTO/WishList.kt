@@ -1,6 +1,8 @@
 package com.cream.product.dto.productDTO
 
-data class WishList (
+import com.cream.product.dto.productDTO.projectionDTO.WishedProductDTO
+
+data class WishList(
     val count: Int,
     val products: List<WishedProductDTO>
 )

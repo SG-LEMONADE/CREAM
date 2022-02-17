@@ -4,6 +4,7 @@ import com.cream.user.error.ErrorCode
 import com.cream.user.error.UserCustomException
 import com.cream.user.security.TokenProvider
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.data.redis.core.StringRedisTemplate
 import org.springframework.mail.javamail.JavaMailSender
 import org.springframework.scheduling.annotation.Async
@@ -15,6 +16,9 @@ import javax.mail.internet.MimeMessage
 
 @Component
 class UserMailSender {
+
+    @Value("\${gateway-url}")
+    lateinit var url: String
 
     @Autowired
     lateinit var javaMailSender: JavaMailSender
@@ -46,10 +50,10 @@ class UserMailSender {
         var htmlString = ""
         htmlString += if (type == 0) {
             "안녕하세요 인증을 위해 아래의 링크를 눌러주세요. \n" +
-                    "<a href='http://localhost:8080/users/verify?email=$email&key=$hash'> 회원 가입 이메일 인증하기 </a>"
+                "<a href='http://$url/users/verify?email=$email&key=$hash'> 회원 가입 이메일 인증하기 </a>"
         } else if (type == 1) {
             "안녕하세요 비밀번호 변경을 위해 아래의 링크를 눌러주세요. \n" +
-                    "<a href='http://localhost:8080/users/verify/password?email=$email&key=$hash'> 비밀번호 변경하기 </a>"
+                "<a href='http://$url/users/verify/password?email=$email&key=$hash'> 비밀번호 변경하기 </a>"
         } else {
             throw UserCustomException(ErrorCode.INVALID_INPUT_VALUE)
         }

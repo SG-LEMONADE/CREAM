@@ -6,6 +6,5 @@ enum class TradeStatus(
     WAITING(0),
     IN_PROGRESS(1),
     COMPLETED(2),
-    EXPIRED(3),
-    CANCELED(4)
+    CANCELED(3)
 }

@@ -9,6 +9,7 @@ def RMSE(y_true, y_pred):
 
 
 def score(model, neighbor_size=0):
+    # RMSE를 계산하기 위한
     id_pairs = zip(x_test['userId'], x_test['productId'])
     y_pred = np.array([model(user, movie, neighbor_size) for (user, movie) in id_pairs])
     y_true = np.array(x_test['action'])

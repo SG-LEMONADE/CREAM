@@ -16,7 +16,7 @@ data class TradeRegisterDTO(
             userId = userId,
             product = product,
             size = size,
-            requestType = this.requestType,
+            requestType = if (this.requestType == RequestType.ASK) RequestType.BID else RequestType.ASK,
             tradeStatus = TradeStatus.WAITING,
             price = this.price,
             validationDateTime = LocalDateTime.now().plusDays(this.validationDay)

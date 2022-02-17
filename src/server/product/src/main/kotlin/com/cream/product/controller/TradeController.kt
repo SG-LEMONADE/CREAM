@@ -9,6 +9,7 @@ import com.cream.product.service.TradeService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import javax.validation.Valid
 
 @RestController
 @RequestMapping("/trades")
@@ -18,7 +19,7 @@ class TradeController {
 
     @GetMapping
     fun getTradeList(
-        pageDTO: PageDTO,
+        @Valid pageDTO: PageDTO,
         @RequestParam requestType: RequestType,
         @RequestParam tradeStatus: RequestTradeStatus,
         @RequestHeader("userId", required = true) userId: Long,

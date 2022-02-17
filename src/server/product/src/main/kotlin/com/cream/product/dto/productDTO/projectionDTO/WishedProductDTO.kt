@@ -1,4 +1,4 @@
-package com.cream.product.dto.productDTO
+package com.cream.product.dto.productDTO.projectionDTO
 
 import com.fasterxml.jackson.annotation.JsonRawValue
 import com.querydsl.core.annotations.QueryProjection

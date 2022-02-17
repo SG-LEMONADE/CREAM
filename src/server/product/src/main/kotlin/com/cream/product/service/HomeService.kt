@@ -1,5 +1,6 @@
 package com.cream.product.service
 
+import com.cream.product.client.LogServiceClient
 import com.cream.product.dto.filterDTO.FilterRequestDTO
 import com.cream.product.dto.homeDTO.HomeAdDTO
 import com.cream.product.dto.homeDTO.HomeDTO
@@ -23,6 +24,9 @@ class HomeService {
 
     @Autowired
     lateinit var productRepository: ProductRepository
+
+    @Autowired
+    lateinit var logServiceClient: LogServiceClient
 
     fun getHomeView(
         userId: Long?
@@ -50,6 +54,35 @@ class HomeService {
                 SectionDTO(section.header, section.detail, section.imageUrl, section.backgroundColor, products)
             }.toList()
 
-        return HomeDTO(imageUrls, sections)
+        var recommendItems: List<ProductDTO>? = null
+
+        if (userId != null) {
+            val sortedRecommendedItems = ArrayList<ProductDTO>()
+            val productIds = logServiceClient.getRecommendedItems(userId)
+
+            // 만약 추천이 되어있다면 결과를 반환, 아니라면 null 을 반환
+            if (productIds.isNotEmpty()) {
+                val unSortedRecommendItems = productRepository.getProductsWithWish(
+                    userId, 0, 30,
+                    null, FilterRequestDTO(recommendation = productIds)
+                )
+                    .stream()
+                    .map {
+                        ProductDTO(it)
+                    }.toList()
+
+                productIds.forEach {
+                    for (product in unSortedRecommendItems) {
+                        if (product.id == it) {
+                            sortedRecommendedItems.add(product)
+                            break
+                        }
+                    }
+                }
+                recommendItems = sortedRecommendedItems.toList()
+            }
+        }
+
+        return HomeDTO(imageUrls, sections, recommendItems)
     }
 }

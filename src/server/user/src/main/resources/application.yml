@@ -41,6 +41,7 @@ eureka:
         register-with-eureka: true
 
 secret-key: 
+gateway-url: localhost:8000
 
 logging:
   level:
@@ -51,6 +52,3 @@ logging:
           descriptor:
             sql:
               BasicBinder: TRACE
-
-auth-excluded-path: /users/login, /users/join, /users/refresh, /users/verify, /users/validate, /swagger-ui.html/**, /configuration/**, /swagger-resources/**, /v2/api-docs, /webjars/**, /webjars/springfox-swagger-ui/*.{js,css}
-

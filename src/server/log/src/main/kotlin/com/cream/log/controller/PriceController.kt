@@ -18,14 +18,23 @@ class PriceController {
     fun getPricesByDate(
         @PathVariable productId: Long
     ): ResponseEntity<PricesByDateDTO> {
-        return ResponseEntity.ok(priceService.getPriceListByDate(productId))
+        return ResponseEntity.ok(priceService.getPriceListByDate(productId, null))
     }
 
-    @PostMapping("/products/{productId}")
+    @GetMapping("/products/{productId}/{size}")
+    fun getPricesByDateAndSize(
+        @PathVariable productId: Long,
+        @PathVariable size: String
+    ): ResponseEntity<PricesByDateDTO> {
+        return ResponseEntity.ok(priceService.getPriceListByDate(productId, size))
+    }
+
+    @PostMapping("/products/{productId}/{size}")
     fun createPrice(
         @PathVariable productId: Long,
+        @PathVariable size: String,
         @RequestBody price: Long
     ): ResponseEntity<Price> {
-        return ResponseEntity.ok(priceService.create(productId, price))
+        return ResponseEntity.ok(priceService.create(productId, size, price))
     }
 }
