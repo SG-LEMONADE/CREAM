@@ -24,6 +24,8 @@
 
 <p align='center'><img src="https://user-images.githubusercontent.com/52649378/153701586-5d3f7ba7-fd9b-407e-ad2d-3a8b4c051cef.gif" width='80%' /></p>
 
+<br />
+
 - 기본적인 홈 화면 구현.
 
 - slider 배너 광고가 존재하며, 각 테마별로 제품을 보여줌.
@@ -31,6 +33,22 @@
 - 더 보기 버튼을 눌러 관련 상품을 더 제시 가능.
 
 - 반응형을 고려하여 상단 광고 이미지 둥글게 변형.
+
+<br />
+
+#### 회원가입
+
+<br />
+
+<p align="center"><img src="" width='80%' /></p>
+
+<br />
+
+- 회원가입 기능 구현.
+
+- email, password 유효성 검사 진행. / 스니커즈 사이즈는 모달로 입력받음.
+
+- 회원가입이 진행되면 메일을 통해 인증 활성화. / 인증 안내 메세지 출력.
 
 <br />
 
