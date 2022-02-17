@@ -23,7 +23,6 @@ class ProductViewController: DIViewController<ProductViewModelInterface> {
     
     private lazy var productView = ProductView()
     
-    
     // MARK: View Life Cycle
     override func loadView() {
         self.view = productView
