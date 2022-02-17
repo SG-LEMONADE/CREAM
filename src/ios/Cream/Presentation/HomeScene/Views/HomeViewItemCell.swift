@@ -91,7 +91,6 @@ extension HomeProductCell {
         itemView.priceExpressionLabel.text = "즉시 구매가"
         itemView.productImageView.backgroundColor = .init(rgb: viewModel.backgroundColor.hexToInt ?? 0)
         
-        print(viewModel.wishList)
         if let wishList = viewModel.wishList,
            !wishList.isEmpty {
             wishImageView.image = UIImage(named: "bookmark.fill")

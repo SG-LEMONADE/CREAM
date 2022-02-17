@@ -13,9 +13,11 @@ import UIKit
     @objc optional func didTapDeadline(_ deadline: Int)
     @objc optional func didTapSort(by sort: String)
     @objc optional func didRemoveFromWishlist(_ size: String)
+    @objc optional func didSelectItem(_ size: String)
     @objc optional func didAppendToWishList(_ size: String)
     @objc optional func didTapSize(_ size: String)
 }
+
 
 final class SelectViewController: DIViewController<SelectViewModelInterface> {
     private lazy var selectView = SelectView(frame: .zero,
@@ -52,7 +54,7 @@ final class SelectViewController: DIViewController<SelectViewModelInterface> {
         selectView.selectionView.dataSource = self
         registerCollectionViewCell()
         
-        if case .wish(_) = viewModel.type {
+        if case .wish(_,_) = viewModel.type {
             selectView.selectionView.allowsMultipleSelection = true
         }
     }
@@ -122,7 +124,6 @@ final class SelectViewController: DIViewController<SelectViewModelInterface> {
     }
     
     private func dismissView() {
-        print(#function)
         UIView.animate(withDuration: 0.3) {
             self.selectView.containerViewBottomConstraint?.constant = self.selectView.defaultHeight
             self.view.layoutIfNeeded()
@@ -211,8 +212,15 @@ extension SelectViewController: UICollectionViewDelegate {
                 delegate?.didAppendToWishList?(size)
             }
         case .size:
-            break
+            if case let .size(size) = value {
+                delegate?.didTapSize?(size)
+            }
+            dismissView()
         case .sizePrice:
+            if case let .sizePrice(size, _) = value {
+                delegate?.didSelectItem?(size)
+            }
+            dismissView()
             break
         case .sort:
             if case let .sort(sequence) = value {

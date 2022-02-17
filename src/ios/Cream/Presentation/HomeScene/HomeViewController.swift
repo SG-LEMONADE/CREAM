@@ -82,7 +82,7 @@ class HomeViewController: DIViewController<HomeViewModelInterface> {
 extension HomeViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if indexPath.section % 2 == 1 {
-            guard let baseURL = URL(string: "http://1.231.16.189:8081")
+            guard let baseURL = URL(string: Integrator.gateWayURL)
             else { return }
             
             let config: NetworkConfigurable                 = ApiDataNetworkConfig(baseURL: baseURL)

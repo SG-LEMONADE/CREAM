@@ -66,3 +66,17 @@ enum FilterError: Error {
         }
     }
 }
+
+enum ProductError: Error {
+    case networkUnconnected
+    case unknownError(Error)
+    case initValue
+    
+    var userMessage: String {
+        switch self {
+        case .networkUnconnected:   return "정보를 받아오는데 실패했습니다.\n 개발자에게 문의해주세요."
+        case .unknownError(_):      return "알수없는 에러 발생.\n 개발자에게 문의해주세요."
+        case .initValue:            return ""
+        }
+    }
+}

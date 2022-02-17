@@ -132,7 +132,7 @@ extension LoginViewController {
     
     @objc
     private func didTapJoinButton() {
-        guard let baseURL = URL(string: "http://1.231.16.189:8080")
+        guard let baseURL = URL(string: Integrator.gateWayURL)
         else { fatalError() }
     
         let config: NetworkConfigurable                 = ApiDataNetworkConfig(baseURL: baseURL)

@@ -43,7 +43,7 @@ final class NavigateMenuBaseController: UITabBarController {
         var viewController: UIViewController {
             switch self {
             case .home:
-                guard let baseURL = URL(string: "http://1.231.16.189:8081")
+                guard let baseURL = URL(string: Integrator.gateWayURL)
                 else { fatalError() }
                 
                 let config: NetworkConfigurable                             = ApiDataNetworkConfig(baseURL: baseURL)
@@ -57,7 +57,7 @@ final class NavigateMenuBaseController: UITabBarController {
                 return homeViewController
                 
             case .shop:
-                guard let baseURL = URL(string: "http://1.231.16.189:8081")
+                guard let baseURL = URL(string: Integrator.gateWayURL)
                 else { fatalError() }
                 
                 let config: NetworkConfigurable                             = ApiDataNetworkConfig(baseURL: baseURL)
@@ -71,19 +71,14 @@ final class NavigateMenuBaseController: UITabBarController {
                 return productListViewController
                 
             case .my:
-                guard let tradeBaseURL = URL(string: "http://1.231.16.189:8081"),
-                      let userBaseURL = URL(string: "http://1.231.16.189:8080")
+                guard let baseURL = URL(string: Integrator.gateWayURL)
                 else { fatalError() }
-                let userConfig: NetworkConfigurable                     = ApiDataNetworkConfig(baseURL: userBaseURL)
-                let userNetworkService: NetworkService                  = DefaultNetworkService(config: userConfig)
-                let userDataTransferService: DataTransferService        = DefaultDataTransferService(with: userNetworkService)
-                
-                let tradeConfig: NetworkConfigurable                     = ApiDataNetworkConfig(baseURL: tradeBaseURL)
-                let tradeNetworkService: NetworkService                  = DefaultNetworkService(config: tradeConfig)
-                let tradeDatatransferService: DataTransferService        = DefaultDataTransferService(with: tradeNetworkService)
-                
-                let tradeRepository: TradeRepositoryInterface           = ProductRepository(dataTransferService: tradeDatatransferService)
-                let userRepository: UserRepositoryInterface             = UserRepository(dataTransferService: userDataTransferService)
+
+                let config: NetworkConfigurable                         = ApiDataNetworkConfig(baseURL: baseURL)
+                let networkService: NetworkService                      = DefaultNetworkService(config: config)
+                let dataTransferService: DataTransferService            = DefaultDataTransferService(with: networkService)
+                let tradeRepository: TradeRepositoryInterface           = ProductRepository(dataTransferService: dataTransferService)
+                let userRepository: UserRepositoryInterface             = UserRepository(dataTransferService: dataTransferService)
                 let usecase: MyPageUseCaseInterface                     = MyPageUseCase(userRepository: userRepository,
                                                                                         tradeRepository: tradeRepository)
                 let viewModel: MyPageViewModel = MyPageViewModel(usecase)
@@ -137,7 +132,7 @@ extension NavigateMenuBaseController: UITabBarControllerDelegate {
         
         if let naviVC = viewController as? UINavigationController,
            (naviVC.viewControllers.first as? MyPageViewController != nil) {
-            guard let baseURL = URL(string: "http://1.231.16.189:8080")
+            guard let baseURL = URL(string: Integrator.gateWayURL)
             else { fatalError() }
         
             let config: NetworkConfigurable                 = ApiDataNetworkConfig(baseURL: baseURL)

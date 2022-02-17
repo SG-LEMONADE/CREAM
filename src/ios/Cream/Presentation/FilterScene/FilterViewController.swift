@@ -149,7 +149,7 @@ extension FilterViewController: UITableViewDelegate {
         guard let category = FilterCategory(rawValue: indexPath.row)
         else { return }
         
-        guard let baseURL = URL(string: "http://1.231.16.189:8081")
+        guard let baseURL = URL(string: Integrator.gateWayURL)
         else { fatalError() }
         
         let config               = ApiDataNetworkConfig(baseURL: baseURL)
