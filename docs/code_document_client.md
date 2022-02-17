@@ -226,6 +226,18 @@
 
 <br />
 
+<p align='center'>↑ 구매, 판매 내역이 많지 않은 ver.</p>
+
+<br />
+
+<p align='center'><img src="https://user-images.githubusercontent.com/52649378/154397885-cdc02752-8946-4a32-b4a9-2be9d25e066f.gif" width='80%' /></p>
+
+<br />
+
+<p align='center'>↑ 구매, 판매 내역이 많은 ver.</p>
+
+<br />
+
 - 구매 / 판매 내역 상세 페이지 내부 - 입찰 대기중 / 진행 중 / 완료 별 필터링 기능
 
 - 찜 목록 확인 가능, 삭제 기능 구현.
