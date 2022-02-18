@@ -1,5 +1,6 @@
 server:
   port: 8080
+  address: 192.168.0.13
 
 spring:
   datasource:
@@ -39,9 +40,13 @@ eureka:
     client:
         fetch-registry: true
         register-with-eureka: true
+    instance:
+        prefer-ip-address: true
+        ip-address: ${server.address}
+        instance-id: ${server.address}:${server.port}
 
 secret-key: 
-gateway-url: localhost:8000
+gateway-url: ${server.address}:8000
 
 logging:
   level:

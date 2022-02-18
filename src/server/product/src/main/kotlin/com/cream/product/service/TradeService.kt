@@ -64,7 +64,7 @@ class TradeService {
             requestType, reversedRequestType, tradeStatus
         )
 
-        val counters = tradeRepository.findCountsByTradeStatus(userId, requestType)
+        val counters = tradeRepository.findCountsByTradeStatus(userId, requestType, reversedRequestType)
 
         var totalCnt = 0
         var waitingCnt = 0
