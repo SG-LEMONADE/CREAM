@@ -163,8 +163,7 @@ class TradeRepositoryImpl :
             )
             .from(tradeEntity)
             .where(
-                eqRequestType(userId, requestType, reverseRequestType),
-                tradeEntity.requestType.eq(requestType)
+                eqRequestType(userId, requestType, reverseRequestType)
             )
             .groupBy(tradeEntity.tradeStatus)
             .orderBy(OrderSpecifier(Order.ASC, tradeEntity.tradeStatus))
