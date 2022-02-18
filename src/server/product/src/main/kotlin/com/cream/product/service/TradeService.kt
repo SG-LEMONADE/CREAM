@@ -58,7 +58,12 @@ class TradeService {
         requestType: RequestType,
         tradeStatus: RequestTradeStatus
     ): MyPageTradeListDTO {
-        val trades = tradeRepository.findAllByPageAndStatus(userId, pageDTO.offset(), pageDTO.perPage, requestType, tradeStatus)
+        val reversedRequestType = if (requestType == RequestType.BID) RequestType.ASK else RequestType.BID
+        val trades = tradeRepository.findAllByPageAndStatus(
+            userId, pageDTO.offset(), pageDTO.perPage,
+            requestType, reversedRequestType, tradeStatus
+        )
+
         val counters = tradeRepository.findCountsByTradeStatus(userId, requestType)
 
         var totalCnt = 0
@@ -70,9 +75,9 @@ class TradeService {
             val cnt = it.counter.toInt()
             totalCnt += cnt
             when (it.tradeStatus) {
-                (TradeStatus.WAITING) -> waitingCnt += cnt
+                (TradeStatus.COMPLETED) -> finishedCnt += cnt
                 (TradeStatus.IN_PROGRESS) -> inProgress += cnt
-                else -> finishedCnt += cnt
+                else -> waitingCnt += cnt
             }
         }
 
