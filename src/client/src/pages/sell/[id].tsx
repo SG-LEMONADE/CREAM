@@ -10,9 +10,10 @@ import Footer from "components/organisms/Footer";
 import TransactionTitle from "components/atoms/TransactionTitle";
 import TransactionTemplate from "components/templates/TransactionTemplate";
 import { ProductRes } from "types";
-import { fetcher } from "lib/fetcher";
+import { fetcherWithToken } from "lib/fetcher";
 
 import Swal from "sweetalert2";
+import { getToken } from "lib/token";
 
 const ProductSell: FunctionComponent = () => {
 	const router = useRouter();
@@ -20,11 +21,12 @@ const ProductSell: FunctionComponent = () => {
 
 	const { data: productInfo } = useSWR<ProductRes>(
 		id ? `${process.env.END_POINT_PRODUCT}/products/${id}` : null,
-		fetcher,
+		fetcherWithToken,
 	);
 
 	const onHandleTrade = useCallback(
 		async (category: string, auction: boolean, date: number, price: number) => {
+			const token = getToken("accessToken");
 			console.log(category, auction, date, price);
 			if (auction) {
 				// 경매 형식 && 판매
@@ -38,7 +40,7 @@ const ProductSell: FunctionComponent = () => {
 						},
 						{
 							headers: {
-								userId: "1",
+								Authorization: `Bearer ${token}`,
 							},
 						},
 					);
@@ -70,7 +72,7 @@ const ProductSell: FunctionComponent = () => {
 						{},
 						{
 							headers: {
-								userId: "2",
+								Authorization: `Bearer ${token}`,
 							},
 						},
 					);

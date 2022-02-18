@@ -1,43 +1,50 @@
 import axios from "axios";
 
-export const onHandleTrade = (
-	async (category: string, auction: boolean, date: number, price: number) => {
-		console.log(category, auction, date, price);
-		if (auction) {
-			// 경매 형식 && 구매
-			try {
-				const res = await axios.post(
-					`${process.env.END_POINT_PRODUCT}/trades/products/${id}/${size}`,
-					{
-						price: price,
-						requestType: "ASK",
-						validationDay: date,
+import { getToken } from "lib/token";
+
+export const onHandleTrade = async (
+	category: string,
+	auction: boolean,
+	date: number,
+	price: number,
+	id: number,
+	size: string,
+) => {
+	const token = getToken("accessToken");
+
+	if (auction) {
+		// 경매 형식
+		try {
+			const res = await axios.post(
+				`${process.env.END_POINT_PRODUCT}/trades/products/${id}/${size}`,
+				{
+					price: price,
+					requestType: category === "buy" ? `ASK` : `BID`,
+					validationDay: date,
+				},
+				{
+					headers: {
+						Authorization: `Bearer ${token}`,
 					},
-					{
-						headers: {
-							userId: "1",
-						},
+				},
+			);
+		} catch (e) {
+			console.error(e);
+		}
+	} else {
+		// 즉시 거래
+		try {
+			const res = await axios.post(
+				`${process.env.END_POINT_PRODUCT}/trades/${category}/select/${id}/${size}`,
+				{},
+				{
+					headers: {
+						Authorization: `Bearer ${token}`,
 					},
-				);
-				console.log(res);
-			} catch (e) {
-				console.error(e);
-			}
-		} else {
-			// 즉시 구매
-			try {
-				const res = await axios.post(
-					`${process.env.END_POINT_PRODUCT}/trades/buy/select/${id}/${size}`,
-					{},
-					{
-						headers: {
-							userId: "1",
-						},
-					},
-				);
-				console.log(res);
-			} catch (e) {
-				console.error(e);
-			}
+				},
+			);
+		} catch (e) {
+			console.error(e);
 		}
 	}
+};

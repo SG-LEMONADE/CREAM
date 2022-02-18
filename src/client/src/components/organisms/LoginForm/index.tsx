@@ -57,6 +57,7 @@ const LoginForm: FunctionComponent = () => {
 			setUser({ id: data.userId });
 			router.back();
 		} catch (err) {
+			console.log(err.response);
 			const errResponse = err.response.data;
 			errResponse.code &&
 				Swal.fire({

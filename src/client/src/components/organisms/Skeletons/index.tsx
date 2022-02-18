@@ -10,28 +10,28 @@ const ProductSkeleton: FunctionComponent = () => {
 		<SkeletonArea>
 			<SkeletonWrapper>
 				<SkeletonProductArea>
-					<Skeleton width="100%" height={225} />
-					<Skeleton width="100%" height={35} />
-					<Skeleton width="100%" height={35} />
-					<Skeleton width="100%" height={35} />
+					<ProductImgSkeleton />
+					<ProductInfoSkeleton />
+					<ProductInfoSkeleton />
+					<ProductInfoSkeleton />
 				</SkeletonProductArea>
 				<SkeletonProductArea>
-					<Skeleton width="100%" height={225} />
-					<Skeleton width="100%" height={35} />
-					<Skeleton width="100%" height={35} />
-					<Skeleton width="100%" height={35} />
+					<ProductImgSkeleton />
+					<ProductInfoSkeleton />
+					<ProductInfoSkeleton />
+					<ProductInfoSkeleton />
 				</SkeletonProductArea>
 				<SkeletonProductArea>
-					<Skeleton width="100%" height={225} />
-					<Skeleton width="100%" height={35} />
-					<Skeleton width="100%" height={35} />
-					<Skeleton width="100%" height={35} />
+					<ProductImgSkeleton />
+					<ProductInfoSkeleton />
+					<ProductInfoSkeleton />
+					<ProductInfoSkeleton />
 				</SkeletonProductArea>
 				<SkeletonProductArea>
-					<Skeleton width="100%" height={225} />
-					<Skeleton width="100%" height={35} />
-					<Skeleton width="100%" height={35} />
-					<Skeleton width="100%" height={35} />
+					<ProductImgSkeleton />
+					<ProductInfoSkeleton />
+					<ProductInfoSkeleton />
+					<ProductInfoSkeleton />
 				</SkeletonProductArea>
 			</SkeletonWrapper>
 		</SkeletonArea>
@@ -40,10 +40,27 @@ const ProductSkeleton: FunctionComponent = () => {
 
 export default ProductSkeleton;
 
+const ProductImgSkeleton = styled(Skeleton)`
+	max-width: 225px;
+	height: 225px;
+`;
+
+const ProductInfoSkeleton = styled(Skeleton)`
+	max-width: 225px;
+	height: 35px;
+`;
+
 const SkeletonWrapper = styled.div`
-	display: flex;
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
 	* {
 		margin-right: 10px;
+	}
+	@media screen and (max-width: 1000px) {
+		grid-template-columns: repeat(3, 1fr);
+	}
+	@media screen and (max-width: 880px) {
+		grid-template-columns: repeat(2, 1fr);
 	}
 `;
 
@@ -59,6 +76,6 @@ const SkeletonProductArea = styled.div`
 const SkeletonArea = styled.div`
 	display: flex;
 	justify-content: center;
-	padding-left: max(17%, 40px);
+	padding-left: max(14rem, 40px);
 	margin-bottom: 10%;
 `;

@@ -23,7 +23,7 @@ import styled from "@emotion/styled";
 const HeaderTop: FunctionComponent = () => {
 	const router = useRouter();
 
-	const { setUser } = useContext(UserContext);
+	const { user, setUser } = useContext(UserContext);
 
 	/** For Code Review
 	 * 아래의 useSWR 토잇ㄴ을 통해 토큰정보를 확인합니다.
@@ -33,7 +33,7 @@ const HeaderTop: FunctionComponent = () => {
 		`${process.env.END_POINT_USER}/users/me`,
 		fetcherWithToken,
 		{
-			focusThrottleInterval: 60000,
+			focusThrottleInterval: 600000,
 			errorRetryInterval: 60000,
 		},
 	);

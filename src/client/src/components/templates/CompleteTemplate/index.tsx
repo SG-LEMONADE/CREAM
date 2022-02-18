@@ -208,7 +208,7 @@ const CompleteButtonWrapper = styled.div`
 	margin-top: 21px;
 	justify-content: center;
 	font-size: 0;
-	& :first-child {
+	& :first-of-type {
 		margin-right: 10px;
 	}
 `;

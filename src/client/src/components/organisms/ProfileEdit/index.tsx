@@ -282,7 +282,6 @@ const ProfileEdit: FunctionComponent<ProfileEditProps> = (props) => {
 					category="sizeOnly"
 					onClick={(size) => {
 						setNewShoeSize(size);
-						console.log(size);
 						onPatchShoeSize(size);
 					}}
 				/>

@@ -13,6 +13,7 @@ import BannerImage from "components/atoms/BannerImage";
 import TagItem from "components/atoms/TagItem";
 import SearchFilterBar from "components/organisms/SearchFilterBar";
 import Dropdown from "components/molecules/Dropdown";
+import { smallImageInfos } from "utils/images";
 import { queryMaker } from "utils/query";
 
 import styled from "@emotion/styled";
@@ -23,29 +24,6 @@ type ShopTemplateProps = {
 	cb?: React.Dispatch<SetStateAction<boolean>>;
 	children: React.ReactNode;
 };
-
-const ImageInfos = [
-	{
-		bgColor: "#4a4a4a",
-		category: "small",
-		src: "https://kream-phinf.pstatic.net/MjAyMjAxMTFfMjA1/MDAxNjQxODkwNjY5NDI5.6NPmF_WbPm9sX5lW9BE2PcQlkMRAvFxDy7bryYVsDc4g.8YA62__XKcpRvDp-m3k22k1ib0Larluka04T22wL2Ycg.PNG/a_586211b5374344ffa601d2379799d0f0.png",
-	},
-	{
-		bgColor: "#0CB459",
-		category: "small",
-		src: "https://kream-phinf.pstatic.net/MjAyMTExMDhfMTQg/MDAxNjM2MzUyODQ4MTAy.Cw85PX23DLnCC0JXxlf5uRR4V6OUxDsz12MQLHRVeXsg.xdWI38nU5YX5e8cq6zifnXghc7o6Jl26o0U_vV7QVbkg.PNG/a_4e25f1b123af4f79ab8eb2c243321230.png",
-	},
-	{
-		bgColor: "#ECE3F4",
-		category: "small",
-		src: "https://kream-phinf.pstatic.net/MjAyMTA4MTBfMTM0/MDAxNjI4NTM2NzQwNzI2.PFukx8j7Xo8kbhUCYJNc8Vx8wsQObtdjh0E3qCLbpq8g.0_OMaQNb714BoMvFdCXQsEMNSbYtD2WvNW-0-v8iHLcg.JPEG/a_499eb6d55b8c4e71b32e909bb1586e10.jpg",
-	},
-	{
-		bgColor: "#3C31BB",
-		category: "small",
-		src: "https://kream-phinf.pstatic.net/MjAyMTA4MDJfMjg2/MDAxNjI3ODg3NjYxMjc0.qPz4jY6pgcqhai_G23z-Iwa-Z5jcp-fYj1OKVEMpAzog.ntI1W2Fy8KutXWMUSzW6gXb9b5_cMc0DZ6WEBAXJenAg.JPEG/p_7766440af0194c368eaf4c6dd1f4a9c9.jpg",
-	},
-];
 
 const ShopTemplate: FunctionComponent<ShopTemplateProps> = (props) => {
 	const { children, isLoading = false, cb } = props;
@@ -121,7 +99,7 @@ const ShopTemplate: FunctionComponent<ShopTemplateProps> = (props) => {
 				<BannerWrapper>
 					<Slider
 						small={true}
-						images={ImageInfos.map((info) => (
+						images={smallImageInfos.map((info) => (
 							<BannerImage
 								bgColor={info.bgColor}
 								category="small"

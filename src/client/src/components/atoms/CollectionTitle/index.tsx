@@ -31,4 +31,5 @@ const StyledSubTitle = styled.div`
 	font-size: 14px;
 	letter-spacing: -0.21px;
 	color: ${colors.colors.tag};
+	margin-top: 6px;
 `;

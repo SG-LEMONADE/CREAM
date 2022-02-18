@@ -11,19 +11,20 @@ import ProductWish, {
 	StyledTitle,
 	StyledH3,
 } from "components/organisms/ProductWish";
-import { fetcher } from "lib/fetcher";
+import { fetcherWithToken } from "lib/fetcher";
 import { GetProductWishRes } from "types";
 
 import Swal from "sweetalert2";
 import Pagination from "rc-pagination";
 import "rc-pagination/assets/index.css";
+import { getToken } from "lib/token";
 
 const MyTradeBuying: FunctionComponent = () => {
 	const [cursor, setCursor] = useState<number>(0);
 
 	const { data: wishProducts, mutate } = useSWR<GetProductWishRes>(
 		`${process.env.END_POINT_PRODUCT}/products/wishes?cursor=${cursor}&perPage=10`,
-		fetcher,
+		fetcherWithToken,
 	);
 
 	const onHandleChange = useCallback(
@@ -40,12 +41,13 @@ const MyTradeBuying: FunctionComponent = () => {
 	 */
 	const onDeleteWish = useCallback(async (id: number, size: string) => {
 		try {
+			const token = getToken("accessToken");
 			const res = await axios.post(
 				`${process.env.END_POINT_PRODUCT}/wish/${id}/${size}`,
 				{},
 				{
 					headers: {
-						userId: "1",
+						Authorization: `Bearer ${token}`,
 					},
 				},
 			);

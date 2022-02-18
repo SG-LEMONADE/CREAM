@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from "react";
 import useSWR from "swr";
-import { fetcher, fetcherWithToken } from "lib/fetcher";
+import { fetcherWithToken } from "lib/fetcher";
 
 import HeaderTop from "components/organisms/HeaderTop";
 import HeaderMain from "components/organisms/HeaderMain";
@@ -20,17 +20,17 @@ const MyPage: FunctionComponent = () => {
 
 	const { data: askHistory } = useSWR<TradeHistoryRes>(
 		`${process.env.END_POINT_PRODUCT}/trades?cursor=0&perPage=5&requestType=ASK&tradeStatus=ALL`,
-		fetcher,
+		fetcherWithToken,
 	);
 
 	const { data: bidHistory } = useSWR<TradeHistoryRes>(
 		`${process.env.END_POINT_PRODUCT}/trades?cursor=0&perPage=5&requestType=BID&tradeStatus=ALL`,
-		fetcher,
+		fetcherWithToken,
 	);
 
 	const { data: wishProducts } = useSWR<GetProductWishRes>(
 		`${process.env.END_POINT_PRODUCT}/products/wishes?cursor=0&perPage=4`,
-		fetcher,
+		fetcherWithToken,
 	);
 
 	return (
