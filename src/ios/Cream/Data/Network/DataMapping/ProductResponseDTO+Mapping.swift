@@ -41,7 +41,6 @@ extension ProductResponseDTO {
         self.relatedProducts.forEach {
             products.append($0.toDomain())
         }
-
         return .init(id: product.id,
                      imageUrls: product.imageUrls,
                      brandName: product.brandName,
@@ -56,8 +55,8 @@ extension ProductResponseDTO {
                      releaseDate: product.releasedDate ?? "-",
                      color: product.color ?? "-",
                      originalPrice: product.originalPrice,
-                     lowestAsk: lowestAsk,
-                     highestBid: highestBid,
+                     lowestAsk: product.lowestAsk,
+                     highestBid: product.highestBid,
                      askPrices: askPrices,
                      bidPrices: bidPrices,
                      wishList: product.wishList,

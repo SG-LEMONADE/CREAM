@@ -14,6 +14,7 @@ protocol FooterScrollDelegate: AnyObject {
 class ProductViewController: DIViewController<ProductViewModelInterface> {
     // MARK: Properties
     weak var delegate: FooterScrollDelegate?
+    var callbackClosure: (() -> Void)?
     
     private var item: Int = 0 {
         didSet {
@@ -62,7 +63,9 @@ class ProductViewController: DIViewController<ProductViewModelInterface> {
             self?.productView.tradeContainerView.buyButton.setPrice(product.lowestAsk)
             self?.productView.tradeContainerView.wishButton.configure(product)
         }
+        
         viewModel.selecteSize.bind { [weak self] size in
+            self?.productView.ItemInfoListView.reloadItems(at: [.init(item: 0, section: 1)])
             if let _askPrice = self?.viewModel.item.value.askPrices[size],
                let askPrice = _askPrice {
                 self?.productView.tradeContainerView.buyButton.setPrice(askPrice)
@@ -76,6 +79,10 @@ class ProductViewController: DIViewController<ProductViewModelInterface> {
                 self?.productView.tradeContainerView.sellButton.setPrice(nil)
             }
         }
+        
+//        viewModel.priceChange.bind { [weak self] value in
+//            self?.productView.ItemInfoListView.reloadItems(at: [.init(item: 0, section: 1)])
+//        }
     }
 }
 
@@ -85,6 +92,11 @@ extension ProductViewController {
         productView.tradeContainerView.wishButton.addTarget(self, action: #selector(didTapWishButton), for: .touchUpInside)
         productView.tradeContainerView.buyButton.addTarget(self, action: #selector(didTapBuyButton), for: .touchUpInside)
         productView.tradeContainerView.sellButton.addTarget(self, action: #selector(didTapSellButton), for: .touchUpInside)
+    }
+    
+    @objc
+    func didTapBackButton() {
+        callbackClosure?()
     }
     
     @objc
@@ -138,9 +150,7 @@ extension ProductViewController {
     }
 }
 
-// MARK: UICollectionViewDelegate
-extension ProductViewController: UICollectionViewDelegate { }
-
+// MARK: UICollectionViewDataSource
 extension ProductViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         switch kind {
@@ -210,7 +220,7 @@ extension ProductViewController: UICollectionViewDataSource, UICollectionViewDel
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ItemInfoCell.reuseIdentifier,
                                                                 for: indexPath) as? ItemInfoCell
             else { return UICollectionViewCell() }
-            cell.configure(viewModel.item.value)
+            cell.configure(viewModel.item.value, size: viewModel.selecteSize.value)
             cell.delegate = self
             return cell
             
@@ -254,6 +264,32 @@ extension ProductViewController: UICollectionViewDataSource, UICollectionViewDel
     }
 }
 
+extension ProductViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let section = ProductView.SectionList(rawValue: indexPath.section)
+        else { return }
+        
+        if case .similarity = section {
+            
+            let product = viewModel.item.value.relatedProducts[indexPath.item]
+            guard let baseURL = URL(string: Integrator.gateWayURL)
+            else { return }
+            
+            let config: NetworkConfigurable              = ApiDataNetworkConfig(baseURL: baseURL)
+            let networkService: NetworkService           = DefaultNetworkService(config: config)
+            let dataTransferService: DataTransferService = DefaultDataTransferService(with: networkService)
+            let repository: ProductRepositoryInterface   = ProductRepository(dataTransferService: dataTransferService)
+            let usecase: ProductUseCaseInterface         = ProductUseCase(repository)
+            let viewModel: ProductViewModelInterface     = ProductViewModel(usecase: usecase,
+                                                                            id: product.id)
+            let productViewController = ProductViewController(viewModel)
+            
+            productViewController.hidesBottomBarWhenPushed = true
+            self.navigationController?.pushViewController(productViewController, animated: true)
+        }
+    }
+}
+
 extension ProductViewController: TradeDelegate {
     func moveFocusToProcessScene(selectedProduct: TradeRequest, tradeType: TradeType) {
         guard let baseURL = URL(string: Integrator.gateWayURL)
@@ -275,7 +311,14 @@ extension ProductViewController: TradeDelegate {
         }
         let navigationController = UINavigationController(rootViewController: vc)
         
+        let backBarButtonItem = UIBarButtonItem(title: nil,
+                                                style: .plain,
+                                                target: self,
+                                                action: #selector(didTapBackButton))
+        backBarButtonItem.tintColor = .systemGray
+        navigationItem.backBarButtonItem = backBarButtonItem
         navigationController.modalPresentationStyle = .fullScreen
+        
         present(navigationController, animated: true, completion: nil)
     }
 }
@@ -290,7 +333,26 @@ extension ProductViewController: BannerViewDelegate {
 
 extension ProductViewController: ItemInfoCellDelegate {
     func didTapSizeButton() {
-        let items = viewModel.item.value.askPrices.map { SelectionType.sizePrice(size: $0.key, price: $0.value) }
+        //        .map { SelectionType.sizePrice(size: $0.key, price: $0.value) }
+        let askPrices = viewModel.item.value.askPrices
+        
+        var items: [SelectionType] = []
+        //      // TODO: refactor
+        //      viewModel.didTapSizeButton()
+        
+        viewModel.item.value.sizes.forEach {
+            if let _price = askPrices[$0] {
+                if let price = _price {
+                    items.append(SelectionType.sizePrice(size: $0, price: price))
+                } else {
+                    items.append(SelectionType.sizePrice(size: $0, price: nil))
+                }
+            } else {
+                items.append(SelectionType.sizePrice(size: $0, price: nil))
+            }
+        }
+        
+        
         let vm = SelectViewModel(type: .sizePrice(), items: items)
         let vc = SelectViewController(vm)
         vc.delegate = self

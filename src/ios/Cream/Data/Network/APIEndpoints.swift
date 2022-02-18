@@ -89,7 +89,6 @@ struct APIEndpoints {
             .flatMap {
                 bodyParameters.updateValue($0, forKey: KeychainWrapper.Key.refreshToken)
             }
-        
         return Endpoint(path: "users/refresh",
                         method: .post,
                         headerParamaters: ["Content-Type": "application/json"],
@@ -97,15 +96,23 @@ struct APIEndpoints {
     }
     
     // MARK: - Product API
-    static func loadProduct(_ id: Int) -> Endpoint<ProductResponseDTO> {
+    static func loadProduct(_ id: Int, size: String?) -> Endpoint<ProductResponseDTO> {
         var headerParameters: [String: String] = ["Content-Type": "application/json"]
         
+        var path = "products/\(id)"
+        
+        if let size = size,
+           let sizeQuery = size.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
+            path += "/\(sizeQuery)"
+        }
+        print(path)
         _ = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.accessToken)
             .map { "Bearer-\($0)" }
             .flatMap {
                 headerParameters.updateValue($0, forKey: "Authorization")
             }
-        return Endpoint(path: "products/\(id)",
+        
+        return Endpoint(path: path,
                         method: .get,
                         headerParamaters: headerParameters)
     }

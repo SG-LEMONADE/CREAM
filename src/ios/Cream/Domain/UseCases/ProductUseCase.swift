@@ -14,9 +14,13 @@ protocol ProductUseCaseInterface {
                sort: String?,
                brandId: String?,
                completion: @escaping ((Result<Products, Error>) -> Void))
-    func fetchItemById(_ id: Int, completion: @escaping ((Result<ProductDetail, Error>) -> Void))
+    func fetchItemById(_ id: Int,
+                       size: String?,
+                       completion: @escaping ((Result<ProductDetail, Error>) -> Void))
     
-    func addWishList(productId: Int, size: String, completion: @escaping (Result<Void, Error>) -> Void)
+    func addWishList(productId: Int,
+                     size: String,
+                     completion: @escaping (Result<Void, Error>) -> Void)
 }
 
 final class ProductUseCase {
@@ -62,8 +66,10 @@ extension ProductUseCase: ProductUseCaseInterface {
     }
     
     
-    func fetchItemById(_ id: Int, completion: @escaping ((Result<ProductDetail, Error>) -> Void)) {
-        _ = repository.requestProductById(id) { result in
+    func fetchItemById(_ id: Int,
+                       size: String?,
+                       completion: @escaping ((Result<ProductDetail, Error>) -> Void)) {
+        _ = repository.requestProductById(id, size: size) { result in
             switch result {
             case .success(let product):
                 completion(.success(product))

@@ -7,7 +7,6 @@
 
 import UIKit
 
-
 @objc protocol SelectDelegate: AnyObject {
     @objc optional func updateListData(_ standard: String)
     @objc optional func didTapDeadline(_ deadline: Int)
@@ -17,7 +16,6 @@ import UIKit
     @objc optional func didAppendToWishList(_ size: String)
     @objc optional func didTapSize(_ size: String)
 }
-
 
 final class SelectViewController: DIViewController<SelectViewModelInterface> {
     private lazy var selectView = SelectView(frame: .zero,
@@ -65,8 +63,8 @@ final class SelectViewController: DIViewController<SelectViewModelInterface> {
     
     func configureUserActions() {
         selectView.exitButton.addTarget(self,
-                                      action: #selector(animateDismissView),
-                                      for: .touchUpInside)
+                                        action: #selector(animateDismissView),
+                                        for: .touchUpInside)
     }
     
     private func setupDimmedViewGesture() {
@@ -92,7 +90,7 @@ final class SelectViewController: DIViewController<SelectViewModelInterface> {
             self.view.layoutIfNeeded()
         }
     }
-
+    
     private func hideBottomSheetAndGoBack() {
         selectView.containerViewHeightConstraint?.constant = 0
         UIView.animate(withDuration: 0.25, delay: 0, options: .curveEaseIn, animations: {
@@ -104,7 +102,7 @@ final class SelectViewController: DIViewController<SelectViewModelInterface> {
             }
         }
     }
-
+    
     private func registerCollectionViewCell() {
         selectView.selectionView.register(SizeListCell.self, forCellWithReuseIdentifier: SizeListCell.reuseIdentifier)
         selectView.selectionView.register(WishCell.self, forCellWithReuseIdentifier: WishCell.reuseIdentifier)
@@ -128,7 +126,7 @@ final class SelectViewController: DIViewController<SelectViewModelInterface> {
             self.selectView.containerViewBottomConstraint?.constant = self.selectView.defaultHeight
             self.view.layoutIfNeeded()
         }
-
+        
         selectView.dimmedView.alpha = selectView.maxDimmedAlpha
         UIView.animate(withDuration: 0.3) {
             self.selectView.dimmedView.alpha = 0
@@ -184,7 +182,7 @@ extension SelectViewController: UICollectionViewDataSource {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SortCell.reuseIdentifier, for: indexPath) as? SortCell
             else { return UICollectionViewCell() }
             
-           
+            
             if case let .sort(sequence) = value {
                 cell.configure(sort: sequence)
             }
@@ -218,7 +216,6 @@ extension SelectViewController: UICollectionViewDelegate {
             dismissView()
         case .sizePrice:
             if case let .sizePrice(size, _) = value {
-                print(size)
                 delegate?.didSelectItem?(size)
             }
             dismissView()

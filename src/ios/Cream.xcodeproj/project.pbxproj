@@ -125,6 +125,8 @@
 		7B8EAAAA27A25ED800B07259 /* APIEndpoints.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B8EAAA927A25ED800B07259 /* APIEndpoints.swift */; };
 		7B8EAAAD27A25FC300B07259 /* AuthRequestDTO+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B8EAAAC27A25FC300B07259 /* AuthRequestDTO+Mapping.swift */; };
 		7B8EAAAF27A2601C00B07259 /* AuthResponseDTO+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B8EAAAE27A2601C00B07259 /* AuthResponseDTO+Mapping.swift */; };
+		7BA9624527BF51050052BC9A /* FinishView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BA9624427BF51050052BC9A /* FinishView.swift */; };
+		7BA9624727BF5A1E0052BC9A /* FinishViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BA9624627BF5A1E0052BC9A /* FinishViewController.swift */; };
 		7BB0110B278AE227005E5C9E /* NavigateMenuBaseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BB0110A278AE227005E5C9E /* NavigateMenuBaseController.swift */; };
 		7BB0110F278BBBAC005E5C9E /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 7BB0110E278BBBAC005E5C9E /* SnapKit */; };
 		7BB01113278BC44E005E5C9E /* ViewConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BB01112278BC44E005E5C9E /* ViewConfiguration.swift */; };
@@ -284,6 +286,8 @@
 		7B8EAAA927A25ED800B07259 /* APIEndpoints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIEndpoints.swift; sourceTree = "<group>"; };
 		7B8EAAAC27A25FC300B07259 /* AuthRequestDTO+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AuthRequestDTO+Mapping.swift"; sourceTree = "<group>"; };
 		7B8EAAAE27A2601C00B07259 /* AuthResponseDTO+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AuthResponseDTO+Mapping.swift"; sourceTree = "<group>"; };
+		7BA9624427BF51050052BC9A /* FinishView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinishView.swift; sourceTree = "<group>"; };
+		7BA9624627BF5A1E0052BC9A /* FinishViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinishViewController.swift; sourceTree = "<group>"; };
 		7BB0110A278AE227005E5C9E /* NavigateMenuBaseController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigateMenuBaseController.swift; sourceTree = "<group>"; };
 		7BB01112278BC44E005E5C9E /* ViewConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewConfiguration.swift; sourceTree = "<group>"; };
 		7BB01114278BC6D1005E5C9E /* BindingTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BindingTextField.swift; sourceTree = "<group>"; };
@@ -708,6 +712,15 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		7BA9624327BF50E40052BC9A /* TradeFinishScene */ = {
+			isa = PBXGroup;
+			children = (
+				7BA9624427BF51050052BC9A /* FinishView.swift */,
+				7BA9624627BF5A1E0052BC9A /* FinishViewController.swift */,
+			);
+			path = TradeFinishScene;
+			sourceTree = "<group>";
+		};
 		7BB0110C278AF1C3005E5C9E /* Application */ = {
 			isa = PBXGroup;
 			children = (
@@ -752,6 +765,7 @@
 				7B193C8F2796F8C900B934A3 /* ProductScene */,
 				7B5EEE4327A832B600990E37 /* TradeScene */,
 				7B5EEEBF27B955CE00990E37 /* TradeProcessScene */,
+				7BA9624327BF50E40052BC9A /* TradeFinishScene */,
 				7BB0111A278BCEB7005E5C9E /* LoginScene */,
 				7B54D6FA278EF2D900214664 /* JoinScene */,
 				7B356685279241F100C45A68 /* MyPageScene */,
@@ -1050,6 +1064,7 @@
 				7B5EEE9C27B7DCCF00990E37 /* UICollectionView+.swift in Sources */,
 				7B5EEE7B27B2D39300990E37 /* SortView.swift in Sources */,
 				7B193C832794D3D300B934A3 /* HomeViewItemCell.swift in Sources */,
+				7BA9624727BF5A1E0052BC9A /* FinishViewController.swift in Sources */,
 				7B5EEEB627B921CB00990E37 /* FilterRepositoryInterface.swift in Sources */,
 				7B193CA72799189900B934A3 /* WishButton.swift in Sources */,
 				7B5EEE2727A58ED800990E37 /* UIStackView+.swift in Sources */,
@@ -1090,6 +1105,7 @@
 				7B8EAA7F279FC38300B07259 /* DIViewController.swift in Sources */,
 				7BF4CEA427BD2B7E001AF601 /* WishCell.swift in Sources */,
 				7B5EEE7927B2D36E00990E37 /* SortViewController.swift in Sources */,
+				7BA9624527BF51050052BC9A /* FinishView.swift in Sources */,
 				7B193CA52798F4CC00B934A3 /* DebugLog.swift in Sources */,
 				7B5EEEB427B9160700990E37 /* TradeUseCase.swift in Sources */,
 				7B5EEE3D27A773AE00990E37 /* ProductListViewModel.swift in Sources */,

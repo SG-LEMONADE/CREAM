@@ -79,8 +79,6 @@ final class SelectViewModel: SelectViewModelInterface {
                 return Layout.third.description
             }
             return Layout.list.description
-        } else if items.count < 12 {
-            return Layout.double.description
         } else {
             return Layout.third.description
         }

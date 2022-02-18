@@ -37,7 +37,7 @@ class SizePriceCell: UICollectionViewCell {
     
     private lazy var sizeLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 13)
+        label.font = UIFont.systemFont(ofSize: 14)
         label.textAlignment = .center
         
         return label
@@ -45,7 +45,7 @@ class SizePriceCell: UICollectionViewCell {
     
     private lazy var priceLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 10)
+        label.font = UIFont.systemFont(ofSize: 12)
         label.textAlignment = .center
         return label
     }()

@@ -205,6 +205,14 @@ class ProcessView: UIView {
         return view
     }()
     
+    lazy var activityIndicator: UIActivityIndicatorView = {
+        let indicator = UIActivityIndicatorView()
+        indicator.color = .black
+        indicator.style = .large
+        indicator.hidesWhenStopped = true
+        return indicator
+    }()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         applyViewSettings()
@@ -229,7 +237,8 @@ extension ProcessView: ViewConfiguration {
                     validateView,
                     secondDivisionView,
                     infoStack,
-                    tradeBottomBar)
+                    tradeBottomBar,
+                    activityIndicator)
     }
     
     func setupConstraints() {
@@ -299,6 +308,10 @@ extension ProcessView: ViewConfiguration {
             $0.height.equalTo(60)
             $0.leading.trailing.equalToSuperview()
             $0.bottom.equalTo(self.safeAreaLayoutGuide.snp.bottom)
+        }
+        
+        activityIndicator.snp.makeConstraints {
+            $0.edges.equalToSuperview()
         }
     }
     

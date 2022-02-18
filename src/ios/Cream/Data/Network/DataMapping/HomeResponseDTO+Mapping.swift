@@ -17,6 +17,7 @@ struct AdImageResponseDTO: Decodable {
 struct HomeResponseDTO: Decodable {
     let adImageUrls: [AdImageResponseDTO]
     let sections: [SectionResponseDTO]
+    let recommendedItems: [ProductInfoResponseDTO]
 }
 
 extension HomeResponseDTO {
@@ -25,7 +26,10 @@ extension HomeResponseDTO {
         adImageUrls.forEach {
             imageUrls.append($0.imageUrl)
         }
-        var sectionInfo: [Section] = []
+        
+        let recommendSection: Section = .init(header: "당신만을 위한 추천 상품", detail: "Only for YOU🎁", imageUrl: "", products: recommendedItems.map { $0.toDomain() })
+        
+        var sectionInfo: [Section] = [recommendSection]
         sections.forEach {
             sectionInfo.append($0.toDomain())
         }

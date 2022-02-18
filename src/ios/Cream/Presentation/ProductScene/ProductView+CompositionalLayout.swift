@@ -75,13 +75,13 @@ extension ProductView {
     
     private func configureItemInfoSectionLayout() -> NSCollectionLayoutSection {
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
-                                              heightDimension: .fractionalWidth(0.52))
+                                              heightDimension: .fractionalWidth(0.60))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         item.contentInsets.top = 20
         item.contentInsets.bottom = 15
         
         let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
-                                               heightDimension: .fractionalWidth(0.52))
+                                               heightDimension: .fractionalWidth(0.60))
         
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
         

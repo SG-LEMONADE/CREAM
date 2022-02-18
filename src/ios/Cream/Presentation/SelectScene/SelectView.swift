@@ -106,7 +106,7 @@ extension SelectView: ViewConfiguration {
     func setupConstraints() {
         contentStackView.snp.makeConstraints {
             $0.top.equalTo(containerView.snp.top).offset(32)
-            $0.bottom.equalTo(containerView.snp.bottom)
+            $0.bottom.equalTo(self.snp.bottom)
             $0.leading.equalTo(containerView.snp.leading).offset(10)
             $0.trailing.equalTo(containerView.snp.trailing).offset(-10)
         }

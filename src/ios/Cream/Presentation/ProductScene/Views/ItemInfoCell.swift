@@ -71,20 +71,33 @@ class ItemInfoCell: UICollectionViewCell {
     private lazy var recentDescLabel: UILabel = {
         let label = UILabel(frame: .zero)
         label.font = UIFont.systemFont(ofSize: 12)
+        label.text = "최근 거래가(안내메시지)"
+        label.textAlignment = .left
         label.textColor = .systemGray2
         return label
     }()
     
-    private lazy var priceLabel: UILabel = {
+    private lazy var recentPriceLabel: UILabel = {
         let label = UILabel(frame: .zero)
+        label.text = "최근 거래가(값)"
+        label.textAlignment = .right
         label.font = UIFont.systemFont(ofSize: 18, weight: .bold)
         return label
     }()
     
     private lazy var priceStackView: UIStackView = {
-        let sv = UIStackView(arrangedSubviews: [recentDescLabel, priceLabel])
+        let sv = UIStackView(arrangedSubviews: [recentDescLabel,
+                                                recentPriceLabel])
         sv.axis = .horizontal
         return sv
+    }()
+    
+    private lazy var priceChangeLabel: UILabel = {
+        let label = UILabel(frame: .zero)
+        label.textAlignment = .right
+        label.text = "가격 변화 정도"
+        label.font = UIFont.systemFont(ofSize: 13, weight: .bold)
+        return label
     }()
     
     override init(frame: CGRect) {
@@ -96,11 +109,18 @@ class ItemInfoCell: UICollectionViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    override func prepareForReuse() {
+        
+    }
 }
 
 extension ItemInfoCell: ViewConfiguration {
     func buildHierarchy() {
-        self.addSubviews(infoStackView, sizeButton, priceStackView)
+        self.addSubviews(infoStackView,
+                         sizeButton,
+                         priceStackView,
+                         priceChangeLabel)
     }
     
     func setupConstraints() {
@@ -119,7 +139,13 @@ extension ItemInfoCell: ViewConfiguration {
         priceStackView.snp.makeConstraints {
             $0.leading.equalTo(self.snp.leading).offset(10)
             $0.trailing.equalTo(self.snp.trailing).offset(-10)
+            $0.bottom.equalTo(priceChangeLabel.snp.top).offset(-5)
+        }
+        
+        priceChangeLabel.snp.makeConstraints {
+            $0.trailing.equalTo(self.snp.trailing).offset(-10)
             $0.bottom.equalTo(self.snp.bottom).offset(-10)
+            $0.leading.equalTo(self.snp.leading).offset(10)
         }
     }
 }
@@ -133,21 +159,39 @@ extension ItemInfoCell {
 
 // MARK: Configure Cell Info
 extension ItemInfoCell {
-    func configure(_ product: ProductDetail, size: String? = nil) {
+    func configure(_ product: ProductDetail, size: String) {
+        recentDescLabel.text = "최근 거래가"
         brandLabel.text = product.brandName
         detailLabel.text = product.originalName
         translateLabel.text = product.translatedName
-        if let size = size {
-            product.askPrices[size].flatMap { value in
-                priceLabel.text = value != nil ? "\(String(describing: value)) 원" : "-"
+        if let price = product.lastSalePrice {
+            recentPriceLabel.text = price.priceFormat+"원"
+        } else {
+            recentPriceLabel.text = "-"
+        }
+        if let changeValue = product.changeValue,
+           let changePercent = product.changePercentage {
+            let result = "\(changeValue.priceFormat)원 \(changePercent.toPercentageFormat)"
+            
+            if changePercent > 0 {
+                priceChangeLabel.text = "▲\(result)"
+                priceChangeLabel.textColor = TradeType.buy.color
+            } else if changeValue < 0 {
+                priceChangeLabel.text = "▼\(result)"
+                priceChangeLabel.textColor = TradeType.sell.color
+            } else {
+                priceChangeLabel.text =  "-\(changePercent.toPercentageFormat)"
+                priceChangeLabel.textColor = .black
             }
         } else {
-            priceLabel.text = product.lowestAsk != nil ? "\(String(describing: product.lowestAsk)) 원" : "-"
+            priceChangeLabel.text = "-"
         }
         
-        
-        recentDescLabel.text = "최근 거래가"
-        sizeButton.setTitle("모든 사이즈", for: .normal)
+        if size != "" {
+            sizeButton.setTitle(size, for: .normal)
+        } else {
+            sizeButton.setTitle("모든 사이즈", for: .normal)
+        }
     }
 }
 
@@ -155,7 +199,19 @@ extension Int {
     var priceFormat: String {
         let numberFormatter = NumberFormatter()
         numberFormatter.numberStyle = .decimal
-        let result = numberFormatter.string(for: self) ?? "0" + "원"
-        return result
+        if let result = numberFormatter.string(for: self) {
+            return result
+        }
+        return "-"
+    }
+}
+
+extension Double {
+    var toPercentageFormat: String {
+        if self != 0 {
+            return "(\(self)%)"
+        } else {
+            return "(0%)"
+        }
     }
 }
