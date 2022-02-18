@@ -2,16 +2,16 @@ import axios from "axios";
 
 import { getToken } from "lib/token";
 
-export const onHandleTrade = async (
+export const onRegisterTrade = async (
 	category: string,
 	auction: boolean,
 	date: number,
 	price: number,
-	id: number,
+	id: string,
 	size: string,
-) => {
+): Promise<boolean | number> => {
 	const token = getToken("accessToken");
-
+	console.log(category, auction, date, price, id, size);
 	if (auction) {
 		// 경매 형식
 		try {
@@ -28,8 +28,11 @@ export const onHandleTrade = async (
 					},
 				},
 			);
+			if (res.status === 200) return true;
+			else return false;
 		} catch (e) {
-			console.error(e);
+			const errResponse = e.response.data;
+			console.log(errResponse);
 		}
 	} else {
 		// 즉시 거래
@@ -43,8 +46,13 @@ export const onHandleTrade = async (
 					},
 				},
 			);
+			if (res.status === 200) return true;
+			else return false;
 		} catch (e) {
-			console.error(e);
+			if (e.response !== undefined) {
+				const errResponse = e.response.data;
+				return errResponse.code;
+			}
 		}
 	}
 };

@@ -1,7 +1,6 @@
 import React, { FunctionComponent, useCallback } from "react";
 import { useRouter } from "next/router";
 import useSWR from "swr";
-import axios from "axios";
 
 import NavTemplate from "components/templates/NavTemplate";
 import HeaderTop from "components/organisms/HeaderTop";
@@ -11,9 +10,9 @@ import TransactionTitle from "components/atoms/TransactionTitle";
 import TransactionTemplate from "components/templates/TransactionTemplate";
 import { ProductRes } from "types";
 import { fetcherWithToken } from "lib/fetcher";
+import { onRegisterTrade } from "lib/trade";
 
 import Swal from "sweetalert2";
-import { getToken } from "lib/token";
 
 const ProductSell: FunctionComponent = () => {
 	const router = useRouter();
@@ -26,77 +25,34 @@ const ProductSell: FunctionComponent = () => {
 
 	const onHandleTrade = useCallback(
 		async (category: string, auction: boolean, date: number, price: number) => {
-			const token = getToken("accessToken");
-			console.log(category, auction, date, price);
-			if (auction) {
-				// 경매 형식 && 판매
-				try {
-					const res = await axios.post(
-						`${process.env.END_POINT_PRODUCT}/trades/products/${id}/${size}`,
-						{
-							price: price,
-							requestType: "BID",
-							validationDay: date,
-						},
-						{
-							headers: {
-								Authorization: `Bearer ${token}`,
-							},
-						},
-					);
-					router.push({
-						pathname: "/sell/complete",
-						query: {
-							id: id,
-							auction: auction,
-							price: price,
-							date: date,
-						},
-					});
-				} catch (e) {
-					const errResponse = e.response.data;
-					errResponse.code &&
-						Swal.fire({
-							position: "top",
-							icon: "error",
-							html: `${process.env.ERROR_code[parseInt(errResponse.code)]}`,
-							showConfirmButton: false,
-							timer: 2000,
-						});
-				}
+			const res = await onRegisterTrade(
+				"sell",
+				auction,
+				date,
+				price,
+				id as string,
+				size as string,
+			);
+			if (res === true) {
+				router.push({
+					pathname: "/sell/complete",
+					query: {
+						id: id,
+						auction: auction,
+						price: price,
+						date: date,
+					},
+				});
+			} else if (typeof res === "number") {
+				Swal.fire({
+					position: "top",
+					icon: "error",
+					html: `${process.env.ERROR_code[res]}`,
+					showConfirmButton: false,
+					timer: 2000,
+				});
 			} else {
-				// 즉시 판매
-				try {
-					const res = await axios.post(
-						`${process.env.END_POINT_PRODUCT}/trades/sell/select/${id}/${size}`,
-						{},
-						{
-							headers: {
-								Authorization: `Bearer ${token}`,
-							},
-						},
-					);
-					router.push({
-						pathname: "/sell/complete",
-						query: {
-							id: id,
-							auction: auction,
-							price: price,
-							date: date,
-						},
-					});
-				} catch (e) {
-					const errResponse = e.response.data;
-					console.log(errResponse);
-					errResponse.code &&
-						Swal.fire({
-							position: "top",
-							icon: "error",
-							html: `${process.env.ERROR_code[parseInt(errResponse.code)]}`,
-							showConfirmButton: false,
-							timer: 2000,
-						});
-				}
+				console.error("Trade Not Registered.");
 			}
 		},
 		[],

@@ -10,10 +10,9 @@ import TransactionTitle from "components/atoms/TransactionTitle";
 import TransactionTemplate from "components/templates/TransactionTemplate";
 import { ProductRes } from "types";
 import { fetcherWithToken } from "lib/fetcher";
-import axios from "axios";
+import { onRegisterTrade } from "lib/trade";
 
 import Swal from "sweetalert2";
-import { getToken } from "lib/token";
 
 const ProductBuy: FunctionComponent = () => {
 	const router = useRouter();
@@ -26,75 +25,34 @@ const ProductBuy: FunctionComponent = () => {
 
 	const onHandleTrade = useCallback(
 		async (category: string, auction: boolean, date: number, price: number) => {
-			const token = getToken("accessToken");
-			if (auction) {
-				// 경매 형식 && 구매
-				try {
-					const res = await axios.post(
-						`${process.env.END_POINT_PRODUCT}/trades/products/${id}/${size}`,
-						{
-							price: price,
-							requestType: "ASK",
-							validationDay: date,
-						},
-						{
-							headers: {
-								Authorization: `Bearer ${token}`,
-							},
-						},
-					);
-					router.push({
-						pathname: "/buy/complete",
-						query: {
-							id: id,
-							auction: auction,
-							price: price,
-							date: date,
-						},
-					});
-				} catch (e) {
-					const errResponse = e.response.data;
-					errResponse.code &&
-						Swal.fire({
-							position: "top",
-							icon: "error",
-							html: `${process.env.ERROR_code[parseInt(errResponse.code)]}`,
-							showConfirmButton: false,
-							timer: 2000,
-						});
-				}
+			const res = await onRegisterTrade(
+				"buy",
+				auction,
+				date,
+				price,
+				id as string,
+				size as string,
+			);
+			if (res === true) {
+				router.push({
+					pathname: "/buy/complete",
+					query: {
+						id: id,
+						auction: auction,
+						price: price,
+						date: date,
+					},
+				});
+			} else if (typeof res === "number") {
+				Swal.fire({
+					position: "top",
+					icon: "error",
+					html: `${process.env.ERROR_code[res]}`,
+					showConfirmButton: false,
+					timer: 2000,
+				});
 			} else {
-				// 즉시 구매
-				try {
-					const res = await axios.post(
-						`${process.env.END_POINT_PRODUCT}/trades/buy/select/${id}/${size}`,
-						{},
-						{
-							headers: {
-								Authorization: `Bearer ${token}`,
-							},
-						},
-					);
-					router.push({
-						pathname: "/buy/complete",
-						query: {
-							id: id,
-							auction: auction,
-							price: price,
-							date: date,
-						},
-					});
-				} catch (e) {
-					const errResponse = e.response.data;
-					errResponse.code &&
-						Swal.fire({
-							position: "top",
-							icon: "error",
-							html: `${process.env.ERROR_code[parseInt(errResponse.code)]}`,
-							showConfirmButton: false,
-							timer: 2000,
-						});
-				}
+				console.error("Trade Not Registered.");
 			}
 		},
 		[],
