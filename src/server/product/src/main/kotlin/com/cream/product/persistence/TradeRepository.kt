@@ -18,12 +18,12 @@ import java.time.LocalDateTime
 
 interface TradeRepositoryCustom {
     fun findFirstTrade(productId: Long, size: String, requestType: RequestType): Trade
-    fun findAllByPageAndStatus(userId: Long, offset: Long, limit: Long, requestType: RequestType, tradeStatus: RequestTradeStatus): List<TradeHistoryDTO>
+    fun findAllByPageAndStatus(userId: Long, offset: Long, limit: Long, requestType: RequestType, reverseRequestType: RequestType, tradeStatus: RequestTradeStatus): List<TradeHistoryDTO>
 
     fun findByProductIdWithCount(size: String?, productId: Long, requestType: RequestType): List<TradeBySizeCountDTO>
     fun findByProductIdCompleted(productId: Long, size: String?): List<TradeLastCompletedDTO>
 
-    fun findCountsByTradeStatus(userId: Long, requestType: RequestType): List<TradeStatusCounterDTO>
+    fun findCountsByTradeStatus(userId: Long, requestType: RequestType, reverseRequestType: RequestType): List<TradeStatusCounterDTO>
 }
 
 interface TradeRepository : JpaRepository<Trade, Long>, TradeRepositoryCustom
@@ -67,6 +67,7 @@ class TradeRepositoryImpl :
         offset: Long,
         limit: Long,
         requestType: RequestType,
+        reverseRequestType: RequestType,
         tradeStatus: RequestTradeStatus
     ): List<TradeHistoryDTO> {
         // 거래 내역을 반환합니다.
@@ -85,8 +86,7 @@ class TradeRepositoryImpl :
             )
             .from(tradeEntity)
             .where(
-                tradeEntity.requestType.eq(requestType),
-                tradeEntity.userId.eq(userId).or(tradeEntity.counterpartUserId.eq(userId)),
+                eqRequestType(userId, requestType, reverseRequestType),
                 eqTradeStatus(tradeStatus)
             )
             .offset(offset)
@@ -150,7 +150,8 @@ class TradeRepositoryImpl :
 
     override fun findCountsByTradeStatus(
         userId: Long,
-        requestType: RequestType
+        requestType: RequestType,
+        reverseRequestType: RequestType
     ): List<TradeStatusCounterDTO> {
         // 내 거래 내역 타입별 개수를 위한 count 함수입니다.
         return jpaQueryFactory
@@ -162,7 +163,7 @@ class TradeRepositoryImpl :
             )
             .from(tradeEntity)
             .where(
-                tradeEntity.userId.eq(userId),
+                eqRequestType(userId, requestType, reverseRequestType),
                 tradeEntity.requestType.eq(requestType)
             )
             .groupBy(tradeEntity.tradeStatus)
@@ -177,6 +178,15 @@ class TradeRepositoryImpl :
     ): OrderSpecifier<*> {
         return if (requestType == RequestType.ASK) OrderSpecifier(Order.ASC, tradeEntity.price)
         else OrderSpecifier(Order.DESC, tradeEntity.price)
+    }
+
+    private fun eqRequestType(
+        userId: Long,
+        requestType: RequestType,
+        reverseRequestType: RequestType
+    ): BooleanExpression {
+        return (tradeEntity.requestType.eq(reverseRequestType).and(tradeEntity.userId.eq(userId)))
+            .or(tradeEntity.requestType.eq(requestType).and(tradeEntity.counterpartUserId.eq(userId)))
     }
 
     private fun eqSize(

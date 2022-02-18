@@ -25,6 +25,8 @@ class PriceService {
         val totalPriceEntity = priceRepository.findOneByCreatedDateAndProductIdAndSize(LocalDate.now(), productId, null)
         if (totalPriceEntity != null) {
             totalPriceEntity.price = price
+        } else {
+            priceRepository.save(Price(productId = productId, price = price, size = null))
         }
         if (priceEntity != null) {
             priceEntity.price = price

@@ -1,5 +1,6 @@
 server:
   port: 8081
+  address: 192.168.0.13
 
 spring:
   application:
@@ -43,3 +44,7 @@ eureka:
     client:
         fetch-registry: true
         register-with-eureka: true
+    instance:
+        prefer-ip-address: true
+        ip-address: ${server.address}
+        instance-id: ${server.address}:${server.port}

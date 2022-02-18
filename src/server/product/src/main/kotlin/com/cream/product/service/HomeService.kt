@@ -54,7 +54,7 @@ class HomeService {
                 SectionDTO(section.header, section.detail, section.imageUrl, section.backgroundColor, products)
             }.toList()
 
-        var recommendItems: List<ProductDTO>? = null
+        var recommendItems: List<ProductDTO> = listOf()
 
         if (userId != null) {
             val sortedRecommendedItems = ArrayList<ProductDTO>()
