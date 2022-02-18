@@ -18,8 +18,7 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
     lateinit var jwtAuthenticationEntryPoint: JwtAuthenticationEntryPoint
 
     override fun configure(http: HttpSecurity) {
-        http.cors()
-            .and()
+        http.cors().disable()
             .csrf().disable()
             .httpBasic().disable()
             .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).accessDeniedHandler(jwtAccessDeniedHandler)
