@@ -13,11 +13,6 @@ class UserLogController {
     @Autowired
     lateinit var userLogService: UserLogService
 
-    @GetMapping
-    fun getUserLog(): ResponseEntity<List<UserLogDTO>> {
-        return ResponseEntity.ok(userLogService.get())
-    }
-
     @PostMapping
     fun createUserLog(
         @RequestBody userLogDTO: UserLogDTO

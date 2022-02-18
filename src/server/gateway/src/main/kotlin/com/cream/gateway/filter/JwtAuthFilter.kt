@@ -48,7 +48,7 @@ class JwtAuthFilter() : AbstractGatewayFilterFactory<JwtAuthFilter.Config>(Confi
             }
 
             // 토큰 값이 필수이고 비어있다면 에러
-            if (path in authIncludedPaths && token == "") throw TokenInvalidException()
+            if ((path in authIncludedPaths || "/wish" in path || "/trades" in path) && token == "") throw TokenInvalidException()
             return@GatewayFilter chain.filter(exchange).then(Mono.fromRunnable {
                 // 인증을 거쳐야 하는 api 가 아니라면 response 에 요청 받았던 토큰을 넣어주기
                 if (token != "" && path != "/users/logout"){
