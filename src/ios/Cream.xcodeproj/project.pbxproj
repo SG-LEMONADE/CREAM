@@ -141,14 +141,12 @@
 		7BF4CEA827BD524C001AF601 /* DeadlineCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BF4CEA727BD524C001AF601 /* DeadlineCell.swift */; };
 		7BF4CEAF27BE38B4001AF601 /* ChartCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BF4CEAE27BE38B4001AF601 /* ChartCell.swift */; };
 		7BF4CEB827BE497D001AF601 /* API-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7BF4CEB727BE497D001AF601 /* API-Info.plist */; };
+		7BF4CEBA27BE942A001AF601 /* ImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BF4CEB927BE942A001AF601 /* ImageCache.swift */; };
 		7BF82E0227A2CD18007E0A79 /* JoinRequestDTO+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BF82E0127A2CD17007E0A79 /* JoinRequestDTO+Mapping.swift */; };
 		7BF82E0427A2CD2B007E0A79 /* JoinResponseDTO+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BF82E0327A2CD2B007E0A79 /* JoinResponseDTO+Mapping.swift */; };
 		7BF82E0627A38558007E0A79 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BF82E0527A38558007E0A79 /* User.swift */; };
 		7BF82E0B27A38BB5007E0A79 /* UserRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BF82E0A27A38BB5007E0A79 /* UserRepository.swift */; };
 		7BF82E0E27A3CCB9007E0A79 /* Cancellable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BF82E0D27A3CCB9007E0A79 /* Cancellable.swift */; };
-		7BF82E1127A5491E007E0A79 /* SizeListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BF82E1027A5491E007E0A79 /* SizeListViewController.swift */; };
-		7BF82E1327A54939007E0A79 /* SizeListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BF82E1227A54939007E0A79 /* SizeListView.swift */; };
-		7BF82E1527A54944007E0A79 /* SizeListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BF82E1427A54944007E0A79 /* SizeListViewModel.swift */; };
 		7BF82E1927A56C8B007E0A79 /* ErrorMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BF82E1827A56C8B007E0A79 /* ErrorMessage.swift */; };
 		7BF82E1A27A57117007E0A79 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7B36DB162789202A00D8ACB0 /* Assets.xcassets */; };
 /* End PBXBuildFile section */
@@ -299,14 +297,12 @@
 		7BF4CEA727BD524C001AF601 /* DeadlineCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeadlineCell.swift; sourceTree = "<group>"; };
 		7BF4CEAE27BE38B4001AF601 /* ChartCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartCell.swift; sourceTree = "<group>"; };
 		7BF4CEB727BE497D001AF601 /* API-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "API-Info.plist"; path = "/Users/wankikim-MN/Documents/github/CREAM/src/ios/Cream/API-Info.plist"; sourceTree = "<absolute>"; };
+		7BF4CEB927BE942A001AF601 /* ImageCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCache.swift; sourceTree = "<group>"; };
 		7BF82E0127A2CD17007E0A79 /* JoinRequestDTO+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "JoinRequestDTO+Mapping.swift"; sourceTree = "<group>"; };
 		7BF82E0327A2CD2B007E0A79 /* JoinResponseDTO+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "JoinResponseDTO+Mapping.swift"; sourceTree = "<group>"; };
 		7BF82E0527A38558007E0A79 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		7BF82E0A27A38BB5007E0A79 /* UserRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRepository.swift; sourceTree = "<group>"; };
 		7BF82E0D27A3CCB9007E0A79 /* Cancellable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cancellable.swift; sourceTree = "<group>"; };
-		7BF82E1027A5491E007E0A79 /* SizeListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SizeListViewController.swift; sourceTree = "<group>"; };
-		7BF82E1227A54939007E0A79 /* SizeListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SizeListView.swift; sourceTree = "<group>"; };
-		7BF82E1427A54944007E0A79 /* SizeListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SizeListViewModel.swift; sourceTree = "<group>"; };
 		7BF82E1827A56C8B007E0A79 /* ErrorMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorMessage.swift; sourceTree = "<group>"; };
 		ACB4ED80299F0DBFDC69F091 /* Pods-Cream.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Cream.debug.xcconfig"; path = "Target Support Files/Pods-Cream/Pods-Cream.debug.xcconfig"; sourceTree = "<group>"; };
 		C13476F4A6CBAC0C05953691 /* Pods-Cream.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Cream.release.xcconfig"; path = "Target Support Files/Pods-Cream/Pods-Cream.release.xcconfig"; sourceTree = "<group>"; };
@@ -395,6 +391,7 @@
 				7BF82E1827A56C8B007E0A79 /* ErrorMessage.swift */,
 				7B5EEE4F27A95DCB00990E37 /* ImageLoader.swift */,
 				7B5EEE9727B7BEF900990E37 /* ErrorList.swift */,
+				7BF4CEB927BE942A001AF601 /* ImageCache.swift */,
 			);
 			path = SupportFile;
 			sourceTree = "<group>";
@@ -500,13 +497,6 @@
 				7B8EAA8927A17C7600B07259 /* JoinView.swift */,
 			);
 			path = JoinScene;
-			sourceTree = "<group>";
-		};
-		7B5EEE4027A819D400990E37 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Views;
 			sourceTree = "<group>";
 		};
 		7B5EEE4327A832B600990E37 /* TradeScene */ = {
@@ -764,7 +754,6 @@
 				7B5EEEBF27B955CE00990E37 /* TradeProcessScene */,
 				7BB0111A278BCEB7005E5C9E /* LoginScene */,
 				7B54D6FA278EF2D900214664 /* JoinScene */,
-				7BF82E0F27A3FE21007E0A79 /* SizeSelectScene */,
 				7B356685279241F100C45A68 /* MyPageScene */,
 				7B5EEEC027B9575100990E37 /* SettingScene */,
 			);
@@ -848,17 +837,6 @@
 				7BF82E0D27A3CCB9007E0A79 /* Cancellable.swift */,
 			);
 			path = Common;
-			sourceTree = "<group>";
-		};
-		7BF82E0F27A3FE21007E0A79 /* SizeSelectScene */ = {
-			isa = PBXGroup;
-			children = (
-				7B5EEE4027A819D400990E37 /* Views */,
-				7BF82E1027A5491E007E0A79 /* SizeListViewController.swift */,
-				7BF82E1427A54944007E0A79 /* SizeListViewModel.swift */,
-				7BF82E1227A54939007E0A79 /* SizeListView.swift */,
-			);
-			path = SizeSelectScene;
 			sourceTree = "<group>";
 		};
 		8054DFD6B3DB5002DFAF10ED /* Pods */ = {
@@ -1080,7 +1058,6 @@
 				7BF4CEAF27BE38B4001AF601 /* ChartCell.swift in Sources */,
 				7BF82E0627A38558007E0A79 /* User.swift in Sources */,
 				7B8EAA8C27A17F3600B07259 /* JoinViewModel.swift in Sources */,
-				7BF82E1327A54939007E0A79 /* SizeListView.swift in Sources */,
 				7B5EEEB827B921F800990E37 /* FilterUseCase.swift in Sources */,
 				7B8EAA9227A191AA00B07259 /* LoginView.swift in Sources */,
 				7B193C8D2796B6A900B934A3 /* ShopBannerCell.swift in Sources */,
@@ -1116,7 +1093,6 @@
 				7B193CA52798F4CC00B934A3 /* DebugLog.swift in Sources */,
 				7B5EEEB427B9160700990E37 /* TradeUseCase.swift in Sources */,
 				7B5EEE3D27A773AE00990E37 /* ProductListViewModel.swift in Sources */,
-				7BF82E1127A5491E007E0A79 /* SizeListViewController.swift in Sources */,
 				7B5EEE7227B10CD800990E37 /* HomeListRepositoryInterface.swift in Sources */,
 				7BB01117278BCA54005E5C9E /* Observable.swift in Sources */,
 				7B8EAA9C27A240F900B07259 /* NetworkConfigurable.swift in Sources */,
@@ -1152,9 +1128,9 @@
 				7BF4CEA127BD2016001AF601 /* SelectView.swift in Sources */,
 				7BF82E0227A2CD18007E0A79 /* JoinRequestDTO+Mapping.swift in Sources */,
 				7B5EEE9427B6B90D00990E37 /* WishItemHeaderView.swift in Sources */,
-				7BF82E1527A54944007E0A79 /* SizeListViewModel.swift in Sources */,
 				7B5EEE6C27B01AA600990E37 /* HomeView+CompositionalLayout.swift in Sources */,
 				7B5EEE8327B4236600990E37 /* Int+.swift in Sources */,
+				7BF4CEBA27BE942A001AF601 /* ImageCache.swift in Sources */,
 				7B5EEE5027A95DCB00990E37 /* ImageLoader.swift in Sources */,
 				7BF82E0B27A38BB5007E0A79 /* UserRepository.swift in Sources */,
 				7B8EAA8A27A17C7600B07259 /* JoinView.swift in Sources */,

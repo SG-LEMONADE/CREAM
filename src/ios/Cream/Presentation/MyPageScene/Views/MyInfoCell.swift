@@ -83,14 +83,23 @@ extension MyInfoCell: ImageLoadable {
         }
         profileNameLabel.text = info.email.split(separator: "@").map { String($0) }.first
         
-        guard let url = URL(string: info.profileImageUrl) else {
+        let urlString = info.profileImageUrl
+        guard let url = URL(string: urlString)
+        else {
             profileImageView.image = UIImage(systemName: "person.fill")
             return
         }
         
-        session = loadImage(url: url) { (image) in
+        if let image = imageCache.image(forKey: urlString) {
             DispatchQueue.main.async { [weak self] in
                 self?.profileImageView.image = image
+            }
+        } else {
+            session = loadImage(url: url) { (image) in
+                image.flatMap { imageCache.add($0, forKey: urlString) }
+                DispatchQueue.main.async { [weak self] in
+                    self?.profileImageView.image = image
+                }
             }
         }
     }
@@ -127,9 +136,9 @@ extension MyInfoCell: ViewConfiguration {
             $0.centerY.equalToSuperview()
         }
         
-//        contentView.snp.makeConstraints {
-//            $0.edges.equalToSuperview()
-//        }
+        contentView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
     }
     
     func viewConfigure() {

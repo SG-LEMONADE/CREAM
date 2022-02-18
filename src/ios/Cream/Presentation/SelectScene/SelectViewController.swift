@@ -218,6 +218,7 @@ extension SelectViewController: UICollectionViewDelegate {
             dismissView()
         case .sizePrice:
             if case let .sizePrice(size, _) = value {
+                print(size)
                 delegate?.didSelectItem?(size)
             }
             dismissView()
@@ -251,7 +252,7 @@ extension SelectViewController: UICollectionViewDelegate {
 // MARK: CollectionView Layout & CollectionView Cell Configuration
 extension SelectViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let width = (collectionView.bounds.size.width - (viewModel.numberOfColumns - 1) * SizeListView.Constraint.GridWidthSpacing) / viewModel.numberOfColumns
+        let width = (collectionView.bounds.size.width - (viewModel.numberOfColumns - 1) * SelectView.Constraint.GridWidthSpacing) / viewModel.numberOfColumns
         
         let cellLayout = CGSize(width: width,
                                 height: width * 0.4)

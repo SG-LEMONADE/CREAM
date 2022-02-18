@@ -188,11 +188,18 @@ class ProcessViewController: DIViewController<ProcessViewModelInterface>, ImageL
             return
         }
         
-        session = loadImage(url: url, completion: { [weak self] image in
-            DispatchQueue.main.async {
+        if let image = imageCache.image(forKey: urlString) {
+            DispatchQueue.main.async { [weak self] in
                 self?.processView.productInfoView.modelImageView.image = image
             }
-        })
+        } else {
+            session = loadImage(url: url) { (image) in
+                image.flatMap { imageCache.add($0, forKey: urlString) }
+                DispatchQueue.main.async { [weak self] in
+                    self?.processView.productInfoView.modelImageView.image = image
+                }
+            }
+        }
     }
     
     private func setupUserAction() {
