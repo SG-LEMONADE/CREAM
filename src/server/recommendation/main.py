@@ -132,6 +132,6 @@ def main(log_sum_pivot, least_sum_pivot, n_items):
 
 
 if __name__ == '__main__':
-    schedule.every(3).hours.do(main(50, 15, 30))
+    schedule.every(3).hours.do(main,50, 15, 30)
     while True:
         schedule.run_pending()
