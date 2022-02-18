@@ -12,7 +12,7 @@ import Footer from "components/organisms/Footer";
 import NavTemplate from "components/templates/NavTemplate";
 import MyPageTemplate from "components/templates/MyPageTemplate";
 import TradeDetail, { StyledH3 } from "components/organisms/TradeDetail";
-import { fetcher } from "lib/fetcher";
+import { fetcherWithToken } from "lib/fetcher";
 import { TradeHistoryRes } from "types";
 
 import Pagination from "rc-pagination";
@@ -31,7 +31,7 @@ const MyTradeBuying: FunctionComponent = () => {
 
 	const { data: TradeInfo } = useSWR<TradeHistoryRes>(
 		`${process.env.END_POINT_PRODUCT}/trades?cursor=${cursor}&perPage=10&requestType=ASK&tradeStatus=${filter}`,
-		fetcher,
+		fetcherWithToken,
 	);
 
 	const onHandleChange = useCallback(

@@ -1,16 +1,21 @@
+import React, { SetStateAction } from "react";
+import { UserInfo } from "context/user";
 import axios from "axios";
+
+import { refresh } from "./refresh";
 import { getToken } from "./token";
 
-export const validateUser = async (): Promise<number> => {
+export const validateUser = async (
+	setUser: React.Dispatch<SetStateAction<UserInfo>>,
+): Promise<number | boolean> => {
 	const token = getToken("accessToken");
 	if (!token) {
 		console.warn("TOKEN DOESN'T EXISTS. There is No token.");
-		return;
+		return false;
 	}
 	try {
-		const res = await axios.post(
+		const res = await axios.get(
 			`${process.env.END_POINT_USER}/users/validate`,
-			{},
 			{
 				headers: {
 					Authorization: `Bearer ${token}`,
@@ -19,14 +24,23 @@ export const validateUser = async (): Promise<number> => {
 		);
 		if (res.data === "") {
 			// user validation OK.
-			return 1;
+			return true;
 		} else {
 			console.error("TOKEN is not valid!");
-			return;
+			return false;
 		}
 	} catch (e) {
 		console.error("ERROR in `users/validate/");
 		console.log(e.response);
-		return;
+		const errResponse = e.response.data;
+		if (errResponse.code === -21) {
+			const refreshResult = await refresh();
+			if (refreshResult < 0) {
+				return false;
+			} else {
+				setUser({ id: refreshResult });
+				return true;
+			}
+		}
 	}
 };

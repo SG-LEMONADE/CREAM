@@ -4,6 +4,7 @@ import React, {
 	useCallback,
 	useEffect,
 	SetStateAction,
+	useContext,
 } from "react";
 import { useRouter } from "next/router";
 import useSWRInfinite from "swr/infinite";
@@ -23,11 +24,13 @@ import ProductSmallInfo from "components/molecules/ProductSmallInfo";
 import ProductSizeSelectGrid from "components/molecules/ProductSizeSelectGrid";
 import ProductSkeleton from "components/organisms/Skeletons";
 import { validateUser } from "lib/user";
-import { fetcher } from "lib/fetcher";
+import { fetcherWithToken, fetcher } from "lib/fetcher";
 import { ProductInfoRes } from "types";
 import { queryStringMaker } from "utils/query";
 
 import { Oval } from "react-loader-spinner";
+import { getToken } from "lib/token";
+import UserContext from "context/user";
 
 const getKey = (
 	perPage: number,
@@ -57,13 +60,14 @@ const getKey = (
 
 const Search: FunctionComponent = () => {
 	const router = useRouter();
+	const { user, setUser } = useContext(UserContext);
 
 	const [isOpen, setIsOpen] = useState<boolean>(false);
 	const [pickedProductInfo, setPickedProductInfo] = useState<ProductInfoRes>();
 
 	const { data, error, mutate, setSize } = useSWRInfinite<ProductInfoRes[]>(
 		(...args) => getKey(40, router.query, setIsEndofData, ...args),
-		fetcher,
+		user?.id ? (url) => fetcherWithToken(url, setUser) : fetcher,
 	);
 
 	const searchProducts = data ? [].concat(...data) : [];
@@ -90,7 +94,7 @@ const Search: FunctionComponent = () => {
 
 	const onHandleClickWish = useCallback(async (obj: ProductInfoRes) => {
 		try {
-			const res = await validateUser();
+			const res = await validateUser(setUser);
 			if (!res) {
 				// user Not logined.
 				router.push("/login");
@@ -108,13 +112,14 @@ const Search: FunctionComponent = () => {
 	 */
 	const onPostWish = useCallback(
 		async (size: string) => {
+			const token = getToken("accessToken");
 			try {
 				const res = await axios.post(
 					`${process.env.END_POINT_PRODUCT}/wish/${pickedProductInfo.id}/${size}`,
 					{},
 					{
 						headers: {
-							userId: "1",
+							Authorization: `Bearer ${token}`,
 						},
 					},
 				);
@@ -197,10 +202,12 @@ const Search: FunctionComponent = () => {
 			</ShopTemplate>
 			{isEndofData ? (
 				<SearchEmptyConent>
-					<StatusText>더 이상 검색 결과가 없습니다.</StatusText>
+					{searchProducts.length > 0 && (
+						<StatusText>더 이상 검색 결과가 없습니다.</StatusText>
+					)}
 				</SearchEmptyConent>
 			) : (
-				<ProductSkeleton />
+				searchProducts.length > 0 && <ProductSkeleton />
 			)}
 			<div ref={setTarget} />
 			<Modal

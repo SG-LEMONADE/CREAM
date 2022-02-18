@@ -1,11 +1,11 @@
 import React, { FunctionComponent, useContext } from "react";
+import UserContext from "context/user";
 
 import CollectionTitle from "components/atoms/CollectionTitle";
 import ProductThumbnail from "components/organisms/ProductThumbnail";
+import { HomeProductInfoRes } from "types";
 
 import styled from "@emotion/styled";
-import { HomeProductInfoRes } from "types";
-import UserContext from "context/user";
 
 type RecommendationsProps = {
 	productInfos: HomeProductInfoRes[];
@@ -25,6 +25,7 @@ const Recommendations: FunctionComponent<RecommendationsProps> = (props) => {
 						title="Only for YOU 🎁"
 						subTitle="당신만을 위한 추천 상품 🎁"
 					/>
+					<ExtraText>좌우로 스크롤하여 추천된 상품을 확인하세요 👍</ExtraText>
 				</TitleArea>
 				<ProductsWrapper>
 					<ProductsImageArea>
@@ -89,6 +90,19 @@ const ProductArea = styled.div`
 const TitleArea = styled.div`
 	max-width: 1280px;
 	margin: 0 auto;
+	position: relative;
+`;
+
+const ExtraText = styled.p`
+	margin: 0;
+	padding: 0;
+	position: absolute;
+	right: 0;
+	bottom: 0;
+	right: 3px;
+	color: rgba(34, 34, 34, 0.5);
+	font-size: 13.5px;
+	letter-spacing: -0.31px;
 `;
 
 const ProductsWrapper = styled.div`

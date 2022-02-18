@@ -1,12 +1,13 @@
 import React, { FunctionComponent, useState } from "react";
 
-import styled from "@emotion/styled";
 import ProductSmallInfo from "components/molecules/ProductSmallInfo";
 import PriceInfo from "components/molecules/PriceInfo";
 import PriceTab from "components/molecules/PriceTab";
 import PriceInput from "components/molecules/PriceInput";
 import DeadLine from "components/molecules/DeadLine";
 import Button from "components/atoms/Button";
+
+import styled from "@emotion/styled";
 
 type TransactionTemplateProps = {
 	category: "buy" | "sell";
@@ -74,10 +75,6 @@ const TransactionTemplate: FunctionComponent<TransactionTemplateProps> = (
 	};
 
 	const onHandleClickTradeBtn = () => {
-		console.log(category, "거래를 할 것이고, ");
-		console.log("가격은 ", userInputPrice);
-		console.log(isAuction ? `경매 이며,` : `경매가 아니며,`);
-		console.log("입찰 마감 기한은, ", validationDate);
 		onHandleTrade(category, isAuction, validationDate, userInputPrice);
 	};
 

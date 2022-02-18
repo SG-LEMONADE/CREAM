@@ -8,7 +8,7 @@ import HeaderMain from "components/organisms/HeaderMain";
 import Footer from "components/organisms/Footer";
 import CompleteTemplate from "components/templates/CompleteTemplate";
 import { ProductRes } from "types";
-import { fetcher } from "lib/fetcher";
+import { fetcherWithToken } from "lib/fetcher";
 
 const BuyComplete: FunctionComponent = () => {
 	const router = useRouter();
@@ -16,7 +16,7 @@ const BuyComplete: FunctionComponent = () => {
 
 	const { data: productInfo } = useSWR<ProductRes>(
 		id ? `${process.env.END_POINT_PRODUCT}/products/${id}` : null,
-		fetcher,
+		fetcherWithToken,
 	);
 
 	return (

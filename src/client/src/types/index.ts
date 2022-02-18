@@ -64,6 +64,7 @@ export interface HomeRes {
 		imageUrl: string;
 		products: HomeProductInfoRes[];
 	}[];
+	recommendedItems: HomeProductInfoRes[];
 }
 
 export interface ProductRes {
@@ -94,6 +95,19 @@ export interface ShortcutItemRes {
 	bigImg: string;
 	smallImg: string;
 	title: string;
+}
+
+export interface GraphDataItem {
+	date: string;
+	price: number;
+}
+
+export interface GraphData {
+	oneMonth: GraphDataItem[];
+	threeMonth: GraphDataItem[];
+	sixMonth: GraphDataItem[];
+	oneYear: GraphDataItem[];
+	total: GraphDataItem[];
 }
 
 export interface UserInfo {

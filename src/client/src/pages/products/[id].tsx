@@ -1,6 +1,12 @@
-import React, { FunctionComponent, useEffect, useState } from "react";
+import React, {
+	FunctionComponent,
+	useContext,
+	useEffect,
+	useState,
+} from "react";
 import { useRouter } from "next/router";
 import useSWR from "swr";
+import UserContext from "context/user";
 
 import NavTemplate from "components/templates/NavTemplate";
 import HeaderTop from "components/organisms/HeaderTop";
@@ -9,13 +15,14 @@ import Footer from "components/organisms/Footer";
 import ProductTemplate, {
 	ProductTemplateLoading,
 } from "components/templates/ProductTemplate";
-import { fetcher } from "lib/fetcher";
-import { ProductRes } from "types";
+import { fetcherWithToken, fetcher } from "lib/fetcher";
+import { GraphData, ProductRes } from "types";
 import { Oval } from "react-loader-spinner";
 
 const Product: FunctionComponent = () => {
 	const router = useRouter();
 	const { id, size } = router.query;
+	const { user, setUser } = useContext(UserContext);
 
 	const [selectedSize, setSelectedSize] = useState<string>("");
 
@@ -23,6 +30,17 @@ const Product: FunctionComponent = () => {
 		size
 			? `${process.env.END_POINT_PRODUCT}/products/${id}/${size}`
 			: `${process.env.END_POINT_PRODUCT}/products/${id}`,
+		user ? (url) => fetcherWithToken(url, setUser) : fetcher,
+		{
+			revalidateOnFocus: false,
+			errorRetryCount: 3,
+		},
+	);
+
+	const { data: graphData } = useSWR<GraphData>(
+		size
+			? `${process.env.END_POINT_PRODUCT}/prices/products/${id}/${size}`
+			: `${process.env.END_POINT_PRODUCT}/prices/products/${id}`,
 		fetcher,
 		{
 			revalidateOnFocus: false,
@@ -74,6 +92,7 @@ const Product: FunctionComponent = () => {
 					activatedSize={selectedSize}
 					setActivatedSize={setSelectedSize}
 					productInfo={productInfo}
+					graphData={graphData}
 				/>
 			)}
 		</NavTemplate>
