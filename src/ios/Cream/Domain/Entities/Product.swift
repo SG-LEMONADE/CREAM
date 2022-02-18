@@ -66,3 +66,8 @@ extension Product {
         }
     }
 }
+
+struct PriceChange {
+    var lastPrice: String
+    var changeValue: String
+}

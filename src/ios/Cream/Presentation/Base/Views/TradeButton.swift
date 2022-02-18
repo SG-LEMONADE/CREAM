@@ -95,7 +95,38 @@ enum TradeType: String, CustomStringConvertible {
         }
     }
     
-
+    var completeMessage: String {
+        switch self {
+        case .buy:
+            return "즉시 구매가 완료되었습니다."
+        case .sell:
+            return "즉시 판매가 완료되었습니다."
+        }
+    }
+    
+    var completeDescription: String {
+        switch self {
+        case .buy:
+            return "구매 금액 결제가 진행됩니다. \n 등록하신 결제 정보로 자동 처리됩니다."
+        case .sell:
+            return "판매 금액 정산이 진행됩니다. \n 등록하신 정산 계좌로 자동 입금됩니다."
+        }
+    }
+    
+    var bidMessage: String {
+        switch self {
+        case .buy:
+            return "구매 입찰이 완료되었습니다."
+        case .sell:
+            return "판매 입찰이 완료되었습니다."
+        }
+    }
+    
+    var bidDescription: String {
+        return "결제는 거래가 성사되는 시점에 \n 등록하신 결제 정보로 자동 처리 됩니다."
+    }
+    
+    
     
     var bottomDescription: String {
         switch self {
@@ -204,7 +235,7 @@ extension TradeButton {
         if let price = price {
             self.priceLabel.text = "\(price.priceFormat)원"
         } else {
-            self.priceLabel.text = "\(tradeType.labelText)"
+            self.priceLabel.text = "-"
         }
     }
 }

@@ -154,7 +154,19 @@ final class ProductListViewModel: ProductListViewModelInterface {
     }
     
     func didScroll() {
-         
+        cursor += 1
+        let _ = usecase.fetch(page: cursor,
+                              searchWord: searchWord,
+                              category: selectedFilters.value.category,
+                              sort: sortStandard.description,
+                              brandId: brandId) { result in
+            switch result {
+            case .success(let products):
+                self.products.value.append(contentsOf: products)
+            case .failure(let _):
+                self.error.value = .networkUnconnected
+            }
+        }
     }
 
     func didFilterRequest(with brandQuery: String?) {

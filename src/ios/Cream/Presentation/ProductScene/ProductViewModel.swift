@@ -24,12 +24,14 @@ protocol ProductViewModelOutput {
     var releaseInfo: [(String, String)] { get }
     var numberOfSections: Int { get }
     var selecteSize: Observable<String> { get }
+//    var priceChange: Observable<PriceChange> { get set }
 }
 
 protocol ProductViewModelInterface: ProductViewModelInput, ProductViewModelOutput { }
 
 final class ProductViewModel: ProductViewModelInterface {
     private let usecase: ProductUseCaseInterface
+//    var priceChange: Observable<PriceChange> = .init(.init(lastPrice: "-", changeValue: "-"))
     var selecteSize: Observable<String> = .init("")
     var item: Observable<ProductDetail> = Observable(ProductDetail.create())
     var releaseInfo: [(String, String)] {
@@ -50,15 +52,13 @@ final class ProductViewModel: ProductViewModelInterface {
         return ProductView.SectionList.allCases.count
     }
     
-    private var page: Int = 1
-    
     init(usecase: ProductUseCaseInterface, id: Int) {
         self.usecase = usecase
         self.id = id
     }
     
     func viewDidLoad() {
-        let _ = usecase.fetchItemById(id) { result in
+        let _ = usecase.fetchItemById(id, size: nil) { result in
             switch result {
             case .success(let product):
                 self.item.value = product
@@ -69,7 +69,15 @@ final class ProductViewModel: ProductViewModelInterface {
     }
     
     func didSelectItem(size: String) {
-        self.selecteSize.value = size
+        usecase.fetchItemById(id, size: size) { result in
+            switch result {
+            case .success(let product):
+                self.item.value = product
+                self.selecteSize.value = size
+            case .failure(let error):
+                print(error)
+            }
+        }
     }
     
     func didTapBuyButton() {

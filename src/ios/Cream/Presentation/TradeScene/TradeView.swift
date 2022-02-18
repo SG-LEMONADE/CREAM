@@ -233,7 +233,9 @@ class TradeView: UIView {
 
 extension TradeView: ViewConfiguration {
     func buildHierarchy() {
-        addSubviews(containerStackView, sizeListView, tradeButton)
+        addSubviews(containerStackView,
+                    sizeListView,
+                    tradeButton)
     }
     
     func setupConstraints() {

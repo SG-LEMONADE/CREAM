@@ -24,6 +24,10 @@ class HomeViewController: DIViewController<HomeViewModelInterface> {
         setupCollectionView()
         setupNavigationBarItem()
         bindViewModel()
+//        viewModel.viewDidLoad()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
         viewModel.viewDidLoad()
     }
     
@@ -72,6 +76,7 @@ class HomeViewController: DIViewController<HomeViewModelInterface> {
                                              withReuseIdentifier: PageControlFooterView.reuseIdentifier)
     }
     
+    // MARK: 미구현 기능
     @objc
     private func alertBarButtonItemTapped() {
         DispatchQueue.global().asyncAfter(deadline: .now() + 2) {
@@ -96,6 +101,9 @@ extension HomeViewController: UICollectionViewDelegate {
                                                                                id: viewModel.homeInfo.value.sections[indexPath.section/2]
                                                                                 .products[indexPath.item].id)
             let productViewController                       = ProductViewController(viewModel)
+            productViewController.callbackClosure = { [weak self] in
+                self?.viewModel.viewDidLoad()
+            }
             
             productViewController.hidesBottomBarWhenPushed = true
             self.navigationController?.pushViewController(productViewController, animated: true)
@@ -110,11 +118,10 @@ extension HomeViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if section == 0 {
+        if section == .zero {
             return viewModel.homeInfo.value.ads.count
         }
-        
-        if section % 2 == 1 {
+        if section % 2 == .one {
             return viewModel.homeInfo.value.sections[section/2].products.count
         } else {
             return 1
@@ -122,25 +129,26 @@ extension HomeViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if indexPath.section == 0 {
+        if indexPath.section == .zero || indexPath.section % 2 == 0 {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ShopBannerCell.reuseIdentifier,
-                                                                for: indexPath) as? ShopBannerCell else
-                                                                { return UICollectionViewCell() }
-            cell.configure(viewModel.homeInfo.value.ads[indexPath.item])
-            return cell
-        } else if indexPath.section % 2 == 0 {
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ShopBannerCell.reuseIdentifier,
-                                                                for: indexPath) as? ShopBannerCell else
-                                                                { return UICollectionViewCell() }
-            cell.configure(viewModel.homeInfo.value.sections[indexPath.section/2].imageUrl)
+                                                                for: indexPath) as? ShopBannerCell
+            else { return UICollectionViewCell() }
+            
+            if indexPath.section == .zero {
+                cell.configure(viewModel.homeInfo.value.ads[indexPath.item])
+            } else {
+                cell.configure(viewModel.homeInfo.value.sections[indexPath.section/2].imageUrl)
+            }
             return cell
         } else {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HomeProductCell.reuseIdentifier,
-                                                                for: indexPath) as? HomeProductCell else
-                                                                { return UICollectionViewCell() }
+                                                                for: indexPath) as? HomeProductCell
+            else { return UICollectionViewCell() }
+            
             cell.configure(viewModel.homeInfo.value.sections[indexPath.section/2].products[indexPath.item])
             cell.indexPath = indexPath
             cell.delegate = self
+            
             return cell
         }
     }

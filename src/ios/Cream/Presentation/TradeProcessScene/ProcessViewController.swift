@@ -104,9 +104,19 @@ class ProcessViewController: DIViewController<ProcessViewModelInterface>, ImageL
         
         viewModel.tradeResult.bind { [weak self] isSuccess in
             if isSuccess {
-                self?.dismiss(animated: true)
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.75) { [weak self] in
+                    self?.processView.activityIndicator.stopAnimating()
+//                    self?.dismiss(animated: true)
+                    guard let viewModel = self?.viewModel
+                    else { return }
+                    
+                    let vc = FinishViewController(viewModel)
+                    vc.callbackClosure = self?.callbackClosure
+                    self?.navigationController?.pushViewController(vc, animated: true)
+                }
             } else {
-                DispatchQueue.main.async { [weak self] in
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.75) { [weak self] in
+                    self?.processView.activityIndicator.stopAnimating()
                     self?.view.makeToast("거래에 실패했습니다.",
                                          duration: 1.5,
                                          position: .center)
@@ -247,7 +257,7 @@ class ProcessViewController: DIViewController<ProcessViewModelInterface>, ImageL
         dismiss(animated: true, completion: nil)
     }
     
-    // MARK: 미구현
+    // MARK: 미구현 예정
     @objc
     func didTapInspectButton() {
         print(#function)
@@ -255,12 +265,12 @@ class ProcessViewController: DIViewController<ProcessViewModelInterface>, ImageL
     
     @objc
     func didTapTradeButton() {
+        processView.activityIndicator.startAnimating()
         viewModel.didTapTradeButton()
     }
 }
 
 extension ProcessViewController: UITextFieldDelegate {
-    
     func textFieldDidBeginEditing(_ textField: UITextField) {
         processView.priceTextField.textField.text = nil
         processView.segmentControl.selectedSegmentIndex = 0
@@ -274,6 +284,7 @@ extension ProcessViewController: UITextFieldDelegate {
             viewModel.requestPrice.value = 0
             return
         }
+        
         switch viewModel.tradeType {
         case .buy:
             if let askPrice = viewModel.selectedProduct.price {

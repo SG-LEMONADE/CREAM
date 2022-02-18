@@ -44,4 +44,8 @@ extension HomeView: ViewConfiguration {
             $0.edges.equalToSuperview()
         }
     }
+    
+    func viewConfigure() {
+        backgroundColor = .white
+    }
 }
