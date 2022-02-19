@@ -204,6 +204,10 @@ extension Int {
         }
         return "-"
     }
+    
+    var priceFormatWithUnit: String {
+        return priceFormat != "" ? priceFormat + "원" : priceFormat
+    }
 }
 
 extension Double {

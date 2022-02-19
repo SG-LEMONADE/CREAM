@@ -150,12 +150,12 @@ extension ProductView {
     
     private func configurePriceChartSectionLayout() -> NSCollectionLayoutSection {
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
-                                              heightDimension: .fractionalWidth(1.2))
+                                              heightDimension: .fractionalWidth(0.6))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         item.contentInsets.bottom = 15
         
         let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
-                                               heightDimension: .fractionalWidth(1.2))
+                                               heightDimension: .fractionalWidth(0.6))
         
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
         

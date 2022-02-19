@@ -17,9 +17,11 @@ protocol ProcessViewModelOutput {
     var requestPrice: Observable<Int> { get set }
     var selectedProduct: TradeRequest { get set }
     var tradeResult: Observable<Bool> { get }
+    var tradeAvailable: Observable<Bool> { get }
     var tradeType: TradeType { get }
     var product: ProductDetail { get }
     var deliveryPrice: Int { get }
+    var deliveryInfo: String { get }
     var validateDay: Observable<Int?> { get set }
     var deadLines: [Int] { get }
 }
@@ -36,13 +38,21 @@ final class ProcessViewModel: ProcessViewModelInterface {
     var product: ProductDetail
     var selectedProduct: TradeRequest
     var deadLines: [Int] = ValidateDeadLine.allCases.map { $0.rawValue }
-    
+    var tradeAvailable: Observable<Bool> = .init(false)
     enum ValidateDeadLine: Int, CaseIterable {
         case one = 1
         case third = 3
         case week = 7
         case month = 30
         case quarter = 90
+    }
+    
+    var deliveryInfo: String {
+        if tradeType == .buy {
+            return deliveryPrice.priceFormatWithUnit
+        } else {
+            return "선불﹒판매자 부담"
+        }
     }
     
     var deliveryPrice: Int {
@@ -54,7 +64,7 @@ final class ProcessViewModel: ProcessViewModelInterface {
         }
     }
     
-    // MARK: Init
+    // MARK: init
     init(_ usecase: TradeUseCaseInterface,
          tradeType: TradeType,
          product: ProductDetail,
@@ -66,6 +76,7 @@ final class ProcessViewModel: ProcessViewModelInterface {
     }
     
     func viewDidLoad() {
+        checkTradeAvailable()
         if let price = selectedProduct.price {
             requestPrice.value = price
         } else {
@@ -94,5 +105,13 @@ final class ProcessViewModel: ProcessViewModelInterface {
     
     func didSelectDeadline(_ deadline: Int) {
         validateDay.value = deadline
+    }
+    
+    private func checkTradeAvailable() {
+        if selectedProduct.price == nil {
+            tradeAvailable.value = true
+        } else {
+            tradeAvailable.value = false
+        }
     }
 }

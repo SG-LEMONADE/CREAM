@@ -6,12 +6,10 @@
 //
 
 import Foundation
-
+import Charts
 
 protocol ProductViewModelInput {
     func viewDidLoad()
-    func didTapBuyButton()
-    func didTapSellButton()
     func removeFromWishList(size: String)
     func addToWishList(size: String)
     func didSelectItem(size: String)
@@ -23,27 +21,23 @@ protocol ProductViewModelOutput {
     var numberOfImageUrls: Int { get }
     var releaseInfo: [(String, String)] { get }
     var numberOfSections: Int { get }
-    var selecteSize: Observable<String> { get }
-//    var priceChange: Observable<PriceChange> { get set }
+    var selectSize: Observable<String> { get }
+    var chartData: [[ChartDataEntry]] { get set }
+    var selectedPeriod: Observable<Int> { get set }
+    var isDidLoad: Bool { get set }
 }
 
 protocol ProductViewModelInterface: ProductViewModelInput, ProductViewModelOutput { }
 
 final class ProductViewModel: ProductViewModelInterface {
     private let usecase: ProductUseCaseInterface
-//    var priceChange: Observable<PriceChange> = .init(.init(lastPrice: "-", changeValue: "-"))
-    var selecteSize: Observable<String> = .init("")
+    var isDidLoad: Bool = true
+    var selectSize: Observable<String> = .init("")
     var item: Observable<ProductDetail> = Observable(ProductDetail.create())
-    var releaseInfo: [(String, String)] {
-        var info = [(String, String)]()
-        info.append(("모델 번호", item.value.styleCode))
-        info.append(("출시일", item.value.releaseDate))
-        info.append(("대표색상", item.value.color))
-        info.append(("발매가", item.value.originalPrice.priceFormat))
-        
-        return info
-    }
+    var chartData: [[ChartDataEntry]] = []
+    var selectedPeriod: Observable<Int> = .init(0)
     var id: Int
+    
     var numberOfImageUrls: Int {
         return item.value.imageUrls.count
     }
@@ -52,16 +46,38 @@ final class ProductViewModel: ProductViewModelInterface {
         return ProductView.SectionList.allCases.count
     }
     
+    var releaseInfo: [(String, String)] {
+        var info = [(String, String)]()
+        info.append(("모델 번호", item.value.styleCode))
+        info.append(("출시일", item.value.releaseDate))
+        info.append(("대표색상", item.value.color))
+        info.append(("발매가", item.value.originalPrice.priceFormat))
+        return info
+    }
+        
+    
+    // MARK: - init
     init(usecase: ProductUseCaseInterface, id: Int) {
         self.usecase = usecase
         self.id = id
     }
     
+    
+    // MARK: - view life cycle
     func viewDidLoad() {
-        let _ = usecase.fetchItemById(id, size: nil) { result in
+        usecase.fetchItemById(self.id, size: nil) { result in
             switch result {
             case .success(let product):
-                self.item.value = product
+                let size: String? = self.selectSize.value != "" ? self.selectSize.value : nil
+                let _ = self.usecase.fetchPrice(id: self.id, size: size) { result in
+                    switch result {
+                    case .success(let chartData):
+                        self.chartData = self.converToChartData(list: chartData)
+                        self.item.value = product
+                    case .failure(let error):
+                        print(error)
+                    }
+                }
             case .failure(let error):
                 print(error)
             }
@@ -69,23 +85,25 @@ final class ProductViewModel: ProductViewModelInterface {
     }
     
     func didSelectItem(size: String) {
+        isDidLoad = false
         usecase.fetchItemById(id, size: size) { result in
             switch result {
             case .success(let product):
                 self.item.value = product
-                self.selecteSize.value = size
+                self.selectSize.value = size
             case .failure(let error):
                 print(error)
             }
         }
-    }
-    
-    func didTapBuyButton() {
-         
-    }
-    
-    func didTapSellButton() {
-         
+        
+        usecase.fetchPrice(id: id, size: size) { result in
+            switch result {
+            case .success(let product):
+                self.chartData = self.converToChartData(list: product)
+            case .failure(let error):
+                print(error)
+            }
+        }
     }
     
     func removeFromWishList(size: String) {
@@ -108,5 +126,30 @@ final class ProductViewModel: ProductViewModelInterface {
                 print(error)
             }
         }
+    }
+    
+    private func converToChartData(list: [[PriceList]]) -> [[ChartDataEntry]] {
+        var entries: [[ChartDataEntry]] = []
+        let period: [Int] = [30, 90, 180, 365, 365]
+        for (index, entry) in list.enumerated() {
+            if entry.isEmpty {
+                var batchEntries: [ChartDataEntry] = []
+                for i in 0..<period[index] {
+                    batchEntries.append(.init(x: Double(i), y: 0))
+                }
+                entries.append(batchEntries)
+            } else {
+                var batchEntries: [ChartDataEntry] = []
+                for i in (0..<period[index] - entry.count) {
+                    batchEntries.append(.init(x: Double(i), y: 0))
+                }
+                let nextIndex = period[index] - entry.count
+                for (batchIndex, date) in entry.enumerated() {
+                    batchEntries.append(.init(x: Double(batchIndex + nextIndex), y: Double(date.price)))
+                }
+                entries.append(batchEntries)
+            }
+        }
+        return entries
     }
 }

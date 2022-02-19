@@ -82,6 +82,7 @@ class SelectView: UIView {
     
     convenience init(frame: CGRect, defaultHeight: CGFloat) {
         self.init(frame: frame)
+        self.backgroundColor = .clear
         self.defaultHeight = defaultHeight
         applyViewSettings()
     }

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftKeychainWrapper
 
 final class ProductRepository {
     private let dataTransferService: DataTransferService
@@ -17,7 +18,6 @@ final class ProductRepository {
 
 // MARK: - Product View Repository Interface
 extension ProductRepository: ProductRepositoryInterface {
-
     func requestProducts(page: Int,
                          searchWord: String?,
                          category: String?,
@@ -80,6 +80,21 @@ extension ProductRepository: ProductRepositoryInterface {
         return task
     }
 
+    func fetchPrice(id: Int, size: String?, completion: @escaping ((Result<[[PriceList]], Error>) -> Void)) -> Cancellable {
+        let endpoint = APIEndpoints.fetchPrice(id: id, size: size)
+
+        let task = RepositoryTask()
+        
+        task.networkTask = dataTransferService.request(with: endpoint, completion: { result in
+            switch result {
+            case .success(let response):
+                completion(.success(response.toDomain()))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        })
+        return task
+    }
 }
 
 // MARK: - Home View Repository Interface
@@ -92,8 +107,33 @@ extension ProductRepository: HomeListRepositoryInterface {
         task.networkTask = dataTransferService.request(with: endpoint, completion: { result in
             switch result {
             case .success(let response):
-                let product = response.toDomain()
-                completion(.success(product))
+                if response.recommendedItems.isEmpty {
+                    _ = self.requestProducts(page: 0,
+                                    searchWord: nil,
+                                    category: nil,
+                                    sort: nil,
+                                    brandId: nil) { newInfo in
+                        switch newInfo {
+                        case .success(let product):
+                            var homeInfo = response.toDomain()
+                            if let _ = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.accessToken) {
+                                homeInfo.sections[0] = Section(header: "아직 추천 정보가 부족합니다😭",
+                                                               detail: "다른 사람들은 이런 상품을 좋아해요",
+                                                               imageUrl: "",
+                                                               products: product)
+                            } else {
+                                homeInfo.sections[0] = Section(header: "다른 사람들은 이런 상품을 좋아해요",
+                                                               detail: "로그인하시면 `당신`만을 위한 아이템을 추천해드릴게요",
+                                                               imageUrl: "",
+                                                               products: product)
+                            }
+                            completion(.success(homeInfo))
+                        case .failure(let error):
+                            completion(.failure(error))
+                        }
+                    }
+                }
+                completion(.success(response.toDomain()))
             case .failure(let error):
                 completion(.failure(error))
             }

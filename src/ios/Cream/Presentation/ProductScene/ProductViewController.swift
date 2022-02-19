@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftKeychainWrapper
 
 protocol FooterScrollDelegate: AnyObject {
     func didScrollTo(_ page: Int)
@@ -14,6 +15,7 @@ protocol FooterScrollDelegate: AnyObject {
 class ProductViewController: DIViewController<ProductViewModelInterface> {
     // MARK: Properties
     weak var delegate: FooterScrollDelegate?
+    
     var callbackClosure: (() -> Void)?
     
     private var item: Int = 0 {
@@ -55,16 +57,24 @@ class ProductViewController: DIViewController<ProductViewModelInterface> {
         topBorder.backgroundColor = color.cgColor
         productView.tradeContainerView.layer.addSublayer(topBorder)
     }
-    
+
     func bindViewModel() {
         viewModel.item.bind { [weak self] product in
-            self?.productView.ItemInfoListView.reloadData()
-            self?.productView.tradeContainerView.sellButton.setPrice(product.highestBid)
-            self?.productView.tradeContainerView.buyButton.setPrice(product.lowestAsk)
-            self?.productView.tradeContainerView.wishButton.configure(product)
+            guard let self = self
+            else { return }
+            
+            if self.isViewLoaded {
+                self.productView.ItemInfoListView.reloadData()
+            } else {
+                self.productView.ItemInfoListView.reloadItems(at: [.init(item: 0, section: 1),
+                                                                    .init(item: 0, section: 5)])
+            }
+            self.productView.tradeContainerView.sellButton.setPrice(product.highestBid)
+            self.productView.tradeContainerView.buyButton.setPrice(product.lowestAsk)
+            self.productView.tradeContainerView.wishButton.configure(product)
         }
         
-        viewModel.selecteSize.bind { [weak self] size in
+        viewModel.selectSize.bind { [weak self] size in
             self?.productView.ItemInfoListView.reloadItems(at: [.init(item: 0, section: 1)])
             if let _askPrice = self?.viewModel.item.value.askPrices[size],
                let askPrice = _askPrice {
@@ -80,9 +90,9 @@ class ProductViewController: DIViewController<ProductViewModelInterface> {
             }
         }
         
-//        viewModel.priceChange.bind { [weak self] value in
-//            self?.productView.ItemInfoListView.reloadItems(at: [.init(item: 0, section: 1)])
-//        }
+        viewModel.selectedPeriod.bind { [weak self] index in
+            self?.productView.ItemInfoListView.reloadItems(at: [.init(item: 0, section: 5)])
+        }
     }
 }
 
@@ -92,6 +102,7 @@ extension ProductViewController {
         productView.tradeContainerView.wishButton.addTarget(self, action: #selector(didTapWishButton), for: .touchUpInside)
         productView.tradeContainerView.buyButton.addTarget(self, action: #selector(didTapBuyButton), for: .touchUpInside)
         productView.tradeContainerView.sellButton.addTarget(self, action: #selector(didTapSellButton), for: .touchUpInside)
+
     }
     
     @objc
@@ -101,6 +112,25 @@ extension ProductViewController {
     
     @objc
     func didTapWishButton() {
+        AuthIntegrator.shared.verifyToken()
+        if KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.accessToken) == nil {
+            guard let baseURL = URL(string: Integrator.gateWayURL)
+            else { fatalError() }
+            
+            let config: NetworkConfigurable                 = ApiDataNetworkConfig(baseURL: baseURL)
+            let networkService: NetworkService              = DefaultNetworkService(config: config)
+            let dataTransferService: DataTransferService    = DefaultDataTransferService(with: networkService)
+            let repository: UserRepositoryInterface         = UserRepository(dataTransferService: dataTransferService)
+            let usecase: UserUseCaseInterface               = UserUseCase(repository)
+            let viewModel: LoginViewModel                   = LoginViewModel(usecase: usecase)
+            let loginViewController                         = LoginViewController(viewModel)
+            let navigationViewController                    = UINavigationController(rootViewController: loginViewController)
+            
+            navigationViewController.modalPresentationStyle = .fullScreen
+            present(navigationViewController, animated: true)
+            return
+        }
+        
         var items: [SelectionType] = []
         
         let item = viewModel.item.value
@@ -129,6 +159,25 @@ extension ProductViewController {
     
     @objc
     func didTapBuyButton() {
+        AuthIntegrator.shared.verifyToken()
+        if KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.accessToken) == nil {
+            guard let baseURL = URL(string: Integrator.gateWayURL)
+            else { fatalError() }
+            
+            let config: NetworkConfigurable                 = ApiDataNetworkConfig(baseURL: baseURL)
+            let networkService: NetworkService              = DefaultNetworkService(config: config)
+            let dataTransferService: DataTransferService    = DefaultDataTransferService(with: networkService)
+            let repository: UserRepositoryInterface         = UserRepository(dataTransferService: dataTransferService)
+            let usecase: UserUseCaseInterface               = UserUseCase(repository)
+            let viewModel: LoginViewModel                   = LoginViewModel(usecase: usecase)
+            let loginViewController                         = LoginViewController(viewModel)
+            let navigationViewController                    = UINavigationController(rootViewController: loginViewController)
+            
+            navigationViewController.modalPresentationStyle = .fullScreen
+            present(navigationViewController, animated: true)
+            return
+        }
+        
         let tradeViewModel = TradeViewModel(tradeType: .buy,
                                             viewModel.item.value)
         let tradeViewController = TradeViewController(tradeViewModel)
@@ -140,6 +189,25 @@ extension ProductViewController {
     
     @objc
     func didTapSellButton() {
+        AuthIntegrator.shared.verifyToken()
+        if KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.accessToken) == nil {
+            guard let baseURL = URL(string: Integrator.gateWayURL)
+            else { fatalError() }
+            
+            let config: NetworkConfigurable                 = ApiDataNetworkConfig(baseURL: baseURL)
+            let networkService: NetworkService              = DefaultNetworkService(config: config)
+            let dataTransferService: DataTransferService    = DefaultDataTransferService(with: networkService)
+            let repository: UserRepositoryInterface         = UserRepository(dataTransferService: dataTransferService)
+            let usecase: UserUseCaseInterface               = UserUseCase(repository)
+            let viewModel: LoginViewModel                   = LoginViewModel(usecase: usecase)
+            let loginViewController                         = LoginViewController(viewModel)
+            let navigationViewController                    = UINavigationController(rootViewController: loginViewController)
+            
+            navigationViewController.modalPresentationStyle = .fullScreen
+            present(navigationViewController, animated: true)
+            return
+        }
+        
         let tradeViewModel = TradeViewModel(tradeType: .sell,
                                             viewModel.item.value)
         let tradeViewController = TradeViewController(tradeViewModel)
@@ -147,6 +215,11 @@ extension ProductViewController {
         let navigationController = UINavigationController(rootViewController: tradeViewController)
         
         present(navigationController, animated: true)
+    }
+    
+    @objc
+    func segmentedControlValueChanged(_ sender: UISegmentedControl) {
+        viewModel.selectedPeriod.value = sender.selectedSegmentIndex
     }
 }
 
@@ -220,7 +293,7 @@ extension ProductViewController: UICollectionViewDataSource, UICollectionViewDel
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ItemInfoCell.reuseIdentifier,
                                                                 for: indexPath) as? ItemInfoCell
             else { return UICollectionViewCell() }
-            cell.configure(viewModel.item.value, size: viewModel.selecteSize.value)
+            cell.configure(viewModel.item.value, size: viewModel.selectSize.value)
             cell.delegate = self
             return cell
             
@@ -251,6 +324,10 @@ extension ProductViewController: UICollectionViewDataSource, UICollectionViewDel
                                                                 for: indexPath) as? ChartCell
             else { return UICollectionViewCell() }
             
+            cell.segmentControl.addTarget(self,
+                                         action: #selector(segmentedControlValueChanged(_:)),
+                                          for: .valueChanged)
+            cell.configure(with: viewModel.chartData, period: viewModel.selectedPeriod.value)
             return cell
             
         case .similarity:

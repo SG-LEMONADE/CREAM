@@ -21,6 +21,9 @@ protocol ProductUseCaseInterface {
     func addWishList(productId: Int,
                      size: String,
                      completion: @escaping (Result<Void, Error>) -> Void)
+    func fetchPrice(id: Int,
+                    size: String?,
+                    completion: @escaping ((Result<[[PriceList]], Error>) -> Void))
 }
 
 final class ProductUseCase {
@@ -43,8 +46,6 @@ extension ProductUseCase: ProductUseCaseInterface {
         }
     }
     
-    // TODO: 목록 요청
-    
     func fetch(page: Int,
                searchWord: String?,
                category: String?,
@@ -65,11 +66,23 @@ extension ProductUseCase: ProductUseCaseInterface {
         }
     }
     
-    
     func fetchItemById(_ id: Int,
                        size: String?,
                        completion: @escaping ((Result<ProductDetail, Error>) -> Void)) {
         _ = repository.requestProductById(id, size: size) { result in
+            switch result {
+            case .success(let product):
+                completion(.success(product))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    func fetchPrice(id: Int,
+                    size: String?,
+                    completion: @escaping ((Result<[[PriceList]], Error>) -> Void)) {
+        _ = repository.fetchPrice(id: id, size: size) { result in
             switch result {
             case .success(let product):
                 completion(.success(product))

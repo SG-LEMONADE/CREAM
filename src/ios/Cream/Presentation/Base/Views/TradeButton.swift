@@ -86,6 +86,21 @@ enum TradeType: String, CustomStringConvertible {
         }
     }
     
+    var instantTradeTitle: String {
+        return "즉시 \(description)"
+    }
+    
+    var waitingTradeTitle: String {
+        return "\(description) 입찰"
+    }
+    var navigationTitle: String {
+        return self.description+"하기"
+    }
+    
+    var labelText: String {
+        return "즉시 \(self.description)가"
+    }
+    
     var requestString: String {
         switch self {
         case .buy:
@@ -126,8 +141,6 @@ enum TradeType: String, CustomStringConvertible {
         return "결제는 거래가 성사되는 시점에 \n 등록하신 결제 정보로 자동 처리 됩니다."
     }
     
-    
-    
     var bottomDescription: String {
         switch self {
         case .buy:
@@ -135,14 +148,6 @@ enum TradeType: String, CustomStringConvertible {
         case .sell:
             return "정산 금액"
         }
-    }
-    
-    var navigationTitle: String {
-        return self.description+"하기"
-    }
-    
-    var labelText: String {
-        return "즉시 \(self.description)가"
     }
 }
 
