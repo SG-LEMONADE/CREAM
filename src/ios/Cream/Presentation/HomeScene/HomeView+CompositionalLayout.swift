@@ -13,7 +13,7 @@ extension HomeView {
     }
     
     func configureCompositionalLayout() -> UICollectionViewCompositionalLayout {
-        return UICollectionViewCompositionalLayout { (section, env) -> NSCollectionLayoutSection? in
+        let layout = UICollectionViewCompositionalLayout { (section, env) -> NSCollectionLayoutSection? in
             if section == .zero {
                 return self.configureBannerSection()
             } else {
@@ -26,6 +26,7 @@ extension HomeView {
                 }
             }
         }
+        return layout
     }
     
     private func configureBannerSection() -> NSCollectionLayoutSection {

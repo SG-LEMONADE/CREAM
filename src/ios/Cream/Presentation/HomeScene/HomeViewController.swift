@@ -24,7 +24,6 @@ class HomeViewController: DIViewController<HomeViewModelInterface> {
         setupCollectionView()
         setupNavigationBarItem()
         bindViewModel()
-//        viewModel.viewDidLoad()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -85,6 +84,7 @@ class HomeViewController: DIViewController<HomeViewModelInterface> {
     }
 }
 
+
 // MARK: - UICollectionViewDelegate
 extension HomeViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -102,7 +102,7 @@ extension HomeViewController: UICollectionViewDelegate {
                                                                                 .products[indexPath.item].id)
             let productViewController                       = ProductViewController(viewModel)
             productViewController.callbackClosure = { [weak self] in
-                self?.viewModel.viewDidLoad()
+//                self?.viewModel.viewDidLoad()
             }
             
             productViewController.hidesBottomBarWhenPushed = true

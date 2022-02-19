@@ -106,7 +106,6 @@ class ProcessViewController: DIViewController<ProcessViewModelInterface>, ImageL
             if isSuccess {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.75) { [weak self] in
                     self?.processView.activityIndicator.stopAnimating()
-//                    self?.dismiss(animated: true)
                     guard let viewModel = self?.viewModel
                     else { return }
                     

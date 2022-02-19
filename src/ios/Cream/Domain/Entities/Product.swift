@@ -9,7 +9,7 @@ import Foundation
 
 struct HomeInfo {
     let ads: [String]
-    let sections: [Section]
+    var sections: [Section]
 }
 
 struct Section {

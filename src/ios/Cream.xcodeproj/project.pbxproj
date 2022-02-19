@@ -127,6 +127,7 @@
 		7B8EAAAF27A2601C00B07259 /* AuthResponseDTO+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B8EAAAE27A2601C00B07259 /* AuthResponseDTO+Mapping.swift */; };
 		7BA9624527BF51050052BC9A /* FinishView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BA9624427BF51050052BC9A /* FinishView.swift */; };
 		7BA9624727BF5A1E0052BC9A /* FinishViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BA9624627BF5A1E0052BC9A /* FinishViewController.swift */; };
+		7BA9624B27C081750052BC9A /* RecommendBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BA9624A27C081750052BC9A /* RecommendBackgroundView.swift */; };
 		7BB0110B278AE227005E5C9E /* NavigateMenuBaseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BB0110A278AE227005E5C9E /* NavigateMenuBaseController.swift */; };
 		7BB0110F278BBBAC005E5C9E /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 7BB0110E278BBBAC005E5C9E /* SnapKit */; };
 		7BB01113278BC44E005E5C9E /* ViewConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BB01112278BC44E005E5C9E /* ViewConfiguration.swift */; };
@@ -288,6 +289,7 @@
 		7B8EAAAE27A2601C00B07259 /* AuthResponseDTO+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AuthResponseDTO+Mapping.swift"; sourceTree = "<group>"; };
 		7BA9624427BF51050052BC9A /* FinishView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinishView.swift; sourceTree = "<group>"; };
 		7BA9624627BF5A1E0052BC9A /* FinishViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinishViewController.swift; sourceTree = "<group>"; };
+		7BA9624A27C081750052BC9A /* RecommendBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendBackgroundView.swift; sourceTree = "<group>"; };
 		7BB0110A278AE227005E5C9E /* NavigateMenuBaseController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigateMenuBaseController.swift; sourceTree = "<group>"; };
 		7BB01112278BC44E005E5C9E /* ViewConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewConfiguration.swift; sourceTree = "<group>"; };
 		7BB01114278BC6D1005E5C9E /* BindingTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BindingTextField.swift; sourceTree = "<group>"; };
@@ -593,6 +595,7 @@
 				7B5EEE6727B00F0300990E37 /* BaseItemView.swift */,
 				7B193C822794D3D300B934A3 /* HomeViewItemCell.swift */,
 				7B193C8827965E5A00B934A3 /* HomeViewCategoryHeaderView.swift */,
+				7BA9624A27C081750052BC9A /* RecommendBackgroundView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1081,6 +1084,7 @@
 				7B5EEE8527B55E8000990E37 /* Integrator.swift in Sources */,
 				7B5EEE3727A6C6B000990E37 /* Product.swift in Sources */,
 				7B54D708279045F400214664 /* TradeButton.swift in Sources */,
+				7BA9624B27C081750052BC9A /* RecommendBackgroundView.swift in Sources */,
 				7B33E9D327BCD959000BC779 /* TradeRequestDTO+Mapping.swift in Sources */,
 				7B5EEE8127B4052500990E37 /* FilterViewModel.swift in Sources */,
 				7BF4CE9F27BD200E001AF601 /* SelectViewModel.swift in Sources */,
