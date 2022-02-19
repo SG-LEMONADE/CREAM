@@ -138,6 +138,7 @@ export interface TradeHistoryRes {
 
 export interface TradeHistoryItemRes {
 	backgroundColor: string;
+	id: number;
 	imageUrl: string[];
 	name: string;
 	size: string;

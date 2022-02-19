@@ -1,4 +1,5 @@
 import { AppProps } from "next/app";
+import Head from "next/head";
 
 import UserProvider from "provider/UserProvider";
 
@@ -9,8 +10,17 @@ export default function App({
 	pageProps,
 }: AppProps): React.ReactNode {
 	return (
-		<UserProvider>
-			<Component {...pageProps} />
-		</UserProvider>
+		<>
+			<Head>
+				<title>CREAM</title>
+				<meta
+					name="description"
+					content="Collapse Rules Everything Around Me"
+				/>
+			</Head>
+			<UserProvider>
+				<Component {...pageProps} />
+			</UserProvider>
+		</>
 	);
 }

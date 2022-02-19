@@ -20,6 +20,7 @@ Buy.args = {
 	in_progress: 1,
 	finished: 4,
 	onClick: action("!"),
+	filter: "WAITING",
 	items: [
 		{
 			backgroundColor: "#ebebeb",
@@ -75,6 +76,7 @@ Sell.args = {
 	in_progress: 1,
 	finished: 4,
 	onClick: action("!"),
+	filter: "WAITING",
 	items: [
 		{
 			backgroundColor: "#ebebeb",

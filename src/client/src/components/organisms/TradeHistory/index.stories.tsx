@@ -36,7 +36,7 @@ BuyHistory.args = {
 			backgroundColor: "rgb(246, 238, 237)",
 			name: "Nike NRG Solo Swoosh Fleece Hoodie Dark Grey Heather - Asia",
 			size: "270",
-			tradeStatus: "FINISHED",
+			tradeStatus: "COMPLETED",
 		},
 	],
 };
@@ -65,7 +65,7 @@ SellHistory.args = {
 			backgroundColor: "rgb(246, 238, 237)",
 			name: "Nike NRG Solo Swoosh Fleece Hoodie Dark Grey Heather - Asia",
 			size: "270",
-			tradeStatus: "FINISHED",
+			tradeStatus: "COMPLETED",
 		},
 	],
 };
