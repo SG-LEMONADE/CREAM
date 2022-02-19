@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftKeychainWrapper
 
 class HomeViewController: DIViewController<HomeViewModelInterface> {
     weak var delegate: FooterScrollDelegate?
@@ -186,6 +187,26 @@ extension HomeViewController: FooterScrollDelegate {
 
 extension HomeViewController: WishButtonDelegate {
     func didClickWishButton(for indexPath: IndexPath) {
+        AuthIntegrator.shared.verifyToken()
+        
+        if KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.accessToken) == nil {
+            guard let baseURL = URL(string: Integrator.gateWayURL)
+            else { fatalError() }
+            
+            let config: NetworkConfigurable                 = ApiDataNetworkConfig(baseURL: baseURL)
+            let networkService: NetworkService              = DefaultNetworkService(config: config)
+            let dataTransferService: DataTransferService    = DefaultDataTransferService(with: networkService)
+            let repository: UserRepositoryInterface         = UserRepository(dataTransferService: dataTransferService)
+            let usecase: UserUseCaseInterface               = UserUseCase(repository)
+            let viewModel: LoginViewModel                   = LoginViewModel(usecase: usecase)
+            let loginViewController                         = LoginViewController(viewModel)
+            let navigationViewController                    = UINavigationController(rootViewController: loginViewController)
+            
+            navigationViewController.modalPresentationStyle = .fullScreen
+            present(navigationViewController, animated: true)
+            return
+        }
+        
         let product = viewModel.homeInfo.value.sections[indexPath.section / 2].products[indexPath.item]
         viewModel.didTapWishButton(id: product.id)
         var items: [SelectionType] = []
@@ -204,9 +225,7 @@ extension HomeViewController: WishButtonDelegate {
         
         let vm = SelectViewModel(type: .wish(), items: items)
         let vc = SelectViewController(vm)
-        vc.selectCompleteHandler = { [weak self] in
-            self?.viewModel.viewDidLoad()
-        }
+
         vc.delegate = self
         vc.modalPresentationStyle = .overFullScreen
         

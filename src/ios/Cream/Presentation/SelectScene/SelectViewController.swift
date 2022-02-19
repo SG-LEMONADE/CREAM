@@ -39,8 +39,8 @@ final class SelectViewController: DIViewController<SelectViewModelInterface> {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        animateShowDimmedView()
         animatePresentContainer()
+        animateShowDimmedView()
     }
     
     override func viewDidDisappear(_ animated: Bool) {

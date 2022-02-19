@@ -46,13 +46,16 @@ extension Integrator: Integratorable {
 }
 
 class AuthIntegrator: Integratorable {
+    
+    static let shared = AuthIntegrator()
+    
     private let usecase: UserUseCaseInterface = AuthIntegrator.configureAuthInfoTransferService()
     
     func didFinishLaunching(withOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]?) {
         verifyToken()
     }
     
-    private func verifyToken() {
+    func verifyToken() {
         usecase.verifyToken { result in
             switch result {
             case .success(_):

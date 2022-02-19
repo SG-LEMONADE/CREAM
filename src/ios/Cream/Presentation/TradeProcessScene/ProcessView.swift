@@ -8,57 +8,29 @@
 import UIKit
 import SnapKit
 
-class TradeBottomBar: UIView {
-    lazy var totalLabel: TradePriceView = {
-        let tradePriceView = TradePriceView()
-        tradePriceView.tradeTypeLabel.text = "총 결제금액"
-        tradePriceView.tradeTypeLabel.textColor = .black
-        tradePriceView.priceLabel.text = "-"
-        tradePriceView.priceLabel.textColor = .black
-        return tradePriceView
-    }()
-    
-    lazy var tradeButton: UIButton = {
-        let button = UIButton()
-        button.backgroundColor = .black
-        button.setTitle("즉시 구매", for: .normal)
-        button.contentHorizontalAlignment = .center
-        button.layer.cornerRadius = 15
+
+class ProcessView: UIView {
+    lazy var cancelButton: UIButton = {
+        let button = UIButton.init(type: .custom)
+        button.setTitle("취소", for: .normal)
+        button.titleLabel?.font = .systemFont(ofSize: 14)
+        button.setTitleColor(.black, for: .normal)
+        button.layer.borderColor = UIColor.darkGray.cgColor
         return button
     }()
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        applyViewSettings()
-    }
+    lazy var inspectionButton: UIButton = {
+        let button = UIButton(type: .custom)
+        button.setTitle("검수 기준", for: .normal)
+        button.titleLabel?.font = .systemFont(ofSize: 12)
+        button.setTitleColor(.darkGray, for: .normal)
+        button.layer.borderWidth = 1
+        button.layer.cornerRadius = 5
+        button.layer.borderColor = UIColor.darkGray.cgColor
+        button.contentEdgeInsets = .init(top: 3, left: 10, bottom: 3, right: 10)
+        return button
+    }()
     
-    @available(*, unavailable)
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-}
-
-extension TradeBottomBar: ViewConfiguration {
-    func buildHierarchy() {
-        addSubviews(totalLabel, tradeButton)
-    }
-    
-    func setupConstraints() {
-        totalLabel.snp.makeConstraints {
-            $0.leading.equalToSuperview().inset(10)
-            $0.top.bottom.equalToSuperview().inset(10)
-            $0.trailing.greaterThanOrEqualTo(tradeButton.snp.leading)
-        }
-        
-        tradeButton.snp.makeConstraints {
-            $0.top.bottom.equalTo(totalLabel)
-            $0.trailing.equalToSuperview().inset(10)
-            $0.width.equalToSuperview().multipliedBy(0.5)
-        }
-    }
-}
-
-class ProcessView: UIView {
     lazy var productInfoView: ProductInfoView = {
         let view = ProductInfoView()
         return view
@@ -320,5 +292,56 @@ extension ProcessView: ViewConfiguration {
         tradeBottomBar.totalLabel.priceLabel.textAlignment = .left
         tradeBottomBar.totalLabel.tradeTypeLabel.textAlignment = .left
         backgroundColor = .white
+    }
+}
+
+// MARK: - supplement
+class TradeBottomBar: UIView {
+    lazy var totalLabel: TradePriceView = {
+        let tradePriceView = TradePriceView()
+        tradePriceView.tradeTypeLabel.text = "총 결제금액"
+        tradePriceView.tradeTypeLabel.textColor = .black
+        tradePriceView.priceLabel.text = "-"
+        tradePriceView.priceLabel.textColor = .black
+        return tradePriceView
+    }()
+    
+    lazy var tradeButton: UIButton = {
+        let button = UIButton()
+        button.backgroundColor = .black
+        button.setTitle("즉시 구매", for: .normal)
+        button.contentHorizontalAlignment = .center
+        button.layer.cornerRadius = 15
+        return button
+    }()
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        applyViewSettings()
+    }
+    
+    @available(*, unavailable)
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
+extension TradeBottomBar: ViewConfiguration {
+    func buildHierarchy() {
+        addSubviews(totalLabel, tradeButton)
+    }
+    
+    func setupConstraints() {
+        totalLabel.snp.makeConstraints {
+            $0.leading.equalToSuperview().inset(10)
+            $0.top.bottom.equalToSuperview().inset(10)
+            $0.trailing.greaterThanOrEqualTo(tradeButton.snp.leading)
+        }
+        
+        tradeButton.snp.makeConstraints {
+            $0.top.bottom.equalTo(totalLabel)
+            $0.trailing.equalToSuperview().inset(10)
+            $0.width.equalToSuperview().multipliedBy(0.5)
+        }
     }
 }

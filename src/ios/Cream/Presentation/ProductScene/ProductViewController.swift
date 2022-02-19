@@ -6,19 +6,16 @@
 //
 
 import UIKit
+import SwiftKeychainWrapper
 
 protocol FooterScrollDelegate: AnyObject {
     func didScrollTo(_ page: Int)
 }
 
-protocol SegmentScrollDelegate: AnyObject {
-    func didMoveTo(_ index: Int)
-}
-
 class ProductViewController: DIViewController<ProductViewModelInterface> {
     // MARK: Properties
-    weak var segmentDelegate: SegmentScrollDelegate?
     weak var delegate: FooterScrollDelegate?
+    
     var callbackClosure: (() -> Void)?
     
     private var item: Int = 0 {
@@ -60,7 +57,7 @@ class ProductViewController: DIViewController<ProductViewModelInterface> {
         topBorder.backgroundColor = color.cgColor
         productView.tradeContainerView.layer.addSublayer(topBorder)
     }
-    
+
     func bindViewModel() {
         viewModel.item.bind { [weak self] product in
             guard let self = self
@@ -115,6 +112,25 @@ extension ProductViewController {
     
     @objc
     func didTapWishButton() {
+        AuthIntegrator.shared.verifyToken()
+        if KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.accessToken) == nil {
+            guard let baseURL = URL(string: Integrator.gateWayURL)
+            else { fatalError() }
+            
+            let config: NetworkConfigurable                 = ApiDataNetworkConfig(baseURL: baseURL)
+            let networkService: NetworkService              = DefaultNetworkService(config: config)
+            let dataTransferService: DataTransferService    = DefaultDataTransferService(with: networkService)
+            let repository: UserRepositoryInterface         = UserRepository(dataTransferService: dataTransferService)
+            let usecase: UserUseCaseInterface               = UserUseCase(repository)
+            let viewModel: LoginViewModel                   = LoginViewModel(usecase: usecase)
+            let loginViewController                         = LoginViewController(viewModel)
+            let navigationViewController                    = UINavigationController(rootViewController: loginViewController)
+            
+            navigationViewController.modalPresentationStyle = .fullScreen
+            present(navigationViewController, animated: true)
+            return
+        }
+        
         var items: [SelectionType] = []
         
         let item = viewModel.item.value
@@ -143,6 +159,25 @@ extension ProductViewController {
     
     @objc
     func didTapBuyButton() {
+        AuthIntegrator.shared.verifyToken()
+        if KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.accessToken) == nil {
+            guard let baseURL = URL(string: Integrator.gateWayURL)
+            else { fatalError() }
+            
+            let config: NetworkConfigurable                 = ApiDataNetworkConfig(baseURL: baseURL)
+            let networkService: NetworkService              = DefaultNetworkService(config: config)
+            let dataTransferService: DataTransferService    = DefaultDataTransferService(with: networkService)
+            let repository: UserRepositoryInterface         = UserRepository(dataTransferService: dataTransferService)
+            let usecase: UserUseCaseInterface               = UserUseCase(repository)
+            let viewModel: LoginViewModel                   = LoginViewModel(usecase: usecase)
+            let loginViewController                         = LoginViewController(viewModel)
+            let navigationViewController                    = UINavigationController(rootViewController: loginViewController)
+            
+            navigationViewController.modalPresentationStyle = .fullScreen
+            present(navigationViewController, animated: true)
+            return
+        }
+        
         let tradeViewModel = TradeViewModel(tradeType: .buy,
                                             viewModel.item.value)
         let tradeViewController = TradeViewController(tradeViewModel)
@@ -154,6 +189,25 @@ extension ProductViewController {
     
     @objc
     func didTapSellButton() {
+        AuthIntegrator.shared.verifyToken()
+        if KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.accessToken) == nil {
+            guard let baseURL = URL(string: Integrator.gateWayURL)
+            else { fatalError() }
+            
+            let config: NetworkConfigurable                 = ApiDataNetworkConfig(baseURL: baseURL)
+            let networkService: NetworkService              = DefaultNetworkService(config: config)
+            let dataTransferService: DataTransferService    = DefaultDataTransferService(with: networkService)
+            let repository: UserRepositoryInterface         = UserRepository(dataTransferService: dataTransferService)
+            let usecase: UserUseCaseInterface               = UserUseCase(repository)
+            let viewModel: LoginViewModel                   = LoginViewModel(usecase: usecase)
+            let loginViewController                         = LoginViewController(viewModel)
+            let navigationViewController                    = UINavigationController(rootViewController: loginViewController)
+            
+            navigationViewController.modalPresentationStyle = .fullScreen
+            present(navigationViewController, animated: true)
+            return
+        }
+        
         let tradeViewModel = TradeViewModel(tradeType: .sell,
                                             viewModel.item.value)
         let tradeViewController = TradeViewController(tradeViewModel)

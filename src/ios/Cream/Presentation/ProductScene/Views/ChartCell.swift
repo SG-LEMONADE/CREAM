@@ -9,15 +9,9 @@ import UIKit
 import SnapKit
 import Charts
 
-protocol ChartCellDelegate: AnyObject {
-    func reloadChart()
-}
-
 class ChartCell: UICollectionViewCell {
     static let reuseIdentifier = "\(ChartCell.self)"
-    
-    weak var delegate: ChartCellDelegate?
-    
+
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 18, weight: .bold)
@@ -29,7 +23,7 @@ class ChartCell: UICollectionViewCell {
     lazy var segmentControl: UISegmentedControl = {
         let segmentControl = UISegmentedControl(items: ["1개월","3개월","6개월","1년","전체"])
         segmentControl.backgroundColor = .systemBackground
-        segmentControl.selectedSegmentIndex = 4
+        segmentControl.selectedSegmentIndex = 0
         return segmentControl
     }()
     
@@ -96,7 +90,7 @@ extension ChartCell {
     func configure(with entries: [[ChartDataEntry]], period: Int = 4) {
         let entry = entries[period]
         let dataset = LineChartDataSet(entries: entry, label: nil)
-        
+        segmentControl.selectedSegmentIndex = period
         dataset.mode = .cubicBezier
         dataset.setColor(.red)
         dataset.setCircleColor(.red)
@@ -110,11 +104,5 @@ extension ChartCell {
         data.setDrawValues(false)
 
         chartView.data = data
-    }
-}
-
-extension ChartCell: SegmentScrollDelegate {
-    func didMoveTo(_ index: Int) {
-        self.segmentControl.selectedSegmentIndex = index
     }
 }

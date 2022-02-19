@@ -35,16 +35,9 @@ final class ProductViewModel: ProductViewModelInterface {
     var selectSize: Observable<String> = .init("")
     var item: Observable<ProductDetail> = Observable(ProductDetail.create())
     var chartData: [[ChartDataEntry]] = []
-    var selectedPeriod: Observable<Int> = .init(4)
-    var releaseInfo: [(String, String)] {
-        var info = [(String, String)]()
-        info.append(("모델 번호", item.value.styleCode))
-        info.append(("출시일", item.value.releaseDate))
-        info.append(("대표색상", item.value.color))
-        info.append(("발매가", item.value.originalPrice.priceFormat))
-        return info
-    }
+    var selectedPeriod: Observable<Int> = .init(0)
     var id: Int
+    
     var numberOfImageUrls: Int {
         return item.value.imageUrls.count
     }
@@ -53,11 +46,24 @@ final class ProductViewModel: ProductViewModelInterface {
         return ProductView.SectionList.allCases.count
     }
     
+    var releaseInfo: [(String, String)] {
+        var info = [(String, String)]()
+        info.append(("모델 번호", item.value.styleCode))
+        info.append(("출시일", item.value.releaseDate))
+        info.append(("대표색상", item.value.color))
+        info.append(("발매가", item.value.originalPrice.priceFormat))
+        return info
+    }
+        
+    
+    // MARK: - init
     init(usecase: ProductUseCaseInterface, id: Int) {
         self.usecase = usecase
         self.id = id
     }
     
+    
+    // MARK: - view life cycle
     func viewDidLoad() {
         usecase.fetchItemById(self.id, size: nil) { result in
             switch result {
