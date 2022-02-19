@@ -3,6 +3,7 @@ const withImages = require("next-images");
 module.exports = withImages({
 	images: {
 		domains: ["kream-phinf.pstatic.net"],
+		disableStaticImages: true,
 	},
 	env: {
 		END_POINT_USER: "http://1.231.16.189:8000",

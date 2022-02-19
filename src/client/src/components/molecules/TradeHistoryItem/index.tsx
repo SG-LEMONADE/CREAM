@@ -2,8 +2,10 @@ import React, { FunctionComponent } from "react";
 
 import styled from "@emotion/styled";
 import ProductSmallInfo from "../ProductSmallInfo";
+import Icon from "components/atoms/Icon";
 
 type TradeHistoryItemProps = {
+	id?: number;
 	imgSrc: string;
 	backgroundColor: string;
 	productName: string;
@@ -11,11 +13,20 @@ type TradeHistoryItemProps = {
 	status?: string;
 	wishedPrice?: number;
 	expiredDate?: string;
+	onDelete?: (id: number) => void;
 };
 
 const TradeHistoryItem: FunctionComponent<TradeHistoryItemProps> = (props) => {
-	const { imgSrc, backgroundColor, productName, size, status, expiredDate } =
-		props;
+	const {
+		id,
+		imgSrc,
+		backgroundColor,
+		productName,
+		size,
+		status,
+		expiredDate,
+		onDelete,
+	} = props;
 
 	const StatusCode = {
 		WAITING: "입찰 중",
@@ -34,7 +45,7 @@ const TradeHistoryItem: FunctionComponent<TradeHistoryItemProps> = (props) => {
 				/>
 			</HistoryProductArea>
 			<HistoryStatusArea>
-				{status && (
+				{!expiredDate && status && (
 					<StatusBlock>
 						<StautsText>{StatusCode[status]}</StautsText>
 					</StatusBlock>
@@ -43,6 +54,18 @@ const TradeHistoryItem: FunctionComponent<TradeHistoryItemProps> = (props) => {
 					<StatusBlock>
 						<StautsText>{expiredDate.slice(0, 10)}</StautsText>
 					</StatusBlock>
+				)}
+				{expiredDate && status === "WAITING" && (
+					<Icon
+						name="Trash"
+						style={{
+							width: "17px",
+							height: "17px",
+							marginLeft: "65px",
+							cursor: "pointer",
+						}}
+						onClick={() => onDelete(id)}
+					></Icon>
 				)}
 			</HistoryStatusArea>
 		</TradeHistoryItemItemWrapper>

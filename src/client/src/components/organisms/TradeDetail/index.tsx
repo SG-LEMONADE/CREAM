@@ -1,10 +1,13 @@
 import React, { FunctionComponent } from "react";
+import axios from "axios";
 
-import { TradeHistoryItemRes } from "types";
 import TradeTab from "components/molecules/TradeTab";
 import TradeHistoryItem from "components/molecules/TradeHistoryItem";
+import { TradeHistoryItemRes } from "types";
+import { getToken } from "lib/token";
 
 import styled from "@emotion/styled";
+import { useRouter } from "next/router";
 
 type TradeDetailProps = {
 	category: "buy" | "sell";
@@ -17,8 +20,28 @@ type TradeDetailProps = {
 };
 
 const TradeDetail: FunctionComponent<TradeDetailProps> = (props) => {
+	const router = useRouter();
+
 	const { category, waiting, in_progress, finished, items, filter, onClick } =
 		props;
+
+	const onHandleDelete = async (id: number) => {
+		const token = getToken("accessToken");
+		try {
+			const res = await axios.delete(
+				`${process.env.END_POINT_PRODUCT}/trades/${id}`,
+				{
+					headers: {
+						Authorization: `Bearer ${token}`,
+					},
+				},
+			);
+			console.log(res.data);
+			router.reload();
+		} catch (e) {
+			console.error(e);
+		}
+	};
 
 	return (
 		<TradeDetailWrapper>
@@ -32,17 +55,20 @@ const TradeDetail: FunctionComponent<TradeDetailProps> = (props) => {
 			/>
 			<StyledBar>
 				<StyledTextLeft>제품</StyledTextLeft>
-				<StyledText>만료일</StyledText>
+				<StyledText right={filter === "WAITING"}>만료일</StyledText>
 			</StyledBar>
 			{items.length > 0 ? (
-				items.map((item, id) => (
+				items.map((item) => (
 					<TradeHistoryItem
-						key={`${item.imageUrl[0]}/${item.validationDate}/${item.size}/${id}`}
+						id={item.id}
+						key={`${item.imageUrl[0]}/${item.validationDate}/${item.size}/${item.id}`}
 						imgSrc={item.imageUrl[0]}
 						backgroundColor={item.backgroundColor}
 						productName={item.name}
 						size={item.size}
 						expiredDate={item.validationDate}
+						status={item.tradeStatus}
+						onDelete={onHandleDelete}
 					/>
 				))
 			) : (
@@ -77,11 +103,11 @@ const StyledTextLeft = styled.p`
 	padding-left: 5vw;
 `;
 
-const StyledText = styled.p`
+const StyledText = styled.p<{ right: boolean }>`
 	margin: 0;
 	padding: 0;
 	position: relative;
-	padding-right: 16px;
+	padding-right: ${({ right }) => (right ? `105px` : `20px`)};
 	display: inline-block;
 	font-size: 13px;
 	letter-spacing: -0.07px;
