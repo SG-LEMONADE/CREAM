@@ -9,8 +9,10 @@ import Footer from "components/organisms/Footer";
 import TransactionTitle from "components/atoms/TransactionTitle";
 import TransactionTemplate from "components/templates/TransactionTemplate";
 import { ProductRes } from "types";
-import { fetcher } from "lib/fetcher";
-import axios from "axios";
+import { fetcherWithToken } from "lib/fetcher";
+import { onRegisterTrade } from "lib/trade";
+
+import Swal from "sweetalert2";
 
 const ProductBuy: FunctionComponent = () => {
 	const router = useRouter();
@@ -18,48 +20,39 @@ const ProductBuy: FunctionComponent = () => {
 
 	const { data: productInfo } = useSWR<ProductRes>(
 		id ? `${process.env.END_POINT_PRODUCT}/products/${id}` : null,
-		fetcher,
+		fetcherWithToken,
 	);
 
 	const onHandleTrade = useCallback(
 		async (category: string, auction: boolean, date: number, price: number) => {
-			console.log(category, auction, date, price);
-			if (auction) {
-				// 경매 형식 && 구매
-				try {
-					const res = await axios.post(
-						`${process.env.END_POINT_PRODUCT}/trades/products/${id}/${size}`,
-						{
-							price: price,
-							requestType: "ASK",
-							validationDay: date,
-						},
-						{
-							headers: {
-								userId: "1",
-							},
-						},
-					);
-					console.log(res);
-				} catch (e) {
-					console.error(e);
-				}
+			const res = await onRegisterTrade(
+				"buy",
+				auction,
+				date,
+				price,
+				id as string,
+				size as string,
+			);
+			if (res === true) {
+				router.push({
+					pathname: "/buy/complete",
+					query: {
+						id: id,
+						auction: auction,
+						price: price,
+						date: date,
+					},
+				});
+			} else if (typeof res === "number") {
+				Swal.fire({
+					position: "top",
+					icon: "error",
+					html: `${process.env.ERROR_code[res]}`,
+					showConfirmButton: false,
+					timer: 2000,
+				});
 			} else {
-				// 즉시 구매
-				try {
-					const res = await axios.post(
-						`${process.env.END_POINT_PRODUCT}/trades/buy/select/${id}/${size}`,
-						{},
-						{
-							headers: {
-								userId: "1",
-							},
-						},
-					);
-					console.log(res);
-				} catch (e) {
-					console.error(e);
-				}
+				console.error("Trade Not Registered.");
 			}
 		},
 		[],
@@ -71,7 +64,7 @@ const ProductBuy: FunctionComponent = () => {
 			headerMain={<HeaderMain />}
 			footer={<Footer />}
 		>
-			<TransactionTitle category="buy" />
+			<TransactionTitle category={auction ? `ask` : `buy`} />
 			{productInfo && (
 				<TransactionTemplate
 					category="buy"

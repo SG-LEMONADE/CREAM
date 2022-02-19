@@ -10,5 +10,6 @@ data class FilterRequestDTO(
     val priceTo: Int? = null,
     val category: String? = null,
     val priceFrom: Int? = null,
-    val collectionId: String? = null
+    val collectionId: String? = null,
+    val recommendation: List<Long>? = null
 )

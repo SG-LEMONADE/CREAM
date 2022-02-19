@@ -84,7 +84,7 @@ const Slider: FunctionComponent<SliderProps> = (props) => {
 					))}
 				</StyledSlider>
 			) : (
-				<StyledFade small={small} {...properties}>
+				<StyledFade small={small === true ? 1 : 0} {...properties}>
 					{images.map((Image, index) => (
 						<div key={index} className="each-fade">
 							<>{Image}</>
@@ -98,8 +98,8 @@ const Slider: FunctionComponent<SliderProps> = (props) => {
 
 export default Slider;
 
-const StyledFade = styled(Fade)<{ small: boolean }>`
-	max-width: ${({ small }) => small && "1200px"};
+const StyledFade = styled(Fade)<{ small: number }>`
+	max-width: ${({ small }) => small === 1 && "1200px"};
 	position: relative;
 `;
 

@@ -2,15 +2,14 @@ import pandas as pd
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
-pd.set_option('display.max_rows', 100)  # 행을 최대 100개까지 출력
-pd.set_option('display.max_columns', 100)  # 열을 최대 100개 까지 출력
-pd.set_option('display.width', 1000)  # 출력 창 넓이 설정
 
 r_cols = ['id', 'name', 'brand', 'category', 'gender', 'color']
 products = pd.read_csv("data/cream/products.csv", sep=",", names=r_cols, encoding='latin-1')
 
+# 상품의 이름을 하나의 절로 나누어 각각의 유사성을 코사인 유사도를 통해 구합니다.
 count_vector = CountVectorizer(ngram_range=(1, 1))
 c_vector_name = count_vector.fit_transform(products['name'])
+# 이후 점수 별로 정렬합니다.
 name_c_sim = cosine_similarity(c_vector_name, c_vector_name).argsort()[:, ::-1]
 
 

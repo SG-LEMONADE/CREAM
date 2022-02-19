@@ -3,11 +3,13 @@ import React, {
 	useCallback,
 	useState,
 	useEffect,
+	useContext,
 } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import axios from "axios";
 import { useSWRConfig } from "swr";
+import UserContext from "context/user";
 
 import ProductInfo from "components/molecules/ProductInfo";
 import SizeSelect from "components/molecules/SizeSelect";
@@ -25,49 +27,27 @@ import Icon from "components/atoms/Icon";
 import ProductThumbnail from "components/organisms/ProductThumbnail";
 import Floater from "components/organisms/Floater";
 import ProductSmallInfo from "components/molecules/ProductSmallInfo";
-import { ProductRes } from "types";
-import { validateUser } from "utils/user";
+import { GraphData, ProductRes } from "types";
+import { validateUser } from "lib/user";
+import { getToken } from "lib/token";
+import { smallImageInfos } from "utils/images";
 
 import styled from "@emotion/styled";
+import Graph from "components/organisms/Graph";
 
 type ProductTemplateProps = {
 	activatedSize: string;
 	setActivatedSize: React.Dispatch<React.SetStateAction<string>>;
 	productInfo: ProductRes;
+	graphData?: GraphData;
 };
-
-const smallList = [
-	<BannerImage
-		bgColor="#4a4a4a"
-		category="small"
-		moreHeight
-		src="https://kream-phinf.pstatic.net/MjAyMjAxMTFfMjA1/MDAxNjQxODkwNjY5NDI5.6NPmF_WbPm9sX5lW9BE2PcQlkMRAvFxDy7bryYVsDc4g.8YA62__XKcpRvDp-m3k22k1ib0Larluka04T22wL2Ycg.PNG/a_586211b5374344ffa601d2379799d0f0.png"
-	/>,
-	<BannerImage
-		bgColor="#0CB459"
-		category="small"
-		moreHeight
-		src="https://kream-phinf.pstatic.net/MjAyMTExMDhfMTQg/MDAxNjM2MzUyODQ4MTAy.Cw85PX23DLnCC0JXxlf5uRR4V6OUxDsz12MQLHRVeXsg.xdWI38nU5YX5e8cq6zifnXghc7o6Jl26o0U_vV7QVbkg.PNG/a_4e25f1b123af4f79ab8eb2c243321230.png"
-	/>,
-	<BannerImage
-		bgColor="#ECE3F4"
-		category="small"
-		moreHeight
-		src="https://kream-phinf.pstatic.net/MjAyMTA4MTBfMTM0/MDAxNjI4NTM2NzQwNzI2.PFukx8j7Xo8kbhUCYJNc8Vx8wsQObtdjh0E3qCLbpq8g.0_OMaQNb714BoMvFdCXQsEMNSbYtD2WvNW-0-v8iHLcg.JPEG/a_499eb6d55b8c4e71b32e909bb1586e10.jpg"
-	/>,
-	<BannerImage
-		bgColor="#3C31BB"
-		category="small"
-		moreHeight
-		src="https://kream-phinf.pstatic.net/MjAyMTA4MDJfMjg2/MDAxNjI3ODg3NjYxMjc0.qPz4jY6pgcqhai_G23z-Iwa-Z5jcp-fYj1OKVEMpAzog.ntI1W2Fy8KutXWMUSzW6gXb9b5_cMc0DZ6WEBAXJenAg.JPEG/p_7766440af0194c368eaf4c6dd1f4a9c9.jpg"
-	/>,
-];
 
 const ProductTemplate: FunctionComponent<ProductTemplateProps> = (props) => {
 	const router = useRouter();
 	const { mutate } = useSWRConfig();
+	const { setUser } = useContext(UserContext);
 
-	const { activatedSize, setActivatedSize, productInfo } = props;
+	const { activatedSize, setActivatedSize, productInfo, graphData } = props;
 
 	const [isOpenPriceModal, setIsOpenPriceModal] = useState<boolean>(false);
 	const [isOpenWishModal, setIsOpenWishModal] = useState<boolean>(false);
@@ -83,7 +63,7 @@ const ProductTemplate: FunctionComponent<ProductTemplateProps> = (props) => {
 
 	const onHandleClickWish = useCallback(async () => {
 		try {
-			const res = await validateUser();
+			const res = await validateUser(setUser);
 			if (!res) {
 				router.push("/login");
 			} else {
@@ -96,6 +76,7 @@ const ProductTemplate: FunctionComponent<ProductTemplateProps> = (props) => {
 
 	const onPostWish = useCallback(async (size: string) => {
 		const activatedSize = router.query.size;
+		const token = getToken("accessToken");
 
 		try {
 			const res = await axios.post(
@@ -103,7 +84,7 @@ const ProductTemplate: FunctionComponent<ProductTemplateProps> = (props) => {
 				{},
 				{
 					headers: {
-						userId: "1",
+						Authorization: `Bearer ${token}`,
 					},
 				},
 			);
@@ -236,8 +217,24 @@ const ProductTemplate: FunctionComponent<ProductTemplateProps> = (props) => {
 							<ProductDeliveryInfo />
 						</ColumnRightDelivery>
 						<BannerWrapper>
-							<Slider small images={smallList} />
+							<Slider
+								small
+								images={smallImageInfos.map((info) => (
+									<BannerImage
+										bgColor={info.bgColor}
+										category="small"
+										moreHeight
+										src={info.src}
+									/>
+								))}
+							/>
 						</BannerWrapper>
+						<GraphWrapper>
+							<Graph
+								graphData={graphData ? graphData.total : []}
+								size={activatedSize}
+							/>
+						</GraphWrapper>
 					</ColumnRight>
 				</ColumnBind>
 			</ProductArea>
@@ -439,6 +436,10 @@ const ColumnRightDelivery = styled.div`
 `;
 
 const BannerWrapper = styled.div`
+	margin: 50px 0 0 0;
+`;
+
+const GraphWrapper = styled.div`
 	margin: 50px 0 0 0;
 `;
 

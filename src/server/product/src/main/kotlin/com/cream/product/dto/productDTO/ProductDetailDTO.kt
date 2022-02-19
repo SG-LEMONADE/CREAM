@@ -1,7 +1,7 @@
 package com.cream.product.dto.productDTO
 
-import com.cream.product.dto.tradeDTO.TradeBySizeCountDTO
-import com.cream.product.dto.tradeDTO.TradeLastCompletedDTO
+import com.cream.product.dto.tradeDTO.projectionDTO.TradeBySizeCountDTO
+import com.cream.product.dto.tradeDTO.projectionDTO.TradeLastCompletedDTO
 
 data class ProductDetailDTO(
     val product: ProductDTO,

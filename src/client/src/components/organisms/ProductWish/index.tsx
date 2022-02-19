@@ -4,6 +4,7 @@ import styled from "@emotion/styled";
 import ProductSmallInfo from "components/molecules/ProductSmallInfo";
 import Knob from "components/atoms/Knob";
 import Link from "next/link";
+import Icon from "components/atoms/Icon";
 
 type ProductWishProps = {
 	id: number;
@@ -41,7 +42,17 @@ const ProductWish: FunctionComponent<ProductWishProps> = (props) => {
 				</Link>
 				<ButtonWrapper>
 					<Knob category="buy" productId={id} price={lowestAsk} />
-					<StyledP onClick={onDeleteWish}>삭제</StyledP>
+					{/* <StyledP onClick={onDeleteWish}>삭제</StyledP> */}
+					<Icon
+						name="Trash"
+						onClick={onDeleteWish}
+						style={{
+							cursor: "pointer",
+							width: "25px",
+							height: "25px",
+							margin: "0 30px",
+						}}
+					/>
 				</ButtonWrapper>
 			</StyledItem>
 		</ProductWishLi>

@@ -29,6 +29,6 @@ ShopImage.args = {
 export const ProductItemImage = Template.bind({});
 ProductItemImage.args = {
 	src: "https://kream-phinf.pstatic.net/MjAyMTEyMTBfMjQ4/MDAxNjM5MTEyMTE4ODk3.E5xSNEGfpoeBSUdiEb1TiK0xB8pQZ2sbsmKwir2X0H0g.N-57P9OD7r27nsWNs_0AwgF6CJAO7GrokL22BCeS7QUg.PNG/a_40f9f33ce83747cba477269413bee1f0.png?type=m",
-	category: "products",
+	category: "product",
 	backgroundColor: "rgb(241, 241, 234)",
 };

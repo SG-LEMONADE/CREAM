@@ -9,6 +9,7 @@ import com.cream.product.service.ProductService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import javax.validation.Valid
 
 @RestController
 @RequestMapping("/products")
@@ -18,8 +19,8 @@ class ProductController {
 
     @GetMapping
     fun findProductsByPage(
-        page: PageDTO,
         filter: FilterRequestDTO,
+        @Valid page: PageDTO,
         @RequestHeader("userId", required = false) userId: Long?
     ): ResponseEntity<List<ProductDTO>> {
         return ResponseEntity.ok(productService.findProductsByPageWithWish(page, userId, filter))
@@ -44,7 +45,7 @@ class ProductController {
 
     @GetMapping("/wishes")
     fun findProductsByWish(
-        page: PageDTO,
+        @Valid page: PageDTO,
         @RequestHeader("userId", required = true) userId: Long
     ): ResponseEntity<WishList> {
         return ResponseEntity.ok(productService.findProductByWish(page, userId))

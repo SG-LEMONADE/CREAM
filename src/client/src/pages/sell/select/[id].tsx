@@ -7,7 +7,7 @@ import HeaderTop from "components/organisms/HeaderTop";
 import HeaderMain from "components/organisms/HeaderMain";
 import Footer from "components/organisms/Footer";
 import TransactionTitle from "components/atoms/TransactionTitle";
-import { fetcher } from "lib/fetcher";
+import { fetcherWithToken } from "lib/fetcher";
 import { ProductRes } from "types";
 import SizeSelectTemplate from "components/templates/SizeSelectTemplate";
 
@@ -17,7 +17,7 @@ const ProductBuySizeSelect: FunctionComponent = (props) => {
 
 	const { data: productInfo } = useSWR<ProductRes>(
 		id ? `${process.env.END_POINT_PRODUCT}/products/${id}` : null,
-		fetcher,
+		fetcherWithToken,
 	);
 
 	return (

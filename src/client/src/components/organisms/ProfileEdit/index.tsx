@@ -13,7 +13,7 @@ import Button from "components/atoms/Button";
 import Modal from "components/molecules/Modal";
 import ProductSizeSelectGrid from "components/molecules/ProductSizeSelectGrid";
 import Input from "components/atoms/Input";
-import { validatePwdFormat } from "utils/validate";
+import { validatePwdFormat } from "lib/validate";
 import { onPatchUserInfo } from "utils/patch";
 
 import styled from "@emotion/styled";
@@ -282,7 +282,6 @@ const ProfileEdit: FunctionComponent<ProfileEditProps> = (props) => {
 					category="sizeOnly"
 					onClick={(size) => {
 						setNewShoeSize(size);
-						console.log(size);
 						onPatchShoeSize(size);
 					}}
 				/>

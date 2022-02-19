@@ -74,6 +74,9 @@ dependencies {
     //feign client
     implementation("org.springframework.cloud:spring-cloud-starter-openfeign:3.1.0")
 
+    // validation
+    implementation("org.springframework.boot:spring-boot-starter-validation:2.6.3")
+
     //querydsl
     implementation("com.querydsl:querydsl-jpa") // 1)
     kapt(group = "com.querydsl", name = "querydsl-apt", classifier = "jpa") // 2)

@@ -24,6 +24,8 @@
 
 <p align='center'><img src="https://user-images.githubusercontent.com/52649378/153701586-5d3f7ba7-fd9b-407e-ad2d-3a8b4c051cef.gif" width='80%' /></p>
 
+<br />
+
 - 기본적인 홈 화면 구현.
 
 - slider 배너 광고가 존재하며, 각 테마별로 제품을 보여줌.
@@ -31,6 +33,22 @@
 - 더 보기 버튼을 눌러 관련 상품을 더 제시 가능.
 
 - 반응형을 고려하여 상단 광고 이미지 둥글게 변형.
+
+<br />
+
+#### 회원가입
+
+<br />
+
+<p align="center"><img src="https://user-images.githubusercontent.com/52649378/154406556-0fdb6a31-6964-45cc-a6dc-236c62e224eb.gif" width='80%' /></p>
+
+<br />
+
+- 회원가입 기능 구현.
+
+- email, password 유효성 검사 진행. / 스니커즈 사이즈는 모달로 입력받음.
+
+- 회원가입이 진행되면 메일을 통해 인증 활성화. / 인증 안내 메세지 출력.
 
 <br />
 
@@ -98,7 +116,17 @@
 
 <br />
 
-- 인피니트 스크롤 기능 추가예정
+<p align='center'><img src="https://user-images.githubusercontent.com/52649378/154393305-ee46a9e3-cd52-4ee8-b74c-c67d01d7eaae.gif" width='80%'/></p>
+
+<br />
+
+- 인피니티 스크롤 기능 구현.
+
+- useSWRInfinite 를 통해 구현.
+
+- 화면 하단에 도착시 skeleton을 통해 로딩중임을 알려줌.
+
+- 데이터가 더이상 존재하지 않을때는 안내 문구 렌더링.
 
 <br />
 
@@ -128,6 +156,68 @@
 
 <br />
 
+#### 사이즈 선택 화면
+
+<br />
+
+<p align='center'><img src="https://i.imgur.com/FxQKzuJ.gif" width='80%'/></p>
+
+<br />
+
+- 해당 제품이 가지고 있는 사이즈들을 그리드로 표현.
+
+- 사용자가 원하는 사이즈를 선택하여 구매 진행.
+
+<br />
+
+#### 구매 입찰, 판매 입찰
+
+<br />
+
+<p align='center'><img src="https://i.imgur.com/7hnoQGm.gif" width='80%'/></p>
+
+<p align='center'><img src="https://i.imgur.com/glTkA6w.gif" width='80%'/></p>
+
+
+<br />
+
+- 입찰 기능 구현.
+
+- 사이즈 그리드 선택 화면에서 넘어가는 화면.
+
+- 구매 입찰일때
+
+  - **즉시 구매가보다 사용자가 입력한 구매 입찰 가격이 더 높다면 즉시 구매로 자동 변경.**
+  
+  - 이유) 사용자의 구매 입찰 행동은 즉시 구매가보다 더 낮은 가격으로 구매하여 더 싼값에 구매하고 싶어하는 것이므로 해당 로직 추가.
+
+- 판매 입찰일때
+
+  - **즉시 판매가보다 사용자가 입력한 판매 입찰 가격이 더 낮다면 즉시 판매로 자동 변경.**
+
+  - 이유) 사용자의 판매 입찰 행동은 즉시 판매가보다 더 높은 가격으로 판매하여 이득을 취하고 싶기 때문이므로 해당 로직 추가.
+
+
+- 사용자가 input하는 가격을 기반으로 거래 완료.
+
+  - validate 날짜를 지정하여 거래 완료 진행.
+
+<br />
+
+### 즉시 구매, 즉시 판매
+
+<br />
+
+<p align='center'><img src="https://i.imgur.com/SmrSvh1.gif" width='80%'/></p>
+
+<br />
+
+- 본인이 입찰 등록한 물품은 거래할 수 없음.
+
+- 그 외 제품들 (타인이 입찰 등록한 거래)은 즉시 구매 및 즉시 판매가 가능함.
+
+<br />
+
 ### 마이 프로필
 
 <br />
@@ -151,6 +241,18 @@
 <br />
 
 <p align='center'><img src="https://user-images.githubusercontent.com/52649378/153699872-3dc98905-c950-4814-8b2a-4d280d565b04.gif" width='80%' /></p>
+
+<br />
+
+<p align='center'>↑ 구매, 판매 내역이 많지 않은 ver.</p>
+
+<br />
+
+<p align='center'><img src="https://user-images.githubusercontent.com/52649378/154397885-cdc02752-8946-4a32-b4a9-2be9d25e066f.gif" width='80%' /></p>
+
+<br />
+
+<p align='center'>↑ 구매, 판매 내역이 많은 ver.</p>
 
 <br />
 

@@ -1,10 +1,15 @@
 server:
   port: 8000
+  address: 192.168.0.13
 
 eureka:
   client:
     fetch-registry: true
     register-with-eureka: true
+  instance:
+    prefer-ip-address: true
+    ip-address: ${server.address}
+    instance-id: ${server.address}:${server.port}
 
 spring:
   application:
@@ -16,16 +21,37 @@ spring:
           uri: lb://USER
           predicates:
             - Path=/users/**
-          filters:
-            - JwtAuthFilter
         - id: product
           uri: lb://PRODUCT
           predicates:
-            - Path=/users/**
-        - id: auction
-          uri: lb://AUCTION
+            - Path=/filters, /, /products/**, /trades/**, /wish/**
+        - id: log
+          uri: lb://LOG
           predicates:
-            - Path=/users/**
+            - Path=/prices/**, /recommendations/**, /log/**
+      default-filters:
+        - JwtAuthFilter
+
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: "http://localhost:3000"
+            allow-credentials: true
+            allowedHeaders:
+              - x-requested-with
+              - authorization
+              - content-type
+              - credential
+              - X-AUTH-TOKEN
+              - X-CSRF-TOKEN
+            allowedMethods:
+              - POST
+              - GET
+              - PUT
+              - OPTIONS
+              - DELETE
+              - PATCH
+
+auth-included-path: /users/me, /users/validate, /users/logout, /users/update
 
 secret-key: 
-auth-excluded-path: /users/login, /users/signup, /users/refresh, /users/verify, /users/validate

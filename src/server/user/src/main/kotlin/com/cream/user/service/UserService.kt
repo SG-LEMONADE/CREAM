@@ -46,6 +46,7 @@ class UserService {
             throw UserCustomException(ErrorCode.DUPLICATED_USER_EMAIL)
         }
 
+        // 인증 메일 전송
         mailSender.sendEmail(email, 0, redisTemplate)
         return ResponseUserDTO(userRepository.save(user))
     }
@@ -85,7 +86,7 @@ class UserService {
     }
 
     fun refreshToken(
-        tokenDTO: TokenDTO
+        tokenDTO: RefreshTokenDTO
     ): TokenDTO {
         // "Bearer "가 토큰 값 앞에 와야합니다.
         val refreshToken: String = tokenDTO.refreshToken
@@ -136,7 +137,7 @@ class UserService {
         if (userUpdateDTO.password != null) {
             // 비밀번호 변경 시
             if (passwordEncoder.matches(user.password, userUpdateDTO.password))
-                // 전에 사용했던 비밀번호와 같을 때 변경 불가
+            // 전에 사용했던 비밀번호와 같을 때 변경 불가
                 throw UserCustomException(ErrorCode.USER_NEW_PASSWORD_SAME_AS_OLD)
             user.password = passwordEncoder.encode(userUpdateDTO.password)
             user.passwordChangedDatetime = LocalDateTime.now()
@@ -151,10 +152,9 @@ class UserService {
     }
 
     fun getMe(
-        token: String
+        userId: Long
     ): ResponseUserDTO {
         // 내 정보 반환
-        val userId = tokenProvider.validateAndGetUserId(token)
         return ResponseUserDTO(userRepository.getById(userId))
     }
 
@@ -164,6 +164,10 @@ class UserService {
         val userId = tokenProvider.validateAndGetUserId(token)
         // 로그아웃 시 refresh token 삭제
         redisTemplate.delete("refresh-$userId")
+
+        // block
+        val stringValueOperation = redisTemplate.opsForValue()
+        stringValueOperation.set(token.substring(7), "logout", 30, TimeUnit.MINUTES)
     }
 
     private fun getByCredentials(

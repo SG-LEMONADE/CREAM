@@ -30,6 +30,10 @@ dependencies {
     implementation("javax.xml.bind:jaxb-api:2.3.0")
     implementation("io.jsonwebtoken:jjwt:0.9.1")
 
+    // redis
+    implementation("org.springframework.boot:spring-boot-starter-data-redis:2.6.2")
+
+    // eureka
     implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client:3.1.0")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")

@@ -16,3 +16,18 @@ export const Buy = Template.bind({});
 Buy.args = {
 	category: "buy",
 };
+
+export const BuyAuction = Template.bind({});
+BuyAuction.args = {
+	category: "ask",
+};
+
+export const Sell = Template.bind({});
+Sell.args = {
+	category: "sell",
+};
+
+export const SellAuction = Template.bind({});
+SellAuction.args = {
+	category: "bid",
+};

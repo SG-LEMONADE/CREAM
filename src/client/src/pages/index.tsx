@@ -3,11 +3,11 @@ import React, {
 	useState,
 	useEffect,
 	useCallback,
+	useContext,
 } from "react";
 import useSWR from "swr";
-import { fetcher } from "lib/fetcher";
+import { fetcher, fetcherWithToken } from "lib/fetcher";
 import { HomeProductInfoRes, HomeRes } from "types";
-import { validateUser } from "utils/user";
 import axios from "axios";
 import { useRouter } from "next/router";
 
@@ -19,12 +19,17 @@ import HomeTemplate from "components/templates/HomeTemplate";
 import HomeProduct from "components/organisms/HomeProduct";
 import Modal from "components/molecules/Modal";
 import ProductSmallInfo from "components/molecules/ProductSmallInfo";
+import Recommendations from "components/organisms/Recommendations";
 import ProductSizeSelectGrid from "components/molecules/ProductSizeSelectGrid";
+import { validateUser } from "lib/user";
+import { getToken } from "lib/token";
 
 import { Oval } from "react-loader-spinner";
+import UserContext from "context/user";
 
 const Home: FunctionComponent = () => {
 	const router = useRouter();
+	const { user, setUser } = useContext(UserContext);
 
 	const [isOpen, setIsOpen] = useState<boolean>(false);
 	const [pickedProductInfo, setPickedProductInfo] =
@@ -32,15 +37,16 @@ const Home: FunctionComponent = () => {
 
 	const { data: homeData, mutate } = useSWR<HomeRes>(
 		`${process.env.END_POINT_PRODUCT}`,
-		fetcher,
+		user?.id ? (url) => fetcherWithToken(url, setUser) : fetcher,
 		{
 			revalidateOnFocus: false,
+			errorRetryCount: 5,
 		},
 	);
 
 	const onHandleClickWish = useCallback(async (obj: HomeProductInfoRes) => {
 		try {
-			const res = await validateUser();
+			const res = await validateUser(setUser);
 			if (!res) {
 				// user Not logined.
 				router.push("/login");
@@ -55,13 +61,14 @@ const Home: FunctionComponent = () => {
 
 	const onPostWish = useCallback(
 		async (size: string) => {
+			const token = getToken("accessToken");
 			try {
 				const res = await axios.post(
 					`${process.env.END_POINT_PRODUCT}/wish/${pickedProductInfo.id}/${size}`,
 					{},
 					{
 						headers: {
-							userId: "1",
+							Authorization: `Bearer ${token}`,
 						},
 					},
 				);
@@ -101,6 +108,10 @@ const Home: FunctionComponent = () => {
 		[pickedProductInfo],
 	);
 
+	useEffect(() => {
+		mutate();
+	}, [user]);
+
 	if (!homeData) {
 		return (
 			<NavTemplate
@@ -129,6 +140,14 @@ const Home: FunctionComponent = () => {
 			footer={<Footer />}
 		>
 			<HomeTemplate ads={homeData && homeData.adImageUrls}>
+				{homeData && (
+					<Recommendations
+						productInfos={
+							homeData.recommendedItems ? homeData.recommendedItems : []
+						}
+						onHandleWishClick={onHandleClickWish}
+					/>
+				)}
 				{homeData &&
 					homeData.sections.map((product) => (
 						<HomeProduct

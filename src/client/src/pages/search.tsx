@@ -3,52 +3,98 @@ import React, {
 	useState,
 	useCallback,
 	useEffect,
+	SetStateAction,
+	useContext,
 } from "react";
 import { useRouter } from "next/router";
-import useSWR from "swr";
+import useSWRInfinite from "swr/infinite";
 import axios from "axios";
 
 import Footer from "components/organisms/Footer";
 import HeaderMain from "components/organisms/HeaderMain";
 import HeaderTop from "components/organisms/HeaderTop";
 import NavTemplate from "components/templates/NavTemplate";
-import ShopTemplate from "components/templates/ShopTemplate";
+import ShopTemplate, {
+	SearchEmptyConent,
+	StatusText,
+} from "components/templates/ShopTemplate";
 import ProductThumbnail from "components/organisms/ProductThumbnail";
 import Modal from "components/molecules/Modal";
 import ProductSmallInfo from "components/molecules/ProductSmallInfo";
 import ProductSizeSelectGrid from "components/molecules/ProductSizeSelectGrid";
-import { validateUser } from "utils/user";
-import { fetcher } from "lib/fetcher";
+import ProductSkeleton from "components/organisms/Skeletons";
+import { validateUser } from "lib/user";
+import { fetcherWithToken, fetcher } from "lib/fetcher";
 import { ProductInfoRes } from "types";
 import { queryStringMaker } from "utils/query";
 
 import { Oval } from "react-loader-spinner";
+import { getToken } from "lib/token";
+import UserContext from "context/user";
+
+const getKey = (
+	perPage: number,
+	query: any,
+	setIsEndofData: React.Dispatch<SetStateAction<boolean>>,
+	cursor: number,
+	previousPageData,
+) => {
+	if (previousPageData && !previousPageData.length) {
+		setIsEndofData(true);
+		return null;
+	}
+
+	if (cursor === 0)
+		return Object.keys(query).length > 0
+			? `${
+					process.env.END_POINT_PRODUCT
+			  }/products?cursor=0&perPage=${perPage}&${queryStringMaker(query)}`
+			: `${process.env.END_POINT_PRODUCT}/products?cursor=0&perPage=${perPage}`;
+
+	return Object.keys(query).length > 0
+		? `${
+				process.env.END_POINT_PRODUCT
+		  }/products?cursor=${cursor}&perPage=${perPage}&${queryStringMaker(query)}`
+		: `${process.env.END_POINT_PRODUCT}/products?cursor=${cursor}&perPage=${perPage}`;
+};
 
 const Search: FunctionComponent = () => {
 	const router = useRouter();
+	const { user, setUser } = useContext(UserContext);
 
 	const [isOpen, setIsOpen] = useState<boolean>(false);
 	const [pickedProductInfo, setPickedProductInfo] = useState<ProductInfoRes>();
 
-	const {
-		data: searchProducts,
-		error,
-		mutate,
-	} = useSWR<ProductInfoRes[]>(
-		Object.keys(router.query).length > 0
-			? `${
-					process.env.END_POINT_PRODUCT
-			  }/products?cursor=0&perPage=40&${queryStringMaker(router.query)}`
-			: `${process.env.END_POINT_PRODUCT}/products?cursor=0&perPage=40`,
-		fetcher,
-		{
-			revalidateOnFocus: false,
-		},
+	const { data, error, mutate, setSize } = useSWRInfinite<ProductInfoRes[]>(
+		(...args) => getKey(40, router.query, setIsEndofData, ...args),
+		user?.id ? (url) => fetcherWithToken(url, setUser) : fetcher,
 	);
+
+	const searchProducts = data ? [].concat(...data) : [];
+	const isLoadingInitialData = !data && !error;
+
+	const [target, setTarget] = useState<HTMLElement | null | undefined>(null);
+	const [isEndofData, setIsEndofData] = useState<boolean>(false);
+
+	const onIntersect: IntersectionObserverCallback = ([entry]) => {
+		if (entry.isIntersecting) {
+			setSize((prev) => prev + 1);
+		}
+	};
+
+	useEffect(() => {
+		if (!target) return;
+
+		const observer = new IntersectionObserver(onIntersect, {
+			threshold: 0.9,
+		});
+		observer.observe(target);
+		return () => observer && observer.disconnect();
+	}, [target]);
 
 	const onHandleClickWish = useCallback(async (obj: ProductInfoRes) => {
 		try {
-			const res = await validateUser();
+			const res = await validateUser(setUser);
 			if (!res) {
 				// user Not logined.
 				router.push("/login");
@@ -66,13 +112,14 @@ const Search: FunctionComponent = () => {
 	 */
 	const onPostWish = useCallback(
 		async (size: string) => {
+			const token = getToken("accessToken");
 			try {
 				const res = await axios.post(
 					`${process.env.END_POINT_PRODUCT}/wish/${pickedProductInfo.id}/${size}`,
 					{},
 					{
 						headers: {
-							userId: "1",
+							Authorization: `Bearer ${token}`,
 						},
 					},
 				);
@@ -112,7 +159,7 @@ const Search: FunctionComponent = () => {
 		[pickedProductInfo],
 	);
 
-	if (!searchProducts) {
+	if (isLoadingInitialData) {
 		return (
 			<NavTemplate
 				headerTop={<HeaderTop />}
@@ -139,7 +186,7 @@ const Search: FunctionComponent = () => {
 			headerMain={<HeaderMain />}
 			footer={<Footer />}
 		>
-			<ShopTemplate>
+			<ShopTemplate cb={setIsEndofData}>
 				{searchProducts &&
 					searchProducts.map((obj) => (
 						<ProductThumbnail
@@ -153,6 +200,16 @@ const Search: FunctionComponent = () => {
 						/>
 					))}
 			</ShopTemplate>
+			{isEndofData ? (
+				<SearchEmptyConent>
+					{searchProducts.length > 0 && (
+						<StatusText>더 이상 검색 결과가 없습니다.</StatusText>
+					)}
+				</SearchEmptyConent>
+			) : (
+				searchProducts.length > 0 && <ProductSkeleton />
+			)}
+			<div ref={setTarget} />
 			<Modal
 				category="wish"
 				onClose={() => setIsOpen(false)}

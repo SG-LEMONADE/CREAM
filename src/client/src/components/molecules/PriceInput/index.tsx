@@ -87,7 +87,9 @@ const PriceInput: FunctionComponent<PriceInputProps> = (props) => {
 				)}
 				<ExternalDl>
 					<ExternalDt>배송비</ExternalDt>
-					<ExternalDd>5,000원</ExternalDd>
+					<ExternalDd>
+						{category === "buy" ? `5000원` : `선불 · 판매자 부담`}
+					</ExternalDd>
 				</ExternalDl>
 			</ExtraPrice>
 		</>

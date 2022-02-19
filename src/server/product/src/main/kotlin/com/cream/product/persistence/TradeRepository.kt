@@ -4,11 +4,11 @@ import com.cream.product.constant.RequestTradeStatus
 import com.cream.product.constant.RequestType
 import com.cream.product.constant.TradeStatus
 import com.cream.product.dto.tradeDTO.*
+import com.cream.product.dto.tradeDTO.projectionDTO.*
 import com.cream.product.model.QTrade
 import com.cream.product.model.Trade
 import com.querydsl.core.types.Order
 import com.querydsl.core.types.OrderSpecifier
-import com.querydsl.core.types.Projections
 import com.querydsl.core.types.dsl.BooleanExpression
 import com.querydsl.jpa.impl.JPAQueryFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -18,12 +18,12 @@ import java.time.LocalDateTime
 
 interface TradeRepositoryCustom {
     fun findFirstTrade(productId: Long, size: String, requestType: RequestType): Trade
-    fun findAllByPageAndStatus(userId: Long, offset: Long, limit: Long, requestType: RequestType, tradeStatus: RequestTradeStatus): List<TradeHistoryDTO>
+    fun findAllByPageAndStatus(userId: Long, offset: Long, limit: Long, requestType: RequestType, reverseRequestType: RequestType, tradeStatus: RequestTradeStatus): List<TradeHistoryDTO>
 
     fun findByProductIdWithCount(size: String?, productId: Long, requestType: RequestType): List<TradeBySizeCountDTO>
     fun findByProductIdCompleted(productId: Long, size: String?): List<TradeLastCompletedDTO>
 
-    fun findCountsByTradeStatus(userId: Long, requestType: RequestType): List<TradeStatusCounterDTO>
+    fun findCountsByTradeStatus(userId: Long, requestType: RequestType, reverseRequestType: RequestType): List<TradeStatusCounterDTO>
 }
 
 interface TradeRepository : JpaRepository<Trade, Long>, TradeRepositoryCustom
@@ -67,12 +67,14 @@ class TradeRepositoryImpl :
         offset: Long,
         limit: Long,
         requestType: RequestType,
+        reverseRequestType: RequestType,
         tradeStatus: RequestTradeStatus
     ): List<TradeHistoryDTO> {
         // 거래 내역을 반환합니다.
         return jpaQueryFactory
             .select(
                 QTradeHistoryDTO(
+                    tradeEntity.id,
                     tradeEntity.product.originalName,
                     tradeEntity.size,
                     tradeEntity.product.imageUrls,
@@ -84,8 +86,7 @@ class TradeRepositoryImpl :
             )
             .from(tradeEntity)
             .where(
-                tradeEntity.requestType.eq(requestType),
-                tradeEntity.userId.eq(userId).or(tradeEntity.counterpartUserId.eq(userId)),
+                eqRequestType(userId, requestType, reverseRequestType),
                 eqTradeStatus(tradeStatus)
             )
             .offset(offset)
@@ -101,8 +102,7 @@ class TradeRepositoryImpl :
         // 상품 상세 페이지 화면을 위한 거래 내역과 사이즈별 거래 개수를 반환합니다.
         return jpaQueryFactory
             .select(
-                Projections.constructor(
-                    TradeBySizeCountDTO::class.java,
+                QTradeBySizeCountDTO(
                     tradeEntity.size,
                     tradeEntity.price,
                     tradeEntity.count()
@@ -150,7 +150,8 @@ class TradeRepositoryImpl :
 
     override fun findCountsByTradeStatus(
         userId: Long,
-        requestType: RequestType
+        requestType: RequestType,
+        reverseRequestType: RequestType
     ): List<TradeStatusCounterDTO> {
         // 내 거래 내역 타입별 개수를 위한 count 함수입니다.
         return jpaQueryFactory
@@ -162,7 +163,7 @@ class TradeRepositoryImpl :
             )
             .from(tradeEntity)
             .where(
-                tradeEntity.userId.eq(userId),
+                eqRequestType(userId, requestType, reverseRequestType),
                 tradeEntity.requestType.eq(requestType)
             )
             .groupBy(tradeEntity.tradeStatus)
@@ -177,6 +178,15 @@ class TradeRepositoryImpl :
     ): OrderSpecifier<*> {
         return if (requestType == RequestType.ASK) OrderSpecifier(Order.ASC, tradeEntity.price)
         else OrderSpecifier(Order.DESC, tradeEntity.price)
+    }
+
+    private fun eqRequestType(
+        userId: Long,
+        requestType: RequestType,
+        reverseRequestType: RequestType
+    ): BooleanExpression {
+        return (tradeEntity.requestType.eq(reverseRequestType).and(tradeEntity.userId.eq(userId)))
+            .or(tradeEntity.requestType.eq(requestType).and(tradeEntity.counterpartUserId.eq(userId)))
     }
 
     private fun eqSize(
@@ -196,9 +206,7 @@ class TradeRepositoryImpl :
             // 진행중 내역
             (RequestTradeStatus.IN_PROGRESS) -> tradeEntity.tradeStatus.eq(TradeStatus.IN_PROGRESS)
             // 종료된 내역
-            (RequestTradeStatus.FINISHED) -> tradeEntity.tradeStatus.eq(TradeStatus.CANCELED)
-                .or(tradeEntity.tradeStatus.eq(TradeStatus.EXPIRED))
-                .or(tradeEntity.tradeStatus.eq(TradeStatus.COMPLETED))
+            (RequestTradeStatus.FINISHED) -> tradeEntity.tradeStatus.eq(TradeStatus.COMPLETED)
             else -> null
         }
     }

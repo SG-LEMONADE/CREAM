@@ -1,30 +1,40 @@
 import axios from "axios";
-import { getToken } from "utils/token";
+import { UserInfo } from "context/user";
+import { getToken } from "lib/token";
+import React, { SetStateAction } from "react";
+import { validateUser } from "./user";
 
 export const fetcher = async (url: string) => {
-	const res = await axios.get(url, {
-		headers: {
-			userId: "1",
-		},
-	});
+	const res = await axios.get(url);
 	const data = await res.data;
-	console.log(`✅✅✅ ${url}를 통해 데이터 받았습니다! ✅✅✅`);
-	console.log(data);
 	return data;
 };
 
-export const fetcherWithToken = async (url: string) => {
+export const fetcherWithToken = async (
+	url: string,
+	setUser: React.Dispatch<SetStateAction<UserInfo>>,
+) => {
 	const token = getToken("accessToken");
 	if (!token) {
 		console.warn("TOKEN DOESN'T EXISTS. There is No token.");
 		return;
 	}
-	const res = await axios.get(url, {
-		headers: {
-			Authorization: `Bearer ${token}`,
-		},
-	});
-	const data = await res.data;
-	console.log(data);
-	return data;
+
+	console.log("@@@@validation 시작합니다.@@@");
+	const validateRes = await validateUser(setUser);
+	console.log("결과는, ", validateRes);
+	if (!validateRes) return null;
+
+	try {
+		const res = await axios.get(url, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		});
+		const data = await res.data;
+		return data;
+	} catch (e) {
+		const response = e.response.data;
+		console.log(response);
+	}
 };

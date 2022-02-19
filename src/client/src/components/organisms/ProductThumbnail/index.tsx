@@ -9,10 +9,12 @@ import Icon from "components/atoms/Icon";
 
 import { HomeProductInfoRes, ProductInfoRes, WishProductsRes } from "types";
 import styled from "@emotion/styled";
+import { css } from "@emotion/react";
 
 type ProductThumbnailProps = {
 	category: "home" | "shop" | "product";
-	productInfo: ProductInfoRes | (HomeProductInfoRes & WishProductsRes);
+	minWidthMode?: boolean;
+	productInfo: ProductInfoRes | HomeProductInfoRes | WishProductsRes;
 	isWishState?: boolean;
 	onHandleWishClick?: (
 		selectedProduct?: ProductInfoRes | HomeProductInfoRes,
@@ -22,13 +24,14 @@ type ProductThumbnailProps = {
 const ProductThumbnail: FunctionComponent<ProductThumbnailProps> = (props) => {
 	const {
 		category,
+		minWidthMode = false,
 		productInfo,
 		isWishState = false,
 		onHandleWishClick,
 	} = props;
 
 	return (
-		<ProductThumbnailWrapper>
+		<ProductThumbnailWrapper minWidthMode={minWidthMode}>
 			<Link href={`/products/${productInfo.id}`} passHref>
 				<ProductLink>
 					<ImageArea>
@@ -62,7 +65,7 @@ const ProductThumbnail: FunctionComponent<ProductThumbnailProps> = (props) => {
 							onClick={onHandleWishClick}
 						/>
 						<BookemarkCnt selected={isWishState}>
-							{productInfo.wishCnt}
+							{"wishCnt" in productInfo && productInfo.wishCnt}
 						</BookemarkCnt>
 					</BookmarkContents>
 				</BookmarkArea>
@@ -73,8 +76,14 @@ const ProductThumbnail: FunctionComponent<ProductThumbnailProps> = (props) => {
 
 export default ProductThumbnail;
 
-const ProductThumbnailWrapper = styled.div`
+const ProductThumbnailWrapper = styled.div<{ minWidthMode: boolean }>`
 	clear: left;
+	${({ minWidthMode }) =>
+		minWidthMode &&
+		css`
+			min-width: 284px;
+			margin-right: 30px;
+		`}
 `;
 
 const ProductLink = styled.a`

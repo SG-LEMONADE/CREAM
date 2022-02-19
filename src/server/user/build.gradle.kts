@@ -55,6 +55,9 @@ dependencies {
     // jwt
     implementation("io.jsonwebtoken:jjwt:0.9.1")
 
+    // validation
+    implementation("org.springframework.boot:spring-boot-starter-validation:2.6.3")
+
     //eureka
     implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client:3.1.0")
 

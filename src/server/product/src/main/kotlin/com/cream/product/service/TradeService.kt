@@ -58,8 +58,13 @@ class TradeService {
         requestType: RequestType,
         tradeStatus: RequestTradeStatus
     ): MyPageTradeListDTO {
-        val trades = tradeRepository.findAllByPageAndStatus(userId, pageDTO.offset(), pageDTO.limit(), requestType, tradeStatus)
-        val counters = tradeRepository.findCountsByTradeStatus(userId, requestType)
+        val reversedRequestType = if (requestType == RequestType.BID) RequestType.ASK else RequestType.BID
+        val trades = tradeRepository.findAllByPageAndStatus(
+            userId, pageDTO.offset(), pageDTO.perPage,
+            requestType, reversedRequestType, tradeStatus
+        )
+
+        val counters = tradeRepository.findCountsByTradeStatus(userId, requestType, reversedRequestType)
 
         var totalCnt = 0
         var waitingCnt = 0
@@ -70,9 +75,9 @@ class TradeService {
             val cnt = it.counter.toInt()
             totalCnt += cnt
             when (it.tradeStatus) {
-                (TradeStatus.WAITING) -> waitingCnt += cnt
+                (TradeStatus.COMPLETED) -> finishedCnt += cnt
                 (TradeStatus.IN_PROGRESS) -> inProgress += cnt
-                else -> finishedCnt += cnt
+                else -> waitingCnt += cnt
             }
         }
 
@@ -113,13 +118,17 @@ class TradeService {
         if (trade.userId == userId) throw BaseException(ErrorCode.CANNOT_TRADE_MYSELF)
 
         try {
-            logServiceClient.insertPrice(productId, trade.price)
+            logServiceClient.insertPrice(productId, size, trade.price)
         } catch (ex: FeignException) {
             log.error(ex.message)
         }
 
         if (requestType == RequestType.ASK) {
-            logServiceClient.insertUserLogData(UserLogDTO(userId, productId, 3))
+            try {
+                logServiceClient.insertUserLogData(UserLogDTO(userId, productId, 3))
+            } catch (ex: FeignException) {
+                log.error(ex.message)
+            }
         }
 
         trade.tradeStatus = TradeStatus.COMPLETED

@@ -17,20 +17,29 @@ class PriceService {
     @Transactional
     fun create(
         productId: Long,
+        size: String,
         price: Long
     ): Price {
-        val priceEntity = priceRepository.findOneByCreatedDateAndProductId(LocalDate.now(), productId)
+        // 당일 가격이 이미 기록이 되어 있는지 확인해야합니다.
+        val priceEntity = priceRepository.findOneByCreatedDateAndProductIdAndSize(LocalDate.now(), productId, size)
+        val totalPriceEntity = priceRepository.findOneByCreatedDateAndProductIdAndSize(LocalDate.now(), productId, null)
+        if (totalPriceEntity != null) {
+            totalPriceEntity.price = price
+        } else {
+            priceRepository.save(Price(productId = productId, price = price, size = null))
+        }
         if (priceEntity != null) {
             priceEntity.price = price
             return priceEntity
         }
-        return priceRepository.save(Price(productId = productId, price = price))
+        return priceRepository.save(Price(productId = productId, price = price, size = size))
     }
 
     fun getPriceListByDate(
-        productId: Long
+        productId: Long,
+        size: String?
     ): PricesByDateDTO {
-        val totalList = priceRepository.findAllByProductId(productId)
+        val totalList = priceRepository.findAllByProductIdAndSize(productId, size)
         val data = PricesByDateDTO()
         val today = LocalDate.now()
         totalList.forEach {

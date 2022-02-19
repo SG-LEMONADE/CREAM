@@ -1,13 +1,12 @@
 import axios from "axios";
 
-import { getToken } from "./token";
+import { getToken } from "../lib/token";
 
 export const onPatchUserInfo = async (id: number, data: any) => {
 	const token = getToken("accessToken");
 	if (!id || !token) {
 		return 0;
 	}
-	console.log({ ...data });
 	try {
 		const res = await axios.patch(
 			`${process.env.END_POINT_USER}/users/${id}`,

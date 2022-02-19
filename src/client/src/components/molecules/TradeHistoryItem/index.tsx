@@ -2,8 +2,10 @@ import React, { FunctionComponent } from "react";
 
 import styled from "@emotion/styled";
 import ProductSmallInfo from "../ProductSmallInfo";
+import Icon from "components/atoms/Icon";
 
 type TradeHistoryItemProps = {
+	id?: number;
 	imgSrc: string;
 	backgroundColor: string;
 	productName: string;
@@ -11,23 +13,25 @@ type TradeHistoryItemProps = {
 	status?: string;
 	wishedPrice?: number;
 	expiredDate?: string;
+	onDelete?: (id: number) => void;
 };
 
 const TradeHistoryItem: FunctionComponent<TradeHistoryItemProps> = (props) => {
 	const {
+		id,
 		imgSrc,
 		backgroundColor,
 		productName,
 		size,
 		status,
-		wishedPrice,
 		expiredDate,
+		onDelete,
 	} = props;
 
 	const StatusCode = {
 		WAITING: "입찰 중",
 		IN_PROGRESS: "진행 중",
-		FINISHED: "종료",
+		COMPLETED: "종료",
 	};
 
 	return (
@@ -41,20 +45,27 @@ const TradeHistoryItem: FunctionComponent<TradeHistoryItemProps> = (props) => {
 				/>
 			</HistoryProductArea>
 			<HistoryStatusArea>
-				{status && (
+				{!expiredDate && status && (
 					<StatusBlock>
 						<StautsText>{StatusCode[status]}</StautsText>
-					</StatusBlock>
-				)}
-				{wishedPrice && (
-					<StatusBlock>
-						<StautsText>{wishedPrice.toLocaleString()}원</StautsText>
 					</StatusBlock>
 				)}
 				{expiredDate && (
 					<StatusBlock>
 						<StautsText>{expiredDate.slice(0, 10)}</StautsText>
 					</StatusBlock>
+				)}
+				{expiredDate && status === "WAITING" && (
+					<Icon
+						name="Trash"
+						style={{
+							width: "17px",
+							height: "17px",
+							marginLeft: "65px",
+							cursor: "pointer",
+						}}
+						onClick={() => onDelete(id)}
+					></Icon>
 				)}
 			</HistoryStatusArea>
 		</TradeHistoryItemItemWrapper>
@@ -86,8 +97,7 @@ const HistoryStatusArea = styled.div`
 const StatusBlock = styled.div`
 	display: block;
 	margin-left: 25px;
-    // width: 134px;
-}
+	// width: 134px;
 `;
 
 const StautsText = styled.span`

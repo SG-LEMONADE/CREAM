@@ -1,7 +1,6 @@
 import React, { FunctionComponent, useCallback } from "react";
 import { useRouter } from "next/router";
 import useSWR from "swr";
-import axios from "axios";
 
 import NavTemplate from "components/templates/NavTemplate";
 import HeaderTop from "components/organisms/HeaderTop";
@@ -10,7 +9,10 @@ import Footer from "components/organisms/Footer";
 import TransactionTitle from "components/atoms/TransactionTitle";
 import TransactionTemplate from "components/templates/TransactionTemplate";
 import { ProductRes } from "types";
-import { fetcher } from "lib/fetcher";
+import { fetcherWithToken } from "lib/fetcher";
+import { onRegisterTrade } from "lib/trade";
+
+import Swal from "sweetalert2";
 
 const ProductSell: FunctionComponent = () => {
 	const router = useRouter();
@@ -18,48 +20,39 @@ const ProductSell: FunctionComponent = () => {
 
 	const { data: productInfo } = useSWR<ProductRes>(
 		id ? `${process.env.END_POINT_PRODUCT}/products/${id}` : null,
-		fetcher,
+		fetcherWithToken,
 	);
 
 	const onHandleTrade = useCallback(
 		async (category: string, auction: boolean, date: number, price: number) => {
-			console.log(category, auction, date, price);
-			if (auction) {
-				// 경매 형식 && 판매
-				try {
-					const res = await axios.post(
-						`${process.env.END_POINT_PRODUCT}/trades/products/${id}/${size}`,
-						{
-							price: price,
-							requestType: "BID",
-							validationDay: date,
-						},
-						{
-							headers: {
-								userId: "1",
-							},
-						},
-					);
-					console.log(res);
-				} catch (e) {
-					console.error(e);
-				}
+			const res = await onRegisterTrade(
+				"sell",
+				auction,
+				date,
+				price,
+				id as string,
+				size as string,
+			);
+			if (res === true) {
+				router.push({
+					pathname: "/sell/complete",
+					query: {
+						id: id,
+						auction: auction,
+						price: price,
+						date: date,
+					},
+				});
+			} else if (typeof res === "number") {
+				Swal.fire({
+					position: "top",
+					icon: "error",
+					html: `${process.env.ERROR_code[res]}`,
+					showConfirmButton: false,
+					timer: 2000,
+				});
 			} else {
-				// 즉시 판매
-				try {
-					const res = await axios.post(
-						`${process.env.END_POINT_PRODUCT}/trades/sell/select/${id}/${size}`,
-						{},
-						{
-							headers: {
-								userId: "1",
-							},
-						},
-					);
-					console.log(res);
-				} catch (e) {
-					console.error(e);
-				}
+				console.error("Trade Not Registered.");
 			}
 		},
 		[],
