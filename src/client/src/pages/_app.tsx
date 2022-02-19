@@ -17,6 +17,7 @@ export default function App({
 					name="description"
 					content="Collapse Rules Everything Around Me"
 				/>
+				<link rel="icon" href="/favicon.ico" />
 			</Head>
 			<UserProvider>
 				<Component {...pageProps} />
