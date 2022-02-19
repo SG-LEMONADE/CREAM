@@ -98,14 +98,13 @@ struct APIEndpoints {
     // MARK: - Product API
     static func loadProduct(_ id: Int, size: String?) -> Endpoint<ProductResponseDTO> {
         var headerParameters: [String: String] = ["Content-Type": "application/json"]
-        
         var path = "products/\(id)"
         
         if let size = size,
            let sizeQuery = size.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
             path += "/\(sizeQuery)"
         }
-        print(path)
+
         _ = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.accessToken)
             .map { "Bearer-\($0)" }
             .flatMap {
@@ -197,7 +196,7 @@ struct APIEndpoints {
             let bodyParameters: [String: Any] = ["price": price,
                                                  "requestType": tradeType.requestString,
                                                  "validationDay": validateDay]
-
+            
             return Endpoint(path: "trades/products/\(productId)/\(safeString!)",
                             method: .post,
                             headerParamaters: headerParameters,
@@ -206,6 +205,28 @@ struct APIEndpoints {
         return Endpoint(path: "trades/\(tradeType.rawValue)/select/\(productId)/\(safeString!)",
                         method: .post,
                         headerParamaters: headerParameters)
+    }
+    
+    static func fetchPrice(id: Int,
+                           size: String?) -> Endpoint<PriceResponseDTO> {
+        var headerParameters: [String: String] = ["Content-Type":"application/json"]
+        
+        _ = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.accessToken)
+            .map { "Bearer-\($0)" }
+            .flatMap {
+                headerParameters.updateValue($0, forKey: "Authorization")
+            }
+        
+        if let size = size,
+           let safeString = size.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
+            return Endpoint(path: "prices/products/\(id)/\(safeString)",
+                            method: .get,
+                            headerParamaters: headerParameters)
+        } else {
+            return Endpoint(path: "prices/products/\(id)",
+                            method: .get,
+                            headerParamaters: headerParameters)
+        }
     }
     
     // MARK: - Wish API

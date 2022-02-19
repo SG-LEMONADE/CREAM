@@ -18,6 +18,7 @@ protocol HomeViewModelInput {
 protocol HomeViewModelOutput {
     var homeInfo: Observable<HomeInfo> { get set }
     var numberOfSections: Int { get }
+    var isLoaded: Bool { get set }
 }
 
 protocol HomeViewModelInterface: HomeViewModelInput, HomeViewModelOutput { }
@@ -27,6 +28,7 @@ final class HomeViewModel: HomeViewModelInterface {
     private let homeUseCase: HomeListUseCaseInterface
     private let productUseCase: ProductUseCaseInterface
     
+    var isLoaded: Bool = true
     var currentWishItem: Int? = nil
     var numberOfSections: Int {
         return homeInfo.value.sections.count * 2

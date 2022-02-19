@@ -18,7 +18,6 @@ final class ProductRepository {
 
 // MARK: - Product View Repository Interface
 extension ProductRepository: ProductRepositoryInterface {
-
     func requestProducts(page: Int,
                          searchWord: String?,
                          category: String?,
@@ -81,6 +80,21 @@ extension ProductRepository: ProductRepositoryInterface {
         return task
     }
 
+    func fetchPrice(id: Int, size: String?, completion: @escaping ((Result<[[PriceList]], Error>) -> Void)) -> Cancellable {
+        let endpoint = APIEndpoints.fetchPrice(id: id, size: size)
+
+        let task = RepositoryTask()
+        
+        task.networkTask = dataTransferService.request(with: endpoint, completion: { result in
+            switch result {
+            case .success(let response):
+                completion(.success(response.toDomain()))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        })
+        return task
+    }
 }
 
 // MARK: - Home View Repository Interface

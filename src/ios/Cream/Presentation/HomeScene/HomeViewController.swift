@@ -101,9 +101,6 @@ extension HomeViewController: UICollectionViewDelegate {
                                                                                id: viewModel.homeInfo.value.sections[indexPath.section/2]
                                                                                 .products[indexPath.item].id)
             let productViewController                       = ProductViewController(viewModel)
-            productViewController.callbackClosure = { [weak self] in
-//                self?.viewModel.viewDidLoad()
-            }
             
             productViewController.hidesBottomBarWhenPushed = true
             self.navigationController?.pushViewController(productViewController, animated: true)

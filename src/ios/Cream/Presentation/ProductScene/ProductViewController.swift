@@ -11,8 +11,13 @@ protocol FooterScrollDelegate: AnyObject {
     func didScrollTo(_ page: Int)
 }
 
+protocol SegmentScrollDelegate: AnyObject {
+    func didMoveTo(_ index: Int)
+}
+
 class ProductViewController: DIViewController<ProductViewModelInterface> {
     // MARK: Properties
+    weak var segmentDelegate: SegmentScrollDelegate?
     weak var delegate: FooterScrollDelegate?
     var callbackClosure: (() -> Void)?
     
@@ -58,13 +63,21 @@ class ProductViewController: DIViewController<ProductViewModelInterface> {
     
     func bindViewModel() {
         viewModel.item.bind { [weak self] product in
-            self?.productView.ItemInfoListView.reloadData()
-            self?.productView.tradeContainerView.sellButton.setPrice(product.highestBid)
-            self?.productView.tradeContainerView.buyButton.setPrice(product.lowestAsk)
-            self?.productView.tradeContainerView.wishButton.configure(product)
+            guard let self = self
+            else { return }
+            
+            if self.isViewLoaded {
+                self.productView.ItemInfoListView.reloadData()
+            } else {
+                self.productView.ItemInfoListView.reloadItems(at: [.init(item: 0, section: 1),
+                                                                    .init(item: 0, section: 5)])
+            }
+            self.productView.tradeContainerView.sellButton.setPrice(product.highestBid)
+            self.productView.tradeContainerView.buyButton.setPrice(product.lowestAsk)
+            self.productView.tradeContainerView.wishButton.configure(product)
         }
         
-        viewModel.selecteSize.bind { [weak self] size in
+        viewModel.selectSize.bind { [weak self] size in
             self?.productView.ItemInfoListView.reloadItems(at: [.init(item: 0, section: 1)])
             if let _askPrice = self?.viewModel.item.value.askPrices[size],
                let askPrice = _askPrice {
@@ -80,9 +93,9 @@ class ProductViewController: DIViewController<ProductViewModelInterface> {
             }
         }
         
-//        viewModel.priceChange.bind { [weak self] value in
-//            self?.productView.ItemInfoListView.reloadItems(at: [.init(item: 0, section: 1)])
-//        }
+        viewModel.selectedPeriod.bind { [weak self] index in
+            self?.productView.ItemInfoListView.reloadItems(at: [.init(item: 0, section: 5)])
+        }
     }
 }
 
@@ -92,6 +105,7 @@ extension ProductViewController {
         productView.tradeContainerView.wishButton.addTarget(self, action: #selector(didTapWishButton), for: .touchUpInside)
         productView.tradeContainerView.buyButton.addTarget(self, action: #selector(didTapBuyButton), for: .touchUpInside)
         productView.tradeContainerView.sellButton.addTarget(self, action: #selector(didTapSellButton), for: .touchUpInside)
+
     }
     
     @objc
@@ -147,6 +161,11 @@ extension ProductViewController {
         let navigationController = UINavigationController(rootViewController: tradeViewController)
         
         present(navigationController, animated: true)
+    }
+    
+    @objc
+    func segmentedControlValueChanged(_ sender: UISegmentedControl) {
+        viewModel.selectedPeriod.value = sender.selectedSegmentIndex
     }
 }
 
@@ -220,7 +239,7 @@ extension ProductViewController: UICollectionViewDataSource, UICollectionViewDel
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ItemInfoCell.reuseIdentifier,
                                                                 for: indexPath) as? ItemInfoCell
             else { return UICollectionViewCell() }
-            cell.configure(viewModel.item.value, size: viewModel.selecteSize.value)
+            cell.configure(viewModel.item.value, size: viewModel.selectSize.value)
             cell.delegate = self
             return cell
             
@@ -251,6 +270,10 @@ extension ProductViewController: UICollectionViewDataSource, UICollectionViewDel
                                                                 for: indexPath) as? ChartCell
             else { return UICollectionViewCell() }
             
+            cell.segmentControl.addTarget(self,
+                                         action: #selector(segmentedControlValueChanged(_:)),
+                                          for: .valueChanged)
+            cell.configure(with: viewModel.chartData, period: viewModel.selectedPeriod.value)
             return cell
             
         case .similarity:

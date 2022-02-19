@@ -9,15 +9,53 @@ import UIKit
 import SnapKit
 import Charts
 
+protocol ChartCellDelegate: AnyObject {
+    func reloadChart()
+}
+
 class ChartCell: UICollectionViewCell {
     static let reuseIdentifier = "\(ChartCell.self)"
-        
-    private lazy var chartView: LineChartView = {
-        let view = LineChartView()
-        view.delegate = self
-        return view
+    
+    weak var delegate: ChartCellDelegate?
+    
+    private lazy var titleLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 18, weight: .bold)
+        label.textAlignment = .left
+        label.text = "시세"
+        return label
     }()
     
+    lazy var segmentControl: UISegmentedControl = {
+        let segmentControl = UISegmentedControl(items: ["1개월","3개월","6개월","1년","전체"])
+        segmentControl.backgroundColor = .systemBackground
+        segmentControl.selectedSegmentIndex = 4
+        return segmentControl
+    }()
+    
+    private lazy var chartView: LineChartView = {
+        let charView = LineChartView()
+        
+        charView.backgroundColor = .white
+        charView.tintColor = .red
+        charView.leftAxis.enabled = false
+        charView.xAxis.enabled = false
+        charView.doubleTapToZoomEnabled = false
+        charView.xAxis.drawGridLinesEnabled = false
+        charView.legend.enabled = false
+        
+        let yAxis = charView.rightAxis
+        yAxis.labelFont = .systemFont(ofSize: 12)
+        yAxis.labelTextColor = .systemGray2
+        yAxis.axisLineColor = .clear
+        yAxis.labelPosition = .outsideChart
+        yAxis.setLabelCount(6, force: false)
+        yAxis.axisMinimum = 0
+        
+        return charView
+    }()
+    
+    // MARK: - init
     override init(frame: CGRect) {
         super.init(frame: frame)
         applyViewSettings()
@@ -27,42 +65,56 @@ class ChartCell: UICollectionViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    func configureChartView() {
-        var entries = [ChartDataEntry]()
-        
-        for x in 0..<10 {
-            entries.append(ChartDataEntry(x:Double(x),
-                                          y:Double(x)))
-        }
-        
-        let set = LineChartDataSet(entries: entries)
-        set.colors = ChartColorTemplates.material()
-        
-        let data = LineChartData(dataSet: set)
-        
-        chartView.data = data
-    }
 }
 
 extension ChartCell: ViewConfiguration {
     func buildHierarchy() {
-        addSubviews(chartView)
+        addSubviews(titleLabel,
+                    segmentControl,
+                    chartView)
     }
     
     func setupConstraints() {
+        titleLabel.snp.makeConstraints {
+            $0.leading.trailing.top.equalToSuperview().inset(15)
+            $0.bottom.equalTo(segmentControl.snp.top).offset(-10)
+        }
+        segmentControl.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview().inset(15)
+            $0.bottom.equalTo(chartView.snp.top).offset(-15)
+        }
         chartView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
+            $0.leading.trailing.bottom.equalToSuperview().inset(15)
         }
     }
-    func viewConfigure() {
-        configureChartView()
+    override func prepareForReuse() {
+        segmentControl.isSelected = false
     }
 }
 
-extension ChartCell: ChartViewDelegate {
-    func chartValueSelected(_ chartView: ChartViewBase, entry: ChartDataEntry, highlight: Highlight) {
-        print(entry)
+extension ChartCell {
+    func configure(with entries: [[ChartDataEntry]], period: Int = 4) {
+        let entry = entries[period]
+        let dataset = LineChartDataSet(entries: entry, label: nil)
+        
+        dataset.mode = .cubicBezier
+        dataset.setColor(.red)
+        dataset.setCircleColor(.red)
+        dataset.circleHoleColor = .red
+        dataset.setDrawHighlightIndicators(false)
+        dataset.mode = .cubicBezier
+        dataset.drawCirclesEnabled = false
+        
+        let data = LineChartData(dataSet: dataset)
+        data.setValueTextColor(.red)
+        data.setDrawValues(false)
+
+        chartView.data = data
     }
 }
 
+extension ChartCell: SegmentScrollDelegate {
+    func didMoveTo(_ index: Int) {
+        self.segmentControl.selectedSegmentIndex = index
+    }
+}
