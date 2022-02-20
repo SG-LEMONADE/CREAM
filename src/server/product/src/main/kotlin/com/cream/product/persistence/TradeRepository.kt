@@ -78,6 +78,7 @@ class TradeRepositoryImpl :
                     tradeEntity.product.originalName,
                     tradeEntity.size,
                     tradeEntity.price,
+                    tradeEntity.product.id,
                     tradeEntity.product.imageUrls,
                     tradeEntity.product.backgroundColor,
                     tradeEntity.tradeStatus,
