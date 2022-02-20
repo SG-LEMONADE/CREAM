@@ -83,7 +83,8 @@ class TradeService {
             when (it.tradeStatus) {
                 (TradeStatus.COMPLETED) -> finishedCnt += cnt
                 (TradeStatus.IN_PROGRESS) -> inProgress += cnt
-                else -> waitingCnt += cnt
+                (TradeStatus.WAITING) -> waitingCnt += cnt
+                else -> {}
             }
         }
 

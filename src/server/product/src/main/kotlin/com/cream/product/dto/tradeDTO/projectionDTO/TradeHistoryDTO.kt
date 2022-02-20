@@ -9,6 +9,7 @@ data class TradeHistoryDTO @QueryProjection constructor(
     val id: Long,
     val name: String,
     val size: String,
+    val price: Int,
     @JsonRawValue val imageUrl: String,
     val backgroundColor: String,
     val tradeStatus: TradeStatus,

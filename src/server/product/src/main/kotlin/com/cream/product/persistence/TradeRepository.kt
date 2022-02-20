@@ -77,6 +77,7 @@ class TradeRepositoryImpl :
                     tradeEntity.id,
                     tradeEntity.product.originalName,
                     tradeEntity.size,
+                    tradeEntity.price,
                     tradeEntity.product.imageUrls,
                     tradeEntity.product.backgroundColor,
                     tradeEntity.tradeStatus,
@@ -163,7 +164,8 @@ class TradeRepositoryImpl :
             )
             .from(tradeEntity)
             .where(
-                eqRequestType(userId, requestType, reverseRequestType)
+                eqRequestType(userId, requestType, reverseRequestType),
+                tradeEntity.tradeStatus.ne(TradeStatus.CANCELED)
             )
             .groupBy(tradeEntity.tradeStatus)
             .orderBy(OrderSpecifier(Order.ASC, tradeEntity.tradeStatus))
