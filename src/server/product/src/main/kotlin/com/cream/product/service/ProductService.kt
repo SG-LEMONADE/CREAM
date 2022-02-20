@@ -12,7 +12,9 @@ import com.cream.product.error.ErrorCode
 import com.cream.product.persistence.ProductRepository
 import com.cream.product.persistence.TradeRepository
 import com.cream.product.persistence.WishRepository
+import feign.FeignException
 import org.json.JSONArray
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.lang.Integer.min
@@ -33,6 +35,8 @@ class ProductService {
 
     @Autowired
     lateinit var logServiceClient: LogServiceClient
+
+    private val log = LoggerFactory.getLogger(javaClass)
 
     fun findProductsByPageWithWish(
         page: PageDTO,
@@ -61,7 +65,11 @@ class ProductService {
             productWithWish = productRepository.getProduct(id, size)
         } else {
             productWithWish = productRepository.getProductWithWish(userId, id, size)
-            logServiceClient.insertUserLogData(UserLogDTO(userId, id, 1))
+            try {
+                logServiceClient.insertUserLogData(UserLogDTO(userId, id, 1))
+            } catch (ex: FeignException) {
+                log.error(ex.message)
+            }
         }
 
         val brandId: Long? = productWithWish.product.brand?.id
@@ -110,8 +118,8 @@ class ProductService {
             lastSalePrice = latestCompletedTrade.price
 
             if (lastCompletedTrades.size > 1) {
-                changePercentage = ((lastCompletedTrades[1].price - latestCompletedTrade.price) / lastCompletedTrades[1].price).toFloat()
-                changeValue = (lastCompletedTrades[1].price - latestCompletedTrade.price)
+                changePercentage = (( latestCompletedTrade.price - lastCompletedTrades[1].price) / lastCompletedTrades[1].price).toFloat()
+                changeValue = (latestCompletedTrade.price - lastCompletedTrades[1].price)
             }
         }
 
