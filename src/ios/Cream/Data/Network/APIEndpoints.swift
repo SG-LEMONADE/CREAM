@@ -169,7 +169,7 @@ struct APIEndpoints {
             }
         
         let queryParameters: [String: Any] = ["cursor": 0,
-                                              "perPage": 20,
+                                              "perPage": 100,
                                               "requestType": type.requestString,
                                               "tradeStatus": "ALL"]
         return Endpoint(path: "trades",

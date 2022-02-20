@@ -49,6 +49,7 @@ final class ProductListItemCell: UICollectionViewCell, ImageLoadable {
         self.wishButton.setTitle(nil, for: .normal)
         self.itemView.priceLabel.text = nil
         self.itemView.priceExpressionLabel.text = nil
+        wishButton.setImage(UIImage(systemName: "bookmark"), for: .normal)
     }
 }
 

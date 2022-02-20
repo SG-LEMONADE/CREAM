@@ -28,7 +28,9 @@ class MyPageViewController: DIViewController<MyPageViewModelInterface> {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         viewModel.viewDidLoad()
+        self.tabBarController?.tabBar.isHidden = false
     }
+    
     
     func setupTableView() {
         myPageView.userTableView.delegate = self
@@ -101,6 +103,8 @@ extension MyPageViewController: UITableViewDataSource {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: MyTradeCell.reuseIdentifier) as? MyTradeCell
             else { return UITableViewCell() }
             
+            print(viewModel.askList.counter)
+            print(viewModel.bidList.counter)
             cell.configure(ask: viewModel.askList,
                            bid: viewModel.bidList)
             
@@ -185,14 +189,20 @@ extension MyPageViewController {
     }
     
     func didTapBuyHistoryButton() {
-        DispatchQueue.main.async { [weak self] in
-            self?.view.makeToast("준비 중입니다.", duration: 1.5, position: .center)
-        }
+        let vm = ManagementViewModel(usecase: viewModel.usecase,
+                                     tradeType: .buy,
+                                     tradeState: .waiting)
+        let vc = ManagementViewController(vm)
+        hidesBottomBarWhenPushed = true
+        self.navigationController?.pushViewController(vc, animated: true)
     }
     func didTapSellHistoryButton() {
-        DispatchQueue.main.async { [weak self] in
-            self?.view.makeToast("준비 중입니다.", duration: 1.5, position: .center)
-        }
+        let vm = ManagementViewModel(usecase: viewModel.usecase,
+                                     tradeType: .sell,
+                                     tradeState: .waiting)
+        let vc = ManagementViewController(vm)
+        hidesBottomBarWhenPushed = true
+        self.navigationController?.pushViewController(vc, animated: true)
     }
     
     func didTapNoticeButton() {

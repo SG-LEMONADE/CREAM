@@ -30,9 +30,9 @@ final class ShopBannerCell: UICollectionViewCell, ImageLoadable {
     }
     
     override func prepareForReuse() {
-        self.imageView.image = nil
-        self.imageView.backgroundColor = nil
-        self.session = nil
+        session?.cancel()
+        imageView.image = nil
+        imageView.backgroundColor = nil
     }
 }
 // MARK: - ViewConfiguration

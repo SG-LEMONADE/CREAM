@@ -26,6 +26,7 @@ protocol ProductListViewModelOutput {
     var products: Observable<Products> { get set }
     var sortStandard: SortInfo { get set }
     var selectedFilters: Observable<SelectFilter> { get set }
+    var selectedIndexPath: IndexPath? { get set }
 }
 
 protocol ProductListViewModelInterface: ProductListViewModelInput, ProductListViewModelOutput {
@@ -40,6 +41,7 @@ final class ProductListViewModel: ProductListViewModelInterface {
     var errorTemplateMessage: String = ""
     var selectedFilters: Observable<SelectFilter> = Observable(.init())
     var currentFilters: SelectFilter?
+    var selectedIndexPath: IndexPath? = nil
     private var cursor: Int = .zero
     
     private var searchWord: String?
@@ -71,7 +73,7 @@ final class ProductListViewModel: ProductListViewModelInterface {
             case .success(let products):
                 self.errorTemplateMessage = "데이터를 받아오지 못했습니다."
                 self.products.value = products
-            case .failure(let _):
+            case .failure(_):
                 self.error.value = .networkUnconnected
             }
         }
@@ -89,7 +91,7 @@ final class ProductListViewModel: ProductListViewModelInterface {
             switch result {
             case .success(let products):
                 self.products.value = products
-            case .failure(let _):
+            case .failure(_):
                 self.error.value = .networkUnconnected
             }
         }
@@ -114,7 +116,7 @@ final class ProductListViewModel: ProductListViewModelInterface {
             case .success(let products):
                 self.errorTemplateMessage = "검색 결과가 없습니다."
                 self.products.value = products
-            case .failure(let error):
+            case .failure(_):
                 self.error.value = .networkUnconnected
             }
         }
@@ -163,7 +165,7 @@ final class ProductListViewModel: ProductListViewModelInterface {
             switch result {
             case .success(let products):
                 self.products.value.append(contentsOf: products)
-            case .failure(let _):
+            case .failure(_):
                 self.error.value = .networkUnconnected
             }
         }

@@ -149,6 +149,15 @@ enum TradeType: String, CustomStringConvertible {
             return "정산 금액"
         }
     }
+    
+    var titleLabel: String {
+        switch self {
+        case .buy:
+            return "구매 내역"
+        case .sell:
+            return "판매 내역"
+        }
+    }
 }
 
 final class TradeButton: UIButton {

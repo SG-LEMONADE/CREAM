@@ -16,12 +16,13 @@ protocol MyPageViewModelOutput {
     var numberOfSections: Int { get }
     var askList: TradeList { get set }
     var bidList: TradeList { get set }
+    var usecase: MyPageUseCaseInterface { get }
 }
 
 protocol MyPageViewModelInterface: MyPageViewModelInput, MyPageViewModelOutput { }
 
 final class MyPageViewModel: MyPageViewModelInterface {
-    private let usecase: MyPageUseCaseInterface
+    var usecase: MyPageUseCaseInterface
     
     var isFinished: Observable<Bool> = Observable(false)
     var numberOfSections: Int { return 3 }
@@ -56,8 +57,8 @@ final class MyPageViewModel: MyPageViewModelInterface {
         DispatchQueue.global().async { [weak self] in
             self?.usecase.fetchTradeInfo(tradeType: .sell) { result in
                 switch result {
-                case .success(let askList):
-                    self?.askList = askList
+                case .success(let bidList):
+                    self?.bidList = bidList
                 case .failure(let error):
                     print(error)
                 }
