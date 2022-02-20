@@ -48,9 +48,9 @@ class TradeService {
         }
 
         if (tradeRegisterDTO.requestType == RequestType.BID) {
-            try{
+            try {
                 logServiceClient.insertUserLogData(UserLogDTO(userId, productId, 3))
-            } catch (ex: FeignException){
+            } catch (ex: FeignException) {
                 log.error(ex.message)
             }
         }

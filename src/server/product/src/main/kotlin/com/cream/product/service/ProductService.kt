@@ -118,7 +118,7 @@ class ProductService {
             lastSalePrice = latestCompletedTrade.price
 
             if (lastCompletedTrades.size > 1) {
-                changePercentage = (( latestCompletedTrade.price - lastCompletedTrades[1].price) / lastCompletedTrades[1].price).toFloat()
+                changePercentage = ((latestCompletedTrade.price - lastCompletedTrades[1].price) / lastCompletedTrades[1].price).toFloat()
                 changeValue = (latestCompletedTrade.price - lastCompletedTrades[1].price)
             }
         }
