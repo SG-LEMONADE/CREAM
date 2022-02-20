@@ -17,6 +17,12 @@ export default function App({
 					name="description"
 					content="Collapse Rules Everything Around Me"
 				/>
+				{process.env.DEPLOY_VER && (
+					<meta
+						httpEquiv="Content-Security-Policy"
+						content="upgrade-insecure-requests"
+					/>
+				)}
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
 			<UserProvider>

@@ -6,6 +6,7 @@ module.exports = withImages({
 		disableStaticImages: true,
 	},
 	env: {
+		DEPLOY_VER: false,
 		END_POINT_USER: "http://1.231.16.189:8000",
 		END_POINT_PRODUCT: "http://1.231.16.189:8000",
 		ERROR_code: {
