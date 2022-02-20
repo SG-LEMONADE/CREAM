@@ -36,4 +36,15 @@ enum TradeStatus: String {
     case finished = "FINISHED"
     case inProgress = "IN_PROGRESS"
     case waiting = "WAITING"
+    
+    var desctiprion: String {
+        switch self {
+        case .waiting:
+            return "WAITING"
+        case .finished:
+            return "COMPLETED"
+        default:
+            return ""
+        }
+    }
 }

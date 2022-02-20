@@ -130,6 +130,10 @@
 		7BA9624B27C081750052BC9A /* RecommendBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BA9624A27C081750052BC9A /* RecommendBackgroundView.swift */; };
 		7BA9624D27C0C7120052BC9A /* PriceResponseDTO+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BA9624C27C0C7120052BC9A /* PriceResponseDTO+Mapping.swift */; };
 		7BA9624F27C0C8890052BC9A /* PriceList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BA9624E27C0C8890052BC9A /* PriceList.swift */; };
+		7BAADBAA27C2869B0031A5B4 /* ManagementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BAADBA927C2869B0031A5B4 /* ManagementViewController.swift */; };
+		7BAADBAC27C286A50031A5B4 /* ManagementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BAADBAB27C286A50031A5B4 /* ManagementView.swift */; };
+		7BAADBAE27C289B70031A5B4 /* ManagementCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BAADBAD27C289B70031A5B4 /* ManagementCell.swift */; };
+		7BAADBB027C2B38B0031A5B4 /* ManagementViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BAADBAF27C2B38B0031A5B4 /* ManagementViewModel.swift */; };
 		7BB0110B278AE227005E5C9E /* NavigateMenuBaseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BB0110A278AE227005E5C9E /* NavigateMenuBaseController.swift */; };
 		7BB0110F278BBBAC005E5C9E /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 7BB0110E278BBBAC005E5C9E /* SnapKit */; };
 		7BB01113278BC44E005E5C9E /* ViewConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BB01112278BC44E005E5C9E /* ViewConfiguration.swift */; };
@@ -294,6 +298,10 @@
 		7BA9624A27C081750052BC9A /* RecommendBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendBackgroundView.swift; sourceTree = "<group>"; };
 		7BA9624C27C0C7120052BC9A /* PriceResponseDTO+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PriceResponseDTO+Mapping.swift"; sourceTree = "<group>"; };
 		7BA9624E27C0C8890052BC9A /* PriceList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriceList.swift; sourceTree = "<group>"; };
+		7BAADBA927C2869B0031A5B4 /* ManagementViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagementViewController.swift; sourceTree = "<group>"; };
+		7BAADBAB27C286A50031A5B4 /* ManagementView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagementView.swift; sourceTree = "<group>"; };
+		7BAADBAD27C289B70031A5B4 /* ManagementCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagementCell.swift; sourceTree = "<group>"; };
+		7BAADBAF27C2B38B0031A5B4 /* ManagementViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagementViewModel.swift; sourceTree = "<group>"; };
 		7BB0110A278AE227005E5C9E /* NavigateMenuBaseController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigateMenuBaseController.swift; sourceTree = "<group>"; };
 		7BB01112278BC44E005E5C9E /* ViewConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewConfiguration.swift; sourceTree = "<group>"; };
 		7BB01114278BC6D1005E5C9E /* BindingTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BindingTextField.swift; sourceTree = "<group>"; };
@@ -730,6 +738,25 @@
 			path = TradeFinishScene;
 			sourceTree = "<group>";
 		};
+		7BAADBB127C2B7130031A5B4 /* ManagementScene */ = {
+			isa = PBXGroup;
+			children = (
+				7BAADBB227C2B71D0031A5B4 /* Views */,
+				7BAADBA927C2869B0031A5B4 /* ManagementViewController.swift */,
+				7BAADBAF27C2B38B0031A5B4 /* ManagementViewModel.swift */,
+				7BAADBAB27C286A50031A5B4 /* ManagementView.swift */,
+			);
+			path = ManagementScene;
+			sourceTree = "<group>";
+		};
+		7BAADBB227C2B71D0031A5B4 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				7BAADBAD27C289B70031A5B4 /* ManagementCell.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		7BB0110C278AF1C3005E5C9E /* Application */ = {
 			isa = PBXGroup;
 			children = (
@@ -779,6 +806,7 @@
 				7B54D6FA278EF2D900214664 /* JoinScene */,
 				7B356685279241F100C45A68 /* MyPageScene */,
 				7B5EEEC027B9575100990E37 /* SettingScene */,
+				7BAADBB127C2B7130031A5B4 /* ManagementScene */,
 			);
 			path = Presentation;
 			sourceTree = "<group>";
@@ -1097,8 +1125,10 @@
 				7B5EEE8127B4052500990E37 /* FilterViewModel.swift in Sources */,
 				7BF4CE9F27BD200E001AF601 /* SelectViewModel.swift in Sources */,
 				7B5EEE2227A58A4400990E37 /* UserUseCase.swift in Sources */,
+				7BAADBAA27C2869B0031A5B4 /* ManagementViewController.swift in Sources */,
 				7B5EEE8927B5620400990E37 /* MyPageView.swift in Sources */,
 				7BB0110B278AE227005E5C9E /* NavigateMenuBaseController.swift in Sources */,
+				7BAADBAE27C289B70031A5B4 /* ManagementCell.swift in Sources */,
 				7B193CAF279A67E900B934A3 /* PageControlFooterView.swift in Sources */,
 				7B8EAAA027A2412700B07259 /* NetworkService.swift in Sources */,
 				7BF4CEA827BD524C001AF601 /* DeadlineCell.swift in Sources */,
@@ -1153,6 +1183,8 @@
 				7B17624F27BB45A20082B79B /* NotificationName+.swift in Sources */,
 				7B193CAD2799BDEF00B934A3 /* UIColor+.swift in Sources */,
 				7B5EEE6827B00F0300990E37 /* BaseItemView.swift in Sources */,
+				7BAADBB027C2B38B0031A5B4 /* ManagementViewModel.swift in Sources */,
+				7BAADBAC27C286A50031A5B4 /* ManagementView.swift in Sources */,
 				7BF4CEA127BD2016001AF601 /* SelectView.swift in Sources */,
 				7BF82E0227A2CD18007E0A79 /* JoinRequestDTO+Mapping.swift in Sources */,
 				7B5EEE9427B6B90D00990E37 /* WishItemHeaderView.swift in Sources */,
