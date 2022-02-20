@@ -134,6 +134,8 @@
 		7BAADBAC27C286A50031A5B4 /* ManagementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BAADBAB27C286A50031A5B4 /* ManagementView.swift */; };
 		7BAADBAE27C289B70031A5B4 /* ManagementCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BAADBAD27C289B70031A5B4 /* ManagementCell.swift */; };
 		7BAADBB027C2B38B0031A5B4 /* ManagementViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BAADBAF27C2B38B0031A5B4 /* ManagementViewModel.swift */; };
+		7BAADBB627C2BA750031A5B4 /* ManagementViewModelSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BAADBB527C2BA750031A5B4 /* ManagementViewModelSpec.swift */; };
+		7BAADBB827C2BABC0031A5B4 /* MockMyPageUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BAADBB727C2BABC0031A5B4 /* MockMyPageUseCase.swift */; };
 		7BB0110B278AE227005E5C9E /* NavigateMenuBaseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BB0110A278AE227005E5C9E /* NavigateMenuBaseController.swift */; };
 		7BB0110F278BBBAC005E5C9E /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 7BB0110E278BBBAC005E5C9E /* SnapKit */; };
 		7BB01113278BC44E005E5C9E /* ViewConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BB01112278BC44E005E5C9E /* ViewConfiguration.swift */; };
@@ -302,6 +304,8 @@
 		7BAADBAB27C286A50031A5B4 /* ManagementView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagementView.swift; sourceTree = "<group>"; };
 		7BAADBAD27C289B70031A5B4 /* ManagementCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagementCell.swift; sourceTree = "<group>"; };
 		7BAADBAF27C2B38B0031A5B4 /* ManagementViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagementViewModel.swift; sourceTree = "<group>"; };
+		7BAADBB527C2BA750031A5B4 /* ManagementViewModelSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagementViewModelSpec.swift; sourceTree = "<group>"; };
+		7BAADBB727C2BABC0031A5B4 /* MockMyPageUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockMyPageUseCase.swift; sourceTree = "<group>"; };
 		7BB0110A278AE227005E5C9E /* NavigateMenuBaseController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigateMenuBaseController.swift; sourceTree = "<group>"; };
 		7BB01112278BC44E005E5C9E /* ViewConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewConfiguration.swift; sourceTree = "<group>"; };
 		7BB01114278BC6D1005E5C9E /* BindingTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BindingTextField.swift; sourceTree = "<group>"; };
@@ -377,6 +381,7 @@
 			isa = PBXGroup;
 			children = (
 				7B17624327BA521A0082B79B /* MockUserUseCase.swift */,
+				7BAADBB727C2BABC0031A5B4 /* MockMyPageUseCase.swift */,
 			);
 			path = Mock;
 			sourceTree = "<group>";
@@ -386,6 +391,7 @@
 			children = (
 				7B17623C27BA50FA0082B79B /* LoginViewModelSpec.swift */,
 				7B17624A27BA8F3F0082B79B /* JoinViewModelSpec.swift */,
+				7BAADBB527C2BA750031A5B4 /* ManagementViewModelSpec.swift */,
 			);
 			path = ViewModelUnitTest;
 			sourceTree = "<group>";
@@ -1054,8 +1060,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7BAADBB627C2BA750031A5B4 /* ManagementViewModelSpec.swift in Sources */,
 				7B17624B27BA8F3F0082B79B /* JoinViewModelSpec.swift in Sources */,
 				7B17624427BA521A0082B79B /* MockUserUseCase.swift in Sources */,
+				7BAADBB827C2BABC0031A5B4 /* MockMyPageUseCase.swift in Sources */,
 				7B17623D27BA50FA0082B79B /* LoginViewModelSpec.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

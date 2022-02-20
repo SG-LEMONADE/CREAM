@@ -30,7 +30,7 @@ final class ManagementViewModel: ManagementViewModelInterface {
     let tradeType: TradeType
     var totalList: Observable<TradeList> = .init(TradeList(counter: .init(totalCnt: 0, waitingCnt: 0, inProgressCnt: 0, finishedCnt: 0), trades: []))
     var selectedList: Observable<[Trade]> = .init([])
-    
+    var error: Observable<UserError> = .init(.authInvalid)
     var numberOfRows: Int {
         return selectedList.value.count
     }
@@ -49,9 +49,10 @@ final class ManagementViewModel: ManagementViewModelInterface {
             switch result {
             case .success(let list):
                 self.totalList.value = list
-                self.selectedList.value = self.totalList.value.trades.filter { $0.tradeStatus == self.tradeState.rawValue }
+                self.selectedList.value = self.totalList.value.trades.filter { $0.tradeStatus == self.tradeState.desctiprion }
                 
             case .failure(let error):
+                self.error.value = error
                 print(error)
             }
         }
