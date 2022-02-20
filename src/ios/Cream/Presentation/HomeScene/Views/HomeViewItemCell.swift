@@ -12,11 +12,11 @@ protocol WishButtonDelegate: AnyObject {
     func didClickWishButton(for indexPath: IndexPath)
 }
 
-final class HomeProductCell: UICollectionViewCell {
+final class HomeProductCell: UICollectionViewCell, ImageLoadable {
     static let reuseIdentifier = "\(HomeProductCell.self)"
-    
     var indexPath: IndexPath = .init(index: .zero)
-    var sessionTask: URLSessionDataTask?
+    var session: URLSessionDataTask?
+    
     weak var delegate: WishButtonDelegate?
     
     private lazy var itemView: BaseItemView = {
@@ -47,7 +47,7 @@ final class HomeProductCell: UICollectionViewCell {
     }
     
     override func prepareForReuse() {
-        sessionTask?.cancel()
+        session?.cancel()
         
         itemView.productImageView.image = nil
         itemView.titleLabel.text = nil
@@ -91,6 +91,13 @@ extension HomeProductCell: ViewConfiguration {
 // MARK: Cell Configure
 extension HomeProductCell {
     func configure(_ viewModel: Product, isRelatedItem: Bool = false) {
+        if let wishList = viewModel.wishList,
+           !wishList.isEmpty {
+            wishImageView.image = UIImage(named: "bookmark.fill")
+        } else {
+            wishImageView.image = UIImage(named: "bookmark")
+        }
+        itemView.spinner.startAnimating()
         itemView.tradeLabel.text = viewModel.totalSaleText
         itemView.titleLabel.text = viewModel.brandName
         itemView.detailLabel.text = viewModel.originalName
@@ -100,39 +107,31 @@ extension HomeProductCell {
         } else {
             itemView.priceLabel.text = "-"
         }
-        
-        
         itemView.productImageView.backgroundColor = .init(rgb: viewModel.backgroundColor.hexToInt ?? 0)
-        
-        if let wishList = viewModel.wishList,
-           !wishList.isEmpty {
-            wishImageView.image = UIImage(named: "bookmark.fill")
-        } else {
-            wishImageView.image = UIImage(named: "bookmark")
-        }
         
         if isRelatedItem {
             itemView.tradeLabel.text = nil
             wishButton.isHidden = true
         }
         
-        
-        
         guard let urlString = viewModel.imageUrls.first,
               let url = URL(string: urlString)
         else {
             itemView.productImageView.image = UIImage(systemName: "questionmark.app.dashed")
+            itemView.spinner.stopAnimating()
             return
         }
         if let image = imageCache.image(forKey: urlString) {
             DispatchQueue.main.async { [weak self] in
                 self?.itemView.productImageView.image = image
+                self?.itemView.spinner.stopAnimating()
             }
         } else {
-            sessionTask = loadImage(url: url) { (image) in
+            session = loadImage(url: url) { (image) in
                 image.flatMap { imageCache.add($0, forKey: urlString) }
                 DispatchQueue.main.async { [weak self] in
                     self?.itemView.productImageView.image = image
+                    self?.itemView.spinner.stopAnimating()
                 }
             }
         }

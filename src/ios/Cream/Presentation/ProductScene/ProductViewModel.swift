@@ -10,6 +10,8 @@ import Charts
 
 protocol ProductViewModelInput {
     func viewDidLoad()
+    func didTapWishButton()
+    func didTapSizeButton()
     func removeFromWishList(size: String)
     func addToWishList(size: String)
     func didSelectItem(size: String)
@@ -24,19 +26,23 @@ protocol ProductViewModelOutput {
     var selectSize: Observable<String> { get }
     var chartData: [[ChartDataEntry]] { get set }
     var selectedPeriod: Observable<Int> { get set }
+    var selections: Observable<[SelectionType]> { get set }
     var isDidLoad: Bool { get set }
+    var isClickedWishButton: Bool { get set }
 }
 
 protocol ProductViewModelInterface: ProductViewModelInput, ProductViewModelOutput { }
 
 final class ProductViewModel: ProductViewModelInterface {
     private let usecase: ProductUseCaseInterface
-    var isDidLoad: Bool = true
+    var isDidLoad: Bool = false
     var selectSize: Observable<String> = .init("")
     var item: Observable<ProductDetail> = Observable(ProductDetail.create())
     var chartData: [[ChartDataEntry]] = []
+    var selections: Observable<[SelectionType]> = .init([])
     var selectedPeriod: Observable<Int> = .init(0)
     var id: Int
+    var isClickedWishButton: Bool = false
     
     var numberOfImageUrls: Int {
         return item.value.imageUrls.count
@@ -84,8 +90,11 @@ final class ProductViewModel: ProductViewModelInterface {
         }
     }
     
+    func didTapWishButton() {
+        isClickedWishButton = true
+    }
+    
     func didSelectItem(size: String) {
-        isDidLoad = false
         usecase.fetchItemById(id, size: size) { result in
             switch result {
             case .success(let product):
@@ -128,6 +137,23 @@ final class ProductViewModel: ProductViewModelInterface {
         }
     }
     
+    func didTapSizeButton() {
+        let askPrices = item.value.askPrices
+        
+        var items: [SelectionType] = []
+        item.value.sizes.forEach {
+            if let _price = askPrices[$0] {
+                if let price = _price {
+                    items.append(SelectionType.sizePrice(size: $0, price: price))
+                } else {
+                    items.append(SelectionType.sizePrice(size: $0, price: nil))
+                }
+            } else {
+                items.append(SelectionType.sizePrice(size: $0, price: nil))
+            }
+        }
+        selections.value = items
+    }
     private func converToChartData(list: [[PriceList]]) -> [[ChartDataEntry]] {
         var entries: [[ChartDataEntry]] = []
         let period: [Int] = [30, 90, 180, 365, 365]

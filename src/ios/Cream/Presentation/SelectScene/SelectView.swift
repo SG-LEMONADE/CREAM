@@ -131,9 +131,6 @@ extension SelectView: ViewConfiguration {
         containerViewHeightConstraint?.isActive = true
         containerViewBottomConstraint?.isActive = true
     }
-    
-    func viewConfigure() {
-        self.backgroundColor = .clear
-    }
+
 }
 

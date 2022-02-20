@@ -63,15 +63,21 @@ class ProductViewController: DIViewController<ProductViewModelInterface> {
             guard let self = self
             else { return }
             
-            if self.isViewLoaded {
-                self.productView.ItemInfoListView.reloadData()
-            } else {
+            if self.viewModel.isDidLoad {
+                if self.viewModel.isClickedWishButton {
+                    self.productView.tradeContainerView.wishButton.configure(product)
+                    self.viewModel.isClickedWishButton = false
+                    return
+                }
                 self.productView.ItemInfoListView.reloadItems(at: [.init(item: 0, section: 1),
                                                                     .init(item: 0, section: 5)])
+            } else {
+                self.productView.ItemInfoListView.reloadData()
+                self.productView.tradeContainerView.wishButton.configure(product)
+                self.productView.tradeContainerView.sellButton.setPrice(product.highestBid)
+                self.productView.tradeContainerView.buyButton.setPrice(product.lowestAsk)
+                self.viewModel.isDidLoad = true
             }
-            self.productView.tradeContainerView.sellButton.setPrice(product.highestBid)
-            self.productView.tradeContainerView.buyButton.setPrice(product.lowestAsk)
-            self.productView.tradeContainerView.wishButton.configure(product)
         }
         
         viewModel.selectSize.bind { [weak self] size in
@@ -132,7 +138,7 @@ extension ProductViewController {
         }
         
         var items: [SelectionType] = []
-        
+        viewModel.didTapWishButton()
         let item = viewModel.item.value
         if let wishList = item.wishList {
             item.sizes.forEach {
@@ -263,7 +269,7 @@ extension ProductViewController: UICollectionViewDataSource, UICollectionViewDel
         case .image:
             return viewModel.numberOfImageUrls
         case .itemInfo, .advertise, .delivery, .priceChart:
-            return 1
+            return .one
         case .release:
             return viewModel.releaseInfo.count
         case .similarity:
@@ -362,7 +368,7 @@ extension ProductViewController: UICollectionViewDelegate {
             let productViewController = ProductViewController(viewModel)
             
             productViewController.hidesBottomBarWhenPushed = true
-            self.navigationController?.pushViewController(productViewController, animated: true)
+            navigationController?.pushViewController(productViewController, animated: true)
         }
     }
 }
@@ -410,13 +416,10 @@ extension ProductViewController: BannerViewDelegate {
 
 extension ProductViewController: ItemInfoCellDelegate {
     func didTapSizeButton() {
-        //        .map { SelectionType.sizePrice(size: $0.key, price: $0.value) }
+
         let askPrices = viewModel.item.value.askPrices
-        
         var items: [SelectionType] = []
-        //      // TODO: refactor
-        //      viewModel.didTapSizeButton()
-        
+
         viewModel.item.value.sizes.forEach {
             if let _price = askPrices[$0] {
                 if let price = _price {
@@ -428,8 +431,7 @@ extension ProductViewController: ItemInfoCellDelegate {
                 items.append(SelectionType.sizePrice(size: $0, price: nil))
             }
         }
-        
-        
+
         let vm = SelectViewModel(type: .sizePrice(), items: items)
         let vc = SelectViewController(vm)
         vc.delegate = self

@@ -11,8 +11,6 @@ import SwiftKeychainWrapper
 class HomeViewController: DIViewController<HomeViewModelInterface> {
     weak var delegate: FooterScrollDelegate?
     
-    private var currentIndexPath: Int = .zero
-
     private lazy var homeView = HomeView()
     
     // MARK: - View Life Cycle
@@ -25,8 +23,9 @@ class HomeViewController: DIViewController<HomeViewModelInterface> {
         setupCollectionView()
         setupNavigationBarItem()
         bindViewModel()
+        viewModel.viewDidLoad()
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         viewModel.viewDidLoad()
     }
@@ -57,7 +56,11 @@ class HomeViewController: DIViewController<HomeViewModelInterface> {
     
     private func bindViewModel() {
         viewModel.homeInfo.bind { [weak self] _ in
-            self?.homeView.homeCollectionView.reloadData()
+            if let index = self?.viewModel.selectedIndexPath {
+                self?.homeView.homeCollectionView.reloadItems(at: [index])
+            } else {
+                self?.homeView.homeCollectionView.reloadData()
+            }
         }
     }
     
@@ -208,7 +211,7 @@ extension HomeViewController: WishButtonDelegate {
         }
         
         let product = viewModel.homeInfo.value.sections[indexPath.section / 2].products[indexPath.item]
-        viewModel.didTapWishButton(id: product.id)
+        viewModel.didTapWishButton(id: product.id, indexPath: indexPath)
         var items: [SelectionType] = []
         
         if let wishList = product.wishList {
@@ -225,10 +228,13 @@ extension HomeViewController: WishButtonDelegate {
         
         let vm = SelectViewModel(type: .wish(), items: items)
         let vc = SelectViewController(vm)
-
-        vc.delegate = self
-        vc.modalPresentationStyle = .overFullScreen
         
+        vc.delegate = self
+        vc.selectCompleteHandler = { [weak self] in
+            self?.viewModel.viewDidLoad()
+        }
+        
+        vc.modalPresentationStyle = .overFullScreen
         present(vc, animated: false, completion: nil)
     }
 }

@@ -67,12 +67,6 @@ class ProcessViewController: DIViewController<ProcessViewModelInterface>, ImageL
         viewModel.tradeAvailable.bind { [weak self] isInvalid in
             self?.processView.segmentControl.setEnabled(!isInvalid, forSegmentAt: 1)
             self?.processView.validateView.isHidden = !isInvalid
-//            if isAvailable {
-//                self?.processView.segmentControl.setEnabled(false, forSegmentAt: 1)
-//                self?.processView.validateView.isHidden = false
-//            } else {
-//                self?.processView.validateView.isHidden = true
-//            }
         }
         
         viewModel.requestPrice.bind { [weak self] price in
@@ -107,14 +101,20 @@ class ProcessViewController: DIViewController<ProcessViewModelInterface>, ImageL
             } else {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.75) { [weak self] in
                     self?.processView.activityIndicator.stopAnimating()
-                    self?.view.makeToast("거래에 실패했습니다.",
-                                         duration: 1.5,
-                                         position: .center)
+                    if let label = self?.viewModel.tradeType.description {
+                        self?.view.makeToast("본인이 등록한 물품은 \(label)할 수 없습니다.",
+                                             duration: 2.0,
+                                             position: .center)
+                    }
+                    
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { [weak self] in
+                        self?.dismiss(animated: true, completion: nil)
+                    }
                 }
             }
         }
     }
-
+    
     
     private func configureView() {
         processView.productInfoView.itemNumberLabel.text            = viewModel.product.styleCode
@@ -127,10 +127,11 @@ class ProcessViewController: DIViewController<ProcessViewModelInterface>, ImageL
         viewModel.validateDay.value.flatMap {
             processView.validateView.dateValueLabel.text = $0.caculateDeadLine()
         }
-
+        
         if let price = viewModel.selectedProduct.price {
             processView.segmentControl.selectedSegmentIndex = .one
             processView.validateView.isHidden = true
+            processView.descriptionLabel.text = viewModel.tradeType.labelText
             processView.priceTextField.textField.text = price.priceFormat
             processView.tradeBottomBar.tradeButton.setTitle(viewModel.tradeType.instantTradeTitle,
                                                             for: .normal)
@@ -138,6 +139,7 @@ class ProcessViewController: DIViewController<ProcessViewModelInterface>, ImageL
         } else {
             processView.segmentControl.selectedSegmentIndex = .zero
             processView.validateView.isHidden = false
+            processView.descriptionLabel.text = "\(viewModel.tradeType.description) 희망가"
             processView.tradeBottomBar.tradeButton.setTitle(viewModel.tradeType.waitingTradeTitle,
                                                             for: .normal)
             processView.tradeBottomBar.totalLabel.priceLabel.text = "-"
@@ -211,7 +213,7 @@ class ProcessViewController: DIViewController<ProcessViewModelInterface>, ImageL
                                                             for: .normal)
             
             processView.tradeBottomBar.totalLabel.priceLabel.text = "- 원"
-        
+            
             processView.validateView.isHidden = false
         } else {
             processView.priceTextField.textField.text = viewModel.selectedProduct.price?.priceFormat
