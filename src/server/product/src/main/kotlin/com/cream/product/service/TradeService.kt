@@ -17,8 +17,10 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import feign.FeignException
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.jpa.repository.Lock
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
+import javax.persistence.LockModeType
 import javax.transaction.Transactional
 
 @Service
@@ -46,7 +48,11 @@ class TradeService {
         }
 
         if (tradeRegisterDTO.requestType == RequestType.BID) {
-            logServiceClient.insertUserLogData(UserLogDTO(userId, productId, 3))
+            try {
+                logServiceClient.insertUserLogData(UserLogDTO(userId, productId, 3))
+            } catch (ex: FeignException) {
+                log.error(ex.message)
+            }
         }
 
         tradeRepository.save(tradeRegisterDTO.toEntity(userId, product, size))
@@ -77,7 +83,8 @@ class TradeService {
             when (it.tradeStatus) {
                 (TradeStatus.COMPLETED) -> finishedCnt += cnt
                 (TradeStatus.IN_PROGRESS) -> inProgress += cnt
-                else -> waitingCnt += cnt
+                (TradeStatus.WAITING) -> waitingCnt += cnt
+                else -> {}
             }
         }
 
@@ -93,6 +100,7 @@ class TradeService {
     }
 
     @Transactional
+    @Lock(value = LockModeType.PESSIMISTIC_WRITE)
     fun delete(
         tradeId: Long,
         userId: Long
@@ -106,6 +114,7 @@ class TradeService {
     }
 
     @Transactional
+    @Lock(value = LockModeType.PESSIMISTIC_WRITE)
     fun buyOrSellProduct(
         productId: Long,
         size: String,

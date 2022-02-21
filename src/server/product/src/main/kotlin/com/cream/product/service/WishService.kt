@@ -7,6 +7,7 @@ import com.cream.product.error.ErrorCode
 import com.cream.product.persistence.ProductRepository
 import com.cream.product.persistence.WishRepository
 import com.fasterxml.jackson.databind.ObjectMapper
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.jpa.repository.Lock
 import org.springframework.stereotype.Service
@@ -23,6 +24,8 @@ class WishService {
 
     @Autowired
     lateinit var logServiceClient: LogServiceClient
+
+    private val log = LoggerFactory.getLogger(javaClass)
 
     @Transactional
     @Lock(value = LockModeType.PESSIMISTIC_READ)
