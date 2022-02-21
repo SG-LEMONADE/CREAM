@@ -34,7 +34,6 @@ enum SelectionType {
             return "사이즈"
         case .sort:
             return "정렬 순서"
-        
         case .deadline:
             return "입찰 마감기한"
         }

@@ -26,7 +26,7 @@ class ManagementViewModelSpec: XCTestCase {
     // 실제 성공도 했고, 데이터도 제대로 옴.
     func test_success_viewDidLoad() {
         // give
-        let answer = TradeList(counter: .init(totalCnt: 1, waitingCnt: 1, inProgressCnt: 0, finishedCnt: 0), trades: [.init(name: "name", size: "size", imageUrl: [], backgroundColor: "backgroundColor", tradeStatus: "tradeStatus", updateDateTime: nil, validationDate: "")])
+        let answer = TradeList(counter: .init(totalCnt: 1, waitingCnt: 1, inProgressCnt: 0, finishedCnt: 0), trades: [.init(id: 0, productId: 0,name: "name", size: "size", imageUrl: [], backgroundColor: "backgroundColor", tradeStatus: "tradeStatus", price: 0, updateDateTime: nil, validationDate: "")])
         // when
         viewModel.viewDidLoad()
         
@@ -50,11 +50,16 @@ class ManagementViewModelSpec: XCTestCase {
     
     func test_success_didTapBidView() {
         // give
-        let dummyTrades = [Trade(name: "1", size: "", imageUrl: [], backgroundColor: "", tradeStatus: TradeStatus.waiting.desctiprion, updateDateTime: nil, validationDate: ""),
-                          Trade(name: "1", size: "", imageUrl: [], backgroundColor: "", tradeStatus: TradeStatus.finished.desctiprion, updateDateTime: nil, validationDate: ""),
-                          Trade(name: "1", size: "", imageUrl: [], backgroundColor: "", tradeStatus: TradeStatus.finished.desctiprion, updateDateTime: nil, validationDate: ""),
-                          Trade(name: "1", size: "", imageUrl: [], backgroundColor: "", tradeStatus: TradeStatus.waiting.desctiprion, updateDateTime: nil, validationDate: ""),
-                          Trade(name: "1", size: "", imageUrl: [], backgroundColor: "", tradeStatus: TradeStatus.waiting.desctiprion, updateDateTime: nil, validationDate: "")]
+        let dummyTrades = [Trade(id: 0, productId: 0, name: "1", size: "", imageUrl: [], backgroundColor: "",
+                                 tradeStatus: TradeStatus.waiting.desctiprion, price: 0, updateDateTime: nil, validationDate: ""),
+                           Trade(id: 0, productId: 0, name: "1", size: "", imageUrl: [], backgroundColor: "",
+                                 tradeStatus: TradeStatus.waiting.desctiprion, price: 0, updateDateTime: nil, validationDate: ""),
+                           Trade(id: 0, productId: 0, name: "1", size: "", imageUrl: [], backgroundColor: "",
+                                 tradeStatus: TradeStatus.waiting.desctiprion, price: 0, updateDateTime: nil, validationDate: ""),
+                           Trade(id: 0, productId: 0, name: "1", size: "", imageUrl: [], backgroundColor: "",
+                                 tradeStatus: TradeStatus.finished.desctiprion, price: 0, updateDateTime: nil, validationDate: ""),
+                           Trade(id: 0, productId: 0, name: "1", size: "", imageUrl: [], backgroundColor: "",
+                                 tradeStatus: TradeStatus.finished.desctiprion, price: 0, updateDateTime: nil, validationDate: "")]
         let dummyInputs = TradeList(counter: .init(totalCnt: 1, waitingCnt: 1, inProgressCnt: 0, finishedCnt: 0), trades: dummyTrades)
         
         viewModel.totalList.value = dummyInputs
@@ -67,11 +72,16 @@ class ManagementViewModelSpec: XCTestCase {
     
     func test_failure_didTapBidView() {
         // give
-        let dummyTrades = [Trade(name: "1", size: "", imageUrl: [], backgroundColor: "", tradeStatus: TradeStatus.waiting.desctiprion, updateDateTime: nil, validationDate: ""),
-                          Trade(name: "1", size: "", imageUrl: [], backgroundColor: "", tradeStatus: TradeStatus.finished.desctiprion, updateDateTime: nil, validationDate: ""),
-                          Trade(name: "1", size: "", imageUrl: [], backgroundColor: "", tradeStatus: TradeStatus.finished.desctiprion, updateDateTime: nil, validationDate: ""),
-                          Trade(name: "1", size: "", imageUrl: [], backgroundColor: "", tradeStatus: TradeStatus.waiting.desctiprion, updateDateTime: nil, validationDate: ""),
-                          Trade(name: "1", size: "", imageUrl: [], backgroundColor: "", tradeStatus: TradeStatus.waiting.desctiprion, updateDateTime: nil, validationDate: "")]
+        let dummyTrades = [Trade(id: 0, productId: 0, name: "1", size: "", imageUrl: [], backgroundColor: "",
+                                 tradeStatus: TradeStatus.waiting.desctiprion, price: 0, updateDateTime: nil, validationDate: ""),
+                           Trade(id: 0, productId: 0, name: "1", size: "", imageUrl: [], backgroundColor: "",
+                                 tradeStatus: TradeStatus.waiting.desctiprion, price: 0, updateDateTime: nil, validationDate: ""),
+                           Trade(id: 0, productId: 0, name: "1", size: "", imageUrl: [], backgroundColor: "",
+                                 tradeStatus: TradeStatus.waiting.desctiprion, price: 0, updateDateTime: nil, validationDate: ""),
+                           Trade(id: 0, productId: 0, name: "1", size: "", imageUrl: [], backgroundColor: "",
+                                 tradeStatus: TradeStatus.finished.desctiprion, price: 0, updateDateTime: nil, validationDate: ""),
+                           Trade(id: 0, productId: 0, name: "1", size: "", imageUrl: [], backgroundColor: "",
+                                 tradeStatus: TradeStatus.finished.desctiprion, price: 0, updateDateTime: nil, validationDate: "")]
         let dummyInputs = TradeList(counter: .init(totalCnt: 1, waitingCnt: 1, inProgressCnt: 0, finishedCnt: 0), trades: dummyTrades)
         
         viewModel.totalList.value = dummyInputs
@@ -84,11 +94,16 @@ class ManagementViewModelSpec: XCTestCase {
     
     func test_success_didTapProgressView() {
         // give
-        let dummyTrades = [Trade(name: "1", size: "", imageUrl: [], backgroundColor: "", tradeStatus: TradeStatus.waiting.desctiprion, updateDateTime: nil, validationDate: ""),
-                          Trade(name: "1", size: "", imageUrl: [], backgroundColor: "", tradeStatus: TradeStatus.finished.desctiprion, updateDateTime: nil, validationDate: ""),
-                          Trade(name: "1", size: "", imageUrl: [], backgroundColor: "", tradeStatus: TradeStatus.finished.desctiprion, updateDateTime: nil, validationDate: ""),
-                          Trade(name: "1", size: "", imageUrl: [], backgroundColor: "", tradeStatus: TradeStatus.waiting.desctiprion, updateDateTime: nil, validationDate: ""),
-                          Trade(name: "1", size: "", imageUrl: [], backgroundColor: "", tradeStatus: TradeStatus.waiting.desctiprion, updateDateTime: nil, validationDate: "")]
+        let dummyTrades = [Trade(id: 0, productId: 0, name: "1", size: "", imageUrl: [], backgroundColor: "",
+                                 tradeStatus: TradeStatus.waiting.desctiprion, price: 0, updateDateTime: nil, validationDate: ""),
+                           Trade(id: 0, productId: 0, name: "1", size: "", imageUrl: [], backgroundColor: "",
+                                 tradeStatus: TradeStatus.waiting.desctiprion, price: 0, updateDateTime: nil, validationDate: ""),
+                           Trade(id: 0, productId: 0, name: "1", size: "", imageUrl: [], backgroundColor: "",
+                                 tradeStatus: TradeStatus.waiting.desctiprion, price: 0, updateDateTime: nil, validationDate: ""),
+                           Trade(id: 0, productId: 0, name: "1", size: "", imageUrl: [], backgroundColor: "",
+                                 tradeStatus: TradeStatus.finished.desctiprion, price: 0, updateDateTime: nil, validationDate: ""),
+                           Trade(id: 0, productId: 0, name: "1", size: "", imageUrl: [], backgroundColor: "",
+                                 tradeStatus: TradeStatus.finished.desctiprion, price: 0, updateDateTime: nil, validationDate: "")]
         let dummyInputs = TradeList(counter: .init(totalCnt: 1, waitingCnt: 1, inProgressCnt: 0, finishedCnt: 0), trades: dummyTrades)
         
         viewModel.totalList.value = dummyInputs
@@ -101,11 +116,16 @@ class ManagementViewModelSpec: XCTestCase {
     
     func test_failure_didTapProgressView() {
         // give
-        let dummyTrades = [Trade(name: "1", size: "", imageUrl: [], backgroundColor: "", tradeStatus: TradeStatus.waiting.desctiprion, updateDateTime: nil, validationDate: ""),
-                          Trade(name: "1", size: "", imageUrl: [], backgroundColor: "", tradeStatus: TradeStatus.finished.desctiprion, updateDateTime: nil, validationDate: ""),
-                          Trade(name: "1", size: "", imageUrl: [], backgroundColor: "", tradeStatus: TradeStatus.finished.desctiprion, updateDateTime: nil, validationDate: ""),
-                          Trade(name: "1", size: "", imageUrl: [], backgroundColor: "", tradeStatus: TradeStatus.waiting.desctiprion, updateDateTime: nil, validationDate: ""),
-                          Trade(name: "1", size: "", imageUrl: [], backgroundColor: "", tradeStatus: TradeStatus.waiting.desctiprion, updateDateTime: nil, validationDate: "")]
+        let dummyTrades = [Trade(id: 0, productId: 0, name: "1", size: "", imageUrl: [], backgroundColor: "",
+                                 tradeStatus: TradeStatus.waiting.desctiprion, price: 0, updateDateTime: nil, validationDate: ""),
+                           Trade(id: 0, productId: 0, name: "1", size: "", imageUrl: [], backgroundColor: "",
+                                 tradeStatus: TradeStatus.waiting.desctiprion, price: 0, updateDateTime: nil, validationDate: ""),
+                           Trade(id: 0, productId: 0, name: "1", size: "", imageUrl: [], backgroundColor: "",
+                                 tradeStatus: TradeStatus.waiting.desctiprion, price: 0, updateDateTime: nil, validationDate: ""),
+                           Trade(id: 0, productId: 0, name: "1", size: "", imageUrl: [], backgroundColor: "",
+                                 tradeStatus: TradeStatus.finished.desctiprion, price: 0, updateDateTime: nil, validationDate: ""),
+                           Trade(id: 0, productId: 0, name: "1", size: "", imageUrl: [], backgroundColor: "",
+                                 tradeStatus: TradeStatus.finished.desctiprion, price: 0, updateDateTime: nil, validationDate: "")]
         let dummyInputs = TradeList(counter: .init(totalCnt: 1, waitingCnt: 1, inProgressCnt: 0, finishedCnt: 0), trades: dummyTrades)
         
         viewModel.totalList.value = dummyInputs
@@ -118,11 +138,16 @@ class ManagementViewModelSpec: XCTestCase {
     
     func test_success_didTapCompleteView() {
         // give
-        let dummyTrades = [Trade(name: "1", size: "", imageUrl: [], backgroundColor: "", tradeStatus: TradeStatus.waiting.desctiprion, updateDateTime: nil, validationDate: ""),
-                          Trade(name: "1", size: "", imageUrl: [], backgroundColor: "", tradeStatus: TradeStatus.finished.desctiprion, updateDateTime: nil, validationDate: ""),
-                          Trade(name: "1", size: "", imageUrl: [], backgroundColor: "", tradeStatus: TradeStatus.finished.desctiprion, updateDateTime: nil, validationDate: ""),
-                          Trade(name: "1", size: "", imageUrl: [], backgroundColor: "", tradeStatus: TradeStatus.waiting.desctiprion, updateDateTime: nil, validationDate: ""),
-                          Trade(name: "1", size: "", imageUrl: [], backgroundColor: "", tradeStatus: TradeStatus.waiting.desctiprion, updateDateTime: nil, validationDate: "")]
+        let dummyTrades = [Trade(id: 0, productId: 0, name: "1", size: "", imageUrl: [], backgroundColor: "",
+                                 tradeStatus: TradeStatus.waiting.desctiprion, price: 0, updateDateTime: nil, validationDate: ""),
+                           Trade(id: 0, productId: 0, name: "1", size: "", imageUrl: [], backgroundColor: "",
+                                 tradeStatus: TradeStatus.waiting.desctiprion, price: 0, updateDateTime: nil, validationDate: ""),
+                           Trade(id: 0, productId: 0, name: "1", size: "", imageUrl: [], backgroundColor: "",
+                                 tradeStatus: TradeStatus.waiting.desctiprion, price: 0, updateDateTime: nil, validationDate: ""),
+                           Trade(id: 0, productId: 0, name: "1", size: "", imageUrl: [], backgroundColor: "",
+                                 tradeStatus: TradeStatus.finished.desctiprion, price: 0, updateDateTime: nil, validationDate: ""),
+                           Trade(id: 0, productId: 0, name: "1", size: "", imageUrl: [], backgroundColor: "",
+                                 tradeStatus: TradeStatus.finished.desctiprion, price: 0, updateDateTime: nil, validationDate: "")]
         let dummyInputs = TradeList(counter: .init(totalCnt: 1, waitingCnt: 1, inProgressCnt: 0, finishedCnt: 0), trades: dummyTrades)
         
         viewModel.totalList.value = dummyInputs
@@ -135,11 +160,16 @@ class ManagementViewModelSpec: XCTestCase {
     
     func test_failure_didTapCompleteView() {
         // give
-        let dummyTrades = [Trade(name: "1", size: "", imageUrl: [], backgroundColor: "", tradeStatus: TradeStatus.waiting.desctiprion, updateDateTime: nil, validationDate: ""),
-                          Trade(name: "1", size: "", imageUrl: [], backgroundColor: "", tradeStatus: TradeStatus.finished.desctiprion, updateDateTime: nil, validationDate: ""),
-                          Trade(name: "1", size: "", imageUrl: [], backgroundColor: "", tradeStatus: TradeStatus.finished.desctiprion, updateDateTime: nil, validationDate: ""),
-                          Trade(name: "1", size: "", imageUrl: [], backgroundColor: "", tradeStatus: TradeStatus.waiting.desctiprion, updateDateTime: nil, validationDate: ""),
-                          Trade(name: "1", size: "", imageUrl: [], backgroundColor: "", tradeStatus: TradeStatus.waiting.desctiprion, updateDateTime: nil, validationDate: "")]
+        let dummyTrades = [Trade(id: 0, productId: 0, name: "1", size: "", imageUrl: [], backgroundColor: "",
+                                 tradeStatus: TradeStatus.waiting.desctiprion, price: 0, updateDateTime: nil, validationDate: ""),
+                           Trade(id: 0, productId: 0, name: "1", size: "", imageUrl: [], backgroundColor: "",
+                                 tradeStatus: TradeStatus.waiting.desctiprion, price: 0, updateDateTime: nil, validationDate: ""),
+                           Trade(id: 0, productId: 0, name: "1", size: "", imageUrl: [], backgroundColor: "",
+                                 tradeStatus: TradeStatus.waiting.desctiprion, price: 0, updateDateTime: nil, validationDate: ""),
+                           Trade(id: 0, productId: 0, name: "1", size: "", imageUrl: [], backgroundColor: "",
+                                 tradeStatus: TradeStatus.finished.desctiprion, price: 0, updateDateTime: nil, validationDate: ""),
+                           Trade(id: 0, productId: 0, name: "1", size: "", imageUrl: [], backgroundColor: "",
+                                 tradeStatus: TradeStatus.finished.desctiprion, price: 0, updateDateTime: nil, validationDate: "")]
         let dummyInputs = TradeList(counter: .init(totalCnt: 1, waitingCnt: 1, inProgressCnt: 0, finishedCnt: 0), trades: dummyTrades)
         
         viewModel.totalList.value = dummyInputs
@@ -149,8 +179,55 @@ class ManagementViewModelSpec: XCTestCase {
         // then
         XCTAssertNotEqual(viewModel.selectedList.value.count, 3)
     }
+    
+    func test_success_deleteTrade() {
+        // give
+        let dummyTrades = [Trade(id: 0, productId: 0, name: "1", size: "", imageUrl: [], backgroundColor: "",
+                               tradeStatus: TradeStatus.waiting.desctiprion, price: 0, updateDateTime: nil, validationDate: ""),
+                         Trade(id: 0, productId: 0, name: "1", size: "", imageUrl: [], backgroundColor: "",
+                               tradeStatus: TradeStatus.waiting.desctiprion, price: 0, updateDateTime: nil, validationDate: ""),
+                         Trade(id: 0, productId: 0, name: "1", size: "", imageUrl: [], backgroundColor: "",
+                               tradeStatus: TradeStatus.waiting.desctiprion, price: 0, updateDateTime: nil, validationDate: ""),
+                         Trade(id: 0, productId: 0, name: "1", size: "", imageUrl: [], backgroundColor: "",
+                               tradeStatus: TradeStatus.finished.desctiprion, price: 0, updateDateTime: nil, validationDate: ""),
+                         Trade(id: 0, productId: 0, name: "1", size: "", imageUrl: [], backgroundColor: "",
+                               tradeStatus: TradeStatus.finished.desctiprion, price: 0, updateDateTime: nil, validationDate: "")]
+        viewModel.selectedList.value = dummyTrades
+        let indexPath: IndexPath = .init(row: 0, section: 0)
+        let answer = 4
+        
+        // when
+        viewModel.deleteTrade(at: indexPath)
+        // then
+        XCTAssertEqual(viewModel.selectedList.value.count, answer)
+    }
+    
+    func test_failure_deleteTrade() {
+        // give
+        mockMypageUsecase = MockMyPageUsecase(isSuccess: false)
+        viewModel = .init(usecase: mockMypageUsecase,
+                          tradeType: .buy, tradeState: .ask)
+        
+        let dummyTrades = [Trade(id: 0, productId: 0, name: "1", size: "", imageUrl: [], backgroundColor: "",
+                               tradeStatus: TradeStatus.waiting.desctiprion, price: 0, updateDateTime: nil, validationDate: ""),
+                         Trade(id: 0, productId: 0, name: "1", size: "", imageUrl: [], backgroundColor: "",
+                               tradeStatus: TradeStatus.waiting.desctiprion, price: 0, updateDateTime: nil, validationDate: ""),
+                         Trade(id: 0, productId: 0, name: "1", size: "", imageUrl: [], backgroundColor: "",
+                               tradeStatus: TradeStatus.waiting.desctiprion, price: 0, updateDateTime: nil, validationDate: ""),
+                         Trade(id: 0, productId: 0, name: "1", size: "", imageUrl: [], backgroundColor: "",
+                               tradeStatus: TradeStatus.finished.desctiprion, price: 0, updateDateTime: nil, validationDate: ""),
+                         Trade(id: 0, productId: 0, name: "1", size: "", imageUrl: [], backgroundColor: "",
+                               tradeStatus: TradeStatus.finished.desctiprion, price: 0, updateDateTime: nil, validationDate: "")]
+        viewModel.selectedList.value = dummyTrades
+        let indexPath: IndexPath = .init(row: 0, section: 0)
+        let answer = 4
+        // when
+        viewModel.deleteTrade(at: indexPath)
+        
+        // then
+        XCTAssertNotEqual(viewModel.selectedList.value.count, answer)
+    }
 }
-
 
 extension TradeList: Equatable {
     static public func == (lhs: TradeList, rhs: TradeList) -> Bool {
