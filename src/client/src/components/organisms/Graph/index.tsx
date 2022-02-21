@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useEffect, useRef } from "react";
+import React, { FunctionComponent, useEffect, useRef, useState } from "react";
 
 import Chart from "chart.js/auto";
 import styled from "@emotion/styled";
@@ -12,6 +12,14 @@ type GraphProps = {
 const Graph: FunctionComponent<GraphProps> = (props) => {
 	const { graphData, size } = props;
 
+	const [addedData] = useState<{ date: string; price: number }[]>(
+		[
+			{
+				date: "2022-02-01",
+				price: 0,
+			},
+		].concat(graphData),
+	);
 	const canvasDom = useRef(null);
 
 	useEffect(() => {
@@ -23,7 +31,7 @@ const Graph: FunctionComponent<GraphProps> = (props) => {
 			new Chart(ctx, {
 				type: "line",
 				data: {
-					labels: graphData.map((data) => data.date),
+					labels: addedData.map((data) => data.date),
 					datasets: [
 						{
 							label: "기간별 구매가",
@@ -43,7 +51,8 @@ const Graph: FunctionComponent<GraphProps> = (props) => {
 							pointHoverBorderWidth: 10,
 							pointRadius: 4,
 							pointHitRadius: 10,
-							data: graphData.map((data) => data.price),
+							data: addedData.map((data) => data.price),
+							tension: 1,
 						},
 					],
 				},
@@ -77,11 +86,7 @@ const Graph: FunctionComponent<GraphProps> = (props) => {
 					plugins: {},
 					scales: {
 						y: {
-							min:
-								Math.min.apply(
-									Math,
-									graphData.map((data) => data.price),
-								) - 10000,
+							min: 0,
 							max:
 								Math.max.apply(
 									Math,

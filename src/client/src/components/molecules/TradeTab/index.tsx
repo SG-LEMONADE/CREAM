@@ -29,7 +29,9 @@ const TradeTab: FunctionComponent<TradeTabProps> = (props) => {
 				{filter === "WAITING" ? (
 					<StyledA activated={true}>
 						<StyledDl>
-							<StyledDt activated={true}>구매 입찰</StyledDt>
+							<StyledDt activated={true}>
+								{category === "buy" ? `구매` : `판매`} 입찰
+							</StyledDt>
 							<StyledDd activated={true} category={category}>
 								{waiting}
 							</StyledDd>
