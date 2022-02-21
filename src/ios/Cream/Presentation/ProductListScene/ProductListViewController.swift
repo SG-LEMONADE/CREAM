@@ -229,9 +229,7 @@ extension ProductListViewController: UICollectionViewDelegate {
             let viewModel: ProductViewModelInterface     = ProductViewModel(usecase: usecase,
                                                                             id: viewModel.products.value[indexPath.item].id)
             let productViewController = ProductViewController(viewModel)
-            productViewController.callbackClosure = { [weak self] in
-                
-            }
+
             productViewController.hidesBottomBarWhenPushed = true
             self.navigationController?.pushViewController(productViewController, animated: true)
         }

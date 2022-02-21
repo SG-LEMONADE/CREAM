@@ -28,7 +28,6 @@ class MyPageViewController: DIViewController<MyPageViewModelInterface> {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         viewModel.viewDidLoad()
-        self.tabBarController?.tabBar.isHidden = false
     }
     
     
@@ -44,6 +43,7 @@ class MyPageViewController: DIViewController<MyPageViewModelInterface> {
                                              target: self,
                                              action: #selector(pushToSettingViewController))
         navigationItem.tintColor = .black
+        navigationController?.navigationBar.backgroundColor = .white
         self.navigationItem.leftBarButtonItem = navigationItem
     }
     
@@ -102,9 +102,7 @@ extension MyPageViewController: UITableViewDataSource {
         } else if indexPath.section == .one {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: MyTradeCell.reuseIdentifier) as? MyTradeCell
             else { return UITableViewCell() }
-            
-            print(viewModel.askList.counter)
-            print(viewModel.bidList.counter)
+
             cell.configure(ask: viewModel.askList,
                            bid: viewModel.bidList)
             
@@ -193,7 +191,7 @@ extension MyPageViewController {
                                      tradeType: .buy,
                                      tradeState: .waiting)
         let vc = ManagementViewController(vm)
-        hidesBottomBarWhenPushed = true
+        vc.hidesBottomBarWhenPushed = true
         self.navigationController?.pushViewController(vc, animated: true)
     }
     func didTapSellHistoryButton() {
@@ -201,7 +199,7 @@ extension MyPageViewController {
                                      tradeType: .sell,
                                      tradeState: .waiting)
         let vc = ManagementViewController(vm)
-        hidesBottomBarWhenPushed = true
+        vc.hidesBottomBarWhenPushed = true
         self.navigationController?.pushViewController(vc, animated: true)
     }
     

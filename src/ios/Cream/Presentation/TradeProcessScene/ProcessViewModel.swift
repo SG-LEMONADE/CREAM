@@ -97,7 +97,7 @@ final class ProcessViewModel: ProcessViewModelInterface {
             switch result {
             case .success(_):
                 self.tradeResult.value = true
-            case .failure(let error):
+            case .failure(_):
                 self.tradeResult.value = false
             }
         }

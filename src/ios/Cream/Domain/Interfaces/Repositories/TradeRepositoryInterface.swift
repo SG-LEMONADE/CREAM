@@ -15,4 +15,5 @@ protocol TradeRepositoryInterface {
                       price: Int,
                       validate: Int?,
                       completion: @escaping (Result<Void, Error>) -> Void) -> Cancellable
+    func deleteTrade(id: Int, completion: @escaping (Result<Void, Error>) -> Void) -> Cancellable
 }
