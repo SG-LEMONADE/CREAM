@@ -142,6 +142,8 @@ export interface TradeHistoryItemRes {
 	imageUrl: string[];
 	name: string;
 	size: string;
+	price: number;
+	productId: number;
 	tradeStatus: string;
 	updateDateTime: string;
 	validationDate: string;

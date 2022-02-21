@@ -376,7 +376,7 @@ const ColumnBind = styled.div`
 
 const ColumnLeft = styled.div`
 	float: left;
-	padding-right: 3.334%;
+	padding-right: 3%;
 	// position: fixed;
 	// STRANGE original_ 130px
 	top: 150px;

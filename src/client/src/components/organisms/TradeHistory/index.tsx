@@ -1,4 +1,5 @@
 import React, { FunctionComponent } from "react";
+import Link from "next/link";
 
 import CollectionTitle from "components/atoms/CollectionTitle";
 import Icon from "components/atoms/Icon";
@@ -7,7 +8,6 @@ import TradeHistoryItem from "components/molecules/TradeHistoryItem";
 import { TradeHistoryItemRes } from "types";
 
 import styled from "@emotion/styled";
-import Link from "next/link";
 
 type TradeHistoryProps = {
 	category: "buy" | "sell";
@@ -51,14 +51,18 @@ const TradeHistory: FunctionComponent<TradeHistoryProps> = (props) => {
 				/>
 				{items.length > 0 ? (
 					items.map((item) => (
-						<TradeHistoryItem
-							key={`${item.name}/${item.imageUrl[0]}/${item.validationDate}/${item.size}`}
-							imgSrc={item.imageUrl[0]}
-							backgroundColor={item.backgroundColor}
-							productName={item.name}
-							size={item.size}
-							status={item.tradeStatus}
-						/>
+						<Link href={`/products/${item.productId}`} passHref>
+							<a>
+								<TradeHistoryItem
+									key={`${item.name}/${item.imageUrl[0]}/${item.validationDate}/${item.size}`}
+									imgSrc={item.imageUrl[0]}
+									backgroundColor={item.backgroundColor}
+									productName={item.name}
+									size={item.size}
+									status={item.tradeStatus}
+								/>
+							</a>
+						</Link>
 					))
 				) : (
 					<TradeHistoryEmptySection>

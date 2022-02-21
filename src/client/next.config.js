@@ -7,8 +7,8 @@ module.exports = withImages({
 	},
 	env: {
 		DEPLOY_VER: false,
-		END_POINT_USER: "http://1.231.16.189:8000",
-		END_POINT_PRODUCT: "http://1.231.16.189:8000",
+		END_POINT_USER: "http://www.kangho.shop:8000",
+		END_POINT_PRODUCT: "http://www.kangho.shop:8000",
 		ERROR_code: {
 			"-16": "access token 만료",
 			"-18": "중복된 이메일입니다! 🧐",

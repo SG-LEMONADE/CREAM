@@ -10,6 +10,7 @@ type TradeHistoryItemProps = {
 	backgroundColor: string;
 	productName: string;
 	size: string;
+	price?: number;
 	status?: string;
 	wishedPrice?: number;
 	expiredDate?: string;
@@ -24,6 +25,7 @@ const TradeHistoryItem: FunctionComponent<TradeHistoryItemProps> = (props) => {
 		productName,
 		size,
 		status,
+		price,
 		expiredDate,
 		onDelete,
 	} = props;
@@ -49,6 +51,9 @@ const TradeHistoryItem: FunctionComponent<TradeHistoryItemProps> = (props) => {
 					<StatusBlock>
 						<StautsText>{StatusCode[status]}</StautsText>
 					</StatusBlock>
+				)}
+				{price && (
+					<ProductPriceBlock>{price.toLocaleString()}원</ProductPriceBlock>
 				)}
 				{expiredDate && (
 					<StatusBlock>
@@ -92,6 +97,13 @@ const HistoryStatusArea = styled.div`
 	display: flex;
 	align-items: center;
 	text-align: right;
+`;
+
+const ProductPriceBlock = styled.div`
+	display: block;
+	font-size: 14px;
+	/* margin-right: auto; */
+	margin-right: 4rem;
 `;
 
 const StatusBlock = styled.div`

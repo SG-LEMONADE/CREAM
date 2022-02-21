@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, useEffect } from "react";
 
 import BannerImage from "components/atoms/BannerImage";
 import Slider from "components/organisms/Slider";
@@ -27,6 +27,8 @@ const bigList = [
 
 const HomeTemplate: FunctionComponent<HomeTemplateProps> = (props) => {
 	const { children, ads, isLoading = false } = props;
+
+	useEffect(() => {}, [ads]);
 
 	return (
 		<HomeTemplateWrapper>

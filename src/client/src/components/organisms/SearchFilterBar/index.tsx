@@ -63,6 +63,7 @@ const SearchFilterBar: FunctionComponent<SearchFilterBarProps> = (props) => {
 		setFilteredCategory("");
 		setFilteredBrand([]);
 		setFilteredGender("");
+		setFilteredPrice("");
 		router.push("/search");
 	}, []);
 
@@ -86,12 +87,14 @@ const SearchFilterBar: FunctionComponent<SearchFilterBarProps> = (props) => {
 					{(luxaryFilter ||
 						filteredCategory.length > 0 ||
 						filteredBrand.length > 0 ||
-						filteredGender.length > 0) && <Icon name="TurnOn" />}
+						filteredGender.length > 0 ||
+						filteredPrice.length > 0) && <Icon name="TurnOn" />}
 				</StatusBox>
 				{(luxaryFilter ||
 					filteredCategory.length > 0 ||
 					filteredBrand.length > 0 ||
-					filteredGender.length > 0) && (
+					filteredGender.length > 0 ||
+					filteredPrice.length > 0) && (
 					<StyledA onClick={onHandleDeleteAll}>모두 삭제</StyledA>
 				)}
 			</FilterStatusWrapper>

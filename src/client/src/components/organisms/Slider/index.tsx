@@ -75,23 +75,31 @@ const Slider: FunctionComponent<SliderProps> = (props) => {
 
 	return (
 		<>
-			{productSlider ? (
-				<StyledSlider {...productProperties}>
-					{images.map((Image, index) => (
-						<div key={index} className="each-slide">
-							<>{Image !== null && Image}</>
-						</div>
-					))}
-				</StyledSlider>
-			) : (
-				<StyledFade small={small === true ? 1 : 0} {...properties}>
-					{images.map((Image, index) => (
-						<div key={index} className="each-fade">
-							<>{Image}</>
-						</div>
-					))}
-				</StyledFade>
-			)}
+			{productSlider &&
+				(images !== null ? (
+					<StyledSlider {...productProperties}>
+						{images.map((Image, index) => (
+							<div key={index} className="each-slide">
+								<>{Image}</>
+							</div>
+						))}
+					</StyledSlider>
+				) : (
+					``
+				))}
+			{!productSlider &&
+				(images !== null ? (
+					<StyledFade small={small === true ? 1 : 0} {...properties}>
+						{images !== null &&
+							images.map((Image, index) => (
+								<div key={index} className="each-fade">
+									<>{Image}</>
+								</div>
+							))}
+					</StyledFade>
+				) : (
+					``
+				))}
 		</>
 	);
 };
