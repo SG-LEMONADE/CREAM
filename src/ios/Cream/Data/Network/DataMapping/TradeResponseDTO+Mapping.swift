@@ -39,8 +39,11 @@ extension CounterDTO {
 
 // MARK: - TradeDTO
 struct TradeDTO: Decodable {
+    let id: Int
+    let productId: Int
     let name: String
     let size: String
+    let price: Int
     let imageUrl: [String]
     let backgroundColor: String
     let tradeStatus: String
@@ -50,12 +53,28 @@ struct TradeDTO: Decodable {
 
 extension TradeDTO {
     func toDomain() -> Trade {
-        return .init(name: name,
-                     size: size,
-                     imageUrl: imageUrl,
-                     backgroundColor: backgroundColor,
-                     tradeStatus: tradeStatus,
-                     updateDateTime: updateDateTime,
-                     validationDate: validationDate)
+        if let update = validationDate.split(separator: "T").map({ String($0) }).first {
+            return .init(id: id,
+                         productId: productId,
+                         name: name,
+                         size: size,
+                         imageUrl: imageUrl,
+                         backgroundColor: backgroundColor,
+                         tradeStatus: tradeStatus,
+                         price: price,
+                         updateDateTime: updateDateTime,
+                         validationDate: update)
+        } else {
+            return .init(id: id,
+                         productId: productId,
+                         name: name,
+                         size: size,
+                         imageUrl: imageUrl,
+                         backgroundColor: backgroundColor,
+                         tradeStatus: tradeStatus,
+                         price: price,
+                         updateDateTime: updateDateTime,
+                         validationDate: validationDate)
+        }
     }
 }

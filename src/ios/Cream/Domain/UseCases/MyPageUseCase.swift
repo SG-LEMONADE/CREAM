@@ -11,6 +11,7 @@ import Foundation
 protocol MyPageUseCaseInterface {
     func fetchUserInfo(completion: @escaping (Result<User, UserError>) -> Void)
     func fetchTradeInfo(tradeType: TradeType, completion: @escaping (Result<TradeList, UserError>) -> Void)
+    func deleteTrade(id: Int, completion: @escaping (Result<Void, UserError>) -> Void)
 }
 
 // MARK: - MyPageUseCase
@@ -67,5 +68,27 @@ final class MyPageUseCase: MyPageUseCaseInterface {
                 }
             }
         }
+    }
+    
+    func deleteTrade(id: Int, completion: @escaping (Result<Void, UserError>) -> Void) {
+        _ = tradeRepository.deleteTrade(id: id, completion: { result in
+            switch result {
+            case .success(let result):
+                completion(.success(result))
+            case .failure(let error):
+                guard let decodedError = error as? DataTransferError,
+                      let errorMessage = decodedError.errorMessage
+                else { return }
+                
+                switch errorMessage.code {
+                case ErrorList.INVALID_INPUT_VALUE:
+                    completion(.failure(.authInvalid))
+                case ErrorList.INTERNAL_SERVER_ERROR:
+                    completion(.failure(.networkUnconnected))
+                default:
+                    completion(.failure(.unknownError(error)))
+                }
+            }
+        })
     }
 }

@@ -10,6 +10,7 @@ import UIKit
 final class MyPageView: UIView {
     lazy var userTableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .grouped)
+        tableView.backgroundColor = .white
         return tableView
     }()
     

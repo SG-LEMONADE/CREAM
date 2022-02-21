@@ -23,7 +23,7 @@ class ManagementCell: UITableViewCell, ImageLoadable {
     private lazy var productLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 2
-        label.font = UIFont.systemFont(ofSize: 9)
+        label.font = UIFont.systemFont(ofSize: 11, weight: .bold)
         return label
     }()
     
@@ -109,7 +109,7 @@ extension ManagementCell {
     func configure(trade: Trade) {
         productLabel.text = trade.name
         sizeLabel.text = trade.size
-        priceLabel.text = "130,000"
+        priceLabel.text = trade.price.priceFormatWithUnit
         deadLineLabel.text = trade.validationDate
         
         guard let urlString = trade.imageUrl.first,

@@ -37,7 +37,7 @@ class ManagementViewController: DIViewController<ManagementViewModelInterface> {
                                              action: #selector(didTapPrevButton))
         navigationItem.tintColor = .black
         self.navigationItem.leftBarButtonItem = navigationItem
-        self.navigationController?.navigationBar.backgroundColor = .white
+        self.navigationController?.navigationBar.backgroundColor = .clear
         title = viewModel.tradeType.titleLabel
     }
     
@@ -116,5 +116,13 @@ extension ManagementViewController: UITableViewDataSource {
 }
 
 extension ManagementViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+        return .delete
+    }
     
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete  {
+            viewModel.deleteTrade(at: indexPath)
+        }
+    }
 }

@@ -12,6 +12,7 @@ protocol ManagementViewModelInput {
     func didTapBidView()
     func didTapProgressView()
     func didTapCompleteView()
+    func deleteTrade(at indexPath: IndexPath)
 }
 
 protocol ManagementViewModelOutput {
@@ -69,5 +70,41 @@ final class ManagementViewModel: ManagementViewModelInterface {
     func didTapCompleteView() {
         self.selectedList.value = self.totalList.value.trades.filter { $0.tradeStatus == TradeStatus.finished.desctiprion }
     }
+    
+    func deleteTrade(at indexPath: IndexPath) {
+        let trade = selectedList.value[indexPath.row]
+        let counter = self.totalList.value.counter
+        var newCount = Counter(totalCnt: 0,
+                               waitingCnt: 0,
+                               inProgressCnt: 0,
+                               finishedCnt: 0)
+        
+        if trade.tradeStatus == TradeStatus.waiting.desctiprion {
+            newCount = Counter(totalCnt: counter.totalCnt-1,
+                               waitingCnt: counter.waitingCnt-1,
+                               inProgressCnt: counter.inProgressCnt,
+                               finishedCnt: counter.finishedCnt)
+        } else if trade.tradeStatus == TradeStatus.finished.desctiprion {
+            newCount = Counter(totalCnt: counter.totalCnt-1,
+                               waitingCnt: counter.waitingCnt,
+                               inProgressCnt: counter.inProgressCnt,
+                               finishedCnt: counter.finishedCnt-1)
+        } else {
+            newCount = Counter(totalCnt: counter.totalCnt-1,
+                               waitingCnt: counter.waitingCnt,
+                               inProgressCnt: counter.inProgressCnt-1,
+                               finishedCnt: counter.finishedCnt)
+        }
+        usecase.deleteTrade(id: trade.id) { [weak self] result in
+            switch result {
+            case .success(_):
+                self?.selectedList.value.remove(at: indexPath.item)
+                self?.totalList.value.counter = newCount
+            case .failure(let error):
+                print(error)
+            }
+        }
+    }
+    
 }
 

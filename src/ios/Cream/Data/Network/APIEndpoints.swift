@@ -104,7 +104,7 @@ struct APIEndpoints {
            let sizeQuery = size.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
             path += "/\(sizeQuery)"
         }
-
+        
         _ = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.accessToken)
             .map { "Bearer-\($0)" }
             .flatMap {
@@ -227,6 +227,20 @@ struct APIEndpoints {
                             method: .get,
                             headerParamaters: headerParameters)
         }
+    }
+    
+    static func deleteTrade(id: Int) -> Endpoint<Void> {
+        var headerParameters: [String: String] = ["Content-Type":"application/json"]
+        
+        _ = KeychainWrapper.standard.string(forKey: KeychainWrapper.Key.accessToken)
+            .map { "Bearer-\($0)" }
+            .flatMap {
+                headerParameters.updateValue($0, forKey: "Authorization")
+            }
+        
+        return Endpoint(path: "trades/\(id)",
+                        method: .delete,
+                        headerParamaters: headerParameters)
     }
     
     // MARK: - Wish API

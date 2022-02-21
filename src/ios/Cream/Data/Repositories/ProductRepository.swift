@@ -202,5 +202,21 @@ extension ProductRepository: TradeRepositoryInterface {
         })
         return task
     }
+    
+    func deleteTrade(id: Int, completion: @escaping (Result<Void, Error>) -> Void) -> Cancellable {
+        let endpoint = APIEndpoints.deleteTrade(id: id)
+        
+        let task = RepositoryTask()
+        
+        task.networkTask = dataTransferService.request(with: endpoint, completion: { result in
+            switch result {
+            case .success(let response):
+                completion(.success(response))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        })
+        return task
+    }
 }
 

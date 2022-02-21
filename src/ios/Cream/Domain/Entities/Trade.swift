@@ -8,20 +8,23 @@
 import Foundation
 
 struct TradeList {
-    let counter: Counter
+    var counter: Counter
     let trades: [Trade]
 }
 
 struct Counter {
-    let totalCnt, waitingCnt, inProgressCnt, finishedCnt: Int
+    var totalCnt, waitingCnt, inProgressCnt, finishedCnt: Int
 }
 
 struct Trade {
+    let id: Int
+    let productId: Int
     let name: String
     let size: String
     let imageUrl: [String]
     let backgroundColor: String
     let tradeStatus: String
+    let price: Int
     let updateDateTime: String?
     let validationDate: String
 }
