@@ -10,6 +10,7 @@ import com.cream.product.persistence.BannerRepository
 import com.cream.product.persistence.ProductRepository
 import com.cream.product.persistence.SectionRepository
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.readValue
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import kotlin.streams.toList
@@ -17,72 +18,115 @@ import kotlin.streams.toList
 @Service
 class HomeService {
     @Autowired
-    lateinit var bannerRepository: BannerRepository
+    private lateinit var bannerRepository: BannerRepository
 
     @Autowired
-    lateinit var sectionRepository: SectionRepository
+    private lateinit var sectionRepository: SectionRepository
 
     @Autowired
-    lateinit var productRepository: ProductRepository
+    private lateinit var productRepository: ProductRepository
 
     @Autowired
-    lateinit var logServiceClient: LogServiceClient
+    private lateinit var logServiceClient: LogServiceClient
 
     fun getHomeView(
         userId: Long?
     ): HomeDTO {
-        val imageUrls: List<HomeAdDTO> = bannerRepository.findAllByValidIsTrue()
+        val homeBannerAds: List<HomeAdDTO> = getAds()
+
+        val homeProductSections: List<SectionDTO> = getSections(userId)
+
+        val recommendProducts: List<ProductDTO> = getRecommendedProducts(userId)
+
+        return HomeDTO(homeBannerAds, homeProductSections, recommendProducts)
+    }
+
+    private fun getAds(
+    ): List<HomeAdDTO> {
+        return bannerRepository.findAllByValidIsTrue()
             .stream().map {
                 HomeAdDTO(it.imageUrl, it.backgroundColor)
             }.toList()
+    }
 
-        val sections: List<SectionDTO> = sectionRepository.findAllByValidIsTrue()
+    private fun getSections(
+        userId: Long?
+    ): List<SectionDTO> {
+        return sectionRepository.findAllByValidIsTrue()
             .stream().map { section ->
-                val filter = ObjectMapper().readValue(section.filterInfo, FilterRequestDTO::class.java)
-                val products = if (userId == null) {
-                    productRepository.getProducts(0, 16, "total_sale", filter).stream()
-                        .map {
-                            ProductDTO(it)
-                        }.toList()
-                } else {
-                    productRepository.getProductsWithWish(userId, 0, 16, "total_sale", filter).stream()
-                        .map {
-                            ProductDTO(it)
-                        }.toList()
-                }
+                val filter = parseFilterFromString(section.filterInfo)
+                val products = getSectionProducts(userId, filter)
 
-                SectionDTO(section.header, section.detail, section.imageUrl, section.backgroundColor, products)
+                SectionDTO(section, products)
             }.toList()
+    }
 
-        var recommendItems: List<ProductDTO> = listOf()
+    private fun parseFilterFromString(
+        filterInfo: String
+    ): FilterRequestDTO {
+        return ObjectMapper().readValue(filterInfo, FilterRequestDTO::class.java)
+    }
 
-        if (userId != null) {
-            val sortedRecommendedItems = ArrayList<ProductDTO>()
-            val productIds = logServiceClient.getRecommendedItems(userId)
+    private fun getSectionProducts(
+        userId: Long?,
+        filter: FilterRequestDTO
+    ): List<ProductDTO> {
+        if (userId == null) {
+            return productRepository.getProducts(0, 16, "total_sale", filter).stream()
+                .map { ProductDTO(it) }
+                .toList()
+        }
+        return productRepository.getProductsWithWish(userId, 0, 16, "total_sale", filter).stream()
+            .map { ProductDTO(it) }
+            .toList()
+    }
 
-            // 만약 추천이 되어있다면 결과를 반환, 아니라면 null 을 반환
-            if (productIds.isNotEmpty()) {
-                val unSortedRecommendItems = productRepository.getProductsWithWish(
-                    userId, 0, 30,
-                    null, FilterRequestDTO(recommendation = productIds)
-                )
-                    .stream()
-                    .map {
-                        ProductDTO(it)
-                    }.toList()
+    private fun getRecommendedProducts(
+        userId: Long?
+    ): List<ProductDTO> {
+        if (userId == null){
+            return listOf()
+        }
+        val recommendedProductIds = getRecommendedProductIds(userId)
+        return getSortedRecommendedProductsFromIds(userId, recommendedProductIds)
+    }
 
-                productIds.forEach {
-                    for (product in unSortedRecommendItems) {
-                        if (product.id == it) {
-                            sortedRecommendedItems.add(product)
-                            break
-                        }
-                    }
+    private fun getSortedRecommendedProductsFromIds(
+        userId: Long,
+        recommendedProductIds: List<Long>
+    ): List<ProductDTO>{
+
+        val unSortedRecommendedProducts = getRecommendedProductsFromIds(userId, recommendedProductIds)
+
+        val sortedRecommendedProducts = ArrayList<ProductDTO>()
+        recommendedProductIds.forEach {
+            for (product in unSortedRecommendedProducts) {
+                if (product.id == it){
+                    sortedRecommendedProducts.add(product)
+                    break
                 }
-                recommendItems = sortedRecommendedItems.toList()
             }
         }
-
-        return HomeDTO(imageUrls, sections, recommendItems)
+        return sortedRecommendedProducts
     }
+
+    private fun getRecommendedProductIds(
+        userId: Long
+    ): List<Long> {
+        return logServiceClient.getRecommendedProducts(userId);
+    }
+
+    private fun getRecommendedProductsFromIds(
+        userId: Long,
+        recommendedProductIds: List<Long>
+    ): List<ProductDTO>{
+        val recommendFilter = FilterRequestDTO(recommendation = recommendedProductIds)
+
+        return productRepository.getProductsWithWish(userId, 0, 30, null, recommendFilter)
+            .stream()
+            .map { ProductDTO(it) }
+            .toList()
+    }
+
+
 }
