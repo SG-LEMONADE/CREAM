@@ -18,16 +18,16 @@ import kotlin.streams.toList
 @Service
 class HomeService {
     @Autowired
-    lateinit var bannerRepository: BannerRepository
+    private lateinit var bannerRepository: BannerRepository
 
     @Autowired
-    lateinit var sectionRepository: SectionRepository
+    private lateinit var sectionRepository: SectionRepository
 
     @Autowired
-    lateinit var productRepository: ProductRepository
+    private lateinit var productRepository: ProductRepository
 
     @Autowired
-    lateinit var logServiceClient: LogServiceClient
+    private lateinit var logServiceClient: LogServiceClient
 
     fun getHomeView(
         userId: Long?
@@ -54,14 +54,14 @@ class HomeService {
     ): List<SectionDTO> {
         return sectionRepository.findAllByValidIsTrue()
             .stream().map { section ->
-                val filter = parseFilter(section.filterInfo)
+                val filter = parseFilterFromString(section.filterInfo)
                 val products = getSectionProducts(userId, filter)
 
                 SectionDTO(section, products)
             }.toList()
     }
 
-    private fun parseFilter(
+    private fun parseFilterFromString(
         filterInfo: String
     ): FilterRequestDTO {
         return ObjectMapper().readValue(filterInfo, FilterRequestDTO::class.java)
@@ -95,12 +95,8 @@ class HomeService {
         userId: Long,
         recommendedProductIds: List<Long>
     ): List<ProductDTO>{
-        val recommendFilter = FilterRequestDTO(recommendation = recommendedProductIds)
 
-        val unSortedRecommendedProducts =  productRepository.getProductsWithWish(userId, 0, 30, null, recommendFilter)
-            .stream()
-            .map { ProductDTO(it) }
-            .toList()
+        val unSortedRecommendedProducts = getRecommendedProductsFromIds(userId, recommendedProductIds)
 
         val sortedRecommendedProducts = ArrayList<ProductDTO>()
         recommendedProductIds.forEach {
@@ -119,4 +115,18 @@ class HomeService {
     ): List<Long> {
         return logServiceClient.getRecommendedProducts(userId);
     }
+
+    private fun getRecommendedProductsFromIds(
+        userId: Long,
+        recommendedProductIds: List<Long>
+    ): List<ProductDTO>{
+        val recommendFilter = FilterRequestDTO(recommendation = recommendedProductIds)
+
+        return productRepository.getProductsWithWish(userId, 0, 30, null, recommendFilter)
+            .stream()
+            .map { ProductDTO(it) }
+            .toList()
+    }
+
+
 }
