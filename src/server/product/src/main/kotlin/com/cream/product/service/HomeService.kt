@@ -96,10 +96,22 @@ class HomeService {
         recommendedProductIds: List<Long>
     ): List<ProductDTO>{
         val recommendFilter = FilterRequestDTO(recommendation = recommendedProductIds)
-        return productRepository.getProductsWithWish(userId, 0, 30, null, recommendFilter)
+
+        val unSortedRecommendedProducts =  productRepository.getProductsWithWish(userId, 0, 30, null, recommendFilter)
             .stream()
             .map { ProductDTO(it) }
             .toList()
+
+        val sortedRecommendedProducts = ArrayList<ProductDTO>()
+        recommendedProductIds.forEach {
+            for (product in unSortedRecommendedProducts) {
+                if (product.id == it){
+                    sortedRecommendedProducts.add(product)
+                    break
+                }
+            }
+        }
+        return sortedRecommendedProducts
     }
 
     private fun getRecommendedProductIds(
