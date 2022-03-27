@@ -31,8 +31,8 @@ const Home: FunctionComponent = () => {
 	const router = useRouter();
 	const { user, setUser } = useContext(UserContext);
 
-	const [isOpen, setIsOpen] = useState<boolean>(false);
-	const [pickedProductInfo, setPickedProductInfo] =
+	const [isOpenWishModal, setIsOpenWishModal] = useState<boolean>(false);
+	const [userClickedProduct, setUserClickedProduct] =
 		useState<HomeProductInfoRes>();
 
 	const { data: homeData, mutate } = useSWR<HomeRes>(
@@ -44,27 +44,29 @@ const Home: FunctionComponent = () => {
 		},
 	);
 
-	const onHandleClickWish = useCallback(async (obj: HomeProductInfoRes) => {
-		try {
-			const res = await validateUser(setUser);
-			if (!res) {
-				// user Not logined.
+	const onHandleUserClickedWish = useCallback(
+		async (clickedProduct: HomeProductInfoRes) => {
+			try {
+				const res = await validateUser(setUser);
+				if (!res) {
+					router.push("/login");
+				} else {
+					setIsOpenWishModal(true);
+					setUserClickedProduct(clickedProduct);
+				}
+			} catch (e) {
 				router.push("/login");
-			} else {
-				setIsOpen(true);
-				setPickedProductInfo(obj);
 			}
-		} catch (e) {
-			router.push("/login");
-		}
-	}, []);
+		},
+		[],
+	);
 
 	const onPostWish = useCallback(
 		async (size: string) => {
 			const token = getToken("accessToken");
 			try {
 				const res = await axios.post(
-					`${process.env.END_POINT_PRODUCT}/wish/${pickedProductInfo.id}/${size}`,
+					`${process.env.END_POINT_PRODUCT}/wish/${userClickedProduct.id}/${size}`,
 					{},
 					{
 						headers: {
@@ -78,26 +80,7 @@ const Home: FunctionComponent = () => {
 						`Something wrong when posting. error code ${res.status}}`,
 					);
 				} else {
-					if (
-						pickedProductInfo.wishList &&
-						pickedProductInfo.wishList.includes(size)
-					) {
-						setPickedProductInfo({
-							...pickedProductInfo,
-							wishList: [
-								...pickedProductInfo.wishList.filter((data) => data !== size),
-							],
-						});
-					} else {
-						if (pickedProductInfo.wishList !== null) {
-							setPickedProductInfo({
-								...pickedProductInfo,
-								wishList: [...pickedProductInfo.wishList, size],
-							});
-						} else {
-							setPickedProductInfo({ ...pickedProductInfo, wishList: [size] });
-						}
-					}
+					toggleUserClickWish(size);
 					mutate();
 				}
 			} catch (err) {
@@ -105,8 +88,33 @@ const Home: FunctionComponent = () => {
 				// errResponse.code && alert(`${process.env.ERROR_code[parseInt(errResponse.code)]}`);
 			}
 		},
-		[pickedProductInfo],
+		[userClickedProduct],
 	);
+
+	const toggleUserClickWish = (size: string) => {
+		if (
+			userClickedProduct.wishList &&
+			userClickedProduct.wishList.includes(size)
+		) {
+			setUserClickedProduct({
+				...userClickedProduct,
+				wishList: [
+					...userClickedProduct.wishList.filter((data) => data !== size),
+				],
+			});
+		} else {
+			userClickedProduct.wishList !== null &&
+				setUserClickedProduct({
+					...userClickedProduct,
+					wishList: [...userClickedProduct.wishList, size],
+				});
+			userClickedProduct.wishList === null &&
+				setUserClickedProduct({
+					...userClickedProduct,
+					wishList: [size],
+				});
+		}
+	};
 
 	useEffect(() => {
 		mutate();
@@ -145,7 +153,7 @@ const Home: FunctionComponent = () => {
 						productInfos={
 							homeData.recommendedItems ? homeData.recommendedItems : []
 						}
-						onHandleWishClick={onHandleClickWish}
+						onHandleWishClick={onHandleUserClickedWish}
 					/>
 				)}
 				{homeData &&
@@ -157,23 +165,23 @@ const Home: FunctionComponent = () => {
 							header={product.header}
 							detail={product.detail}
 							productInfo={product.products}
-							onHandleWishClick={onHandleClickWish}
+							onHandleWishClick={onHandleUserClickedWish}
 						/>
 					))}
 			</HomeTemplate>
 			<Modal
 				category="wish"
-				onClose={() => setIsOpen(false)}
-				show={isOpen}
+				onClose={() => setIsOpenWishModal(false)}
+				show={isOpenWishModal}
 				title="관심 상품 추가"
 			>
-				{pickedProductInfo && (
+				{userClickedProduct && (
 					<>
 						<ProductSmallInfo
-							imgSrc={pickedProductInfo.imageUrls[0]}
-							backgroundColor={pickedProductInfo.backgroundColor}
-							productName={pickedProductInfo.originalName}
-							productNameKor={pickedProductInfo.translatedName}
+							imgSrc={userClickedProduct.imageUrls[0]}
+							backgroundColor={userClickedProduct.backgroundColor}
+							productName={userClickedProduct.originalName}
+							productNameKor={userClickedProduct.translatedName}
 							style={{
 								borderBottom: "1px solid #eeeeee",
 								paddingBottom: "10px",
@@ -183,9 +191,9 @@ const Home: FunctionComponent = () => {
 						<ProductSizeSelectGrid
 							category="wish"
 							activeSizeOption={
-								pickedProductInfo.wishList && pickedProductInfo.wishList
+								userClickedProduct.wishList && userClickedProduct.wishList
 							}
-							datas={pickedProductInfo.sizes}
+							datas={userClickedProduct.sizes}
 							onClick={(size) => onPostWish(size)}
 						/>
 					</>

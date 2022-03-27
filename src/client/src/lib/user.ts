@@ -26,12 +26,9 @@ export const validateUser = async (
 			// user validation OK.
 			return true;
 		} else {
-			console.error("TOKEN is not valid!");
 			return false;
 		}
 	} catch (e) {
-		console.error("ERROR in `users/validate/");
-		console.log(e.response);
 		const errResponse = e.response.data;
 		if (errResponse.code === -21) {
 			const refreshResult = await refresh();
