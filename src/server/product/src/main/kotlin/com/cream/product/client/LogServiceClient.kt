@@ -14,5 +14,5 @@ interface LogServiceClient {
     fun insertUserLogData(@RequestBody userLogDTO: UserLogDTO)
 
     @GetMapping("/recommendations/{userId}")
-    fun getRecommendedItems(@PathVariable userId: Long): List<Long>
+    fun getRecommendedProducts(@PathVariable userId: Long): List<Long>
 }
